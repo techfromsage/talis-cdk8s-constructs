@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Simple WebService example Snapshot 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Simple web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "instance": "web",
+        "release": "0.0.1",
+        "role": "server",
+      },
+      "name": "test-web-service-c839d136",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 3000,
+          "protocol": "TCP",
+          "targetPort": 3000,
+        },
+      ],
+      "selector": Object {
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "instance": "web",
+        "release": "0.0.1",
+        "role": "server",
+      },
+      "name": "test-web-ingress-c822b2f2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-c839d136",
+          "port": Object {
+            "number": 3000,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "instance": "web",
+        "release": "0.0.1",
+        "role": "server",
+      },
+      "name": "test-web-deployment-c87ede4d",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "revisionHistoryLimit": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "instance": "web",
+            "release": "0.0.1",
+            "role": "server",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "image": "docker.io/bitnami/node-example:0.0.1",
+              "imagePullPolicy": "IfNotPresent",
+              "ports": Array [
+                Object {
+                  "containerPort": 3000,
+                  "protocol": "TCP",
+                },
+              ],
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+          ],
+          "priorityClassName": "web",
+        },
+      },
+    },
+  },
+]
+`;

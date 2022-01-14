@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`nginx-util createConfigMap Application port and nginx port must be different 1`] = `"Application and nginx ports must be different"`;
+
+exports[`nginx-util createConfigMap Custom data 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "custom.conf": "# custom config",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+]
+`;
+
+exports[`nginx-util createConfigMap Custom data with default config 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "custom.conf": "# custom config",
+      "default.conf": "map $http_upgrade $connection_upgrade {
+    default \\"upgrade\\";
+    \\"\\" \\"\\";
+}
+
+upstream application {
+    server localhost:8080;
+    keepalive 256;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+
+    gzip on;
+    gzip_comp_level 4;
+    gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    location / {
+        proxy_pass http://application;
+        proxy_http_version 1.1;
+
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /livez {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 'OK';
+    }
+
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        allow 10.0.0.0/8;
+        allow 172.16.0.0/12;
+        deny all;
+    }
+}
+",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+]
+`;
+
+exports[`nginx-util createConfigMap Default config 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "default.conf": "map $http_upgrade $connection_upgrade {
+    default \\"upgrade\\";
+    \\"\\" \\"\\";
+}
+
+upstream application {
+    server localhost:8080;
+    keepalive 256;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+
+    gzip on;
+    gzip_comp_level 4;
+    gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    location / {
+        proxy_pass http://application;
+        proxy_http_version 1.1;
+
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /livez {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 'OK';
+    }
+
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        allow 10.0.0.0/8;
+        allow 172.16.0.0/12;
+        deny all;
+    }
+}
+",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+]
+`;
+
+exports[`nginx-util createConfigMap Default config requires specifying application port 1`] = `"Application and nginx ports must be set"`;
+
+exports[`nginx-util createConfigMap Default config requires specifying nginx port 1`] = `"Application and nginx ports must be set"`;
+
+exports[`nginx-util createConfigMap Empty 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {},
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+]
+`;
+
+exports[`nginx-util createConfigMap Same site cookies config 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+#
+# See https://web.dev/samesite-cookies-explained/ for background.
+#
+# The algorithm is applied to the \`Set-Cookie\` header as delivered by the Login Server JVM application.
+# We use user-agent targetting to exclude the known list of incompatible clients from the cookie flags.
+# The algorithm for filtering incompatible clients is described here: https://www.chromium.org/updates/same-site/incompatible-clients
+
+# $ua_os_browser - an enumerated combination of OS and browser
+map \\"$http_user_agent\\" $ua_os_browser {
+    default                                                                                               \\"anything_else\\";
+    \\"~Chrom(e|ium)\\\\/(5[1-9]|6[0-6])\\\\.\\"                                                                    \\"chromium_51_to_66\\";
+    \\"~Chrom(e|ium)\\"                                                                                       \\"any_chromium\\";
+    \\"~\\\\(iP.+; CPU .*OS 12[_\\\\d]*.*\\\\) AppleWebKit\\\\/\\"                                                        \\"ios_12_anything\\";
+    \\"~\\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]*.*\\\\) AppleWebKit\\\\/.* Version\\\\/.* Safari/\\"                         \\"mac_10_14_safari\\";
+    \\"~^Mozilla\\\\/[\\\\.\\\\d]+ \\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]+\\\\) AppleWebKit\\\\/[\\\\.\\\\d]+ \\\\(KHTML, like Gecko\\\\)$\\" \\"mac_10_14_embedded\\";
+    \\"~UCBrowser\\\\/\\\\d\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                    \\"ucbrowser_before_12_13_2\\"; # version < 10
+    \\"~UCBrowser\\\\/1[01]\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 10/11
+    \\"~UCBrowser\\\\/12\\\\.\\\\d\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                     \\"ucbrowser_before_12_13_2\\"; # version 12.0 - 12.9
+    \\"~UCBrowser\\\\/12\\\\.1[012]\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 12.10 - 12.12
+    \\"~UCBrowser\\\\/12\\\\.13\\\\.[01]\\\\.[\\\\.\\\\d]* \\"                                                                  \\"ucbrowser_before_12_13_2\\"; # version 12.13.0 - 12.13.1
+}
+
+# $has_webkit_same_site_bug - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $has_webkit_same_site_bug {
+    default              \\"false\\";
+    \\"ios_12_anything\\"    \\"true\\";
+    \\"mac_10_14_safari\\"   \\"true\\";
+    \\"mac_10_14_embedded\\" \\"true\\";
+}
+
+# $drops_unrecognized_same_site_cookies - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $drops_unrecognized_same_site_cookies {
+    default                    \\"false\\";
+    \\"chromium_51_to_66\\"        \\"true\\";
+    \\"ucbrowser_before_12_13_2\\" \\"true\\";
+}
+
+# $is_same_site_none_incompatible - \\"true\\" or \\"false\\"
+map \\"$drops_unrecognized_same_site_cookies:$has_webkit_same_site_bug\\" $is_same_site_none_incompatible {
+    default \\"false\\";
+    \\"~true\\"  \\"true\\";
+}
+
+# $should_send_samesite_none - \\"true\\" or \\"false\\"
+map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
+    default \\"false\\";
+    \\"false\\" \\"true\\";
+}
+
+# $cookie_path_patches - either SameSite cookie flags, or an empty string
+map \\"$should_send_samesite_none\\" $cookie_path_patches {
+    default \\"\\";
+    \\"true\\" \\"; Secure; SameSite=None\\";
+}
+
+proxy_cookie_path / \\"/$cookie_path_patches\\";
+
+# The following may be useful for debugging the various stages of the algorithm
+# add_header 'X-cookie_path_patches' \\"$cookie_path_patches\\";
+# add_header 'X-should_send_samesite_none' \\"$should_send_samesite_none\\";
+# add_header 'X-is_same_site_none_incompatible' \\"$is_same_site_none_incompatible\\";
+# add_header 'X-drops_unrecognized_same_site_cookies' \\"$drops_unrecognized_same_site_cookies\\";
+# add_header 'X-has_webkit_same_site_bug' \\"$has_webkit_same_site_bug\\";
+# add_header 'X-ua_os_browser' \\"$ua_os_browser\\";
+",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+]
+`;

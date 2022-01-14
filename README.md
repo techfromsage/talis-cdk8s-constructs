@@ -8,6 +8,16 @@ This project follows [conventional commits](https://www.conventionalcommits.org/
 
 Builds are conducted by CircleCI, and upon successful build of the `main` branch, [`semantic-release`](https://semantic-release.gitbook.io/semantic-release/) will generate a new release, an appropriate version (based on commits), and release-notes to cover the content of the commit log.
 
+## Available constructs
+
+- `WebService`
+
+  - Represents a web application exposed via an AWS Application Load Balancer.
+  - Supports autoscaling.
+  - Supports adding Nginx reverse proxy.
+  - Supports canary releases with a separate canary deployment and load balancer, allowing to test the new version via host hack.
+  - Details in a [simple](./examples/simple-web-service/README.md) and [advanced](./examples/advanced-web-service/README.md) examples.
+
 ## Useful commands
 
 - `npm run build` compile typescript to js

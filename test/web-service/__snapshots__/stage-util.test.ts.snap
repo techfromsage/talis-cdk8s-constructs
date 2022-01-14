@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`stage-util getCanaryStage Throws if env var is empty 1`] = `"Stage environment variable CANARY_STAGE is not set"`;
+
+exports[`stage-util getCanaryStage Throws if env var is not set 1`] = `"Stage environment variable CANARY_STAGE is not set"`;
+
+exports[`stage-util getCanaryStage Throws if stage name is not valid 1`] = `"Invalid canary stage: blue. Allowed values are base, canary, post-canary, full"`;
