@@ -1,0 +1,18 @@
+coverage
+node_modules
+.vscode/
+junit.xml
+
+# Built artifacts
+examples/**/*.d.ts
+examples/**/*.js
+imports/**/*.d.ts
+imports/**/*.js
+lib/**/*.d.ts
+lib/**/*.js
+test/**/*.d.ts
+test/**/*.js
+*.tgz
+
+# CDK8s output
+dist/
