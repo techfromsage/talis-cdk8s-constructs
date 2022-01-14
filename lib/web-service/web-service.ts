@@ -271,7 +271,7 @@ export class WebService extends Construct {
   makeLoadBalancerName(
     id: string,
     isCanaryInstance: boolean,
-    labels: { [key: string]: string }
+    labels: { app: string; environment: string; region: string }
   ): string {
     const { app, environment, region } = labels;
     const canary = isCanaryInstance ? "c" : null;
