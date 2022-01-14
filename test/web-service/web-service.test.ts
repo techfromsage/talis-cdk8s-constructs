@@ -264,6 +264,29 @@ describe("WebService", () => {
       expect(ingress.spec.tls[0].hosts).toHaveLength(1);
       expect(ingress.spec.tls[0].hosts[0]).toBe("*.example.com");
     });
+
+    test("Ingress target-type instance (by default)", () => {
+      const results = synthWebService();
+      const service = results.find((obj) => obj.kind === "Service");
+      const ingress = results.find((obj) => obj.kind === "Ingress");
+      expect(service.spec.type).toBe("NodePort");
+      expect(
+        ingress.metadata.annotations["alb.ingress.kubernetes.io/target-type"]
+      ).toBe("instance");
+    });
+
+    test("Ingress target-type ip", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        ingressTargetType: "ip",
+      });
+      const service = results.find((obj) => obj.kind === "Service");
+      const ingress = results.find((obj) => obj.kind === "Ingress");
+      expect(service.spec.type).toBe("ClusterIP");
+      expect(
+        ingress.metadata.annotations["alb.ingress.kubernetes.io/target-type"]
+      ).toBe("ip");
+    });
   });
 
   describe("Labels and annotations", () => {
