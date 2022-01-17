@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "CommonJS",
+    "declaration": true,
+    "esModuleInterop": true,
+    "exactOptionalPropertyTypes": false,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "stripInternal": true,
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "include": ["examples/**/*.ts", "lib/**/*.ts", "test/**/*.ts"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,2 @@
+# Auto-collapse diff on generated files
+imports/**/*.ts linguist-generated

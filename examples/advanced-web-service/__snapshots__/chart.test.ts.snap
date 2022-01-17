@@ -1,0 +1,2555 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Advanced WebService example Change release version 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "default.conf": "map $http_upgrade $connection_upgrade {
+    default \\"upgrade\\";
+    \\"\\" \\"\\";
+}
+
+upstream application {
+    server localhost:8000;
+    keepalive 256;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+
+    gzip on;
+    gzip_comp_level 4;
+    gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    location / {
+        proxy_pass http://application;
+        proxy_http_version 1.1;
+
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /livez {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 'OK';
+    }
+
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        allow 10.0.0.0/8;
+        allow 172.16.0.0/12;
+        deny all;
+    }
+}
+",
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+#
+# See https://web.dev/samesite-cookies-explained/ for background.
+#
+# The algorithm is applied to the \`Set-Cookie\` header as delivered by the Login Server JVM application.
+# We use user-agent targetting to exclude the known list of incompatible clients from the cookie flags.
+# The algorithm for filtering incompatible clients is described here: https://www.chromium.org/updates/same-site/incompatible-clients
+
+# $ua_os_browser - an enumerated combination of OS and browser
+map \\"$http_user_agent\\" $ua_os_browser {
+    default                                                                                               \\"anything_else\\";
+    \\"~Chrom(e|ium)\\\\/(5[1-9]|6[0-6])\\\\.\\"                                                                    \\"chromium_51_to_66\\";
+    \\"~Chrom(e|ium)\\"                                                                                       \\"any_chromium\\";
+    \\"~\\\\(iP.+; CPU .*OS 12[_\\\\d]*.*\\\\) AppleWebKit\\\\/\\"                                                        \\"ios_12_anything\\";
+    \\"~\\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]*.*\\\\) AppleWebKit\\\\/.* Version\\\\/.* Safari/\\"                         \\"mac_10_14_safari\\";
+    \\"~^Mozilla\\\\/[\\\\.\\\\d]+ \\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]+\\\\) AppleWebKit\\\\/[\\\\.\\\\d]+ \\\\(KHTML, like Gecko\\\\)$\\" \\"mac_10_14_embedded\\";
+    \\"~UCBrowser\\\\/\\\\d\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                    \\"ucbrowser_before_12_13_2\\"; # version < 10
+    \\"~UCBrowser\\\\/1[01]\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 10/11
+    \\"~UCBrowser\\\\/12\\\\.\\\\d\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                     \\"ucbrowser_before_12_13_2\\"; # version 12.0 - 12.9
+    \\"~UCBrowser\\\\/12\\\\.1[012]\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 12.10 - 12.12
+    \\"~UCBrowser\\\\/12\\\\.13\\\\.[01]\\\\.[\\\\.\\\\d]* \\"                                                                  \\"ucbrowser_before_12_13_2\\"; # version 12.13.0 - 12.13.1
+}
+
+# $has_webkit_same_site_bug - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $has_webkit_same_site_bug {
+    default              \\"false\\";
+    \\"ios_12_anything\\"    \\"true\\";
+    \\"mac_10_14_safari\\"   \\"true\\";
+    \\"mac_10_14_embedded\\" \\"true\\";
+}
+
+# $drops_unrecognized_same_site_cookies - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $drops_unrecognized_same_site_cookies {
+    default                    \\"false\\";
+    \\"chromium_51_to_66\\"        \\"true\\";
+    \\"ucbrowser_before_12_13_2\\" \\"true\\";
+}
+
+# $is_same_site_none_incompatible - \\"true\\" or \\"false\\"
+map \\"$drops_unrecognized_same_site_cookies:$has_webkit_same_site_bug\\" $is_same_site_none_incompatible {
+    default \\"false\\";
+    \\"~true\\"  \\"true\\";
+}
+
+# $should_send_samesite_none - \\"true\\" or \\"false\\"
+map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
+    default \\"false\\";
+    \\"false\\" \\"true\\";
+}
+
+# $cookie_path_patches - either SameSite cookie flags, or an empty string
+map \\"$should_send_samesite_none\\" $cookie_path_patches {
+    default \\"\\";
+    \\"true\\" \\"; Secure; SameSite=None\\";
+}
+
+proxy_cookie_path / \\"/$cookie_path_patches\\";
+
+# The following may be useful for debugging the various stages of the algorithm
+# add_header 'X-cookie_path_patches' \\"$cookie_path_patches\\";
+# add_header 'X-should_send_samesite_none' \\"$should_send_samesite_none\\";
+# add_header 'X-is_same_site_none_incompatible' \\"$is_same_site_none_incompatible\\";
+# add_header 'X-drops_unrecognized_same_site_cookies' \\"$drops_unrecognized_same_site_cookies\\";
+# add_header 'X-has_webkit_same_site_bug' \\"$has_webkit_same_site_bug\\";
+# add_header 'X-ua_os_browser' \\"$ua_os_browser\\";
+",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.2",
+        "role": "server",
+      },
+      "name": "test-web-service-c839d136",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "canary": "false",
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.2",
+        "role": "server",
+      },
+      "name": "test-web-ingress-c822b2f2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-c839d136",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.2",
+        "role": "server",
+      },
+      "name": "test-web-service-canary-c881c87b",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "canary": "true",
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.2",
+        "role": "server",
+      },
+      "name": "test-web-ingress-canary-c8dd58b2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-canary-c881c87b",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.2",
+        "role": "server",
+      },
+      "name": "test-web-deployment-canary-c8903f24",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "revisionHistoryLimit": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "canary": "true",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "canary": "true",
+            "instance": "web",
+            "release": "v0.2.2",
+            "role": "server",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "canary": "true",
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "ROLLUP_WATCH",
+                  "value": "0",
+                },
+              ],
+              "image": "docker.io/rodolphoalves/swapi-deno:v0.2.2",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "ports": Array [
+                Object {
+                  "containerPort": 8000,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/portal",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+            Object {
+              "image": "public.ecr.aws/nginx/nginx:1.21.5",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "name": "nginx",
+              "ports": Array [
+                Object {
+                  "containerPort": 80,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 2,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 10,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "memory": "128Mi",
+                },
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "32Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/etc/nginx/conf.d",
+                  "name": "nginx-config",
+                  "readOnly": true,
+                },
+              ],
+            },
+          ],
+          "priorityClassName": "web",
+          "volumes": Array [
+            Object {
+              "configMap": Object {
+                "defaultMode": 292,
+                "name": "test-nginx-config-c80869a4",
+              },
+              "name": "nginx-config",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`Advanced WebService example Snapshot base stage 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "default.conf": "map $http_upgrade $connection_upgrade {
+    default \\"upgrade\\";
+    \\"\\" \\"\\";
+}
+
+upstream application {
+    server localhost:8000;
+    keepalive 256;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+
+    gzip on;
+    gzip_comp_level 4;
+    gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    location / {
+        proxy_pass http://application;
+        proxy_http_version 1.1;
+
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /livez {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 'OK';
+    }
+
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        allow 10.0.0.0/8;
+        allow 172.16.0.0/12;
+        deny all;
+    }
+}
+",
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+#
+# See https://web.dev/samesite-cookies-explained/ for background.
+#
+# The algorithm is applied to the \`Set-Cookie\` header as delivered by the Login Server JVM application.
+# We use user-agent targetting to exclude the known list of incompatible clients from the cookie flags.
+# The algorithm for filtering incompatible clients is described here: https://www.chromium.org/updates/same-site/incompatible-clients
+
+# $ua_os_browser - an enumerated combination of OS and browser
+map \\"$http_user_agent\\" $ua_os_browser {
+    default                                                                                               \\"anything_else\\";
+    \\"~Chrom(e|ium)\\\\/(5[1-9]|6[0-6])\\\\.\\"                                                                    \\"chromium_51_to_66\\";
+    \\"~Chrom(e|ium)\\"                                                                                       \\"any_chromium\\";
+    \\"~\\\\(iP.+; CPU .*OS 12[_\\\\d]*.*\\\\) AppleWebKit\\\\/\\"                                                        \\"ios_12_anything\\";
+    \\"~\\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]*.*\\\\) AppleWebKit\\\\/.* Version\\\\/.* Safari/\\"                         \\"mac_10_14_safari\\";
+    \\"~^Mozilla\\\\/[\\\\.\\\\d]+ \\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]+\\\\) AppleWebKit\\\\/[\\\\.\\\\d]+ \\\\(KHTML, like Gecko\\\\)$\\" \\"mac_10_14_embedded\\";
+    \\"~UCBrowser\\\\/\\\\d\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                    \\"ucbrowser_before_12_13_2\\"; # version < 10
+    \\"~UCBrowser\\\\/1[01]\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 10/11
+    \\"~UCBrowser\\\\/12\\\\.\\\\d\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                     \\"ucbrowser_before_12_13_2\\"; # version 12.0 - 12.9
+    \\"~UCBrowser\\\\/12\\\\.1[012]\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 12.10 - 12.12
+    \\"~UCBrowser\\\\/12\\\\.13\\\\.[01]\\\\.[\\\\.\\\\d]* \\"                                                                  \\"ucbrowser_before_12_13_2\\"; # version 12.13.0 - 12.13.1
+}
+
+# $has_webkit_same_site_bug - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $has_webkit_same_site_bug {
+    default              \\"false\\";
+    \\"ios_12_anything\\"    \\"true\\";
+    \\"mac_10_14_safari\\"   \\"true\\";
+    \\"mac_10_14_embedded\\" \\"true\\";
+}
+
+# $drops_unrecognized_same_site_cookies - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $drops_unrecognized_same_site_cookies {
+    default                    \\"false\\";
+    \\"chromium_51_to_66\\"        \\"true\\";
+    \\"ucbrowser_before_12_13_2\\" \\"true\\";
+}
+
+# $is_same_site_none_incompatible - \\"true\\" or \\"false\\"
+map \\"$drops_unrecognized_same_site_cookies:$has_webkit_same_site_bug\\" $is_same_site_none_incompatible {
+    default \\"false\\";
+    \\"~true\\"  \\"true\\";
+}
+
+# $should_send_samesite_none - \\"true\\" or \\"false\\"
+map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
+    default \\"false\\";
+    \\"false\\" \\"true\\";
+}
+
+# $cookie_path_patches - either SameSite cookie flags, or an empty string
+map \\"$should_send_samesite_none\\" $cookie_path_patches {
+    default \\"\\";
+    \\"true\\" \\"; Secure; SameSite=None\\";
+}
+
+proxy_cookie_path / \\"/$cookie_path_patches\\";
+
+# The following may be useful for debugging the various stages of the algorithm
+# add_header 'X-cookie_path_patches' \\"$cookie_path_patches\\";
+# add_header 'X-should_send_samesite_none' \\"$should_send_samesite_none\\";
+# add_header 'X-is_same_site_none_incompatible' \\"$is_same_site_none_incompatible\\";
+# add_header 'X-drops_unrecognized_same_site_cookies' \\"$drops_unrecognized_same_site_cookies\\";
+# add_header 'X-has_webkit_same_site_bug' \\"$has_webkit_same_site_bug\\";
+# add_header 'X-ua_os_browser' \\"$ua_os_browser\\";
+",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-service-c839d136",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "canary": "false",
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-ingress-c822b2f2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-c839d136",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-deployment-c87ede4d",
+    },
+    "spec": Object {
+      "revisionHistoryLimit": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "canary": "false",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "canary": "false",
+            "instance": "web",
+            "release": "v0.2.1",
+            "role": "server",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "canary": "false",
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "ROLLUP_WATCH",
+                  "value": "0",
+                },
+              ],
+              "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "ports": Array [
+                Object {
+                  "containerPort": 8000,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/portal",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+            Object {
+              "image": "public.ecr.aws/nginx/nginx:1.21.5",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "name": "nginx",
+              "ports": Array [
+                Object {
+                  "containerPort": 80,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 2,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 10,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "memory": "128Mi",
+                },
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "32Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/etc/nginx/conf.d",
+                  "name": "nginx-config",
+                  "readOnly": true,
+                },
+              ],
+            },
+          ],
+          "priorityClassName": "web",
+          "volumes": Array [
+            Object {
+              "configMap": Object {
+                "defaultMode": 292,
+                "name": "test-nginx-config-c80869a4",
+              },
+              "name": "nginx-config",
+            },
+          ],
+        },
+      },
+    },
+  },
+  Object {
+    "apiVersion": "autoscaling/v2beta2",
+    "kind": "HorizontalPodAutoscaler",
+    "metadata": Object {
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "role": "server",
+      },
+      "name": "test-web-hpa-c83b95a8",
+    },
+    "spec": Object {
+      "maxReplicas": 5,
+      "metrics": Array [
+        Object {
+          "resource": Object {
+            "name": "cpu",
+            "target": Object {
+              "averageUtilization": 50,
+              "type": "Utilization",
+            },
+          },
+          "type": "Resource",
+        },
+      ],
+      "minReplicas": 1,
+      "scaleTargetRef": Object {
+        "apiVersion": "apps/apps/v1",
+        "kind": "Deployment",
+        "name": "test-web-deployment-c87ede4d",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-service-canary-c881c87b",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "canary": "true",
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-ingress-canary-c8dd58b2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-canary-c881c87b",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-deployment-canary-c8903f24",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "revisionHistoryLimit": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "canary": "true",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "canary": "true",
+            "instance": "web",
+            "release": "v0.2.1",
+            "role": "server",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "canary": "true",
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "ROLLUP_WATCH",
+                  "value": "0",
+                },
+              ],
+              "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "ports": Array [
+                Object {
+                  "containerPort": 8000,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/portal",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+            Object {
+              "image": "public.ecr.aws/nginx/nginx:1.21.5",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "name": "nginx",
+              "ports": Array [
+                Object {
+                  "containerPort": 80,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 2,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 10,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "memory": "128Mi",
+                },
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "32Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/etc/nginx/conf.d",
+                  "name": "nginx-config",
+                  "readOnly": true,
+                },
+              ],
+            },
+          ],
+          "priorityClassName": "web",
+          "volumes": Array [
+            Object {
+              "configMap": Object {
+                "defaultMode": 292,
+                "name": "test-nginx-config-c80869a4",
+              },
+              "name": "nginx-config",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`Advanced WebService example Snapshot canary stage 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "default.conf": "map $http_upgrade $connection_upgrade {
+    default \\"upgrade\\";
+    \\"\\" \\"\\";
+}
+
+upstream application {
+    server localhost:8000;
+    keepalive 256;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+
+    gzip on;
+    gzip_comp_level 4;
+    gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    location / {
+        proxy_pass http://application;
+        proxy_http_version 1.1;
+
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /livez {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 'OK';
+    }
+
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        allow 10.0.0.0/8;
+        allow 172.16.0.0/12;
+        deny all;
+    }
+}
+",
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+#
+# See https://web.dev/samesite-cookies-explained/ for background.
+#
+# The algorithm is applied to the \`Set-Cookie\` header as delivered by the Login Server JVM application.
+# We use user-agent targetting to exclude the known list of incompatible clients from the cookie flags.
+# The algorithm for filtering incompatible clients is described here: https://www.chromium.org/updates/same-site/incompatible-clients
+
+# $ua_os_browser - an enumerated combination of OS and browser
+map \\"$http_user_agent\\" $ua_os_browser {
+    default                                                                                               \\"anything_else\\";
+    \\"~Chrom(e|ium)\\\\/(5[1-9]|6[0-6])\\\\.\\"                                                                    \\"chromium_51_to_66\\";
+    \\"~Chrom(e|ium)\\"                                                                                       \\"any_chromium\\";
+    \\"~\\\\(iP.+; CPU .*OS 12[_\\\\d]*.*\\\\) AppleWebKit\\\\/\\"                                                        \\"ios_12_anything\\";
+    \\"~\\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]*.*\\\\) AppleWebKit\\\\/.* Version\\\\/.* Safari/\\"                         \\"mac_10_14_safari\\";
+    \\"~^Mozilla\\\\/[\\\\.\\\\d]+ \\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]+\\\\) AppleWebKit\\\\/[\\\\.\\\\d]+ \\\\(KHTML, like Gecko\\\\)$\\" \\"mac_10_14_embedded\\";
+    \\"~UCBrowser\\\\/\\\\d\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                    \\"ucbrowser_before_12_13_2\\"; # version < 10
+    \\"~UCBrowser\\\\/1[01]\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 10/11
+    \\"~UCBrowser\\\\/12\\\\.\\\\d\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                     \\"ucbrowser_before_12_13_2\\"; # version 12.0 - 12.9
+    \\"~UCBrowser\\\\/12\\\\.1[012]\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 12.10 - 12.12
+    \\"~UCBrowser\\\\/12\\\\.13\\\\.[01]\\\\.[\\\\.\\\\d]* \\"                                                                  \\"ucbrowser_before_12_13_2\\"; # version 12.13.0 - 12.13.1
+}
+
+# $has_webkit_same_site_bug - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $has_webkit_same_site_bug {
+    default              \\"false\\";
+    \\"ios_12_anything\\"    \\"true\\";
+    \\"mac_10_14_safari\\"   \\"true\\";
+    \\"mac_10_14_embedded\\" \\"true\\";
+}
+
+# $drops_unrecognized_same_site_cookies - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $drops_unrecognized_same_site_cookies {
+    default                    \\"false\\";
+    \\"chromium_51_to_66\\"        \\"true\\";
+    \\"ucbrowser_before_12_13_2\\" \\"true\\";
+}
+
+# $is_same_site_none_incompatible - \\"true\\" or \\"false\\"
+map \\"$drops_unrecognized_same_site_cookies:$has_webkit_same_site_bug\\" $is_same_site_none_incompatible {
+    default \\"false\\";
+    \\"~true\\"  \\"true\\";
+}
+
+# $should_send_samesite_none - \\"true\\" or \\"false\\"
+map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
+    default \\"false\\";
+    \\"false\\" \\"true\\";
+}
+
+# $cookie_path_patches - either SameSite cookie flags, or an empty string
+map \\"$should_send_samesite_none\\" $cookie_path_patches {
+    default \\"\\";
+    \\"true\\" \\"; Secure; SameSite=None\\";
+}
+
+proxy_cookie_path / \\"/$cookie_path_patches\\";
+
+# The following may be useful for debugging the various stages of the algorithm
+# add_header 'X-cookie_path_patches' \\"$cookie_path_patches\\";
+# add_header 'X-should_send_samesite_none' \\"$should_send_samesite_none\\";
+# add_header 'X-is_same_site_none_incompatible' \\"$is_same_site_none_incompatible\\";
+# add_header 'X-drops_unrecognized_same_site_cookies' \\"$drops_unrecognized_same_site_cookies\\";
+# add_header 'X-has_webkit_same_site_bug' \\"$has_webkit_same_site_bug\\";
+# add_header 'X-ua_os_browser' \\"$ua_os_browser\\";
+",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-service-c839d136",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "canary": "false",
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-ingress-c822b2f2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-c839d136",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-service-canary-c881c87b",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "canary": "true",
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-ingress-canary-c8dd58b2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-canary-c881c87b",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-deployment-canary-c8903f24",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "revisionHistoryLimit": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "canary": "true",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "canary": "true",
+            "instance": "web",
+            "release": "v0.2.1",
+            "role": "server",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "canary": "true",
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "ROLLUP_WATCH",
+                  "value": "0",
+                },
+              ],
+              "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "ports": Array [
+                Object {
+                  "containerPort": 8000,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/portal",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+            Object {
+              "image": "public.ecr.aws/nginx/nginx:1.21.5",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "name": "nginx",
+              "ports": Array [
+                Object {
+                  "containerPort": 80,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 2,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 10,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "memory": "128Mi",
+                },
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "32Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/etc/nginx/conf.d",
+                  "name": "nginx-config",
+                  "readOnly": true,
+                },
+              ],
+            },
+          ],
+          "priorityClassName": "web",
+          "volumes": Array [
+            Object {
+              "configMap": Object {
+                "defaultMode": 292,
+                "name": "test-nginx-config-c80869a4",
+              },
+              "name": "nginx-config",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`Advanced WebService example Snapshot full stage 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "default.conf": "map $http_upgrade $connection_upgrade {
+    default \\"upgrade\\";
+    \\"\\" \\"\\";
+}
+
+upstream application {
+    server localhost:8000;
+    keepalive 256;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+
+    gzip on;
+    gzip_comp_level 4;
+    gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    location / {
+        proxy_pass http://application;
+        proxy_http_version 1.1;
+
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /livez {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 'OK';
+    }
+
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        allow 10.0.0.0/8;
+        allow 172.16.0.0/12;
+        deny all;
+    }
+}
+",
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+#
+# See https://web.dev/samesite-cookies-explained/ for background.
+#
+# The algorithm is applied to the \`Set-Cookie\` header as delivered by the Login Server JVM application.
+# We use user-agent targetting to exclude the known list of incompatible clients from the cookie flags.
+# The algorithm for filtering incompatible clients is described here: https://www.chromium.org/updates/same-site/incompatible-clients
+
+# $ua_os_browser - an enumerated combination of OS and browser
+map \\"$http_user_agent\\" $ua_os_browser {
+    default                                                                                               \\"anything_else\\";
+    \\"~Chrom(e|ium)\\\\/(5[1-9]|6[0-6])\\\\.\\"                                                                    \\"chromium_51_to_66\\";
+    \\"~Chrom(e|ium)\\"                                                                                       \\"any_chromium\\";
+    \\"~\\\\(iP.+; CPU .*OS 12[_\\\\d]*.*\\\\) AppleWebKit\\\\/\\"                                                        \\"ios_12_anything\\";
+    \\"~\\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]*.*\\\\) AppleWebKit\\\\/.* Version\\\\/.* Safari/\\"                         \\"mac_10_14_safari\\";
+    \\"~^Mozilla\\\\/[\\\\.\\\\d]+ \\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]+\\\\) AppleWebKit\\\\/[\\\\.\\\\d]+ \\\\(KHTML, like Gecko\\\\)$\\" \\"mac_10_14_embedded\\";
+    \\"~UCBrowser\\\\/\\\\d\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                    \\"ucbrowser_before_12_13_2\\"; # version < 10
+    \\"~UCBrowser\\\\/1[01]\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 10/11
+    \\"~UCBrowser\\\\/12\\\\.\\\\d\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                     \\"ucbrowser_before_12_13_2\\"; # version 12.0 - 12.9
+    \\"~UCBrowser\\\\/12\\\\.1[012]\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 12.10 - 12.12
+    \\"~UCBrowser\\\\/12\\\\.13\\\\.[01]\\\\.[\\\\.\\\\d]* \\"                                                                  \\"ucbrowser_before_12_13_2\\"; # version 12.13.0 - 12.13.1
+}
+
+# $has_webkit_same_site_bug - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $has_webkit_same_site_bug {
+    default              \\"false\\";
+    \\"ios_12_anything\\"    \\"true\\";
+    \\"mac_10_14_safari\\"   \\"true\\";
+    \\"mac_10_14_embedded\\" \\"true\\";
+}
+
+# $drops_unrecognized_same_site_cookies - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $drops_unrecognized_same_site_cookies {
+    default                    \\"false\\";
+    \\"chromium_51_to_66\\"        \\"true\\";
+    \\"ucbrowser_before_12_13_2\\" \\"true\\";
+}
+
+# $is_same_site_none_incompatible - \\"true\\" or \\"false\\"
+map \\"$drops_unrecognized_same_site_cookies:$has_webkit_same_site_bug\\" $is_same_site_none_incompatible {
+    default \\"false\\";
+    \\"~true\\"  \\"true\\";
+}
+
+# $should_send_samesite_none - \\"true\\" or \\"false\\"
+map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
+    default \\"false\\";
+    \\"false\\" \\"true\\";
+}
+
+# $cookie_path_patches - either SameSite cookie flags, or an empty string
+map \\"$should_send_samesite_none\\" $cookie_path_patches {
+    default \\"\\";
+    \\"true\\" \\"; Secure; SameSite=None\\";
+}
+
+proxy_cookie_path / \\"/$cookie_path_patches\\";
+
+# The following may be useful for debugging the various stages of the algorithm
+# add_header 'X-cookie_path_patches' \\"$cookie_path_patches\\";
+# add_header 'X-should_send_samesite_none' \\"$should_send_samesite_none\\";
+# add_header 'X-is_same_site_none_incompatible' \\"$is_same_site_none_incompatible\\";
+# add_header 'X-drops_unrecognized_same_site_cookies' \\"$drops_unrecognized_same_site_cookies\\";
+# add_header 'X-has_webkit_same_site_bug' \\"$has_webkit_same_site_bug\\";
+# add_header 'X-ua_os_browser' \\"$ua_os_browser\\";
+",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-service-c839d136",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-ingress-c822b2f2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-c839d136",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-deployment-c87ede4d",
+    },
+    "spec": Object {
+      "revisionHistoryLimit": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "canary": "false",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "canary": "false",
+            "instance": "web",
+            "release": "v0.2.1",
+            "role": "server",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "canary": "false",
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "ROLLUP_WATCH",
+                  "value": "0",
+                },
+              ],
+              "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "ports": Array [
+                Object {
+                  "containerPort": 8000,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/portal",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+            Object {
+              "image": "public.ecr.aws/nginx/nginx:1.21.5",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "name": "nginx",
+              "ports": Array [
+                Object {
+                  "containerPort": 80,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 2,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 10,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "memory": "128Mi",
+                },
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "32Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/etc/nginx/conf.d",
+                  "name": "nginx-config",
+                  "readOnly": true,
+                },
+              ],
+            },
+          ],
+          "priorityClassName": "web",
+          "volumes": Array [
+            Object {
+              "configMap": Object {
+                "defaultMode": 292,
+                "name": "test-nginx-config-c80869a4",
+              },
+              "name": "nginx-config",
+            },
+          ],
+        },
+      },
+    },
+  },
+  Object {
+    "apiVersion": "autoscaling/v2beta2",
+    "kind": "HorizontalPodAutoscaler",
+    "metadata": Object {
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "role": "server",
+      },
+      "name": "test-web-hpa-c83b95a8",
+    },
+    "spec": Object {
+      "maxReplicas": 5,
+      "metrics": Array [
+        Object {
+          "resource": Object {
+            "name": "cpu",
+            "target": Object {
+              "averageUtilization": 50,
+              "type": "Utilization",
+            },
+          },
+          "type": "Resource",
+        },
+      ],
+      "minReplicas": 1,
+      "scaleTargetRef": Object {
+        "apiVersion": "apps/apps/v1",
+        "kind": "Deployment",
+        "name": "test-web-deployment-c87ede4d",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-service-canary-c881c87b",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "canary": "true",
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-ingress-canary-c8dd58b2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-canary-c881c87b",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-deployment-canary-c8903f24",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "revisionHistoryLimit": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "canary": "true",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "canary": "true",
+            "instance": "web",
+            "release": "v0.2.1",
+            "role": "server",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "canary": "true",
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "ROLLUP_WATCH",
+                  "value": "0",
+                },
+              ],
+              "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "ports": Array [
+                Object {
+                  "containerPort": 8000,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/portal",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+            Object {
+              "image": "public.ecr.aws/nginx/nginx:1.21.5",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "name": "nginx",
+              "ports": Array [
+                Object {
+                  "containerPort": 80,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 2,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 10,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "memory": "128Mi",
+                },
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "32Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/etc/nginx/conf.d",
+                  "name": "nginx-config",
+                  "readOnly": true,
+                },
+              ],
+            },
+          ],
+          "priorityClassName": "web",
+          "volumes": Array [
+            Object {
+              "configMap": Object {
+                "defaultMode": 292,
+                "name": "test-nginx-config-c80869a4",
+              },
+              "name": "nginx-config",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`Advanced WebService example Snapshot post-canary stage 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "default.conf": "map $http_upgrade $connection_upgrade {
+    default \\"upgrade\\";
+    \\"\\" \\"\\";
+}
+
+upstream application {
+    server localhost:8000;
+    keepalive 256;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+
+    gzip on;
+    gzip_comp_level 4;
+    gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    location / {
+        proxy_pass http://application;
+        proxy_http_version 1.1;
+
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /livez {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 'OK';
+    }
+
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        allow 10.0.0.0/8;
+        allow 172.16.0.0/12;
+        deny all;
+    }
+}
+",
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+#
+# See https://web.dev/samesite-cookies-explained/ for background.
+#
+# The algorithm is applied to the \`Set-Cookie\` header as delivered by the Login Server JVM application.
+# We use user-agent targetting to exclude the known list of incompatible clients from the cookie flags.
+# The algorithm for filtering incompatible clients is described here: https://www.chromium.org/updates/same-site/incompatible-clients
+
+# $ua_os_browser - an enumerated combination of OS and browser
+map \\"$http_user_agent\\" $ua_os_browser {
+    default                                                                                               \\"anything_else\\";
+    \\"~Chrom(e|ium)\\\\/(5[1-9]|6[0-6])\\\\.\\"                                                                    \\"chromium_51_to_66\\";
+    \\"~Chrom(e|ium)\\"                                                                                       \\"any_chromium\\";
+    \\"~\\\\(iP.+; CPU .*OS 12[_\\\\d]*.*\\\\) AppleWebKit\\\\/\\"                                                        \\"ios_12_anything\\";
+    \\"~\\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]*.*\\\\) AppleWebKit\\\\/.* Version\\\\/.* Safari/\\"                         \\"mac_10_14_safari\\";
+    \\"~^Mozilla\\\\/[\\\\.\\\\d]+ \\\\(Macintosh;.*Mac OS X 10_14[_\\\\d]+\\\\) AppleWebKit\\\\/[\\\\.\\\\d]+ \\\\(KHTML, like Gecko\\\\)$\\" \\"mac_10_14_embedded\\";
+    \\"~UCBrowser\\\\/\\\\d\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                    \\"ucbrowser_before_12_13_2\\"; # version < 10
+    \\"~UCBrowser\\\\/1[01]\\\\.\\\\d+\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 10/11
+    \\"~UCBrowser\\\\/12\\\\.\\\\d\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                     \\"ucbrowser_before_12_13_2\\"; # version 12.0 - 12.9
+    \\"~UCBrowser\\\\/12\\\\.1[012]\\\\.\\\\d+[\\\\.\\\\d]* \\"                                                                 \\"ucbrowser_before_12_13_2\\"; # version 12.10 - 12.12
+    \\"~UCBrowser\\\\/12\\\\.13\\\\.[01]\\\\.[\\\\.\\\\d]* \\"                                                                  \\"ucbrowser_before_12_13_2\\"; # version 12.13.0 - 12.13.1
+}
+
+# $has_webkit_same_site_bug - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $has_webkit_same_site_bug {
+    default              \\"false\\";
+    \\"ios_12_anything\\"    \\"true\\";
+    \\"mac_10_14_safari\\"   \\"true\\";
+    \\"mac_10_14_embedded\\" \\"true\\";
+}
+
+# $drops_unrecognized_same_site_cookies - \\"true\\" or \\"false\\"
+map \\"$ua_os_browser\\" $drops_unrecognized_same_site_cookies {
+    default                    \\"false\\";
+    \\"chromium_51_to_66\\"        \\"true\\";
+    \\"ucbrowser_before_12_13_2\\" \\"true\\";
+}
+
+# $is_same_site_none_incompatible - \\"true\\" or \\"false\\"
+map \\"$drops_unrecognized_same_site_cookies:$has_webkit_same_site_bug\\" $is_same_site_none_incompatible {
+    default \\"false\\";
+    \\"~true\\"  \\"true\\";
+}
+
+# $should_send_samesite_none - \\"true\\" or \\"false\\"
+map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
+    default \\"false\\";
+    \\"false\\" \\"true\\";
+}
+
+# $cookie_path_patches - either SameSite cookie flags, or an empty string
+map \\"$should_send_samesite_none\\" $cookie_path_patches {
+    default \\"\\";
+    \\"true\\" \\"; Secure; SameSite=None\\";
+}
+
+proxy_cookie_path / \\"/$cookie_path_patches\\";
+
+# The following may be useful for debugging the various stages of the algorithm
+# add_header 'X-cookie_path_patches' \\"$cookie_path_patches\\";
+# add_header 'X-should_send_samesite_none' \\"$should_send_samesite_none\\";
+# add_header 'X-is_same_site_none_incompatible' \\"$is_same_site_none_incompatible\\";
+# add_header 'X-drops_unrecognized_same_site_cookies' \\"$drops_unrecognized_same_site_cookies\\";
+# add_header 'X-has_webkit_same_site_bug' \\"$has_webkit_same_site_bug\\";
+# add_header 'X-ua_os_browser' \\"$ua_os_browser\\";
+",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "name": "test-nginx-config-c80869a4",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-service-c839d136",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "false",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-ingress-c822b2f2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-c839d136",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "annotations": Object {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Advanced web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-service-canary-c881c87b",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 80,
+          "protocol": "TCP",
+          "targetPort": 8000,
+        },
+      ],
+      "selector": Object {
+        "canary": "true",
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  Object {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": Object {
+      "annotations": Object {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-ingress-canary-c8dd58b2",
+    },
+    "spec": Object {
+      "defaultBackend": Object {
+        "service": Object {
+          "name": "test-web-service-canary-c881c87b",
+          "port": Object {
+            "number": 80,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "canary": "true",
+        "instance": "web",
+        "release": "v0.2.1",
+        "role": "server",
+      },
+      "name": "test-web-deployment-canary-c8903f24",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "revisionHistoryLimit": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "canary": "true",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "canary": "true",
+            "instance": "web",
+            "release": "v0.2.1",
+            "role": "server",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "canary": "true",
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "ROLLUP_WATCH",
+                  "value": "0",
+                },
+              ],
+              "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "ports": Array [
+                Object {
+                  "containerPort": 8000,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/portal",
+                  "port": 8000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+            Object {
+              "image": "public.ecr.aws/nginx/nginx:1.21.5",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": Object {
+                "failureThreshold": 3,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "name": "nginx",
+              "ports": Array [
+                Object {
+                  "containerPort": 80,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 2,
+                "httpGet": Object {
+                  "path": "/livez",
+                  "port": 80,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 30,
+                "successThreshold": 1,
+                "timeoutSeconds": 10,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "memory": "128Mi",
+                },
+                "requests": Object {
+                  "cpu": "50m",
+                  "memory": "32Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/etc/nginx/conf.d",
+                  "name": "nginx-config",
+                  "readOnly": true,
+                },
+              ],
+            },
+          ],
+          "priorityClassName": "web",
+          "volumes": Array [
+            Object {
+              "configMap": Object {
+                "defaultMode": 292,
+                "name": "test-nginx-config-c80869a4",
+              },
+              "name": "nginx-config",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;

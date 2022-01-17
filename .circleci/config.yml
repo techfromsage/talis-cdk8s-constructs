@@ -1,0 +1,37 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.0
+
+workflows:
+  build:
+    jobs:
+      - be_kind_to_your_colleagues:
+          type: approval
+          filters:
+            branches:
+              ignore:
+                - main
+                - /^dependabot-.*$/
+      - node/run:
+          name: build
+          npm-run: build
+          requires:
+            - be_kind_to_your_colleagues
+      - node/run:
+          name: lint
+          npm-run: lint
+          requires:
+            - be_kind_to_your_colleagues
+      - node/test:
+          name: test
+          test-results-for: jest
+          requires:
+            - be_kind_to_your_colleagues
+      - node/run:
+          name: semantic-release
+          npm-run: release
+          requires:
+            - build
+            - lint
+            - test

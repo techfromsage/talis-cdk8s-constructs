@@ -1,0 +1,20 @@
+coverage
+node_modules
+.vscode/
+package-lock.json
+
+# Imports are generated
+imports/**/*.ts
+imports/**/*.d.ts
+imports/**/*.js
+
+# Ignore config files
+**/nginx/*.conf
+
+# Typescript is our source-code; generated JS and d.ts is left unlinted.
+examples/**/*.d.ts
+examples/**/*.js
+lib/**/*.d.ts
+lib/**/*.js
+test/**/*.d.ts
+test/**/*.js
