@@ -28,8 +28,10 @@ export class WebService extends Construct {
     const enableCanary = props.canary ?? false;
     const stage = props.stage ?? "base";
     const ingressTargetType = props.ingressTargetType ?? "instance";
+    const chartLabels: { app?: string; environment?: string; region?: string } =
+      chart.labels;
     const labels = {
-      ...chart.labels,
+      ...chartLabels,
       release: props.release,
     };
 
@@ -271,7 +273,7 @@ export class WebService extends Construct {
   makeLoadBalancerName(
     id: string,
     isCanaryInstance: boolean,
-    labels: { app: string; environment: string; region: string }
+    labels: { app?: string; environment?: string; region?: string }
   ): string {
     const { app, environment, region } = labels;
     const canary = isCanaryInstance ? "c" : null;
