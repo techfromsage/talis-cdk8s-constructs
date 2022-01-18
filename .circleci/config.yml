@@ -3,9 +3,24 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.0
 
+jobs:
+  fan_out:
+    machine: true
+    steps:
+      - run: echo "Building $CIRCLE_BRANCH"
+
 workflows:
   build:
     jobs:
+      # CircleCI's 'requires' setting excludes jobs that are filtered out but if
+      # that filters out all of them then dependant jobs will never run, so we
+      # need something to run in lieu of the 'be_kind_to_your_colleagues' job.
+      - fan_out:
+          filters:
+            branches:
+              only:
+                - main
+                - /^dependabot-.*$/
       - be_kind_to_your_colleagues:
           type: approval
           filters:
@@ -17,16 +32,19 @@ workflows:
           name: build
           npm-run: build
           requires:
+            - fan_out
             - be_kind_to_your_colleagues
       - node/run:
           name: lint
           npm-run: lint
           requires:
+            - fan_out
             - be_kind_to_your_colleagues
       - node/test:
           name: test
           test-results-for: jest
           requires:
+            - fan_out
             - be_kind_to_your_colleagues
       - node/run:
           name: semantic-release
