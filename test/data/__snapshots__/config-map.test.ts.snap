@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfigMap Accessors Metadata getter 1`] = `
+ApiObjectMetadataDefinition {
+  "_additionalAttributes": Object {
+    "labels": Object {
+      "prunable": "true",
+      "test": "true",
+    },
+    "name": Lazy {
+      "producer": Object {
+        "produce": [Function],
+      },
+    },
+    "namespace": undefined,
+  },
+  "annotations": Object {},
+  "finalizers": Array [],
+  "labels": Object {
+    "prunable": "true",
+    "test": "true",
+  },
+  "name": Lazy {
+    "producer": Object {
+      "produce": [Function],
+    },
+  },
+  "namespace": undefined,
+  "ownerReferences": Array [],
+}
+`;
+
+exports[`ConfigMap Accessors Throws when trying to set binaryData key on data 1`] = `"ConfigMap key \\"test\\" is already used in binaryData"`;
+
+exports[`ConfigMap Accessors Throws when trying to set data key on binaryData 1`] = `"ConfigMap key \\"test\\" is already used in data"`;
+
+exports[`ConfigMap Loading files Setting value from binary file's contents 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "binaryData": Object {
+      "file.bin": "0101010",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-c8eb60f8-bmgdfkhtdc",
+    },
+  },
+]
+`;
+
+exports[`ConfigMap Loading files Setting value from binary file's contents with custom key 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "binaryData": Object {
+      "greeting.bin": "0101010",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-c8eb60f8-d6tg59df79",
+    },
+  },
+]
+`;
+
+exports[`ConfigMap Loading files Setting value from file's contents 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "file.txt": "hello world!",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-c8eb60f8-9d44k9f5tb",
+    },
+  },
+]
+`;
+
+exports[`ConfigMap Loading files Setting value from file's contents with custom key 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "greeting.txt": "hello world!",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-c8eb60f8-g88dtg6tg9",
+    },
+  },
+]
+`;
+
+exports[`ConfigMap Props ConfigMap from props 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "binaryData": Object {
+      "bin": "010101",
+    },
+    "data": Object {
+      "foo": "bar",
+    },
+    "immutable": true,
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "annotations": Object {
+        "annotation": "test",
+      },
+      "labels": Object {
+        "label": "test",
+        "prunable": "true",
+      },
+      "name": "test-c8eb60f8-8598d5k4th",
+    },
+  },
+]
+`;
+
+exports[`ConfigMap Props Empty ConfigMap 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-c8eb60f8-hfh6t42gd2",
+    },
+  },
+]
+`;
