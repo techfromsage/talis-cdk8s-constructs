@@ -207,7 +207,7 @@ describe("Secret", () => {
         "values.env": [
           "FOO=bar",
           "# a comment = ignore",
-          "VAR_WITH_SPECIAL_CHARS=space slash/other@#1!=",
+          "VAR_WITH_SPECIAL_CHARS=#%/!*;:@&=+$,#",
           "SIGNLE_QUOTED='yes it is'",
           'DOUBLE_QUOTED="this too"',
         ].join("\n"),
@@ -219,7 +219,7 @@ describe("Secret", () => {
         DOUBLE_QUOTED: "this too",
         FOO: "bar",
         SIGNLE_QUOTED: "yes it is",
-        VAR_WITH_SPECIAL_CHARS: "space slash/other@#1!=",
+        VAR_WITH_SPECIAL_CHARS: "#%/!*;:@&=+$,#",
       });
     });
 
