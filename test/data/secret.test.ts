@@ -28,7 +28,7 @@ describe("Secret", () => {
           foo: "secret#!23",
         },
         stringData: {
-          bin: "hello",
+          bar: "hello",
         },
         immutable: true,
         type: "Opaque",
@@ -64,13 +64,27 @@ describe("Secret", () => {
       expect(secret.metadata).toMatchSnapshot();
     });
 
+    test("Setting data encodes the value", () => {
+      const chart = Testing.chart();
+      const secret = new Secret(chart, "test");
+      secret.setData("test", "this will be encoded");
+      expect(secret.data).toEqual({ test: "dGhpcyB3aWxsIGJlIGVuY29kZWQ=" });
+    });
+
+    test("Allows setting already encoded data value", () => {
+      const chart = Testing.chart();
+      const secret = new Secret(chart, "test");
+      secret.setData("test", "dGhpcyBpcyBlbmNvZGVk", false);
+      expect(secret.data).toEqual({ test: "dGhpcyBpcyBlbmNvZGVk" });
+    });
+
     test("Data getter", () => {
       const chart = Testing.chart();
       const secret = new Secret(chart, "test", { data: { foo: "bar" } });
-      expect(secret.data).toEqual({ foo: "bar" });
+      expect(secret.data).toEqual({ foo: "YmFy" });
     });
 
-    test("Binary data getter", () => {
+    test("String data getter", () => {
       const chart = Testing.chart();
       const secret = new Secret(chart, "test", {
         stringData: { foo: "bar" },
@@ -85,6 +99,15 @@ describe("Secret", () => {
       secret.setStringData("test", "bar");
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+    });
+
+    test("Throws when trying to set stringData key on data", () => {
+      const chart = Testing.chart();
+      const configMap = new Secret(chart, "test");
+      configMap.setStringData("test", "foo");
+      expect(() => {
+        configMap.setData("test", "bar");
+      }).toThrowErrorMatchingSnapshot();
     });
   });
 
@@ -119,7 +142,7 @@ describe("Secret", () => {
         },
       });
       const results = Testing.synth(chart);
-      expect(results[0].metadata.name).toBe("test-cggk7gg52t");
+      expect(results[0].metadata.name).toBe("test-mbk947c92t");
       expect(results[0].metadata.name).toBe(
         results[1].spec.containers[0].envFrom[0].secretRef.name
       );
@@ -154,7 +177,7 @@ describe("Secret", () => {
       mockFs.restore();
     });
 
-    test("Setting value from file's contents", () => {
+    test("Encoding data value from file's contents", () => {
       mockFs({
         "path/to/file.enc": "secret#!23",
       });
@@ -166,7 +189,7 @@ describe("Secret", () => {
       expect(results).toMatchSnapshot();
     });
 
-    test("Setting value from file's contents with custom key", () => {
+    test("Encoding data value from file's contents with custom key", () => {
       mockFs({
         "path/to/file.enc": "secret#!23",
       });
@@ -178,48 +201,25 @@ describe("Secret", () => {
       expect(results).toMatchSnapshot();
     });
 
-    test("Setting value from string file's contents", () => {
-      mockFs({
-        "path/to/file.txt": "hello",
-      });
-      const chart = Testing.chart();
-      const secret = new Secret(chart, "test");
-      secret.setStringFile("path/to/file.txt");
-      const results = Testing.synth(chart);
-      mockFs.restore();
-      expect(results).toMatchSnapshot();
-    });
-
-    test("Setting value from binary file's contents with custom key", () => {
-      mockFs({
-        "path/to/file.txt": "hello",
-      });
-      const chart = Testing.chart();
-      const secret = new Secret(chart, "test");
-      secret.setStringFile("path/to/file.txt", "greeting.txt");
-      const results = Testing.synth(chart);
-      mockFs.restore();
-      expect(results).toMatchSnapshot();
-    });
-
-    test("Loading data key/values from .env file", () => {
+    test("Encoding data from .env file", () => {
       mockFs({
         "values.env": [
           "FOO=bar",
           "# a comment = ignore",
           "VAR_WITH_SPECIAL_CHARS=#%/!*;:@&=+$,#",
-          "SIGNLE_QUOTED='yes it is'",
-          'DOUBLE_QUOTED="this too"',
+          "SINGLE_QUOTED='yes it is'",
+          'DOUBLE_QUOTED="this too #and this"',
         ].join("\n"),
       });
+      const encode = (value: string) => Buffer.from(value).toString("base64");
       const chart = Testing.chart();
       const secret = new Secret(chart, "test");
       secret.setFromEnvFile("values.env");
       expect(secret.data).toEqual({
-        DOUBLE_QUOTED: "this too",
-        FOO: "bar",
-        SIGNLE_QUOTED: "yes it is",
-        VAR_WITH_SPECIAL_CHARS: "#%/!*;:@&=+$,#",
+        FOO: encode("bar"),
+        VAR_WITH_SPECIAL_CHARS: encode("#%/!*;:@&=+$,#"),
+        SINGLE_QUOTED: encode("yes it is"),
+        DOUBLE_QUOTED: encode("this too #and this"),
       });
     });
 
@@ -243,8 +243,8 @@ describe("Secret", () => {
         envFiles: ["bar.env", "foo.env"],
       });
       expect(secret.data).toEqual({
-        BAR: "bar",
-        FOO: "foo",
+        BAR: "YmFy",
+        FOO: "Zm9v",
       });
     });
   });

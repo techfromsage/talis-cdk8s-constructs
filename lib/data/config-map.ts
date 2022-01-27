@@ -24,8 +24,7 @@ export interface ConfigMapProps {
   readonly immutable?: boolean;
 
   /**
-   * Map of key/value pairs of configuration data e.g.
-   * 'environment variable' = 'value', 'filename' = 'contents'.
+   * Map of key/value pairs of configuration data e.g. 'env-var' = 'value', 'filename' = 'contents'.
    *
    * You can also set data using `configMap.setData()`.
    */

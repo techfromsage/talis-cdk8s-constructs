@@ -24,14 +24,14 @@ export interface SecretProps {
   readonly immutable?: boolean;
 
   /**
-   * Map of key/value pairs of binary data e.g. 'environment variable'.
+   * Map of key/value pairs of binary data e.g. 'env-var' = 'value', 'filename' = 'contents'.
    *
    * You can also set data using `secret.setData()`.
    */
   readonly data?: { [key: string]: string };
 
   /**
-   * Map of key/value pairs of non-binary data e.g. 'filename' = 'contents'.
+   * Map of key/value pairs of non-binary data e.g. 'env-var' = 'value'.
    *
    * You can also set non-binary data using `secret.setStringData()`.
    */
@@ -127,12 +127,24 @@ export class Secret extends Construct {
   }
 
   /**
-   * Sets a data entry. Data can contain byte sequences that are not in the UTF-8 range.
+   * Sets a data entry. The value will be base64 encoded, so data can contain
+   * byte sequences that are not in the UTF-8 range.
    * @param key The key
    * @param value The value
+   * @param encode Whether to base64 encode the value
    */
-  public setData(key: string, value: string): void {
+  public setData(key: string, value: string, encode = true): void {
     this.invalidateHash();
+
+    if (key in this.stringData) {
+      throw new Error(
+        `Secret data key "${key}" is already used in stringData, which takes precedence`
+      );
+    }
+
+    if (encode) {
+      value = Buffer.from(value).toString("base64");
+    }
 
     this._data[key] = value;
   }
@@ -147,11 +159,10 @@ export class Secret extends Construct {
   }
 
   /**
-   * Sets a string data entry.
-   *
-   * All keys and values are merged into the data
-   * field on write, overwriting any existing values. The stringData field
-   * is never output when reading from the API.
+   * Allows specifying non-binary secret data in string form. It is provided as
+   * a write-only input field for convenience. All keys and values are merged
+   * into the data field on write, overwriting any existing values.
+   * The stringData field is never output when reading from the API.
    * @param key The key
    * @param value The value
    */
@@ -180,18 +191,6 @@ export class Secret extends Construct {
     const value = readFileSync(localFile, "utf-8");
 
     this.setData(key, value);
-  }
-
-  /**
-   * Sets an entry with a binary file's contents.
-   * @param localFile The path to the local file
-   * @param key The Secret key (default to the file name).
-   */
-  public setStringFile(localFile: string, key?: string): void {
-    key = key ?? basename(localFile);
-    const value = readFileSync(localFile, "utf-8");
-
-    this.setStringData(key, value);
   }
 
   /**
