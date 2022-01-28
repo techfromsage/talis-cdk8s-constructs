@@ -1,0 +1,271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BackgroundWorker Custom stop signal Either stopSignal or lifecycle.preStop can be specified 1`] = `"stopSignal and lifecycle.preStop are mutually exclusive"`;
+
+exports[`BackgroundWorker Custom stop signal Merge stopSignal and postStart hook 1`] = `
+Object {
+  "postStart": Object {
+    "exec": Object {
+      "command": Array [
+        "/bin/sh",
+        "-c",
+        "echo hello",
+      ],
+    },
+  },
+  "preStop": Object {
+    "exec": Object {
+      "command": Array [
+        "/bin/sh",
+        "-c",
+        "kill -SIGQUIT 1 && while kill -0 1; do sleep 1; done",
+      ],
+    },
+  },
+}
+`;
+
+exports[`BackgroundWorker Custom stop signal Setting stopSignal creates a preStop hook 1`] = `
+Object {
+  "preStop": Object {
+    "exec": Object {
+      "command": Array [
+        "/bin/sh",
+        "-c",
+        "kill -SIGQUIT 1 && while kill -0 1; do sleep 1; done",
+      ],
+    },
+  },
+}
+`;
+
+exports[`BackgroundWorker Props All the props 1`] = `
+Array [
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "app": "my-app",
+        "environment": "test",
+        "instance": "test",
+        "region": "local",
+        "release": "v1",
+        "role": "worker",
+      },
+      "name": "test-worker-test-c860ab13",
+      "namespace": "test",
+    },
+    "spec": Object {
+      "replicas": 4,
+      "revisionHistoryLimit": 5,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "my-app",
+          "instance": "test",
+          "role": "worker",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "my-app",
+            "environment": "test",
+            "instance": "test",
+            "region": "local",
+            "release": "v1",
+            "role": "worker",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "app": "my-app",
+                        "instance": "test",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": true,
+          "containers": Array [
+            Object {
+              "args": Array [
+                "--foo",
+                "bar",
+              ],
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
+              "env": Array [
+                Object {
+                  "name": "FOO",
+                  "value": "bar",
+                },
+              ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "foo-config",
+                  },
+                },
+              ],
+              "image": "talis/app:worker-v1",
+              "imagePullPolicy": "IfNotPresent",
+              "lifecycle": Object {
+                "postStart": Object {
+                  "exec": Object {
+                    "command": Array [
+                      "/bin/sh",
+                      "-c",
+                      "echo hello",
+                    ],
+                  },
+                },
+                "preStop": Object {
+                  "exec": Object {
+                    "command": Array [
+                      "/bin/sh",
+                      "-c",
+                      "echo goodbye",
+                    ],
+                  },
+                },
+              },
+              "livenessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "/bin/sh",
+                    "-c",
+                    "test $(stat -c %Y /tmp/live) -gt $(($(date +%s) - 60))",
+                  ],
+                },
+                "failureThreshold": 3,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
+              "name": "my-app",
+              "resources": Object {
+                "limits": Object {
+                  "cpu": 1,
+                  "memory": "1Gi",
+                },
+                "requests": Object {
+                  "cpu": 0.1,
+                  "memory": "100Mi",
+                },
+              },
+              "securityContext": Object {
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000,
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/tmp",
+                  "name": "tmp-dir",
+                },
+              ],
+              "workingDir": "/some/path",
+            },
+          ],
+          "imagePullSecrets": Array [
+            Object {
+              "name": "foo-secret",
+            },
+          ],
+          "priorityClassName": "high-priority",
+          "terminationGracePeriodSeconds": 300,
+          "volumes": Array [
+            Object {
+              "emptyDir": Object {},
+              "name": "tmp-dir",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`BackgroundWorker Props Minimal required props 1`] = `
+Array [
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": Object {
+      "labels": Object {
+        "instance": "worker-test",
+        "release": "v1",
+        "role": "worker",
+      },
+      "name": "test-worker-test-c860ab13",
+    },
+    "spec": Object {
+      "revisionHistoryLimit": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "instance": "worker-test",
+          "role": "worker",
+        },
+      },
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "instance": "worker-test",
+            "release": "v1",
+            "role": "worker",
+          },
+        },
+        "spec": Object {
+          "affinity": Object {
+            "podAntiAffinity": Object {
+              "preferredDuringSchedulingIgnoredDuringExecution": Array [
+                Object {
+                  "podAffinityTerm": Object {
+                    "labelSelector": Object {
+                      "matchLabels": Object {
+                        "instance": "worker-test",
+                        "role": "worker",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": Array [
+            Object {
+              "image": "talis/app:worker-v1",
+              "imagePullPolicy": "IfNotPresent",
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "100m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
