@@ -1,11 +1,15 @@
 import { Construct } from "constructs";
 import { Chart, ChartProps } from "cdk8s";
 import { getCanaryStage, WebService, nginxUtil } from "../../lib";
-import { IntOrString, Quantity } from "../../imports/k8s";
+import { IntOrString, KubeNamespace, Quantity } from "../../imports/k8s";
 
 export class AdvancedWebServiceChart extends Chart {
-  constructor(scope: Construct, id: string, props: ChartProps = {}) {
-    super(scope, id, props);
+  constructor(
+    scope: Construct,
+    id: string,
+    { namespace = "example-web-service", ...props }: ChartProps = {}
+  ) {
+    super(scope, id, { namespace, ...props });
 
     const stage = getCanaryStage("CANARY_STAGE");
     const release = process.env.RELEASE || "v0.2.1";
@@ -18,6 +22,8 @@ export class AdvancedWebServiceChart extends Chart {
       applicationPort,
       nginxPort,
     });
+
+    new KubeNamespace(this, "namespace", { metadata: { name: namespace } });
 
     new WebService(this, "web", {
       // Service annotations
