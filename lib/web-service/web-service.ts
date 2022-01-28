@@ -42,6 +42,9 @@ export class WebService extends Construct {
         name: app,
         image: props.image,
         imagePullPolicy: "IfNotPresent",
+        workingDir: props.workingDir,
+        command: props.command,
+        args: props.args,
         resources: props.resources,
         ports: [{ containerPort: applicationPort, protocol: "TCP" }],
         env: props.env,
@@ -69,6 +72,7 @@ export class WebService extends Construct {
         app,
         role: "server",
         instance: id,
+        ...props.selectorLabels,
       };
       const serviceLabels = { ...selectorLabels };
 
@@ -129,8 +133,10 @@ export class WebService extends Construct {
               this.makeLoadBalancerName(id, isCanaryInstance, labels),
             "alb.ingress.kubernetes.io/load-balancer-attributes":
               "idle_timeout.timeout_seconds=60",
-            "alb.ingress.kubernetes.io/listen-ports":
-              '[{"HTTP"": 80}, {"HTTPS":443}]',
+            "alb.ingress.kubernetes.io/listen-ports": JSON.stringify([
+              { HTTP: 80 },
+              { HTTPS: 443 },
+            ]),
             "alb.ingress.kubernetes.io/ssl-policy":
               "ELBSecurityPolicy-TLS-1-2-2017-01",
             "alb.ingress.kubernetes.io/success-codes": "200,303",

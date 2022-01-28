@@ -120,6 +120,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "name": "test-nginx-config-c80869a4",
+      "namespace": "example-web-service",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "name": "example-web-service",
+      "namespace": "example-web-service",
     },
   },
   Object {
@@ -146,6 +155,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-c839d136",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -168,7 +178,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -183,6 +193,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-c822b2f2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -220,6 +231,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-canary-c881c87b",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -242,7 +254,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -257,6 +269,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-canary-c8dd58b2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -281,6 +294,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-deployment-canary-c8903f24",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "replicas": 1,
@@ -554,6 +568,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "name": "test-nginx-config-c80869a4",
+      "namespace": "example-web-service",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "name": "example-web-service",
+      "namespace": "example-web-service",
     },
   },
   Object {
@@ -580,6 +603,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-c839d136",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -602,7 +626,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -617,6 +641,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-c822b2f2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -641,6 +666,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-deployment-c87ede4d",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
@@ -800,6 +826,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-hpa-c83b95a8",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "maxReplicas": 5,
@@ -847,6 +874,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-canary-c881c87b",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -869,7 +897,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -884,6 +912,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-canary-c8dd58b2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -908,6 +937,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-deployment-canary-c8903f24",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "replicas": 1,
@@ -1181,6 +1211,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "name": "test-nginx-config-c80869a4",
+      "namespace": "example-web-service",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "name": "example-web-service",
+      "namespace": "example-web-service",
     },
   },
   Object {
@@ -1207,6 +1246,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-c839d136",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -1229,7 +1269,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -1244,6 +1284,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-c822b2f2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1281,6 +1322,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-canary-c881c87b",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -1303,7 +1345,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -1318,6 +1360,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-canary-c8dd58b2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1342,6 +1385,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-deployment-canary-c8903f24",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "replicas": 1,
@@ -1615,6 +1659,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "name": "test-nginx-config-c80869a4",
+      "namespace": "example-web-service",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "name": "example-web-service",
+      "namespace": "example-web-service",
     },
   },
   Object {
@@ -1641,6 +1694,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-c839d136",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -1662,7 +1716,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -1677,6 +1731,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-c822b2f2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1701,6 +1756,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-deployment-c87ede4d",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
@@ -1860,6 +1916,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-hpa-c83b95a8",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "maxReplicas": 5,
@@ -1907,6 +1964,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-canary-c881c87b",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -1929,7 +1987,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -1944,6 +2002,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-canary-c8dd58b2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1968,6 +2027,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-deployment-canary-c8903f24",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "replicas": 1,
@@ -2241,6 +2301,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "name": "test-nginx-config-c80869a4",
+      "namespace": "example-web-service",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "name": "example-web-service",
+      "namespace": "example-web-service",
     },
   },
   Object {
@@ -2267,6 +2336,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-c839d136",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -2288,7 +2358,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -2303,6 +2373,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-c822b2f2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2340,6 +2411,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-service-canary-c881c87b",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "ports": Array [
@@ -2362,7 +2434,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -2377,6 +2449,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-ingress-canary-c8dd58b2",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2401,6 +2474,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
       },
       "name": "test-web-deployment-canary-c8903f24",
+      "namespace": "example-web-service",
     },
     "spec": Object {
       "replicas": 1,

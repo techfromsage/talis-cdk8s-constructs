@@ -1,7 +1,6 @@
 import { Chart, Testing } from "cdk8s";
 import { IntOrString, KubeConfigMap, Quantity } from "../../imports/k8s";
-import { WebService, WebServiceProps } from "../../lib/web-service";
-import { Node } from "constructs";
+import { WebService, WebServiceProps } from "../../lib";
 import * as _ from "lodash";
 
 const requiredProps = {
@@ -40,8 +39,7 @@ function synthWebService(
 
   // Just output node's id as the object's name
   chart.generateObjectName = (obj) => {
-    const node = Node.of(obj);
-    return node.id;
+    return obj.node.id;
   };
 
   new WebService(chart, "web", props);
@@ -70,8 +68,18 @@ describe("WebService", () => {
     });
 
     test("All the props", () => {
-      const results = synthWebService({
+      const app = Testing.app();
+      const chart = new Chart(app, "test", {
+        namespace: "props-test",
+        labels: {
+          app: "my-app",
+          environment: "test",
+          region: "testing",
+        },
+      });
+      new WebService(chart, "web", {
         ...requiredProps,
+        workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
         env: [{ name: "FOO", value: "bar" }],
@@ -125,6 +133,10 @@ describe("WebService", () => {
           configMap: "nginx-config",
           port: 80,
         },
+        selectorLabels: {
+          foo: "bar",
+          instance: "props-test",
+        },
         tslDomain: "*.example.com",
         ingressTargetType: "ip",
         readinessProbe: {
@@ -167,6 +179,7 @@ describe("WebService", () => {
           },
         ],
       });
+      const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
     });
 
@@ -334,6 +347,66 @@ describe("WebService", () => {
         region: "dev",
         release: "test-123",
         role: "server",
+      });
+    });
+
+    test("Allows to set custom selectorLabels", () => {
+      const results = synthWebService(
+        {
+          ...defaultProps,
+          selectorLabels: {
+            app: "side-app",
+            special: "special-value",
+          },
+        },
+        {
+          app: "my-app",
+          environment: "test",
+          region: "dev",
+        }
+      );
+      expect(results).toHaveLength(3);
+
+      // Metadata labels are overridden as well
+      results.forEach((obj) => {
+        expect(obj.metadata.labels).toEqual({
+          app: "side-app",
+          environment: "test",
+          instance: "web",
+          region: "dev",
+          release: "test-123",
+          role: "server",
+          special: "special-value",
+        });
+      });
+
+      const byKind = _.groupBy(results, (obj) => obj.kind);
+
+      // Service selector should include custom labels
+      expect(byKind.Service[0].spec.selector).toEqual({
+        app: "side-app",
+        instance: "web",
+        role: "server",
+        special: "special-value",
+      });
+
+      // Deployment selector should include custom labels
+      expect(byKind.Deployment[0].spec.selector.matchLabels).toEqual({
+        app: "side-app",
+        instance: "web",
+        role: "server",
+        special: "special-value",
+      });
+
+      // Deployment pod spec should include all labels
+      expect(byKind.Deployment[0].spec.template.metadata.labels).toEqual({
+        app: "side-app",
+        environment: "test",
+        instance: "web",
+        region: "dev",
+        release: "test-123",
+        role: "server",
+        special: "special-value",
       });
     });
 

@@ -88,6 +88,9 @@ interface ContainerProps {
   /** Release version of the image. */
   readonly release: string;
 
+  /** Overrides container's working directory. */
+  readonly workingDir?: string;
+
   /** Entrypoint array. Not executed within a shell. The Docker image's ENTRYPOINT is used if this is not provided. */
   readonly command?: string[];
 
@@ -148,6 +151,13 @@ export interface WebServiceProps extends ContainerProps, ServiceAnnotations {
    * Release stage when canary is enabled.
    */
   readonly stage?: CanaryStage;
+
+  /**
+   * Custom selector labels, they will be merged with the default app, role, and instance.
+   * They will be applied to the workload, the pod and the service.
+   * @default { app: "<app label from chart>", role: "server", instance: "<construct id>" }
+   */
+  readonly selectorLabels?: { [key: string]: string };
 
   /**
    * Domain name for TLS certificate discovery.

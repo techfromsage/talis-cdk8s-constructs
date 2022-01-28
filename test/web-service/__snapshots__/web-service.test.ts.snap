@@ -86,12 +86,17 @@ Array [
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
+        "app": "my-app",
         "canary": "false",
-        "instance": "web",
+        "environment": "test",
+        "foo": "bar",
+        "instance": "props-test",
+        "region": "testing",
         "release": "test-123",
         "role": "server",
       },
-      "name": "service",
+      "name": "test-web-service-c839d136",
+      "namespace": "props-test",
     },
     "spec": Object {
       "ports": Array [
@@ -102,7 +107,9 @@ Array [
         },
       ],
       "selector": Object {
-        "instance": "web",
+        "app": "my-app",
+        "foo": "bar",
+        "instance": "props-test",
         "role": "server",
       },
       "type": "ClusterIP",
@@ -115,26 +122,31 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/healthcheck-path": "/ping",
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "web",
+        "alb.ingress.kubernetes.io/load-balancer-name": "my-app-web-test-testing",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/tags": "service=my-app,instance=web,environment=test",
         "alb.ingress.kubernetes.io/target-type": "ip",
       },
       "labels": Object {
+        "app": "my-app",
         "canary": "false",
-        "instance": "web",
+        "environment": "test",
+        "foo": "bar",
+        "instance": "props-test",
+        "region": "testing",
         "release": "test-123",
         "role": "server",
       },
-      "name": "ingress",
+      "name": "test-web-ingress-c822b2f2",
+      "namespace": "props-test",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "service",
+          "name": "test-web-service-c839d136",
           "port": Object {
             "number": 80,
           },
@@ -155,27 +167,38 @@ Array [
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
+        "app": "my-app",
         "canary": "false",
-        "instance": "web",
+        "environment": "test",
+        "foo": "bar",
+        "instance": "props-test",
+        "region": "testing",
         "release": "test-123",
         "role": "server",
       },
-      "name": "deployment",
+      "name": "test-web-deployment-c87ede4d",
+      "namespace": "props-test",
     },
     "spec": Object {
       "revisionHistoryLimit": 5,
       "selector": Object {
         "matchLabels": Object {
+          "app": "my-app",
           "canary": "false",
-          "instance": "web",
+          "foo": "bar",
+          "instance": "props-test",
           "role": "server",
         },
       },
       "template": Object {
         "metadata": Object {
           "labels": Object {
+            "app": "my-app",
             "canary": "false",
-            "instance": "web",
+            "environment": "test",
+            "foo": "bar",
+            "instance": "props-test",
+            "region": "testing",
             "release": "test-123",
             "role": "server",
           },
@@ -201,6 +224,15 @@ Array [
           "automountServiceAccountToken": true,
           "containers": Array [
             Object {
+              "args": Array [
+                "--foo",
+                "bar",
+              ],
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
               "env": Array [
                 Object {
                   "name": "FOO",
@@ -227,6 +259,7 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
+              "name": "my-app",
               "ports": Array [
                 Object {
                   "containerPort": 3000,
@@ -261,6 +294,7 @@ Array [
                   "readOnly": true,
                 },
               ],
+              "workingDir": "/some/path",
             },
             Object {
               "image": "ubuntu/nginx:1.18-21.10_edge",
@@ -344,11 +378,16 @@ Array [
     "kind": "HorizontalPodAutoscaler",
     "metadata": Object {
       "labels": Object {
+        "app": "my-app",
         "canary": "false",
-        "instance": "web",
+        "environment": "test",
+        "foo": "bar",
+        "instance": "props-test",
+        "region": "testing",
         "role": "server",
       },
-      "name": "hpa",
+      "name": "test-web-hpa-c83b95a8",
+      "namespace": "props-test",
     },
     "spec": Object {
       "maxReplicas": 10,
@@ -368,7 +407,7 @@ Array [
       "scaleTargetRef": Object {
         "apiVersion": "apps/apps/v1",
         "kind": "Deployment",
-        "name": "deployment",
+        "name": "test-web-deployment-c87ede4d",
       },
     },
   },
@@ -390,12 +429,17 @@ Array [
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
+        "app": "my-app",
         "canary": "true",
-        "instance": "web",
+        "environment": "test",
+        "foo": "bar",
+        "instance": "props-test",
+        "region": "testing",
         "release": "test-123",
         "role": "server",
       },
-      "name": "service-canary",
+      "name": "test-web-service-canary-c881c87b",
+      "namespace": "props-test",
     },
     "spec": Object {
       "ports": Array [
@@ -406,8 +450,10 @@ Array [
         },
       ],
       "selector": Object {
+        "app": "my-app",
         "canary": "true",
-        "instance": "web",
+        "foo": "bar",
+        "instance": "props-test",
         "role": "server",
       },
       "type": "ClusterIP",
@@ -420,26 +466,31 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/healthcheck-path": "/ping",
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "web-c",
+        "alb.ingress.kubernetes.io/load-balancer-name": "my-app-web-c-test-testing",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/tags": "service=my-app,instance=web,environment=test",
         "alb.ingress.kubernetes.io/target-type": "ip",
       },
       "labels": Object {
+        "app": "my-app",
         "canary": "true",
-        "instance": "web",
+        "environment": "test",
+        "foo": "bar",
+        "instance": "props-test",
+        "region": "testing",
         "release": "test-123",
         "role": "server",
       },
-      "name": "ingress-canary",
+      "name": "test-web-ingress-canary-c8dd58b2",
+      "namespace": "props-test",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "service-canary",
+          "name": "test-web-service-canary-c881c87b",
           "port": Object {
             "number": 80,
           },
@@ -460,28 +511,39 @@ Array [
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
+        "app": "my-app",
         "canary": "true",
-        "instance": "web",
+        "environment": "test",
+        "foo": "bar",
+        "instance": "props-test",
+        "region": "testing",
         "release": "test-123",
         "role": "server",
       },
-      "name": "deployment-canary",
+      "name": "test-web-deployment-canary-c8903f24",
+      "namespace": "props-test",
     },
     "spec": Object {
       "replicas": 1,
       "revisionHistoryLimit": 5,
       "selector": Object {
         "matchLabels": Object {
+          "app": "my-app",
           "canary": "true",
-          "instance": "web",
+          "foo": "bar",
+          "instance": "props-test",
           "role": "server",
         },
       },
       "template": Object {
         "metadata": Object {
           "labels": Object {
+            "app": "my-app",
             "canary": "true",
-            "instance": "web",
+            "environment": "test",
+            "foo": "bar",
+            "instance": "props-test",
+            "region": "testing",
             "release": "test-123",
             "role": "server",
           },
@@ -507,6 +569,15 @@ Array [
           "automountServiceAccountToken": true,
           "containers": Array [
             Object {
+              "args": Array [
+                "--foo",
+                "bar",
+              ],
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
               "env": Array [
                 Object {
                   "name": "FOO",
@@ -533,6 +604,7 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
+              "name": "my-app",
               "ports": Array [
                 Object {
                   "containerPort": 3000,
@@ -567,6 +639,7 @@ Array [
                   "readOnly": true,
                 },
               ],
+              "workingDir": "/some/path",
             },
             Object {
               "image": "ubuntu/nginx:1.18-21.10_edge",
@@ -698,7 +771,7 @@ Array [
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -878,7 +951,7 @@ Array [
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\"\\": 80}, {\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "web",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
