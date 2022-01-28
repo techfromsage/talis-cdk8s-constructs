@@ -137,6 +137,24 @@ describe("ConfigMap", () => {
       expect(results[0].metadata.name).toBe("no-suffix");
     });
 
+    test("It includes prunable label with suffix hash enabled", () => {
+      const chart = makeChart();
+      new ConfigMap(chart, "test", { disableNameSuffixHash: false });
+      const results = Testing.synth(chart);
+      expect(results[0].metadata.labels).toHaveProperty("prunable");
+      expect(results[0].metadata.labels.prunable).toBe("true");
+    });
+
+    test("It does not include prunable label with suffix hash disabled", () => {
+      const chart = makeChart();
+      new ConfigMap(chart, "test", {
+        metadata: { labels: { test: "true" } },
+        disableNameSuffixHash: true,
+      });
+      const results = Testing.synth(chart);
+      expect(results[0].metadata.labels).not.toHaveProperty("prunable");
+    });
+
     test("Can be referenced in other objects", () => {
       const chart = makeChart();
       const configMap = new ConfigMap(chart, "test", { data: { FOO: "foo" } });

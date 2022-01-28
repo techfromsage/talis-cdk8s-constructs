@@ -14,6 +14,7 @@ Array [
         "prunable": "true",
       },
       "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
     },
   },
   Object {
@@ -483,6 +484,7 @@ Array [
         "prunable": "true",
       },
       "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
     },
   },
   Object {
@@ -1154,6 +1156,7 @@ Array [
         "prunable": "true",
       },
       "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
     },
   },
   Object {
@@ -1623,6 +1626,7 @@ Array [
         "prunable": "true",
       },
       "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
     },
   },
   Object {
@@ -2293,6 +2297,7 @@ Array [
         "prunable": "true",
       },
       "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
     },
   },
   Object {
