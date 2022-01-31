@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { App } from "cdk8s";
 import { AdvancedWebServiceChart } from "./chart";
 

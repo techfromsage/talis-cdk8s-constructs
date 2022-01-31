@@ -5,6 +5,21 @@ Array [
   Object {
     "apiVersion": "v1",
     "data": Object {
+      "ENVIRONMENT": "demo",
+      "MESSAGE": "Hello CDK8s!",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
       "default.conf": "map $http_upgrade $connection_upgrade {
     default \\"upgrade\\";
     \\"\\" \\"\\";
@@ -344,6 +359,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "value": "0",
                 },
               ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "test-config-c819b74b-7ffghtft2m",
+                  },
+                },
+              ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.2",
               "imagePullPolicy": "IfNotPresent",
               "livenessProbe": Object {
@@ -450,6 +472,21 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 
 exports[`Advanced WebService example Snapshot base stage 1`] = `
 Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "ENVIRONMENT": "demo",
+      "MESSAGE": "Hello CDK8s!",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
+    },
+  },
   Object {
     "apiVersion": "v1",
     "data": Object {
@@ -713,6 +750,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 Object {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
+                },
+              ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "test-config-c819b74b-7ffghtft2m",
+                  },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
@@ -985,6 +1029,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 Object {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
+                },
+              ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "test-config-c819b74b-7ffghtft2m",
+                  },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
@@ -1096,6 +1147,21 @@ Array [
   Object {
     "apiVersion": "v1",
     "data": Object {
+      "ENVIRONMENT": "demo",
+      "MESSAGE": "Hello CDK8s!",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
       "default.conf": "map $http_upgrade $connection_upgrade {
     default \\"upgrade\\";
     \\"\\" \\"\\";
@@ -1435,6 +1501,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "value": "0",
                 },
               ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "test-config-c819b74b-7ffghtft2m",
+                  },
+                },
+              ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
               "imagePullPolicy": "IfNotPresent",
               "livenessProbe": Object {
@@ -1541,6 +1614,21 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 
 exports[`Advanced WebService example Snapshot full stage 1`] = `
 Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "ENVIRONMENT": "demo",
+      "MESSAGE": "Hello CDK8s!",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
+    },
+  },
   Object {
     "apiVersion": "v1",
     "data": Object {
@@ -1803,6 +1891,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 Object {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
+                },
+              ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "test-config-c819b74b-7ffghtft2m",
+                  },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
@@ -2077,6 +2172,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "value": "0",
                 },
               ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "test-config-c819b74b-7ffghtft2m",
+                  },
+                },
+              ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
               "imagePullPolicy": "IfNotPresent",
               "livenessProbe": Object {
@@ -2183,6 +2285,21 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 
 exports[`Advanced WebService example Snapshot post-canary stage 1`] = `
 Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "ENVIRONMENT": "demo",
+      "MESSAGE": "Hello CDK8s!",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-config-c819b74b-7ffghtft2m",
+      "namespace": "example-web-service",
+    },
+  },
   Object {
     "apiVersion": "v1",
     "data": Object {
@@ -2522,6 +2639,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 Object {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
+                },
+              ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "test-config-c819b74b-7ffghtft2m",
+                  },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",

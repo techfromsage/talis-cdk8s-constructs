@@ -10,6 +10,22 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
 
 ## Available constructs
 
+- `ConfigMap`
+
+  - Represents a Kubernetes ConfigMap.
+  - Supports setting a key/value from a file.
+  - Supports loading keys/values from a .env file.
+  - Supports setting binary data.
+  - Example use can be found in [WebService advanced example](./examples/advanced-web-service/README.md).
+
+- `Secret`
+
+  - Represents a Kubernetes Secret.
+  - Encodes data in base64.
+  - Supports setting a key/value from a file.
+  - Supports loading keys/values from a .env file.
+  - Supports setting string data, allowing Kubernetes API to encode on write.
+
 - `WebService`
 
   - Represents a web application exposed via an AWS Application Load Balancer.

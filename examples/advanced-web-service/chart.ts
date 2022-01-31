@@ -1,7 +1,8 @@
 import { Construct } from "constructs";
 import { Chart, ChartProps } from "cdk8s";
-import { getCanaryStage, WebService, nginxUtil } from "../../lib";
+import { getCanaryStage, nginxUtil, ConfigMap, WebService } from "../../lib";
 import { IntOrString, KubeNamespace, Quantity } from "../../imports/k8s";
+import path from "path";
 
 export class AdvancedWebServiceChart extends Chart {
   constructor(
@@ -15,6 +16,10 @@ export class AdvancedWebServiceChart extends Chart {
     const release = process.env.RELEASE || "v0.2.1";
 
     const applicationPort = 8000;
+    const appConfigMap = new ConfigMap(this, "config", {
+      envFiles: [path.resolve(__dirname, "example.env")],
+    });
+
     const nginxPort = 80;
     const nginxConfigMap = nginxUtil.createConfigMap(this, {
       includeDefaultConfig: true,
@@ -46,6 +51,11 @@ export class AdvancedWebServiceChart extends Chart {
         {
           name: "ROLLUP_WATCH",
           value: "0",
+        },
+      ],
+      envFrom: [
+        {
+          configMapRef: { name: appConfigMap.name },
         },
       ],
       resources: {
