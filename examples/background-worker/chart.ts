@@ -16,13 +16,14 @@ export class BackgroundWorkerChart extends Chart {
 
     new KubeNamespace(this, "namespace", { metadata: { name: namespace } });
 
-    const dockerHubCredentials = new Secret(this, "docker-hub-cred", {
+    const dockerHubCredentials = `${process.env.DOCKER_USERNAME}:${process.env.DOCKER_PASSWORD}`;
+    const dockerHubSecret = new Secret(this, "docker-hub-cred", {
       type: "kubernetes.io/dockerconfigjson",
       data: {
         ".dockerconfigjson": JSON.stringify({
           auths: {
             "https://index.docker.io/v1/": {
-              auth: "c29tZXVzZXI6c2VjcmV0MTIz",
+              auth: Buffer.from(dockerHubCredentials).toString("base64"),
             },
           },
         }),
@@ -32,7 +33,7 @@ export class BackgroundWorkerChart extends Chart {
     new ResqueWeb(this, "resque", {
       externalUrl: "https://resque.example.com",
       tslDomain: "*.example.com",
-      imagePullSecrets: [{ name: dockerHubCredentials.name }],
+      imagePullSecrets: [{ name: dockerHubSecret.name }],
       env: [
         {
           name: "RAILS_RESQUE_REDIS",
@@ -43,7 +44,7 @@ export class BackgroundWorkerChart extends Chart {
 
     new BackgroundWorker(this, "php-worker-example", {
       image: `docker.io/organization/my-app:worker-${release}`,
-      imagePullSecrets: [{ name: dockerHubCredentials.name }],
+      imagePullSecrets: [{ name: dockerHubSecret.name }],
       release,
       command: ["php", "vendor/resque/php-resque/bin/resque"],
       stopSignal: "SIGQUIT",
