@@ -24,8 +24,8 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "cdk8s": "^2.1.24",
-    "constructs": "^10.0.47"
+    "cdk8s": "^2.2.3",
+    "constructs": "^10.0.50"
   },
   "dependencies": {
     "dotenv": "^14.3.2",
@@ -40,10 +40,10 @@
     "@types/node": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
-    "cdk8s": "^2.1.24",
-    "cdk8s-cli": "^1.0.86",
-    "constructs": "^10.0.47",
-    "eslint": "^8.7.0",
+    "cdk8s": "^2.2.3",
+    "cdk8s-cli": "^1.0.88",
+    "constructs": "^10.0.50",
+    "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^26.0.0",
     "husky": "^7.0.4",
