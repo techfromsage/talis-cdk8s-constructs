@@ -248,6 +248,17 @@ Array [
               ],
               "image": "my-image",
               "imagePullPolicy": "IfNotPresent",
+              "lifecycle": Object {
+                "preStop": Object {
+                  "exec": Object {
+                    "command": Array [
+                      "/bin/sh",
+                      "-c",
+                      "echo hello",
+                    ],
+                  },
+                },
+              },
               "livenessProbe": Object {
                 "failureThreshold": 3,
                 "httpGet": Object {
@@ -286,6 +297,11 @@ Array [
                   "cpu": 0.1,
                   "memory": "100Mi",
                 },
+              },
+              "securityContext": Object {
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000,
               },
               "volumeMounts": Array [
                 Object {
@@ -593,6 +609,17 @@ Array [
               ],
               "image": "my-image",
               "imagePullPolicy": "IfNotPresent",
+              "lifecycle": Object {
+                "preStop": Object {
+                  "exec": Object {
+                    "command": Array [
+                      "/bin/sh",
+                      "-c",
+                      "echo hello",
+                    ],
+                  },
+                },
+              },
               "livenessProbe": Object {
                 "failureThreshold": 3,
                 "httpGet": Object {
@@ -631,6 +658,11 @@ Array [
                   "cpu": 0.1,
                   "memory": "100Mi",
                 },
+              },
+              "securityContext": Object {
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000,
               },
               "volumeMounts": Array [
                 Object {

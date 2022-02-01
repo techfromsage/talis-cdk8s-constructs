@@ -117,6 +117,11 @@ describe("WebService", () => {
             memory: Quantity.fromString("1Gi"),
           },
         },
+        securityContext: {
+          runAsUser: 1000,
+          runAsGroup: 1000,
+          runAsNonRoot: true,
+        },
         horizontalPodAutoscaler: {
           minReplicas: 2,
           maxReplicas: 10,
@@ -139,6 +144,14 @@ describe("WebService", () => {
         },
         tslDomain: "*.example.com",
         ingressTargetType: "ip",
+        terminationGracePeriodSeconds: 60,
+        lifecycle: {
+          preStop: {
+            exec: {
+              command: ["/bin/sh", "-c", "echo hello"],
+            },
+          },
+        },
         readinessProbe: {
           httpGet: {
             path: "/health/ready",

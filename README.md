@@ -10,6 +10,13 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
 
 ## Available constructs
 
+- `BackgroundWorker`
+
+  - Represents a background worker that runs continuously, reads messages from a queue, and processes them.
+  - Applied as a simple Deployment.
+  - Supports setting a custom stop signal to allow for graceful termination.
+  - Details in an [example](./examples/background-worker/README.md).
+
 - `ConfigMap`
 
   - Represents a Kubernetes ConfigMap.

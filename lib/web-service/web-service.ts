@@ -15,6 +15,7 @@ import {
   WebServiceProps,
   NginxContainerProps,
 } from ".";
+import { defaultAffinity } from "../common";
 
 export class WebService extends Construct {
   constructor(scope: Construct, id: string, props: WebServiceProps) {
@@ -47,8 +48,10 @@ export class WebService extends Construct {
         args: props.args,
         resources: props.resources,
         ports: [{ containerPort: applicationPort, protocol: "TCP" }],
+        securityContext: props.securityContext,
         env: props.env,
         envFrom: props.envFrom,
+        lifecycle: props.lifecycle,
         livenessProbe: props.livenessProbe,
         readinessProbe: props.readinessProbe,
         volumeMounts: props.volumeMounts,
@@ -192,21 +195,7 @@ export class WebService extends Construct {
                 },
               },
               spec: {
-                affinity: props.affinity ?? {
-                  podAntiAffinity: {
-                    preferredDuringSchedulingIgnoredDuringExecution: [
-                      {
-                        podAffinityTerm: {
-                          labelSelector: {
-                            matchLabels: selectorLabels,
-                          },
-                          topologyKey: "topology.kubernetes.io/zone",
-                        },
-                        weight: 100,
-                      },
-                    ],
-                  },
-                },
+                affinity: props.affinity ?? defaultAffinity(selectorLabels),
                 automountServiceAccountToken:
                   props.automountServiceAccountToken ?? false,
                 imagePullSecrets: props.imagePullSecrets,
