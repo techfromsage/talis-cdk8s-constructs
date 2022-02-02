@@ -85,6 +85,7 @@ describe("WebService", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: true,
+        imagePullPolicy: "Always",
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
         revisionHistoryLimit: 5,
@@ -135,6 +136,7 @@ describe("WebService", () => {
         port: 3000,
         nginx: {
           image: "ubuntu/nginx:1.18-21.10_edge",
+          imagePullPolicy: "Always",
           configMap: "nginx-config",
           port: 80,
         },

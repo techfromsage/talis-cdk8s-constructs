@@ -42,7 +42,7 @@ export class WebService extends Construct {
       {
         name: app,
         image: props.image,
-        imagePullPolicy: "IfNotPresent",
+        imagePullPolicy: props.imagePullPolicy ?? "IfNotPresent",
         workingDir: props.workingDir,
         command: props.command,
         args: props.args,
@@ -307,7 +307,7 @@ export class WebService extends Construct {
     const container: Container = {
       name: "nginx",
       image: nginx.image ?? "public.ecr.aws/nginx/nginx:1.21.5",
-      imagePullPolicy: "IfNotPresent",
+      imagePullPolicy: nginx.imagePullPolicy ?? "IfNotPresent",
       resources: nginx.resources ?? {
         requests: {
           cpu: Quantity.fromString("50m"),
