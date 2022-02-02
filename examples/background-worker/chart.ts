@@ -32,7 +32,7 @@ export class BackgroundWorkerChart extends Chart {
 
     new ResqueWeb(this, "resque", {
       externalUrl: "https://resque.example.com",
-      tslDomain: "*.example.com",
+      tlsDomain: "*.example.com",
       imagePullSecrets: [{ name: dockerHubSecret.name }],
       env: [
         {

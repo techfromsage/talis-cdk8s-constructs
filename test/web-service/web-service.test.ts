@@ -144,7 +144,7 @@ describe("WebService", () => {
           foo: "bar",
           instance: "props-test",
         },
-        tslDomain: "*.example.com",
+        tlsDomain: "*.example.com",
         ingressTargetType: "ip",
         terminationGracePeriodSeconds: 60,
         lifecycle: {
@@ -285,7 +285,7 @@ describe("WebService", () => {
     test("Allows to set TLS domain for ACM certificate discovery", () => {
       const results = synthWebService({
         ...defaultProps,
-        tslDomain: "*.example.com",
+        tlsDomain: "*.example.com",
       });
       const ingress = results.find((obj) => obj.kind === "Ingress");
       expect(ingress.spec.tls).toHaveLength(1);

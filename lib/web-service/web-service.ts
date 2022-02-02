@@ -123,9 +123,9 @@ export class WebService extends Construct {
       });
 
       const ingressTls = [];
-      if (props.tslDomain) {
+      if (props.tlsDomain) {
         ingressTls.push({
-          hosts: [props.tslDomain],
+          hosts: [props.tlsDomain],
         });
       }
 
