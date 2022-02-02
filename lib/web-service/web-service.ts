@@ -363,7 +363,7 @@ export class WebService extends Construct {
       },
       spec: {
         scaleTargetRef: {
-          apiVersion: deployment.apiGroup + "/" + deployment.apiVersion,
+          apiVersion: deployment.apiVersion,
           kind: deployment.kind,
           name: deployment.name,
         },

@@ -421,7 +421,7 @@ Array [
       ],
       "minReplicas": 2,
       "scaleTargetRef": Object {
-        "apiVersion": "apps/apps/v1",
+        "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "test-web-deployment-c87ede4d",
       },
@@ -926,7 +926,7 @@ Array [
       ],
       "minReplicas": 2,
       "scaleTargetRef": Object {
-        "apiVersion": "apps/apps/v1",
+        "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "deployment",
       },
