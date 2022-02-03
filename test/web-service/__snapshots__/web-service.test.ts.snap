@@ -247,7 +247,7 @@ Array [
                 },
               ],
               "image": "my-image",
-              "imagePullPolicy": "IfNotPresent",
+              "imagePullPolicy": "Always",
               "lifecycle": Object {
                 "preStop": Object {
                   "exec": Object {
@@ -314,7 +314,7 @@ Array [
             },
             Object {
               "image": "ubuntu/nginx:1.18-21.10_edge",
-              "imagePullPolicy": "IfNotPresent",
+              "imagePullPolicy": "Always",
               "livenessProbe": Object {
                 "failureThreshold": 3,
                 "httpGet": Object {
@@ -421,7 +421,7 @@ Array [
       ],
       "minReplicas": 2,
       "scaleTargetRef": Object {
-        "apiVersion": "apps/apps/v1",
+        "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "test-web-deployment-c87ede4d",
       },
@@ -608,7 +608,7 @@ Array [
                 },
               ],
               "image": "my-image",
-              "imagePullPolicy": "IfNotPresent",
+              "imagePullPolicy": "Always",
               "lifecycle": Object {
                 "preStop": Object {
                   "exec": Object {
@@ -675,7 +675,7 @@ Array [
             },
             Object {
               "image": "ubuntu/nginx:1.18-21.10_edge",
-              "imagePullPolicy": "IfNotPresent",
+              "imagePullPolicy": "Always",
               "livenessProbe": Object {
                 "failureThreshold": 3,
                 "httpGet": Object {
@@ -926,7 +926,7 @@ Array [
       ],
       "minReplicas": 2,
       "scaleTargetRef": Object {
-        "apiVersion": "apps/apps/v1",
+        "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "deployment",
       },

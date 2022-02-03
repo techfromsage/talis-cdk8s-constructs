@@ -85,6 +85,7 @@ describe("WebService", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: true,
+        imagePullPolicy: "Always",
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
         revisionHistoryLimit: 5,
@@ -135,6 +136,7 @@ describe("WebService", () => {
         port: 3000,
         nginx: {
           image: "ubuntu/nginx:1.18-21.10_edge",
+          imagePullPolicy: "Always",
           configMap: "nginx-config",
           port: 80,
         },
@@ -142,7 +144,7 @@ describe("WebService", () => {
           foo: "bar",
           instance: "props-test",
         },
-        tslDomain: "*.example.com",
+        tlsDomain: "*.example.com",
         ingressTargetType: "ip",
         terminationGracePeriodSeconds: 60,
         lifecycle: {
@@ -283,7 +285,7 @@ describe("WebService", () => {
     test("Allows to set TLS domain for ACM certificate discovery", () => {
       const results = synthWebService({
         ...defaultProps,
-        tslDomain: "*.example.com",
+        tlsDomain: "*.example.com",
       });
       const ingress = results.find((obj) => obj.kind === "Ingress");
       expect(ingress.spec.tls).toHaveLength(1);

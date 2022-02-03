@@ -20,6 +20,12 @@ export interface NginxContainerProps {
   readonly image?: string;
 
   /**
+   * Affects when the kubelet attempts to pull the specified image.
+   * @default IfNotPresent
+   */
+  readonly imagePullPolicy?: "Always" | "Never" | "IfNotPresent";
+
+  /**
    * Port (what container will listen on).
    * @default 80
    */
@@ -126,7 +132,7 @@ export interface WebServiceProps
    * Domain name for TLS certificate discovery.
    * @see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/ingress/cert_discovery/
    */
-  readonly tslDomain?: string;
+  readonly tlsDomain?: string;
 
   /**
    * Overrides for Ingress annotations.

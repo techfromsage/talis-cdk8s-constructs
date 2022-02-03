@@ -12,6 +12,12 @@ export interface ContainerProps {
   /** The Docker image to use. */
   readonly image: string;
 
+  /**
+   * Affects when the kubelet attempts to pull the specified image.
+   * @default IfNotPresent
+   */
+  readonly imagePullPolicy?: "Always" | "Never" | "IfNotPresent";
+
   /** Release version of the Docker image. */
   readonly release: string;
 

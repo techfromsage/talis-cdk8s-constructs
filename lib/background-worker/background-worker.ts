@@ -52,7 +52,7 @@ export class BackgroundWorker extends Construct {
               {
                 name: app,
                 image: props.image,
-                imagePullPolicy: "IfNotPresent",
+                imagePullPolicy: props.imagePullPolicy ?? "IfNotPresent",
                 workingDir: props.workingDir,
                 command: props.command,
                 args: props.args,

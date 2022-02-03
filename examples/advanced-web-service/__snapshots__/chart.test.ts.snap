@@ -888,7 +888,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       ],
       "minReplicas": 1,
       "scaleTargetRef": Object {
-        "apiVersion": "apps/apps/v1",
+        "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "test-web-deployment-c87ede4d",
       },
@@ -2029,7 +2029,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       ],
       "minReplicas": 1,
       "scaleTargetRef": Object {
-        "apiVersion": "apps/apps/v1",
+        "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "test-web-deployment-c87ede4d",
       },
