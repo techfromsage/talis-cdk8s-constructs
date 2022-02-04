@@ -32,8 +32,17 @@ export interface WorkloadProps {
 
   /**
    * Pod's scheduling constraints. Defaults to a soft anti-affinity for the same service in the same AWS zone.
+   * Will not include affinity if explicitly set to `undefined`.
    */
   readonly affinity?: Affinity;
+
+  /**
+   * Custom function to build Pod's scheduling constraints.
+   * @param matchLabels Selector labels used in the workload.
+   */
+  readonly makeAffinity?: (matchLabels: {
+    [key: string]: string;
+  }) => Affinity | undefined;
 
   /**
    * Whether a service account token should be automatically mounted.

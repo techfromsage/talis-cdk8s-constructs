@@ -753,6 +753,29 @@ Array [
 ]
 `;
 
+exports[`WebService Props Allows specifying custom logic to make affinity 1`] = `
+Object {
+  "podAffinity": Object {
+    "requiredDuringSchedulingIgnoredDuringExecution": Array [
+      Object {
+        "labelSelector": Object {
+          "matchExpressions": Array [
+            Object {
+              "key": "role",
+              "operator": "In",
+              "values": Array [
+                "server",
+              ],
+            },
+          ],
+        },
+        "topologyKey": "kubernetes.io/hostname",
+      },
+    ],
+  },
+}
+`;
+
 exports[`WebService Props Either horizontalPodAutoscaler or replicas can be specified, not both 1`] = `"Either horizontalPodAutoscaler or replicas can be specified, not both"`;
 
 exports[`WebService Props Either horizontalPodAutoscaler or replicas must be specified 1`] = `"Either horizontalPodAutoscaler or replicas must be specified"`;

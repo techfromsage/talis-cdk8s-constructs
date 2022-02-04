@@ -386,6 +386,55 @@ describe("WebService", () => {
         ingress.metadata.annotations["alb.ingress.kubernetes.io/target-type"]
       ).toBe("ip");
     });
+
+    test("Allows specifying no affinity", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        affinity: undefined,
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).not.toHaveProperty("spec.template.spec.affinity");
+    });
+
+    test("Allows specifying custom logic to make affinity", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        makeAffinity(matchLabels) {
+          return {
+            podAffinity: {
+              requiredDuringSchedulingIgnoredDuringExecution: [
+                {
+                  labelSelector: {
+                    matchExpressions: [
+                      {
+                        key: "role",
+                        operator: "In",
+                        values: [matchLabels.role],
+                      },
+                    ],
+                  },
+                  topologyKey: "kubernetes.io/hostname",
+                },
+              ],
+            },
+          };
+        },
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty("spec.template.spec.affinity");
+      expect(deployment.spec.template.spec.affinity).toMatchSnapshot();
+    });
+
+    test("Allows returning no affinity", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        makeAffinity() {
+          return undefined;
+        },
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).not.toHaveProperty("spec.template.spec.affinity");
+    });
   });
 
   describe("Labels and annotations", () => {

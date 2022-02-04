@@ -202,6 +202,29 @@ Array [
 ]
 `;
 
+exports[`BackgroundWorker Props Allows specifying custom logic to make affinity 1`] = `
+Object {
+  "podAffinity": Object {
+    "requiredDuringSchedulingIgnoredDuringExecution": Array [
+      Object {
+        "labelSelector": Object {
+          "matchExpressions": Array [
+            Object {
+              "key": "role",
+              "operator": "In",
+              "values": Array [
+                "worker",
+              ],
+            },
+          ],
+        },
+        "topologyKey": "kubernetes.io/hostname",
+      },
+    ],
+  },
+}
+`;
+
 exports[`BackgroundWorker Props Minimal required props 1`] = `
 Array [
   Object {
