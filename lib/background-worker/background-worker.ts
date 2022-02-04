@@ -9,12 +9,15 @@ export class BackgroundWorker extends Construct {
     super(scope, id);
     this.validateProps(props);
 
+    const hasProp = (key: string) =>
+      Object.prototype.hasOwnProperty.call(props, key);
     const chart = Chart.of(this);
     const app = chart.labels.app;
     const labels = {
       ...chart.labels,
       release: props.release,
     };
+    const affinityFunc = props.makeAffinity ?? defaultAffinity;
 
     const selectorLabels: { [key: string]: string } = {
       app,
@@ -41,7 +44,9 @@ export class BackgroundWorker extends Construct {
             },
           },
           spec: {
-            affinity: props.affinity ?? defaultAffinity(selectorLabels),
+            affinity: hasProp("affinity")
+              ? props.affinity
+              : affinityFunc(selectorLabels),
             automountServiceAccountToken:
               props.automountServiceAccountToken ?? false,
             imagePullSecrets: props.imagePullSecrets,

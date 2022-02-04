@@ -1,6 +1,6 @@
 import { Chart, Testing } from "cdk8s";
 import { Quantity } from "../../imports/k8s";
-import { BackgroundWorker } from "../../lib";
+import { BackgroundWorker, BackgroundWorkerProps } from "../../lib";
 
 const requiredProps = {
   image: "talis/app:worker-v1",
@@ -12,6 +12,13 @@ const requiredProps = {
     },
   },
 };
+
+function synthBackgroundWorker(props: BackgroundWorkerProps = requiredProps) {
+  const chart = Testing.chart();
+  new BackgroundWorker(chart, "worker-test", props);
+  const results = Testing.synth(chart);
+  return results;
+}
 
 describe("BackgroundWorker", () => {
   describe("Props", () => {
@@ -123,6 +130,55 @@ describe("BackgroundWorker", () => {
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
     });
+
+    test("Allows specifying no affinity", () => {
+      const results = synthBackgroundWorker({
+        ...requiredProps,
+        affinity: undefined,
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).not.toHaveProperty("spec.template.spec.affinity");
+    });
+
+    test("Allows specifying custom logic to make affinity", () => {
+      const results = synthBackgroundWorker({
+        ...requiredProps,
+        makeAffinity(matchLabels) {
+          return {
+            podAffinity: {
+              requiredDuringSchedulingIgnoredDuringExecution: [
+                {
+                  labelSelector: {
+                    matchExpressions: [
+                      {
+                        key: "role",
+                        operator: "In",
+                        values: [matchLabels.role],
+                      },
+                    ],
+                  },
+                  topologyKey: "kubernetes.io/hostname",
+                },
+              ],
+            },
+          };
+        },
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty("spec.template.spec.affinity");
+      expect(deployment.spec.template.spec.affinity).toMatchSnapshot();
+    });
+
+    test("Allows returning no affinity", () => {
+      const results = synthBackgroundWorker({
+        ...requiredProps,
+        makeAffinity() {
+          return undefined;
+        },
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).not.toHaveProperty("spec.template.spec.affinity");
+    });
   });
 
   describe("Custom stop signal", () => {
@@ -143,19 +199,16 @@ describe("BackgroundWorker", () => {
     });
 
     test("Setting stopSignal creates a preStop hook", () => {
-      const chart = Testing.chart();
-      new BackgroundWorker(chart, "worker-test", {
+      const results = synthBackgroundWorker({
         ...requiredProps,
         stopSignal: "SIGQUIT",
       });
-      const results = Testing.synth(chart);
       const container = results[0].spec.template.spec.containers[0];
       expect(container.lifecycle).toMatchSnapshot();
     });
 
     test("Merge stopSignal and postStart hook", () => {
-      const chart = Testing.chart();
-      new BackgroundWorker(chart, "worker-test", {
+      const results = synthBackgroundWorker({
         ...requiredProps,
         stopSignal: "SIGQUIT",
         lifecycle: {
@@ -166,7 +219,6 @@ describe("BackgroundWorker", () => {
           },
         },
       });
-      const results = Testing.synth(chart);
       const container = results[0].spec.template.spec.containers[0];
       expect(container.lifecycle).toMatchSnapshot();
     });

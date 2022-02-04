@@ -22,6 +22,8 @@ export class WebService extends Construct {
     super(scope, id);
     this.validateProps(props);
 
+    const hasProp = (key: string) =>
+      Object.prototype.hasOwnProperty.call(props, key);
     const chart = Chart.of(this);
     const namespace = chart.namespace;
     const app = chart.labels.app;
@@ -36,6 +38,7 @@ export class WebService extends Construct {
       ...chartLabels,
       release: props.release,
     };
+    const affinityFunc = props.makeAffinity ?? defaultAffinity;
 
     const { applicationPort, servicePort, nginxPort } = this.findPorts(props);
 
@@ -204,7 +207,9 @@ export class WebService extends Construct {
                 },
               },
               spec: {
-                affinity: props.affinity ?? defaultAffinity(selectorLabels),
+                affinity: hasProp("affinity")
+                  ? props.affinity
+                  : affinityFunc(selectorLabels),
                 automountServiceAccountToken:
                   props.automountServiceAccountToken ?? false,
                 imagePullSecrets: props.imagePullSecrets,
