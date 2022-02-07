@@ -34,7 +34,6 @@ export class ResqueWeb extends Construct {
       canary: false,
       selectorLabels: {
         app: "resque",
-        instance: "web",
         ...props.selectorLabels,
       },
       ingressAnnotations: {

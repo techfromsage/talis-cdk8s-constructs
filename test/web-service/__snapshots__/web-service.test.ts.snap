@@ -90,7 +90,7 @@ Array [
         "canary": "false",
         "environment": "test",
         "foo": "bar",
-        "instance": "props-test",
+        "instance": "my-app",
         "region": "testing",
         "release": "test-123",
         "role": "server",
@@ -109,7 +109,7 @@ Array [
       "selector": Object {
         "app": "my-app",
         "foo": "bar",
-        "instance": "props-test",
+        "instance": "my-app",
         "role": "server",
       },
       "type": "ClusterIP",
@@ -124,7 +124,7 @@ Array [
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "my-app-web-test-testing",
+        "alb.ingress.kubernetes.io/load-balancer-name": "props-test-my-app-test-testing",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=my-app,instance=web,environment=test",
@@ -135,7 +135,7 @@ Array [
         "canary": "false",
         "environment": "test",
         "foo": "bar",
-        "instance": "props-test",
+        "instance": "my-app",
         "region": "testing",
         "release": "test-123",
         "role": "server",
@@ -171,7 +171,7 @@ Array [
         "canary": "false",
         "environment": "test",
         "foo": "bar",
-        "instance": "props-test",
+        "instance": "my-app",
         "region": "testing",
         "release": "test-123",
         "role": "server",
@@ -186,7 +186,7 @@ Array [
           "app": "my-app",
           "canary": "false",
           "foo": "bar",
-          "instance": "props-test",
+          "instance": "my-app",
           "role": "server",
         },
       },
@@ -197,7 +197,7 @@ Array [
             "canary": "false",
             "environment": "test",
             "foo": "bar",
-            "instance": "props-test",
+            "instance": "my-app",
             "region": "testing",
             "release": "test-123",
             "role": "server",
@@ -398,7 +398,7 @@ Array [
         "canary": "false",
         "environment": "test",
         "foo": "bar",
-        "instance": "props-test",
+        "instance": "my-app",
         "region": "testing",
         "role": "server",
       },
@@ -449,7 +449,7 @@ Array [
         "canary": "true",
         "environment": "test",
         "foo": "bar",
-        "instance": "props-test",
+        "instance": "my-app",
         "region": "testing",
         "release": "test-123",
         "role": "server",
@@ -469,7 +469,7 @@ Array [
         "app": "my-app",
         "canary": "true",
         "foo": "bar",
-        "instance": "props-test",
+        "instance": "my-app",
         "role": "server",
       },
       "type": "ClusterIP",
@@ -484,7 +484,7 @@ Array [
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "my-app-web-c-test-testing",
+        "alb.ingress.kubernetes.io/load-balancer-name": "props-test-my-app-c-test-testing",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=my-app,instance=web,environment=test",
@@ -495,7 +495,7 @@ Array [
         "canary": "true",
         "environment": "test",
         "foo": "bar",
-        "instance": "props-test",
+        "instance": "my-app",
         "region": "testing",
         "release": "test-123",
         "role": "server",
@@ -531,7 +531,7 @@ Array [
         "canary": "true",
         "environment": "test",
         "foo": "bar",
-        "instance": "props-test",
+        "instance": "my-app",
         "region": "testing",
         "release": "test-123",
         "role": "server",
@@ -547,7 +547,7 @@ Array [
           "app": "my-app",
           "canary": "true",
           "foo": "bar",
-          "instance": "props-test",
+          "instance": "my-app",
           "role": "server",
         },
       },
@@ -558,7 +558,7 @@ Array [
             "canary": "true",
             "environment": "test",
             "foo": "bar",
-            "instance": "props-test",
+            "instance": "my-app",
             "region": "testing",
             "release": "test-123",
             "role": "server",
@@ -782,6 +782,7 @@ Array [
         "role": "server",
       },
       "name": "service",
+      "namespace": "test",
     },
     "spec": Object {
       "ports": Array [
@@ -805,7 +806,7 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "web",
+        "alb.ingress.kubernetes.io/load-balancer-name": "test-web",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "instance=web",
@@ -817,6 +818,7 @@ Array [
         "role": "server",
       },
       "name": "ingress",
+      "namespace": "test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -840,6 +842,7 @@ Array [
         "role": "server",
       },
       "name": "deployment",
+      "namespace": "test",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
@@ -909,6 +912,7 @@ Array [
         "role": "server",
       },
       "name": "hpa",
+      "namespace": "test",
     },
     "spec": Object {
       "maxReplicas": 4,
@@ -935,7 +939,9 @@ Array [
 ]
 `;
 
-exports[`WebService Props Load balancer name must not exceed 32 characters 1`] = `"Load balancer name must not exceed 32 characters. Given: our-awesome-app-web-production-eu"`;
+exports[`WebService Props Load balancer name must not be empty 1`] = `"Load balancer name must not be empty"`;
+
+exports[`WebService Props Load balancer name must not exceed 32 characters 1`] = `"Load balancer name must not exceed 32 characters. Given: test-web-non-abbreviable-env-test"`;
 
 exports[`WebService Props Minimal required props 1`] = `
 Array [
@@ -962,6 +968,7 @@ Array [
         "role": "server",
       },
       "name": "service",
+      "namespace": "test",
     },
     "spec": Object {
       "ports": Array [
@@ -985,7 +992,7 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "web",
+        "alb.ingress.kubernetes.io/load-balancer-name": "test-web",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "instance=web",
@@ -997,6 +1004,7 @@ Array [
         "role": "server",
       },
       "name": "ingress",
+      "namespace": "test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1020,6 +1028,7 @@ Array [
         "role": "server",
       },
       "name": "deployment",
+      "namespace": "test",
     },
     "spec": Object {
       "replicas": 1,
@@ -1085,3 +1094,5 @@ Array [
 `;
 
 exports[`WebService Props Release stage must be specified when canary deployments are enabled 1`] = `"Release stage must be specified when canary deployments are enabled"`;
+
+exports[`WebService Props Validates load balancer name even if overridden 1`] = `"Load balancer name must not exceed 32 characters. Given: a-load-balancer-name-exceeding-32"`;

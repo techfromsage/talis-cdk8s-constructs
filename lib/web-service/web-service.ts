@@ -12,10 +12,10 @@ import {
 } from "../../imports/k8s";
 import {
   HorizontalPodAutoscalerProps,
-  WebServiceProps,
   NginxContainerProps,
+  WebServiceProps,
 } from ".";
-import { defaultAffinity } from "../common";
+import { defaultAffinity, makeLoadBalancerName } from "../common";
 
 export class WebService extends Construct {
   constructor(scope: Construct, id: string, props: WebServiceProps) {
@@ -23,6 +23,7 @@ export class WebService extends Construct {
     this.validateProps(props);
 
     const chart = Chart.of(this);
+    const namespace = chart.namespace;
     const app = chart.labels.app;
     const environment = chart.labels.environment;
     const internal = props.internal ?? false;
@@ -129,28 +130,36 @@ export class WebService extends Construct {
         });
       }
 
+      const loadBalancerNameFunc =
+        props.makeLoadBalancerName ?? makeLoadBalancerName;
+      const ingressAnnotations = {
+        "alb.ingress.kubernetes.io/load-balancer-name": loadBalancerNameFunc(
+          namespace,
+          instanceLabels
+        ),
+        "alb.ingress.kubernetes.io/load-balancer-attributes":
+          "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/listen-ports": JSON.stringify([
+          { HTTP: 80 },
+          { HTTPS: 443 },
+        ]),
+        "alb.ingress.kubernetes.io/ssl-policy":
+          "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/target-type": ingressTargetType,
+        "alb.ingress.kubernetes.io/tags": this.toKeyValueString({
+          service: app,
+          instance: id,
+          environment: environment,
+        }),
+        ...props.ingressAnnotations, // Allow overriding of annotations.
+      };
+      this.validateLoadBalancerName(
+        ingressAnnotations["alb.ingress.kubernetes.io/load-balancer-name"]
+      );
       new KubeIngress(this, `ingress${instanceSuffix}`, {
         metadata: {
-          annotations: {
-            "alb.ingress.kubernetes.io/load-balancer-name":
-              this.makeLoadBalancerName(id, isCanaryInstance, labels),
-            "alb.ingress.kubernetes.io/load-balancer-attributes":
-              "idle_timeout.timeout_seconds=60",
-            "alb.ingress.kubernetes.io/listen-ports": JSON.stringify([
-              { HTTP: 80 },
-              { HTTPS: 443 },
-            ]),
-            "alb.ingress.kubernetes.io/ssl-policy":
-              "ELBSecurityPolicy-TLS-1-2-2017-01",
-            "alb.ingress.kubernetes.io/success-codes": "200,303",
-            "alb.ingress.kubernetes.io/target-type": ingressTargetType,
-            "alb.ingress.kubernetes.io/tags": this.toKeyValueString({
-              service: app,
-              instance: id,
-              environment: environment,
-            }),
-            ...props.ingressAnnotations, // Allow overriding of annotations.
-          },
+          annotations: ingressAnnotations,
           labels: instanceLabels,
         },
         spec: {
@@ -265,24 +274,15 @@ export class WebService extends Construct {
     return { applicationPort, servicePort, nginxPort };
   }
 
-  makeLoadBalancerName(
-    id: string,
-    isCanaryInstance: boolean,
-    labels: { app?: string; environment?: string; region?: string }
-  ): string {
-    const { app, environment, region } = labels;
-    const canary = isCanaryInstance ? "c" : null;
-    const name = [app, id, canary, environment, region]
-      .filter(Boolean)
-      .join("-");
-
+  validateLoadBalancerName(name: string): void {
+    if (name.length < 1) {
+      throw new Error("Load balancer name must not be empty");
+    }
     if (name.length > 32) {
       throw new Error(
         `Load balancer name must not exceed 32 characters. Given: ${name}`
       );
     }
-
-    return name;
   }
 
   toKeyValueString(obj: { [key: string]: string }): string {

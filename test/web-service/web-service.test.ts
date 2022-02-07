@@ -34,6 +34,7 @@ function synthWebService(
 ) {
   const app = Testing.app();
   const chart = new Chart(app, "test", {
+    namespace: "test",
     labels: chartLabels,
   });
 
@@ -58,6 +59,10 @@ interface AnnotatedObject {
 
 function getAnnotation(object: AnnotatedObject, key: string) {
   return object.metadata.annotations[key];
+}
+
+function getLbName(ingress: AnnotatedObject) {
+  return getAnnotation(ingress, "alb.ingress.kubernetes.io/load-balancer-name");
 }
 
 describe("WebService", () => {
@@ -142,7 +147,7 @@ describe("WebService", () => {
         },
         selectorLabels: {
           foo: "bar",
-          instance: "props-test",
+          instance: "my-app",
         },
         tlsDomain: "*.example.com",
         ingressTargetType: "ip",
@@ -242,14 +247,12 @@ describe("WebService", () => {
     test("Creates load balancer names from components", () => {
       const results = synthWebService(
         { ...defaultProps, canary: true, stage: "base" },
-        { app: "some-app", environment: "staging", region: "eu" }
+        { environment: "staging", region: "eu" }
       );
       const ingresses = results.filter((obj) => obj.kind === "Ingress");
       expect(ingresses).toHaveLength(2);
-      const getLbName = (ingress: AnnotatedObject) =>
-        getAnnotation(ingress, "alb.ingress.kubernetes.io/load-balancer-name");
-      expect(getLbName(ingresses[0])).toEqual("some-app-web-staging-eu");
-      expect(getLbName(ingresses[1])).toEqual("some-app-web-c-staging-eu");
+      expect(getLbName(ingresses[0])).toEqual("test-web-staging-eu");
+      expect(getLbName(ingresses[1])).toEqual("test-web-c-staging-eu");
     });
 
     test("Load balancer name must not exceed 32 characters", () => {
@@ -257,12 +260,80 @@ describe("WebService", () => {
         synthWebService(
           { ...defaultProps },
           {
-            app: "our-awesome-app",
+            environment: "non-abbreviable-env",
+            region: "test",
+          }
+        );
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    test("Load balancer name must not be empty", () => {
+      expect(() => {
+        new WebService(Testing.chart(), "web", {
+          ...defaultProps,
+          ingressAnnotations: {
+            "alb.ingress.kubernetes.io/load-balancer-name": "",
+          },
+        });
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    test("Validates load balancer name even if overridden", () => {
+      expect(() => {
+        synthWebService(
+          {
+            ...defaultProps,
+            ingressAnnotations: {
+              "alb.ingress.kubernetes.io/load-balancer-name":
+                "a-load-balancer-name-exceeding-32",
+            },
+          },
+          {
             environment: "production",
             region: "eu",
           }
         );
       }).toThrowErrorMatchingSnapshot();
+    });
+
+    test("Doesn't throw if overridden load balancer name is under 32 characters", () => {
+      const results = synthWebService(
+        {
+          ...defaultProps,
+          canary: false,
+          selectorLabels: {
+            instance: "very-long-name-that-throws",
+          },
+          ingressAnnotations: {
+            "alb.ingress.kubernetes.io/load-balancer-name":
+              "proper-load-balancer-name",
+          },
+        },
+        {
+          environment: "production",
+          region: "eu",
+        }
+      );
+      const ingresses = results.filter((obj) => obj.kind === "Ingress");
+      expect(ingresses).toHaveLength(1);
+      expect(getLbName(ingresses[0])).toEqual("proper-load-balancer-name");
+    });
+
+    test("Allows specifying custom logic to make load balancer name", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        canary: true,
+        stage: "base",
+        makeLoadBalancerName: (namespace, labels) => {
+          return `${namespace}-${labels.instance}-${
+            labels.canary === "true" ? "canary" : "live"
+          }`;
+        },
+      });
+      const ingresses = results.filter((obj) => obj.kind === "Ingress");
+      expect(ingresses).toHaveLength(2);
+      expect(getLbName(ingresses[0])).toEqual("test-web-live");
+      expect(getLbName(ingresses[1])).toEqual("test-web-canary");
     });
 
     test("Creates internet-facing load balancer by default", () => {

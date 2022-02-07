@@ -56,7 +56,7 @@ Array [
       "labels": Object {
         "app": "resque",
         "environment": "development",
-        "instance": "web",
+        "instance": "resque",
         "managed-by": "cdk8s",
         "region": "local",
         "release": "stable",
@@ -76,7 +76,7 @@ Array [
       ],
       "selector": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque",
         "role": "server",
       },
       "type": "NodePort",
@@ -89,7 +89,7 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-resque-development-local",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-resque-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
@@ -99,7 +99,7 @@ Array [
       "labels": Object {
         "app": "resque",
         "environment": "development",
-        "instance": "web",
+        "instance": "resque",
         "managed-by": "cdk8s",
         "region": "local",
         "release": "stable",
@@ -135,7 +135,7 @@ Array [
       "labels": Object {
         "app": "resque",
         "environment": "development",
-        "instance": "web",
+        "instance": "resque",
         "managed-by": "cdk8s",
         "region": "local",
         "release": "stable",
@@ -151,7 +151,7 @@ Array [
       "selector": Object {
         "matchLabels": Object {
           "app": "resque",
-          "instance": "web",
+          "instance": "resque",
           "role": "server",
         },
       },
@@ -160,7 +160,7 @@ Array [
           "labels": Object {
             "app": "resque",
             "environment": "development",
-            "instance": "web",
+            "instance": "resque",
             "managed-by": "cdk8s",
             "region": "local",
             "release": "stable",
@@ -177,7 +177,7 @@ Array [
                     "labelSelector": Object {
                       "matchLabels": Object {
                         "app": "resque",
-                        "instance": "web",
+                        "instance": "resque",
                         "role": "server",
                       },
                     },
@@ -403,7 +403,7 @@ Array [
       "labels": Object {
         "app": "resque",
         "environment": "development",
-        "instance": "web",
+        "instance": "resque",
         "managed-by": "cdk8s",
         "region": "local",
         "release": "stable",
@@ -423,7 +423,7 @@ Array [
       ],
       "selector": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque",
         "role": "server",
       },
       "type": "NodePort",
@@ -436,7 +436,7 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-resque-development-local",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-resque-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
@@ -446,7 +446,7 @@ Array [
       "labels": Object {
         "app": "resque",
         "environment": "development",
-        "instance": "web",
+        "instance": "resque",
         "managed-by": "cdk8s",
         "region": "local",
         "release": "stable",
@@ -482,7 +482,7 @@ Array [
       "labels": Object {
         "app": "resque",
         "environment": "development",
-        "instance": "web",
+        "instance": "resque",
         "managed-by": "cdk8s",
         "region": "local",
         "release": "stable",
@@ -498,7 +498,7 @@ Array [
       "selector": Object {
         "matchLabels": Object {
           "app": "resque",
-          "instance": "web",
+          "instance": "resque",
           "role": "server",
         },
       },
@@ -507,7 +507,7 @@ Array [
           "labels": Object {
             "app": "resque",
             "environment": "development",
-            "instance": "web",
+            "instance": "resque",
             "managed-by": "cdk8s",
             "region": "local",
             "release": "stable",
@@ -524,7 +524,7 @@ Array [
                     "labelSelector": Object {
                       "matchLabels": Object {
                         "app": "resque",
-                        "instance": "web",
+                        "instance": "resque",
                         "role": "server",
                       },
                     },
