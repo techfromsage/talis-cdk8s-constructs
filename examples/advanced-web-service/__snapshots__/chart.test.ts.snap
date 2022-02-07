@@ -224,7 +224,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -311,7 +311,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -749,7 +749,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -1056,7 +1056,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -1494,7 +1494,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -1581,7 +1581,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -2018,7 +2018,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -2325,7 +2325,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -2762,7 +2762,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -2849,7 +2849,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {

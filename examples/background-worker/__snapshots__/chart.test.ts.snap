@@ -93,7 +93,7 @@ Array [
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=resque,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=resque,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -440,7 +440,7 @@ Array [
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example,instance=resque,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=resque,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {

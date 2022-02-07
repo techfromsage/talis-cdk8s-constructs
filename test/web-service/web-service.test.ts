@@ -437,6 +437,50 @@ describe("WebService", () => {
     });
   });
 
+  describe("Container name", () => {
+    test("Default container name", () => {
+      const results = synthWebService();
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "app"
+      );
+    });
+
+    test("Container name from chart's app label", () => {
+      const results = synthWebService(defaultProps, { app: "from-chart" });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "from-chart"
+      );
+    });
+
+    test("Container name from selector label", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        selectorLabels: { app: "from-selector" },
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "from-selector"
+      );
+    });
+
+    test("Container name set explicitly", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        containerName: "explicit-name",
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "explicit-name"
+      );
+    });
+  });
+
   describe("Labels and annotations", () => {
     test("Inherits labels from the chart", () => {
       const results = synthWebService(defaultProps, {
