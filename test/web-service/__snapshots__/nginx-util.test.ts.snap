@@ -11,7 +11,10 @@ Array [
     },
     "kind": "ConfigMap",
     "metadata": Object {
-      "name": "test-nginx-config-c80869a4",
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-nginx-config-c88fe926-kg5k8m97d8",
     },
   },
 ]
@@ -71,7 +74,10 @@ server {
     },
     "kind": "ConfigMap",
     "metadata": Object {
-      "name": "test-nginx-config-c80869a4",
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-nginx-config-c88fe926-tbmmh76262",
     },
   },
 ]
@@ -130,7 +136,10 @@ server {
     },
     "kind": "ConfigMap",
     "metadata": Object {
-      "name": "test-nginx-config-c80869a4",
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-nginx-config-c88fe926-6992742cdt",
     },
   },
 ]
@@ -144,10 +153,12 @@ exports[`nginx-util createConfigMap Empty 1`] = `
 Array [
   Object {
     "apiVersion": "v1",
-    "data": Object {},
     "kind": "ConfigMap",
     "metadata": Object {
-      "name": "test-nginx-config-c80869a4",
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-nginx-config-c88fe926-gccdt9f549",
     },
   },
 ]
@@ -227,7 +238,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     },
     "kind": "ConfigMap",
     "metadata": Object {
-      "name": "test-nginx-config-c80869a4",
+      "labels": Object {
+        "prunable": "true",
+      },
+      "name": "test-nginx-config-c88fe926-t27k9c9m8k",
     },
   },
 ]

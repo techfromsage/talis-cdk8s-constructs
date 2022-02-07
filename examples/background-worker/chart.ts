@@ -1,33 +1,22 @@
 import { Construct } from "constructs";
-import { Chart, ChartProps } from "cdk8s";
-import { BackgroundWorker, ResqueWeb, Secret } from "../../lib";
-import { KubeNamespace, Quantity } from "../../imports/k8s";
+import {
+  BackgroundWorker,
+  createImagePullSecret,
+  ResqueWeb,
+  TalisChart,
+  TalisChartProps,
+} from "../../lib";
+import { Quantity } from "../../imports/k8s";
 
-export class BackgroundWorkerChart extends Chart {
-  constructor(
-    scope: Construct,
-    id: string,
-    { namespace = "example-background-worker", ...props }: ChartProps = {}
-  ) {
-    super(scope, id, { namespace, ...props });
+export class BackgroundWorkerChart extends TalisChart {
+  constructor(scope: Construct, props: TalisChartProps) {
+    super(scope, { app: "example", ...props });
 
     const release = process.env.RELEASE || "v1.0";
     const redisUrl = "redis.cache.svc.cluster.local:6379:1";
 
-    new KubeNamespace(this, "namespace", { metadata: { name: namespace } });
-
-    const dockerHubCredentials = `${process.env.DOCKER_USERNAME}:${process.env.DOCKER_PASSWORD}`;
-    const dockerHubSecret = new Secret(this, "docker-hub-cred", {
-      type: "kubernetes.io/dockerconfigjson",
-      data: {
-        ".dockerconfigjson": JSON.stringify({
-          auths: {
-            "https://index.docker.io/v1/": {
-              auth: Buffer.from(dockerHubCredentials).toString("base64"),
-            },
-          },
-        }),
-      },
+    const dockerHubSecret = createImagePullSecret(this, {
+      auth: `${process.env.DOCKER_USERNAME}:${process.env.DOCKER_PASSWORD}`,
     });
 
     new ResqueWeb(this, "resque", {

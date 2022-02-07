@@ -33,6 +33,13 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
   - Supports loading keys/values from a .env file.
   - Supports setting string data, allowing Kubernetes API to encode on write.
 
+- `TalisChart`
+
+  - A convenience class for creating a Chart and ensuring standard Talis labels are added.
+  - Creates a namespace based on the app name.
+  - Supports watermarks, e.g. for on-demand environments.
+  - Showcased in [AdvancedWebServiceChart](./examples/advanced-web-service/chart.ts) and [BackgroundWorkerChart](./examples/background-worker/chart.ts).
+
 - `WebService`
 
   - Represents a web application exposed via an AWS Application Load Balancer.
@@ -40,6 +47,17 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
   - Supports adding Nginx reverse proxy.
   - Supports canary releases with a separate canary deployment and load balancer, allowing to test the new version via host hack.
   - Details in a [simple](./examples/simple-web-service/README.md) and [advanced](./examples/advanced-web-service/README.md) examples.
+
+## Available utilities
+
+- `createImagePullSecret` - Creates a secret with auth credentials for pulling images from a private registry.
+- `getCanaryStage` - Gets the stage of a canary deployment from an environment variable, and validates its value.
+- `getEksDashboardUrl` - Builds the URL of the Kubernetes dashboard for a given cluster and namespace.
+- `getGraphsUrl` - Builds the URL of the Grafana workload dashboard for a given cluster and namespace.
+- `getLogsUrl` - Builds the URL of the Grafana logs dashboard for a given cluster and app.
+- `nginxUtil.createConfigMap` - Creates a ConfigMap for Nginx reverse proxy, with optional default configuration; The ConfigMap can be used with `WebService`'s `nginx.configMap` property.
+- `nginxUtil.getDefaultConfig` - Returns the default Nginx reverse proxy configuration to expose the application on the specified port; Output of this function is used with `createConfigMap` with `includeDefaultConfig` enabled.
+- `nginxUtil.getSameSiteCookiesConfig` - Return the Nginx configuration that patches `Set-Cookie` headers to use the `SameSite` attribute; Output of this function is used with `createConfigMap` with `includeSameSiteCookiesConfig` enabled.
 
 ## Useful commands
 

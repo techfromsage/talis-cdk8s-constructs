@@ -1,5 +1,5 @@
 import { Testing } from "cdk8s";
-import { nginxUtil } from "../../lib";
+import { ConfigMap, nginxUtil } from "../../lib";
 
 describe("nginx-util", () => {
   describe("createConfigMap", () => {
@@ -8,6 +8,12 @@ describe("nginx-util", () => {
       nginxUtil.createConfigMap(chart, {});
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+    });
+
+    test("Instance of ConfigMap", () => {
+      const chart = Testing.chart();
+      const configMap = nginxUtil.createConfigMap(chart, {});
+      expect(configMap).toBeInstanceOf(ConfigMap);
     });
 
     test("Default config", () => {

@@ -3,11 +3,8 @@ import { App } from "cdk8s";
 import { BackgroundWorkerChart } from "./chart";
 
 const app = new App();
-new BackgroundWorkerChart(app, "app", {
-  labels: {
-    app: "example",
-    environment: "development",
-    region: "local",
-  },
+new BackgroundWorkerChart(app, {
+  environment: "development",
+  region: "local",
 });
 app.synth();

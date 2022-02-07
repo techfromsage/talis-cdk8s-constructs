@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`factory createImagePullSecret Creates config with Docker Hub credentials by default 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImRYTmxjanAwWlhOMCJ9fX0=",
+    },
+    "kind": "Secret",
+    "metadata": Object {
+      "name": "test-image-pull-secret-c859bf04",
+    },
+    "type": "kubernetes.io/dockerconfigjson",
+  },
+]
+`;
+
+exports[`factory createImagePullSecret Creates config with auth as-is 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      ".dockerconfigjson": "eyJhdXRocyI6eyIxMjM0NTY3ODkwMDAuZGtyLmVjci5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbSI6eyJhdXRoIjoiUVZkVE9uTnZiV1V0YzJWamNtVjBMVVZEVWkxclpYaz0ifX19",
+    },
+    "kind": "Secret",
+    "metadata": Object {
+      "name": "test-image-pull-secret-c859bf04",
+    },
+    "type": "kubernetes.io/dockerconfigjson",
+  },
+]
+`;
+
+exports[`factory createImagePullSecret Creates config with custom registry 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL3JlZ2lzdHJ5LmV4YW1wbGUuaW8vIjp7ImF1dGgiOiJkWE5sY201aGJXVTZjR0Z6YzNkdmNtUT0ifX19",
+    },
+    "kind": "Secret",
+    "metadata": Object {
+      "name": "test-image-pull-secret-c859bf04",
+    },
+    "type": "kubernetes.io/dockerconfigjson",
+  },
+]
+`;
