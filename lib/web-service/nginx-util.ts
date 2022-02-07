@@ -1,8 +1,7 @@
-import { ApiObject } from "cdk8s";
 import { Construct } from "constructs";
 import * as fs from "fs";
 import * as path from "path";
-import { KubeConfigMap } from "../../imports/k8s";
+import { ConfigMap } from "..";
 
 function resolvePath(filePath: string): string {
   return path.resolve(__dirname, filePath);
@@ -32,11 +31,14 @@ interface NginxConfigMapProps {
   readonly includeSameSiteCookiesConfig?: boolean;
 }
 
+/**
+ * Create a config map with Nginx configuration.
+ */
 function createConfigMap(
   scope: Construct,
   props: NginxConfigMapProps,
   data: { [key: string]: string } = {}
-): ApiObject {
+): ConfigMap {
   if (props.includeDefaultConfig) {
     data["default.conf"] = getDefaultConfig(props);
   }
@@ -45,10 +47,18 @@ function createConfigMap(
     data["samesite.conf"] = getSameSiteCookiesConfig();
   }
 
-  const configMap = new KubeConfigMap(scope, "nginx-config", { data });
+  const configMap = new ConfigMap(scope, "nginx-config", { data });
   return configMap;
 }
 
+/**
+ * Returns the contents of an Nginx configuration file that:
+ * - exposes the application on the specified port,
+ * - adds a health check endpoint `/livez`,
+ * - enables `/nginx_status` endpoint from private IPs for monitoring.
+ *
+ * The output of this function is used with `createConfigMap` with `includeDefaultConfig` enabled.
+ */
 function getDefaultConfig(
   props: Pick<NginxConfigMapProps, "applicationPort" | "nginxPort">
 ): string {
@@ -68,6 +78,12 @@ function getDefaultConfig(
     .replaceAll("{{nginxPort}}", nginxPort.toString());
 }
 
+/**
+ * Return the contents of an Nginx configuration file that patches
+ * `Set-Cookie` headers to use the `SameSite` attribute.
+ *
+ * The output of this function is used with `createConfigMap` with `includeSameSiteCookiesConfig` enabled.
+ */
 function getSameSiteCookiesConfig(): string {
   return fs.readFileSync(resolvePath("nginx/samesite.conf"), "utf8");
 }

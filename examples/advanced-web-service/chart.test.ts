@@ -17,7 +17,10 @@ describe("Advanced WebService example", () => {
     test(`Snapshot ${stage} stage`, () => {
       process.env.CANARY_STAGE = stage;
       const app = Testing.app();
-      const chart = new AdvancedWebServiceChart(app, "test");
+      const chart = new AdvancedWebServiceChart(app, {
+        environment: "development",
+        region: "local",
+      });
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
     });
@@ -27,7 +30,10 @@ describe("Advanced WebService example", () => {
     process.env.CANARY_STAGE = "canary";
     process.env.RELEASE = "v0.2.2";
     const app = Testing.app();
-    const chart = new AdvancedWebServiceChart(app, "test");
+    const chart = new AdvancedWebServiceChart(app, {
+      environment: "development",
+      region: "local",
+    });
     const results = Testing.synth(chart);
     expect(results).toMatchSnapshot();
   });
