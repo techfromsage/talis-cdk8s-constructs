@@ -148,6 +148,16 @@ export interface WebServiceProps
   readonly ingressTargetType?: "instance" | "ip";
 
   /**
+   * Custom function to generate load balancer name.
+   * @param namespace Namespace of the service.
+   * @param instanceLabels Deployment's labels
+   */
+  readonly makeLoadBalancerName?: (
+    namespace: string | undefined,
+    instanceLabels: { [key: string]: string }
+  ) => string;
+
+  /**
    * Pod's priority class.
    * @default "web"
    */

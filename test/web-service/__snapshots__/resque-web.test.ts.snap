@@ -21,7 +21,7 @@ Array [
       },
       "labels": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque-web",
         "release": "stable",
         "role": "server",
       },
@@ -37,7 +37,7 @@ Array [
       ],
       "selector": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque-web",
         "role": "server",
       },
       "type": "NodePort",
@@ -59,7 +59,7 @@ Array [
       },
       "labels": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque-web",
         "release": "stable",
         "role": "server",
       },
@@ -83,7 +83,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque-web",
         "release": "stable",
         "role": "server",
       },
@@ -95,7 +95,7 @@ Array [
       "selector": Object {
         "matchLabels": Object {
           "app": "resque",
-          "instance": "web",
+          "instance": "resque-web",
           "role": "server",
         },
       },
@@ -103,7 +103,7 @@ Array [
         "metadata": Object {
           "labels": Object {
             "app": "resque",
-            "instance": "web",
+            "instance": "resque-web",
             "release": "stable",
             "role": "server",
           },
@@ -117,7 +117,7 @@ Array [
                     "labelSelector": Object {
                       "matchLabels": Object {
                         "app": "resque",
-                        "instance": "web",
+                        "instance": "resque-web",
                         "role": "server",
                       },
                     },
@@ -180,7 +180,7 @@ Array [
       },
       "labels": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque-web",
         "release": "latest",
         "role": "server",
       },
@@ -196,7 +196,7 @@ Array [
       ],
       "selector": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque-web",
         "role": "server",
       },
       "type": "NodePort",
@@ -218,7 +218,7 @@ Array [
       },
       "labels": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque-web",
         "release": "latest",
         "role": "server",
       },
@@ -242,7 +242,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "app": "resque",
-        "instance": "web",
+        "instance": "resque-web",
         "release": "latest",
         "role": "server",
       },
@@ -254,7 +254,7 @@ Array [
       "selector": Object {
         "matchLabels": Object {
           "app": "resque",
-          "instance": "web",
+          "instance": "resque-web",
           "role": "server",
         },
       },
@@ -262,7 +262,7 @@ Array [
         "metadata": Object {
           "labels": Object {
             "app": "resque",
-            "instance": "web",
+            "instance": "resque-web",
             "release": "latest",
             "role": "server",
           },
@@ -276,7 +276,7 @@ Array [
                     "labelSelector": Object {
                       "matchLabels": Object {
                         "app": "resque",
-                        "instance": "web",
+                        "instance": "resque-web",
                         "role": "server",
                       },
                     },

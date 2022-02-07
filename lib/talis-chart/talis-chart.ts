@@ -1,6 +1,7 @@
 import { Construct } from "constructs";
 import { Chart, ChartProps } from "cdk8s";
 import { KubeNamespace } from "../../imports/k8s";
+import { joinNameParts } from "../common";
 
 export interface TalisChartProps extends ChartProps {
   /** Name of the application this chart is for */
@@ -28,9 +29,8 @@ export class TalisChart extends Chart {
 
   constructor(scope: Construct, props: TalisChartConstructorProps) {
     const { app, environment, region, watermark } = props;
-    const envPrefix = environment !== "production" ? `${environment}-` : "";
-    const appSuffix = watermark ? `-${watermark}` : "";
-    const namespace = props.namespace ?? `${app}${appSuffix}`;
+    const envPrefix = environment !== "production" ? environment : "";
+    const namespace = props.namespace ?? joinNameParts([app, watermark]);
     const id = `${namespace}-${environment}-${region}`;
 
     super(scope, id, {
@@ -40,7 +40,7 @@ export class TalisChart extends Chart {
         environment: environment,
         region: region,
         "managed-by": "cdk8s",
-        service: `${app}${appSuffix}-${envPrefix}${region}`,
+        service: joinNameParts([app, watermark, envPrefix, region]),
         ...props.labels,
       },
     });
