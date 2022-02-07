@@ -26,14 +26,13 @@ export class WebService extends Construct {
       Object.prototype.hasOwnProperty.call(props, key);
     const chart = Chart.of(this);
     const namespace = chart.namespace;
-    const app = chart.labels.app;
-    const environment = chart.labels.environment;
     const internal = props.internal ?? false;
     const enableCanary = props.canary ?? false;
     const stage = props.stage ?? "base";
     const ingressTargetType = props.ingressTargetType ?? "instance";
-    const chartLabels: { app?: string; environment?: string; region?: string } =
-      chart.labels;
+    const chartLabels = chart.labels;
+    const app = chartLabels.app ?? props.selectorLabels?.app;
+    const environment = chartLabels.environment;
     const labels = {
       ...chartLabels,
       release: props.release,
@@ -44,7 +43,7 @@ export class WebService extends Construct {
 
     const containers: Container[] = [
       {
-        name: app,
+        name: props.containerName ?? app ?? "app",
         image: props.image,
         imagePullPolicy: props.imagePullPolicy ?? "IfNotPresent",
         workingDir: props.workingDir,
@@ -76,7 +75,7 @@ export class WebService extends Construct {
     for (const instanceSuffix of instances) {
       const isCanaryInstance = instanceSuffix === "-canary";
       const selectorLabels: { [key: string]: string } = {
-        app,
+        app: app,
         role: "server",
         instance: id,
         ...props.selectorLabels,
@@ -94,7 +93,10 @@ export class WebService extends Construct {
         }
       }
 
-      const instanceLabels = { ...labels, ...selectorLabels };
+      const instanceLabels: { [key: string]: string } = {
+        ...labels,
+        ...selectorLabels,
+      };
 
       const service = new KubeService(this, `service${instanceSuffix}`, {
         metadata: {
@@ -151,7 +153,7 @@ export class WebService extends Construct {
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/target-type": ingressTargetType,
         "alb.ingress.kubernetes.io/tags": this.toKeyValueString({
-          service: app,
+          service: instanceLabels.service ?? app,
           instance: id,
           environment: environment,
         }),

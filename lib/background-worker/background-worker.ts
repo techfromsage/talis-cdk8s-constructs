@@ -12,7 +12,7 @@ export class BackgroundWorker extends Construct {
     const hasProp = (key: string) =>
       Object.prototype.hasOwnProperty.call(props, key);
     const chart = Chart.of(this);
-    const app = chart.labels.app;
+    const app = chart.labels.app ?? props.selectorLabels?.app;
     const labels = {
       ...chart.labels,
       release: props.release,
@@ -20,7 +20,7 @@ export class BackgroundWorker extends Construct {
     const affinityFunc = props.makeAffinity ?? defaultAffinity;
 
     const selectorLabels: { [key: string]: string } = {
-      app,
+      app: app,
       role: "worker",
       instance: id,
       ...props.selectorLabels,
@@ -55,7 +55,7 @@ export class BackgroundWorker extends Construct {
             volumes: props.volumes,
             containers: [
               {
-                name: app,
+                name: props.containerName ?? app ?? "app",
                 image: props.image,
                 imagePullPolicy: props.imagePullPolicy ?? "IfNotPresent",
                 workingDir: props.workingDir,

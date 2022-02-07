@@ -278,6 +278,7 @@ Array [
             Object {
               "image": "talis/app:worker-v1",
               "imagePullPolicy": "IfNotPresent",
+              "name": "app",
               "resources": Object {
                 "requests": Object {
                   "cpu": "100m",

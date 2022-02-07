@@ -9,6 +9,12 @@ import {
 } from "../../imports/k8s";
 
 export interface ContainerProps {
+  /**
+   * What name to give the application container
+   * @default set from the "app" label
+   */
+  readonly containerName?: string;
+
   /** The Docker image to use. */
   readonly image: string;
 

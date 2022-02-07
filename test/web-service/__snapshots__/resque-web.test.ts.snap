@@ -54,7 +54,7 @@ Array [
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "instance=resque-web",
+        "alb.ingress.kubernetes.io/tags": "service=resque,instance=resque-web",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -133,6 +133,7 @@ Array [
             Object {
               "image": "talis/resque-web:stable",
               "imagePullPolicy": "IfNotPresent",
+              "name": "resque",
               "ports": Array [
                 Object {
                   "containerPort": 3000,
@@ -213,7 +214,7 @@ Array [
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "instance=resque-web",
+        "alb.ingress.kubernetes.io/tags": "service=resque,instance=resque-web",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -311,6 +312,7 @@ Array [
               ],
               "image": "talis/resque-web:latest",
               "imagePullPolicy": "IfNotPresent",
+              "name": "resque",
               "ports": Array [
                 Object {
                   "containerPort": 3000,

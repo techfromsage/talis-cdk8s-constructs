@@ -181,6 +181,57 @@ describe("BackgroundWorker", () => {
     });
   });
 
+  describe("Container name", () => {
+    test("Default container name", () => {
+      const results = synthBackgroundWorker();
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "app"
+      );
+    });
+
+    test("Container name from chart's app label", () => {
+      const app = Testing.app();
+      const chart = new Chart(app, "test", {
+        labels: {
+          app: "from-chart",
+        },
+      });
+      new BackgroundWorker(chart, "worker-test", requiredProps);
+      const results = Testing.synth(chart);
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "from-chart"
+      );
+    });
+
+    test("Container name from selector label", () => {
+      const results = synthBackgroundWorker({
+        ...requiredProps,
+        selectorLabels: { app: "from-selector" },
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "from-selector"
+      );
+    });
+
+    test("Container name set explicitly", () => {
+      const results = synthBackgroundWorker({
+        ...requiredProps,
+        containerName: "explicit-name",
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "explicit-name"
+      );
+    });
+  });
+
   describe("Custom stop signal", () => {
     test("Either stopSignal or lifecycle.preStop can be specified", () => {
       expect(() => {

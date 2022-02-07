@@ -125,6 +125,7 @@ Array [
             Object {
               "image": "docker.io/bitnami/node-example:0.0.1",
               "imagePullPolicy": "IfNotPresent",
+              "name": "app",
               "ports": Array [
                 Object {
                   "containerPort": 3000,

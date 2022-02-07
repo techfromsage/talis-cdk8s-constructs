@@ -907,6 +907,7 @@ Array [
             Object {
               "image": "my-image",
               "imagePullPolicy": "IfNotPresent",
+              "name": "app",
               "ports": Array [
                 Object {
                   "containerPort": 3000,
@@ -1094,6 +1095,7 @@ Array [
             Object {
               "image": "my-image",
               "imagePullPolicy": "IfNotPresent",
+              "name": "app",
               "ports": Array [
                 Object {
                   "containerPort": 3000,
