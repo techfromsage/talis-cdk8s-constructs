@@ -1,0 +1,7 @@
+dist
+examples
+imports/**/*.ts
+!imports/**/*.d.ts
+lib/**/*.ts
+!lib/**/*.d.ts
+test
