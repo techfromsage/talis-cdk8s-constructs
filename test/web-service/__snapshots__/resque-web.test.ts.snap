@@ -17,7 +17,7 @@ Array [
         "talis.io/repository": "https://github.com/talis/resque-web-container",
         "talis.io/runbook": "None",
         "talis.io/uptime": "None",
-        "talis.io/url": "https://resque.example.com",
+        "talis.io/url": "http://resque.example.com",
       },
       "labels": Object {
         "app": "resque",
@@ -48,11 +48,9 @@ Array [
     "kind": "Ingress",
     "metadata": Object {
       "annotations": Object {
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "resque-web",
-        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
-        "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=resque,instance=resque-web",
         "alb.ingress.kubernetes.io/target-type": "instance",
@@ -235,6 +233,13 @@ Array [
         },
       },
       "ingressClassName": "aws-load-balancer-internal",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {

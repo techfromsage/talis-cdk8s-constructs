@@ -251,6 +251,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {
@@ -338,6 +345,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {
@@ -776,6 +790,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {
@@ -1083,6 +1104,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {
@@ -1521,6 +1549,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {
@@ -1608,6 +1643,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {
@@ -2045,6 +2087,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {
@@ -2352,6 +2401,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {
@@ -2789,6 +2845,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {
@@ -2876,6 +2939,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "tls": Array [
+        Object {
+          "hosts": Array [
+            "*.example.com",
+          ],
+        },
+      ],
     },
   },
   Object {

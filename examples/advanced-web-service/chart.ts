@@ -43,6 +43,7 @@ export class AdvancedWebServiceChart extends TalisChart {
       repositoryUrl: "https://github.com/talis/talis-cdk8s-constructs",
       runbookUrl: "https://example.io/wiki/runbook",
       uptimeUrl: "https://example.io/uptime",
+      tlsDomain: "*.example.com",
 
       // Pod details
       image: `docker.io/rodolphoalves/swapi-deno:${release}`,

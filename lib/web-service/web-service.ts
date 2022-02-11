@@ -18,6 +18,7 @@ import {
   WebServiceProps,
 } from ".";
 import { defaultAffinity, makeLoadBalancerName } from "../common";
+import { supportsTls } from "./tls-util";
 
 export class WebService extends Construct {
   constructor(scope: Construct, id: string, props: WebServiceProps) {
@@ -131,10 +132,17 @@ export class WebService extends Construct {
       });
 
       const ingressTls = [];
-      if (props.tlsDomain) {
-        ingressTls.push({
-          hosts: [props.tlsDomain],
-        });
+      const ingressListenPorts: { [key: string]: number }[] = [{ HTTP: 80 }];
+      const ingressTlsAnnotations: { [key: string]: string } = {};
+      if (supportsTls(props)) {
+        if (props.tlsDomain) {
+          ingressTls.push({
+            hosts: [props.tlsDomain],
+          });
+        }
+        ingressListenPorts.push({ HTTPS: 443 });
+        ingressTlsAnnotations["alb.ingress.kubernetes.io/ssl-policy"] =
+          "ELBSecurityPolicy-TLS-1-2-2017-01";
       }
 
       const loadBalancerNameFunc =
@@ -148,12 +156,8 @@ export class WebService extends Construct {
           convertToStringMap({
             "idle_timeout.timeout_seconds": "60",
           }),
-        "alb.ingress.kubernetes.io/listen-ports": convertToJsonContent([
-          { HTTP: 80 },
-          { HTTPS: 443 },
-        ]),
-        "alb.ingress.kubernetes.io/ssl-policy":
-          "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/listen-ports":
+          convertToJsonContent(ingressListenPorts),
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/target-type": ingressTargetType,
         "alb.ingress.kubernetes.io/tags": convertToStringMap({
@@ -161,6 +165,7 @@ export class WebService extends Construct {
           instance: id,
           environment: environment,
         }),
+        ...ingressTlsAnnotations,
         ...props.ingressAnnotations, // Allow overriding of annotations.
       };
       this.validateLoadBalancerName(
