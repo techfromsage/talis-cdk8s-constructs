@@ -1,6 +1,13 @@
-import { getEksDashboardUrl, getGraphsUrl, getLogsUrl } from "../../lib";
+import {
+  getEksDashboardUrl,
+  getGraphsUrl,
+  getLogsUrl,
+  convertToStringList,
+  convertToStringMap,
+  convertToJsonContent,
+} from "../../lib";
 
-describe("url-util", () => {
+describe("annotation-util", () => {
   describe("eksDashboardUrl, graphsUrl, logsUrl", () => {
     [
       {
@@ -64,6 +71,46 @@ describe("url-util", () => {
         };
         expect(urls).toEqual(expected);
       });
+    });
+  });
+
+  describe("convertToStringList", () => {
+    test("Empty", () => {
+      expect(convertToStringList([])).toEqual("");
+    });
+
+    test("List", () => {
+      expect(convertToStringList(["a", "b", "c"])).toEqual("a,b,c");
+    });
+
+    test("Filter empty item", () => {
+      expect(convertToStringList(["a", "", "c"])).toEqual("a,c");
+    });
+  });
+
+  describe("convertToStringMap", () => {
+    test("Empty", () => {
+      expect(convertToStringMap({})).toEqual("");
+    });
+
+    test("Map", () => {
+      expect(convertToStringMap({ a: "b", c: "d" })).toEqual("a=b,c=d");
+    });
+
+    test("Filter empty value", () => {
+      expect(convertToStringMap({ a: "b", c: "" })).toEqual("a=b");
+    });
+  });
+
+  describe("convertToJsonContent", () => {
+    test("Empty", () => {
+      expect(convertToJsonContent({})).toEqual("{}");
+    });
+
+    test("Map", () => {
+      expect(convertToJsonContent({ a: "b", c: "d" })).toEqual(
+        '{"a":"b","c":"d"}'
+      );
     });
   });
 });

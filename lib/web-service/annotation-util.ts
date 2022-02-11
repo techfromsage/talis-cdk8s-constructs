@@ -58,3 +58,33 @@ export function getLogsUrl(
   // https://github.com/talis/infra/blob/a09e3d9a29a333b987e612f41242f372929b668f/kubernetes/monitoring/base-grafana/grafana/dashboards/loki-logs.json#L187
   return `${grafanaUrl}/d/lokiR6qB0/loki-logs?var-apps=${app}`;
 }
+
+/**
+ * Stringify given list as stringList: `s1,s2,s3`, as used in annotations
+ * supported by AWS Load Balancer Controller.
+ * @see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/ingress/annotations/
+ */
+export function convertToStringList(list: string[]): string {
+  return list.filter((value) => value).join(",");
+}
+
+/**
+ * Stringify given object as stringMap: `k1=v1,k2=v2`, as used in annotations
+ * supported by AWS Load Balancer Controller.
+ * @see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/ingress/annotations/
+ */
+export function convertToStringMap(map: { [key: string]: string }): string {
+  return Object.entries(map)
+    .filter(([, value]) => value)
+    .map(([key, value]) => `${key}=${value}`)
+    .join(",");
+}
+
+/**
+ * Stringify given object as JSON: `{"k1":"v1","k2":"v2"}`, as used in annotations
+ * supported by AWS Load Balancer Controller.
+ * @see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/ingress/annotations/
+ */
+export function convertToJsonContent(obj: unknown): string {
+  return JSON.stringify(obj);
+}
