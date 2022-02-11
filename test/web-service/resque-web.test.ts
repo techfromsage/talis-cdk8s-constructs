@@ -5,7 +5,7 @@ describe("ResqueWeb", () => {
   test("Creates resque web objects", () => {
     const chart = Testing.chart();
     new ResqueWeb(chart, "resque-web", {
-      externalUrl: "https://resque.example.com",
+      externalUrl: "http://resque.example.com",
     });
     const results = Testing.synth(chart);
     expect(results).toMatchSnapshot();
@@ -15,6 +15,7 @@ describe("ResqueWeb", () => {
     const chart = Testing.chart();
     new ResqueWeb(chart, "resque-web", {
       externalUrl: "https://resque-web.example.com",
+      tlsDomain: "*.example.com",
       release: "latest",
       env: [
         { name: "RAILS_ENV", value: "production" },

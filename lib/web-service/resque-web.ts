@@ -1,6 +1,7 @@
 import { Construct } from "constructs";
 import { WebService, WebServiceProps } from ".";
 import { Quantity } from "../../imports/k8s";
+import { supportsTls } from "./tls-util";
 
 export interface ResqueWebProps
   extends Partial<Omit<WebServiceProps, "horizontalPodAutoscaler">> {
@@ -15,6 +16,11 @@ export class ResqueWeb extends Construct {
     super(scope, id);
 
     const release = props.release ?? "stable";
+
+    const ingressAnnotations: { [key: string]: string } = {};
+    if (supportsTls(props)) {
+      ingressAnnotations["alb.ingress.kubernetes.io/ssl-redirect"] = "443";
+    }
 
     new WebService(this, id, {
       // Service annotations
@@ -36,9 +42,7 @@ export class ResqueWeb extends Construct {
         app: "resque",
         ...props.selectorLabels,
       },
-      ingressAnnotations: {
-        "alb.ingress.kubernetes.io/ssl-redirect": "443",
-      },
+      ingressAnnotations: ingressAnnotations,
 
       // Container options
       image: `talis/resque-web:${release}`,

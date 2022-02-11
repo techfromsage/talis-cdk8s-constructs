@@ -21,6 +21,7 @@ export class SimpleWebServiceChart extends Chart {
       repositoryUrl: "https://github.com/talis/talis-cdk8s-constructs",
       runbookUrl: "https://example.io/wiki/runbook",
       uptimeUrl: "https://example.io/uptime",
+      tlsDomain: "*.example.com",
 
       // Pod details
       image: "docker.io/bitnami/node-example:0.0.1",

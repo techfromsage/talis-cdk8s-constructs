@@ -353,15 +353,44 @@ describe("WebService", () => {
       expect(ingress.spec.ingressClassName).toBe("aws-load-balancer-internal");
     });
 
+    test("Sets no HTTPS by default", () => {
+      const results = synthWebService({
+        ...defaultProps,
+      });
+      const ingress = results.find((obj) => obj.kind === "Ingress");
+      expect(ingress.metadata.annotations).toMatchObject({
+        "alb.ingress.kubernetes.io/listen-ports": `[{"HTTP":80}]`,
+      });
+    });
+
     test("Allows to set TLS domain for ACM certificate discovery", () => {
       const results = synthWebService({
         ...defaultProps,
         tlsDomain: "*.example.com",
       });
       const ingress = results.find((obj) => obj.kind === "Ingress");
-      expect(ingress.spec.tls).toHaveLength(1);
-      expect(ingress.spec.tls[0].hosts).toHaveLength(1);
-      expect(ingress.spec.tls[0].hosts[0]).toBe("*.example.com");
+      expect(ingress).toHaveProperty("spec.tls[0].hosts[0]", "*.example.com");
+      expect(ingress.metadata.annotations).toMatchObject({
+        "alb.ingress.kubernetes.io/listen-ports": `[{"HTTP":80},{"HTTPS":443}]`,
+        "alb.ingress.kubernetes.io/ssl-policy":
+          "ELBSecurityPolicy-TLS-1-2-2017-01",
+      });
+    });
+
+    test("Allows to set certificate ARN", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        ingressAnnotations: {
+          "alb.ingress.kubernetes.io/certificate-arn":
+            "arn:aws:acm:eu-west-1:xxxxx:certificate/xxxxxxx",
+        },
+      });
+      const ingress = results.find((obj) => obj.kind === "Ingress");
+      expect(ingress.metadata.annotations).toMatchObject({
+        "alb.ingress.kubernetes.io/listen-ports": `[{"HTTP":80},{"HTTPS":443}]`,
+        "alb.ingress.kubernetes.io/ssl-policy":
+          "ELBSecurityPolicy-TLS-1-2-2017-01",
+      });
     });
 
     test("Ingress target-type instance (by default)", () => {
