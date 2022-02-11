@@ -11,6 +11,8 @@ import {
   Volume,
 } from "../../imports/k8s";
 import {
+  convertToJsonContent,
+  convertToStringMap,
   HorizontalPodAutoscalerProps,
   NginxContainerProps,
   WebServiceProps,
@@ -143,8 +145,10 @@ export class WebService extends Construct {
           instanceLabels
         ),
         "alb.ingress.kubernetes.io/load-balancer-attributes":
-          "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/listen-ports": JSON.stringify([
+          convertToStringMap({
+            "idle_timeout.timeout_seconds": "60",
+          }),
+        "alb.ingress.kubernetes.io/listen-ports": convertToJsonContent([
           { HTTP: 80 },
           { HTTPS: 443 },
         ]),
@@ -152,7 +156,7 @@ export class WebService extends Construct {
           "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/target-type": ingressTargetType,
-        "alb.ingress.kubernetes.io/tags": this.toKeyValueString({
+        "alb.ingress.kubernetes.io/tags": convertToStringMap({
           service: instanceLabels.service ?? app,
           instance: id,
           environment: environment,
@@ -290,13 +294,6 @@ export class WebService extends Construct {
         `Load balancer name must not exceed 32 characters. Given: ${name}`
       );
     }
-  }
-
-  toKeyValueString(obj: { [key: string]: string }): string {
-    return Object.entries(obj)
-      .filter(([, value]) => value)
-      .map(([key, value]) => `${key}=${value}`)
-      .join(",");
   }
 
   createNginx(
