@@ -36,7 +36,7 @@ export class BackgroundWorkerChart extends TalisChart {
       imagePullSecrets: [{ name: dockerHubSecret.name }],
       release,
       command: ["php", "vendor/resque/php-resque/bin/resque"],
-      stopSignal: "SIGQUIT",
+      stopSignal: "QUIT",
       terminationGracePeriodSeconds: 300,
       env: [
         {

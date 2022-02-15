@@ -18,7 +18,7 @@ Object {
       "command": Array [
         "/bin/sh",
         "-c",
-        "kill -SIGQUIT 1 && while kill -0 1; do sleep 1; done",
+        "kill -QUIT 1 && while kill -0 1; do sleep 1; done",
       ],
     },
   },
@@ -32,7 +32,7 @@ Object {
       "command": Array [
         "/bin/sh",
         "-c",
-        "kill -SIGQUIT 1 && while kill -0 1; do sleep 1; done",
+        "kill -QUIT 1 && while kill -0 1; do sleep 1; done",
       ],
     },
   },

@@ -5,6 +5,7 @@ export interface BackgroundWorkerProps
     WorkloadProps {
   /**
    * If specified, it will set up a preStop hook to terminate the container with given signal.
+   * When passing a string, don't include the "SIG" prefix, just the name of the signal.
    */
   readonly stopSignal?: string | number;
 

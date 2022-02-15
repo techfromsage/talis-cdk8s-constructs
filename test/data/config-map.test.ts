@@ -254,7 +254,7 @@ describe("ConfigMap", () => {
           "FOO=bar",
           "# a comment = ignore",
           "VAR_WITH_SPECIAL_CHARS=space slash/other@#1!=",
-          "SIGNLE_QUOTED='yes it is'",
+          "SINGLE_QUOTED='yes it is'",
           'DOUBLE_QUOTED="this too"',
         ].join("\n"),
       });
@@ -264,7 +264,7 @@ describe("ConfigMap", () => {
       expect(configMap.data).toEqual({
         DOUBLE_QUOTED: "this too",
         FOO: "bar",
-        SIGNLE_QUOTED: "yes it is",
+        SINGLE_QUOTED: "yes it is",
         VAR_WITH_SPECIAL_CHARS: "space slash/other@#1!=",
       });
     });
