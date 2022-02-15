@@ -237,7 +237,7 @@ describe("BackgroundWorker", () => {
       expect(() => {
         new BackgroundWorker(Testing.chart(), "worker-test", {
           ...requiredProps,
-          stopSignal: "SIGKILL",
+          stopSignal: "KILL",
           lifecycle: {
             preStop: {
               exec: {
@@ -252,7 +252,7 @@ describe("BackgroundWorker", () => {
     test("Setting stopSignal creates a preStop hook", () => {
       const results = synthBackgroundWorker({
         ...requiredProps,
-        stopSignal: "SIGQUIT",
+        stopSignal: "QUIT",
       });
       const container = results[0].spec.template.spec.containers[0];
       expect(container.lifecycle).toMatchSnapshot();
@@ -261,7 +261,7 @@ describe("BackgroundWorker", () => {
     test("Merge stopSignal and postStart hook", () => {
       const results = synthBackgroundWorker({
         ...requiredProps,
-        stopSignal: "SIGQUIT",
+        stopSignal: "QUIT",
         lifecycle: {
           postStart: {
             exec: {
