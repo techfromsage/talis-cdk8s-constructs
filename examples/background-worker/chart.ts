@@ -10,7 +10,7 @@ import { Quantity } from "../../imports/k8s";
 
 export class BackgroundWorkerChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "example", ...props });
+    super(scope, { app: "worker", ...props });
 
     const release = process.env.RELEASE || "v1.0";
     const redisUrl = "redis.cache.svc.cluster.local:6379:1";

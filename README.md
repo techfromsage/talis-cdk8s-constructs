@@ -55,6 +55,7 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
 - `convertToJsonContent` - Stringify given object as JSON: `{"k1":"v1","k2":"v2"}` to be used as Ingress annotation.
 - `createImagePullSecret` - Creates a secret with auth credentials for pulling images from a private registry.
 - `getCanaryStage` - Gets the stage of a canary deployment from an environment variable, and validates its value.
+- `getDockerTag` - Gets the Docker tag from an environment variable, and validates its value.
 - `getEksDashboardUrl` - Builds the URL of the Kubernetes dashboard for a given cluster and namespace.
 - `getGraphsUrl` - Builds the URL of the Grafana workload dashboard for a given cluster and namespace.
 - `getLogsUrl` - Builds the URL of the Grafana logs dashboard for a given cluster and app.

@@ -7,14 +7,14 @@ Array [
     "kind": "Namespace",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
-      "name": "example-test",
-      "namespace": "example-test",
+      "name": "advanced-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -26,15 +26,15 @@ Array [
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -155,15 +155,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -184,7 +184,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -192,10 +192,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.2",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -206,7 +206,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "instance": "web",
         "role": "server",
@@ -221,14 +221,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -236,10 +236,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.2",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -278,7 +278,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -286,10 +286,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.2",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -300,7 +300,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "instance": "web",
         "role": "server",
@@ -315,14 +315,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -330,10 +330,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.2",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -359,7 +359,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -367,17 +367,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.2",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "replicas": 1,
       "revisionHistoryLimit": 1,
       "selector": Object {
         "matchLabels": Object {
-          "app": "example",
+          "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
@@ -386,7 +386,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "template": Object {
         "metadata": Object {
           "labels": Object {
-            "app": "example",
+            "app": "advanced",
             "canary": "true",
             "environment": "development",
             "instance": "web",
@@ -394,7 +394,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "region": "local",
             "release": "v0.2.2",
             "role": "server",
-            "service": "example-development-local",
+            "service": "advanced-development-local",
           },
         },
         "spec": Object {
@@ -405,7 +405,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "podAffinityTerm": Object {
                     "labelSelector": Object {
                       "matchLabels": Object {
-                        "app": "example",
+                        "app": "advanced",
                         "canary": "true",
                         "instance": "web",
                         "role": "server",
@@ -447,7 +447,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "name": "example",
+              "name": "advanced",
               "ports": Array [
                 Object {
                   "containerPort": 8000,
@@ -546,14 +546,14 @@ Array [
     "kind": "Namespace",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
-      "name": "example-test",
-      "namespace": "example-test",
+      "name": "advanced-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -565,15 +565,15 @@ Array [
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -694,15 +694,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -723,7 +723,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -731,10 +731,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -745,7 +745,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "instance": "web",
         "role": "server",
@@ -760,14 +760,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -775,10 +775,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -804,7 +804,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -812,16 +812,16 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
       "selector": Object {
         "matchLabels": Object {
-          "app": "example",
+          "app": "advanced",
           "canary": "false",
           "instance": "web",
           "role": "server",
@@ -830,7 +830,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "template": Object {
         "metadata": Object {
           "labels": Object {
-            "app": "example",
+            "app": "advanced",
             "canary": "false",
             "environment": "development",
             "instance": "web",
@@ -838,7 +838,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "region": "local",
             "release": "v0.2.1",
             "role": "server",
-            "service": "example-development-local",
+            "service": "advanced-development-local",
           },
         },
         "spec": Object {
@@ -849,7 +849,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "podAffinityTerm": Object {
                     "labelSelector": Object {
                       "matchLabels": Object {
-                        "app": "example",
+                        "app": "advanced",
                         "canary": "false",
                         "instance": "web",
                         "role": "server",
@@ -891,7 +891,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "name": "example",
+              "name": "advanced",
               "ports": Array [
                 Object {
                   "containerPort": 8000,
@@ -985,17 +985,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "HorizontalPodAutoscaler",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
         "managed-by": "cdk8s",
         "region": "local",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-hpa",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "maxReplicas": 5,
@@ -1037,7 +1037,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -1045,10 +1045,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -1059,7 +1059,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "instance": "web",
         "role": "server",
@@ -1074,14 +1074,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -1089,10 +1089,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1118,7 +1118,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -1126,17 +1126,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "replicas": 1,
       "revisionHistoryLimit": 1,
       "selector": Object {
         "matchLabels": Object {
-          "app": "example",
+          "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
@@ -1145,7 +1145,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "template": Object {
         "metadata": Object {
           "labels": Object {
-            "app": "example",
+            "app": "advanced",
             "canary": "true",
             "environment": "development",
             "instance": "web",
@@ -1153,7 +1153,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "region": "local",
             "release": "v0.2.1",
             "role": "server",
-            "service": "example-development-local",
+            "service": "advanced-development-local",
           },
         },
         "spec": Object {
@@ -1164,7 +1164,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "podAffinityTerm": Object {
                     "labelSelector": Object {
                       "matchLabels": Object {
-                        "app": "example",
+                        "app": "advanced",
                         "canary": "true",
                         "instance": "web",
                         "role": "server",
@@ -1206,7 +1206,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "name": "example",
+              "name": "advanced",
               "ports": Array [
                 Object {
                   "containerPort": 8000,
@@ -1305,14 +1305,14 @@ Array [
     "kind": "Namespace",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
-      "name": "example-test",
-      "namespace": "example-test",
+      "name": "advanced-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -1324,15 +1324,15 @@ Array [
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -1453,15 +1453,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -1482,7 +1482,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -1490,10 +1490,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -1504,7 +1504,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "instance": "web",
         "role": "server",
@@ -1519,14 +1519,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -1534,10 +1534,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1576,7 +1576,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -1584,10 +1584,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -1598,7 +1598,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "instance": "web",
         "role": "server",
@@ -1613,14 +1613,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -1628,10 +1628,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1657,7 +1657,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -1665,17 +1665,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "replicas": 1,
       "revisionHistoryLimit": 1,
       "selector": Object {
         "matchLabels": Object {
-          "app": "example",
+          "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
@@ -1684,7 +1684,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "template": Object {
         "metadata": Object {
           "labels": Object {
-            "app": "example",
+            "app": "advanced",
             "canary": "true",
             "environment": "development",
             "instance": "web",
@@ -1692,7 +1692,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "region": "local",
             "release": "v0.2.1",
             "role": "server",
-            "service": "example-development-local",
+            "service": "advanced-development-local",
           },
         },
         "spec": Object {
@@ -1703,7 +1703,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "podAffinityTerm": Object {
                     "labelSelector": Object {
                       "matchLabels": Object {
-                        "app": "example",
+                        "app": "advanced",
                         "canary": "true",
                         "instance": "web",
                         "role": "server",
@@ -1745,7 +1745,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "name": "example",
+              "name": "advanced",
               "ports": Array [
                 Object {
                   "containerPort": 8000,
@@ -1844,14 +1844,14 @@ Array [
     "kind": "Namespace",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
-      "name": "example-test",
-      "namespace": "example-test",
+      "name": "advanced-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -1863,15 +1863,15 @@ Array [
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -1992,15 +1992,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -2021,7 +2021,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -2029,10 +2029,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -2043,7 +2043,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "instance": "web",
         "role": "server",
       },
@@ -2057,14 +2057,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -2072,10 +2072,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2101,7 +2101,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -2109,16 +2109,16 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
       "selector": Object {
         "matchLabels": Object {
-          "app": "example",
+          "app": "advanced",
           "canary": "false",
           "instance": "web",
           "role": "server",
@@ -2127,7 +2127,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "template": Object {
         "metadata": Object {
           "labels": Object {
-            "app": "example",
+            "app": "advanced",
             "canary": "false",
             "environment": "development",
             "instance": "web",
@@ -2135,7 +2135,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "region": "local",
             "release": "v0.2.1",
             "role": "server",
-            "service": "example-development-local",
+            "service": "advanced-development-local",
           },
         },
         "spec": Object {
@@ -2146,7 +2146,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "podAffinityTerm": Object {
                     "labelSelector": Object {
                       "matchLabels": Object {
-                        "app": "example",
+                        "app": "advanced",
                         "canary": "false",
                         "instance": "web",
                         "role": "server",
@@ -2188,7 +2188,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "name": "example",
+              "name": "advanced",
               "ports": Array [
                 Object {
                   "containerPort": 8000,
@@ -2282,17 +2282,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "HorizontalPodAutoscaler",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
         "managed-by": "cdk8s",
         "region": "local",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-hpa",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "maxReplicas": 5,
@@ -2334,7 +2334,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -2342,10 +2342,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -2356,7 +2356,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "instance": "web",
         "role": "server",
@@ -2371,14 +2371,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -2386,10 +2386,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2415,7 +2415,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -2423,17 +2423,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "replicas": 1,
       "revisionHistoryLimit": 1,
       "selector": Object {
         "matchLabels": Object {
-          "app": "example",
+          "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
@@ -2442,7 +2442,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "template": Object {
         "metadata": Object {
           "labels": Object {
-            "app": "example",
+            "app": "advanced",
             "canary": "true",
             "environment": "development",
             "instance": "web",
@@ -2450,7 +2450,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "region": "local",
             "release": "v0.2.1",
             "role": "server",
-            "service": "example-development-local",
+            "service": "advanced-development-local",
           },
         },
         "spec": Object {
@@ -2461,7 +2461,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "podAffinityTerm": Object {
                     "labelSelector": Object {
                       "matchLabels": Object {
-                        "app": "example",
+                        "app": "advanced",
                         "canary": "true",
                         "instance": "web",
                         "role": "server",
@@ -2503,7 +2503,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "name": "example",
+              "name": "advanced",
               "ports": Array [
                 Object {
                   "containerPort": 8000,
@@ -2602,14 +2602,14 @@ Array [
     "kind": "Namespace",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
-      "name": "example-test",
-      "namespace": "example-test",
+      "name": "advanced-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -2621,15 +2621,15 @@ Array [
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -2750,15 +2750,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "ConfigMap",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
         "prunable": "true",
         "region": "local",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
   },
   Object {
@@ -2779,7 +2779,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -2787,10 +2787,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -2801,7 +2801,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "instance": "web",
         "role": "server",
       },
@@ -2815,14 +2815,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "false",
         "environment": "development",
         "instance": "web",
@@ -2830,10 +2830,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2872,7 +2872,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/url": "https://api.example.com/",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -2880,10 +2880,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "ports": Array [
@@ -2894,7 +2894,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "selector": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "instance": "web",
         "role": "server",
@@ -2909,14 +2909,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -2924,10 +2924,10 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2953,7 +2953,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "advanced",
         "canary": "true",
         "environment": "development",
         "instance": "web",
@@ -2961,17 +2961,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "release": "v0.2.1",
         "role": "server",
-        "service": "example-development-local",
+        "service": "advanced-development-local",
       },
       "name": "web-canary",
-      "namespace": "example-test",
+      "namespace": "advanced-test",
     },
     "spec": Object {
       "replicas": 1,
       "revisionHistoryLimit": 1,
       "selector": Object {
         "matchLabels": Object {
-          "app": "example",
+          "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
@@ -2980,7 +2980,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "template": Object {
         "metadata": Object {
           "labels": Object {
-            "app": "example",
+            "app": "advanced",
             "canary": "true",
             "environment": "development",
             "instance": "web",
@@ -2988,7 +2988,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "region": "local",
             "release": "v0.2.1",
             "role": "server",
-            "service": "example-development-local",
+            "service": "advanced-development-local",
           },
         },
         "spec": Object {
@@ -2999,7 +2999,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                   "podAffinityTerm": Object {
                     "labelSelector": Object {
                       "matchLabels": Object {
-                        "app": "example",
+                        "app": "advanced",
                         "canary": "true",
                         "instance": "web",
                         "role": "server",
@@ -3041,7 +3041,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "name": "example",
+              "name": "advanced",
               "ports": Array [
                 Object {
                   "containerPort": 8000,
