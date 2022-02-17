@@ -8,6 +8,7 @@ describe("TalisChart", () => {
       app: "my-app",
       environment: "production",
       region: "eu",
+      watermark: "",
     });
     const results = Testing.synth(chart);
     expect(results).toHaveLength(1);
@@ -20,6 +21,7 @@ describe("TalisChart", () => {
       app: "my-app",
       environment: "production",
       region: "eu",
+      watermark: "",
     });
 
     new ApiObject(chart, "foo", {
@@ -45,6 +47,7 @@ describe("TalisChart", () => {
     const chart = new TalisChart(app, {
       app: "my-app",
       environment: "staging",
+      watermark: "",
       region: "eu",
       labels: {
         foo: "bar",
@@ -94,8 +97,18 @@ describe("TalisChart", () => {
   });
 
   const namespaceTests: (TalisChartProps & { expected: string })[] = [
-    { environment: "staging", region: "eu", expected: "my-app" },
-    { environment: "production", region: "ca", expected: "my-app" },
+    {
+      environment: "staging",
+      region: "eu",
+      watermark: "test",
+      expected: "my-app-test",
+    },
+    {
+      environment: "production",
+      region: "ca",
+      watermark: "test",
+      expected: "my-app-test",
+    },
     {
       environment: "ondemand",
       region: "eu",
@@ -145,9 +158,24 @@ describe("TalisChart", () => {
   });
 
   const serviceLabelTests: (TalisChartProps & { expected: string })[] = [
-    { environment: "staging", region: "eu", expected: "my-app-staging-eu" },
-    { environment: "production", region: "eu", expected: "my-app-eu" },
-    { environment: "production", region: "ca", expected: "my-app-ca" },
+    {
+      environment: "staging",
+      region: "eu",
+      watermark: "test",
+      expected: "my-app-staging-eu",
+    },
+    {
+      environment: "production",
+      region: "eu",
+      watermark: "test",
+      expected: "my-app-eu",
+    },
+    {
+      environment: "production",
+      region: "ca",
+      watermark: "test",
+      expected: "my-app-ca",
+    },
     {
       environment: "ondemand",
       region: "eu",

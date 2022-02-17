@@ -10,8 +10,8 @@ export interface TalisChartProps extends ChartProps {
   readonly environment: "production" | "staging" | "ondemand" | "development";
   /** Short region code */
   readonly region: "ca" | "eu" | "local";
-  /** An identifier, will be appended to the namespace if specified */
-  readonly watermark?: string;
+  /** An identifier, will be appended to the namespace */
+  readonly watermark: string;
 }
 
 /** @private */
@@ -29,7 +29,8 @@ export class TalisChart extends Chart {
 
   constructor(scope: Construct, props: TalisChartConstructorProps) {
     const { app, environment, region, watermark } = props;
-    const envPrefix = environment !== "production" ? environment : "";
+    const maybeEnvironment = environment !== "production" ? environment : "";
+    const maybeWatermark = environment === "ondemand" ? watermark : "";
     const namespace = props.namespace ?? joinNameParts([app, watermark]);
     const id = `${namespace}-${environment}-${region}`;
 
@@ -40,7 +41,7 @@ export class TalisChart extends Chart {
         environment: environment,
         region: region,
         "managed-by": "cdk8s",
-        service: joinNameParts([app, watermark, envPrefix, region]),
+        service: joinNameParts([app, maybeWatermark, maybeEnvironment, region]),
         ...props.labels,
       },
     });

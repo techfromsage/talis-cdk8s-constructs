@@ -6,5 +6,6 @@ const app = new App();
 new AdvancedWebServiceChart(app, {
   environment: "development",
   region: "local",
+  watermark: "example",
 });
 app.synth();

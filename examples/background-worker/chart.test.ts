@@ -20,6 +20,7 @@ describe("BackgroundWorker example", () => {
     const chart = new BackgroundWorkerChart(app, {
       environment: "development",
       region: "local",
+      watermark: "test",
     });
     const results = Testing.synth(chart);
     expect(results).toMatchSnapshot();
@@ -31,6 +32,7 @@ describe("BackgroundWorker example", () => {
     const chart = new BackgroundWorkerChart(app, {
       environment: "development",
       region: "local",
+      watermark: "test",
     });
     const results = Testing.synth(chart);
     expect(results).toMatchSnapshot();

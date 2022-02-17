@@ -20,6 +20,7 @@ describe("Advanced WebService example", () => {
       const chart = new AdvancedWebServiceChart(app, {
         environment: "development",
         region: "local",
+        watermark: "test",
       });
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
@@ -33,6 +34,7 @@ describe("Advanced WebService example", () => {
     const chart = new AdvancedWebServiceChart(app, {
       environment: "development",
       region: "local",
+      watermark: "test",
     });
     const results = Testing.synth(chart);
     expect(results).toMatchSnapshot();
