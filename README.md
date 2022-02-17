@@ -53,6 +53,7 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
 - `convertToStringList` - Stringify given list as stringList: `s1,s2,s3` to be used as Ingress annotation.
 - `convertToStringMap` - Stringify given object as stringMap: `k1=v1,k2=v2` to be used as Ingress annotation.
 - `convertToJsonContent` - Stringify given object as JSON: `{"k1":"v1","k2":"v2"}` to be used as Ingress annotation.
+- `createDockerHubSecretFromEnv` - Creates a secret with auth credentials for pulling images from Docker Hub.
 - `createImagePullSecret` - Creates a secret with auth credentials for pulling images from a private registry.
 - `getCanaryStage` - Gets the stage of a canary deployment from an environment variable, and validates its value.
 - `getDockerTag` - Gets the Docker tag from an environment variable, and validates its value.

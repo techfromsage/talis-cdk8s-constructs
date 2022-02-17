@@ -1,7 +1,8 @@
 import { Construct } from "constructs";
 import {
   BackgroundWorker,
-  createImagePullSecret,
+  createDockerHubSecretFromEnv,
+  getDockerTag,
   ResqueWeb,
   TalisChart,
   TalisChartProps,
@@ -12,12 +13,9 @@ export class BackgroundWorkerChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
     super(scope, { app: "worker", ...props });
 
-    const release = process.env.RELEASE || "v1.0";
+    const release = getDockerTag("RELEASE", props.environment, "v1.0");
     const redisUrl = "redis.cache.svc.cluster.local:6379:1";
-
-    const dockerHubSecret = createImagePullSecret(this, {
-      auth: `${process.env.DOCKER_USERNAME}:${process.env.DOCKER_PASSWORD}`,
-    });
+    const dockerHubSecret = createDockerHubSecretFromEnv(this);
 
     new ResqueWeb(this, "resque", {
       externalUrl: "https://resque.example.com",
