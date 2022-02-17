@@ -31,7 +31,7 @@ Array [
         "region": "local",
         "service": "worker-development-local",
       },
-      "name": "image-pull-secret",
+      "name": "docker-hub-cred",
       "namespace": "worker-test",
     },
     "type": "kubernetes.io/dockerconfigjson",
@@ -220,7 +220,7 @@ Array [
           ],
           "imagePullSecrets": Array [
             Object {
-              "name": "image-pull-secret",
+              "name": "docker-hub-cred",
             },
           ],
           "priorityClassName": "web",
@@ -336,7 +336,7 @@ Array [
           ],
           "imagePullSecrets": Array [
             Object {
-              "name": "image-pull-secret",
+              "name": "docker-hub-cred",
             },
           ],
           "terminationGracePeriodSeconds": 300,
@@ -378,7 +378,7 @@ Array [
         "region": "local",
         "service": "worker-development-local",
       },
-      "name": "image-pull-secret",
+      "name": "docker-hub-cred",
       "namespace": "worker-test",
     },
     "type": "kubernetes.io/dockerconfigjson",
@@ -567,7 +567,7 @@ Array [
           ],
           "imagePullSecrets": Array [
             Object {
-              "name": "image-pull-secret",
+              "name": "docker-hub-cred",
             },
           ],
           "priorityClassName": "web",
@@ -683,7 +683,7 @@ Array [
           ],
           "imagePullSecrets": Array [
             Object {
-              "name": "image-pull-secret",
+              "name": "docker-hub-cred",
             },
           ],
           "terminationGracePeriodSeconds": 300,

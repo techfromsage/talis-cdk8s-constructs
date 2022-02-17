@@ -34,10 +34,6 @@ interface ImagePullSecretFactoryProps {
 /**
  * Create a secret with auth credentials for pulling images from a private registry.
  * @see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
- * @param scope
- * @param auth
- * @param registry
- * @returns
  */
 export function createImagePullSecret(
   scope: Construct,
@@ -62,4 +58,24 @@ export function createImagePullSecret(
   });
 
   return secret;
+}
+
+/**
+ * Create a secret with auth credentials for pulling images from Docker Hub.
+ */
+export function createDockerHubSecretFromEnv(scope: Construct) {
+  const { DOCKER_USERNAME, DOCKER_PASSWORD } = process.env;
+
+  if (!DOCKER_USERNAME || !DOCKER_PASSWORD) {
+    throw new Error(
+      "DOCKER_USERNAME and DOCKER_PASSWORD must be set in the environment"
+    );
+  }
+
+  const dockerHubSecret = createImagePullSecret(scope, {
+    id: "docker-hub-cred",
+    auth: `${DOCKER_USERNAME}:${DOCKER_PASSWORD}`,
+  });
+
+  return dockerHubSecret;
 }

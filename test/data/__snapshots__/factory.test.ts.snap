@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`factory createDockerHubSecretFromEnv Creates config with Docker Hub credentials from env vars 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
+    },
+    "kind": "Secret",
+    "metadata": Object {
+      "name": "test-docker-hub-cred-c8d251b2",
+    },
+    "type": "kubernetes.io/dockerconfigjson",
+  },
+]
+`;
+
+exports[`factory createDockerHubSecretFromEnv Throws if Docker credentials env vars are not set 1`] = `"DOCKER_USERNAME and DOCKER_PASSWORD must be set in the environment"`;
+
 exports[`factory createImagePullSecret Creates config with Docker Hub credentials by default 1`] = `
 Array [
   Object {
