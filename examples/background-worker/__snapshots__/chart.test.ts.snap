@@ -31,7 +31,7 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-image-pull-secret-c8fa1a91",
+      "name": "image-pull-secret",
       "namespace": "example",
     },
     "type": "kubernetes.io/dockerconfigjson",
@@ -63,7 +63,7 @@ Array [
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-resque-service-c804e6ef",
+      "name": "resque-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -106,13 +106,13 @@ Array [
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-resque-ingress-c84b8e52",
+      "name": "resque-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-resque-service-c804e6ef",
+          "name": "resque-service",
           "port": Object {
             "number": 3000,
           },
@@ -142,7 +142,7 @@ Array [
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-resque-deployment-c82222d7",
+      "name": "resque",
       "namespace": "example",
     },
     "spec": Object {
@@ -220,7 +220,7 @@ Array [
           ],
           "imagePullSecrets": Array [
             Object {
-              "name": "example-development-local-image-pull-secret-c8fa1a91",
+              "name": "image-pull-secret",
             },
           ],
           "priorityClassName": "web",
@@ -242,7 +242,7 @@ Array [
         "role": "worker",
         "service": "example-development-local",
       },
-      "name": "example-development-local-php-worker-example-c8a4b861",
+      "name": "php-worker-example",
       "namespace": "example",
     },
     "spec": Object {
@@ -336,7 +336,7 @@ Array [
           ],
           "imagePullSecrets": Array [
             Object {
-              "name": "example-development-local-image-pull-secret-c8fa1a91",
+              "name": "image-pull-secret",
             },
           ],
           "terminationGracePeriodSeconds": 300,
@@ -378,7 +378,7 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-image-pull-secret-c8fa1a91",
+      "name": "image-pull-secret",
       "namespace": "example",
     },
     "type": "kubernetes.io/dockerconfigjson",
@@ -410,7 +410,7 @@ Array [
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-resque-service-c804e6ef",
+      "name": "resque-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -453,13 +453,13 @@ Array [
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-resque-ingress-c84b8e52",
+      "name": "resque-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-resque-service-c804e6ef",
+          "name": "resque-service",
           "port": Object {
             "number": 3000,
           },
@@ -489,7 +489,7 @@ Array [
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-resque-deployment-c82222d7",
+      "name": "resque",
       "namespace": "example",
     },
     "spec": Object {
@@ -567,7 +567,7 @@ Array [
           ],
           "imagePullSecrets": Array [
             Object {
-              "name": "example-development-local-image-pull-secret-c8fa1a91",
+              "name": "image-pull-secret",
             },
           ],
           "priorityClassName": "web",
@@ -589,7 +589,7 @@ Array [
         "role": "worker",
         "service": "example-development-local",
       },
-      "name": "example-development-local-php-worker-example-c8a4b861",
+      "name": "php-worker-example",
       "namespace": "example",
     },
     "spec": Object {
@@ -683,7 +683,7 @@ Array [
           ],
           "imagePullSecrets": Array [
             Object {
-              "name": "example-development-local-image-pull-secret-c8fa1a91",
+              "name": "image-pull-secret",
             },
           ],
           "terminationGracePeriodSeconds": 300,

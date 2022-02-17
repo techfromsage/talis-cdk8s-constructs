@@ -659,12 +659,12 @@ describe("WebService", () => {
       expect(byKind.Deployment).toHaveLength(2);
 
       expect(results.map((obj) => obj.metadata.name)).toEqual([
-        "service",
-        "ingress",
-        "deployment",
-        "service-canary",
-        "ingress-canary",
-        "deployment-canary",
+        "web-service",
+        "web-ingress",
+        "web",
+        "web-canary-service",
+        "web-canary-ingress",
+        "web-canary",
       ]);
     });
 

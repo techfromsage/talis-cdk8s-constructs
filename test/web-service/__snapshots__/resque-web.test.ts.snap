@@ -25,7 +25,7 @@ Array [
         "release": "stable",
         "role": "server",
       },
-      "name": "test-resque-web-service-c87aa606",
+      "name": "test-resque-web-resque-web-service-c81bf306",
     },
     "spec": Object {
       "ports": Array [
@@ -61,12 +61,12 @@ Array [
         "release": "stable",
         "role": "server",
       },
-      "name": "test-resque-web-ingress-c806493b",
+      "name": "test-resque-web-resque-web-ingress-c8c81984",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "test-resque-web-service-c87aa606",
+          "name": "test-resque-web-resque-web-service-c81bf306",
           "port": Object {
             "number": 3000,
           },
@@ -85,7 +85,7 @@ Array [
         "release": "stable",
         "role": "server",
       },
-      "name": "test-resque-web-deployment-c8b6d466",
+      "name": "test-resque-web-c82b282b",
     },
     "spec": Object {
       "replicas": 1,
@@ -183,7 +183,7 @@ Array [
         "release": "latest",
         "role": "server",
       },
-      "name": "test-resque-web-service-c87aa606",
+      "name": "test-resque-web-resque-web-service-c81bf306",
     },
     "spec": Object {
       "ports": Array [
@@ -221,12 +221,12 @@ Array [
         "release": "latest",
         "role": "server",
       },
-      "name": "test-resque-web-ingress-c806493b",
+      "name": "test-resque-web-resque-web-ingress-c8c81984",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "test-resque-web-service-c87aa606",
+          "name": "test-resque-web-resque-web-service-c81bf306",
           "port": Object {
             "number": 3000,
           },
@@ -252,7 +252,7 @@ Array [
         "release": "latest",
         "role": "server",
       },
-      "name": "test-resque-web-deployment-c8b6d466",
+      "name": "test-resque-web-c82b282b",
     },
     "spec": Object {
       "replicas": 1,
