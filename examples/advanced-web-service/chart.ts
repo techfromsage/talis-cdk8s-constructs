@@ -1,21 +1,22 @@
 import { Construct } from "constructs";
 import {
-  getCanaryStage,
-  nginxUtil,
   ConfigMap,
-  WebService,
+  getCanaryStage,
+  getDockerTag,
+  nginxUtil,
   TalisChart,
   TalisChartProps,
+  WebService,
 } from "../../lib";
 import { IntOrString, Quantity } from "../../imports/k8s";
 import path from "path";
 
 export class AdvancedWebServiceChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "example", ...props });
+    super(scope, { app: "advanced", ...props });
 
     const stage = getCanaryStage("CANARY_STAGE");
-    const release = process.env.RELEASE || "v0.2.1";
+    const release = getDockerTag("RELEASE", props.environment, "v0.2.1");
 
     const applicationPort = 8000;
     const appConfigMap = new ConfigMap(this, "config", {

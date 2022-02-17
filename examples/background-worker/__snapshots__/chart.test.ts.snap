@@ -7,14 +7,14 @@ Array [
     "kind": "Namespace",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "worker",
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
-      "name": "example-test",
-      "namespace": "example-test",
+      "name": "worker-test",
+      "namespace": "worker-test",
     },
   },
   Object {
@@ -25,14 +25,14 @@ Array [
     "kind": "Secret",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "worker",
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "image-pull-secret",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "type": "kubernetes.io/dockerconfigjson",
   },
@@ -61,10 +61,10 @@ Array [
         "region": "local",
         "release": "stable",
         "role": "server",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "resque-service",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "spec": Object {
       "ports": Array [
@@ -89,11 +89,11 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-resque-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "worker-test-resque-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=resque,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=worker-development-local,instance=resque,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -104,10 +104,10 @@ Array [
         "region": "local",
         "release": "stable",
         "role": "server",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "resque-ingress",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -140,10 +140,10 @@ Array [
         "region": "local",
         "release": "stable",
         "role": "server",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "resque",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "spec": Object {
       "replicas": 1,
@@ -165,7 +165,7 @@ Array [
             "region": "local",
             "release": "stable",
             "role": "server",
-            "service": "example-development-local",
+            "service": "worker-development-local",
           },
         },
         "spec": Object {
@@ -199,7 +199,7 @@ Array [
               ],
               "image": "talis/resque-web:stable",
               "imagePullPolicy": "IfNotPresent",
-              "name": "example",
+              "name": "worker",
               "ports": Array [
                 Object {
                   "containerPort": 3000,
@@ -233,23 +233,23 @@ Array [
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "worker",
         "environment": "development",
         "instance": "php-worker-example",
         "managed-by": "cdk8s",
         "region": "local",
         "release": "v2.2",
         "role": "worker",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "php-worker-example",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
       "selector": Object {
         "matchLabels": Object {
-          "app": "example",
+          "app": "worker",
           "instance": "php-worker-example",
           "role": "worker",
         },
@@ -257,14 +257,14 @@ Array [
       "template": Object {
         "metadata": Object {
           "labels": Object {
-            "app": "example",
+            "app": "worker",
             "environment": "development",
             "instance": "php-worker-example",
             "managed-by": "cdk8s",
             "region": "local",
             "release": "v2.2",
             "role": "worker",
-            "service": "example-development-local",
+            "service": "worker-development-local",
           },
         },
         "spec": Object {
@@ -275,7 +275,7 @@ Array [
                   "podAffinityTerm": Object {
                     "labelSelector": Object {
                       "matchLabels": Object {
-                        "app": "example",
+                        "app": "worker",
                         "instance": "php-worker-example",
                         "role": "worker",
                       },
@@ -325,7 +325,7 @@ Array [
                   },
                 },
               },
-              "name": "example",
+              "name": "worker",
               "resources": Object {
                 "requests": Object {
                   "cpu": "50m",
@@ -354,14 +354,14 @@ Array [
     "kind": "Namespace",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "worker",
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
-      "name": "example-test",
-      "namespace": "example-test",
+      "name": "worker-test",
+      "namespace": "worker-test",
     },
   },
   Object {
@@ -372,14 +372,14 @@ Array [
     "kind": "Secret",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "worker",
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "image-pull-secret",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "type": "kubernetes.io/dockerconfigjson",
   },
@@ -408,10 +408,10 @@ Array [
         "region": "local",
         "release": "stable",
         "role": "server",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "resque-service",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "spec": Object {
       "ports": Array [
@@ -436,11 +436,11 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-resque-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "worker-test-resque-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=resque,environment=development",
+        "alb.ingress.kubernetes.io/tags": "service=worker-development-local,instance=resque,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
       "labels": Object {
@@ -451,10 +451,10 @@ Array [
         "region": "local",
         "release": "stable",
         "role": "server",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "resque-ingress",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -487,10 +487,10 @@ Array [
         "region": "local",
         "release": "stable",
         "role": "server",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "resque",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "spec": Object {
       "replicas": 1,
@@ -512,7 +512,7 @@ Array [
             "region": "local",
             "release": "stable",
             "role": "server",
-            "service": "example-development-local",
+            "service": "worker-development-local",
           },
         },
         "spec": Object {
@@ -546,7 +546,7 @@ Array [
               ],
               "image": "talis/resque-web:stable",
               "imagePullPolicy": "IfNotPresent",
-              "name": "example",
+              "name": "worker",
               "ports": Array [
                 Object {
                   "containerPort": 3000,
@@ -580,23 +580,23 @@ Array [
     "kind": "Deployment",
     "metadata": Object {
       "labels": Object {
-        "app": "example",
+        "app": "worker",
         "environment": "development",
         "instance": "php-worker-example",
         "managed-by": "cdk8s",
         "region": "local",
         "release": "v1.0",
         "role": "worker",
-        "service": "example-development-local",
+        "service": "worker-development-local",
       },
       "name": "php-worker-example",
-      "namespace": "example-test",
+      "namespace": "worker-test",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
       "selector": Object {
         "matchLabels": Object {
-          "app": "example",
+          "app": "worker",
           "instance": "php-worker-example",
           "role": "worker",
         },
@@ -604,14 +604,14 @@ Array [
       "template": Object {
         "metadata": Object {
           "labels": Object {
-            "app": "example",
+            "app": "worker",
             "environment": "development",
             "instance": "php-worker-example",
             "managed-by": "cdk8s",
             "region": "local",
             "release": "v1.0",
             "role": "worker",
-            "service": "example-development-local",
+            "service": "worker-development-local",
           },
         },
         "spec": Object {
@@ -622,7 +622,7 @@ Array [
                   "podAffinityTerm": Object {
                     "labelSelector": Object {
                       "matchLabels": Object {
-                        "app": "example",
+                        "app": "worker",
                         "instance": "php-worker-example",
                         "role": "worker",
                       },
@@ -672,7 +672,7 @@ Array [
                   },
                 },
               },
-              "name": "example",
+              "name": "worker",
               "resources": Object {
                 "requests": Object {
                   "cpu": "50m",
