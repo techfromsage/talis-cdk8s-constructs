@@ -18,7 +18,8 @@
     "format": "npm run format:prettier",
     "lint:eslint": "eslint . --ext .ts",
     "lint:prettier": "prettier --check .",
-    "lint": "npm run lint:prettier && npm run lint:eslint",
+    "lint:ts": "tsc --noEmit",
+    "lint": "npm run lint:prettier && npm run lint:eslint && npm run lint:ts",
     "prepare": "husky install",
     "release": "npm run build && semantic-release",
     "test": "jest"

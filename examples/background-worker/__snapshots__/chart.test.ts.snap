@@ -13,8 +13,8 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example",
-      "namespace": "example",
+      "name": "example-test",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -32,7 +32,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "image-pull-secret",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "type": "kubernetes.io/dockerconfigjson",
   },
@@ -64,7 +64,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "resque-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -89,7 +89,7 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-resque-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-resque-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
@@ -107,7 +107,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "resque-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -143,7 +143,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "resque",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "replicas": 1,
@@ -243,7 +243,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "php-worker-example",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
@@ -360,8 +360,8 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example",
-      "namespace": "example",
+      "name": "example-test",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -379,7 +379,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "image-pull-secret",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "type": "kubernetes.io/dockerconfigjson",
   },
@@ -411,7 +411,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "resque-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -436,7 +436,7 @@ Array [
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-resque-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-resque-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/ssl-redirect": "443",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
@@ -454,7 +454,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "resque-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -490,7 +490,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "resque",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "replicas": 1,
@@ -590,7 +590,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "php-worker-example",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,

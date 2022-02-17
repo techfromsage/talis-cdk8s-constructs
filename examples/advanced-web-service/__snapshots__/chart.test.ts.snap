@@ -13,8 +13,8 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example",
-      "namespace": "example",
+      "name": "example-test",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -34,7 +34,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -163,7 +163,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -195,7 +195,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -221,7 +221,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -239,7 +239,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -289,7 +289,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -315,7 +315,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -333,7 +333,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -370,7 +370,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "replicas": 1,
@@ -552,8 +552,8 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example",
-      "namespace": "example",
+      "name": "example-test",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -573,7 +573,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -702,7 +702,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -734,7 +734,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -760,7 +760,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -778,7 +778,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -815,7 +815,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
@@ -995,7 +995,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-hpa",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "maxReplicas": 5,
@@ -1048,7 +1048,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -1074,7 +1074,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -1092,7 +1092,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1129,7 +1129,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "replicas": 1,
@@ -1311,8 +1311,8 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example",
-      "namespace": "example",
+      "name": "example-test",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -1332,7 +1332,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -1461,7 +1461,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -1493,7 +1493,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -1519,7 +1519,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -1537,7 +1537,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1587,7 +1587,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -1613,7 +1613,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -1631,7 +1631,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -1668,7 +1668,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "replicas": 1,
@@ -1850,8 +1850,8 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example",
-      "namespace": "example",
+      "name": "example-test",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -1871,7 +1871,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -2000,7 +2000,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -2032,7 +2032,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -2057,7 +2057,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -2075,7 +2075,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2112,7 +2112,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "revisionHistoryLimit": 1,
@@ -2292,7 +2292,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-hpa",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "maxReplicas": 5,
@@ -2345,7 +2345,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -2371,7 +2371,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -2389,7 +2389,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2426,7 +2426,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "replicas": 1,
@@ -2608,8 +2608,8 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example",
-      "namespace": "example",
+      "name": "example-test",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -2629,7 +2629,7 @@ Array [
         "service": "example-development-local",
       },
       "name": "config-c5654mfm82",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -2758,7 +2758,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "nginx-config-82htd5f6t7",
-      "namespace": "example",
+      "namespace": "example-test",
     },
   },
   Object {
@@ -2790,7 +2790,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -2815,7 +2815,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -2833,7 +2833,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2883,7 +2883,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-service",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "ports": Array [
@@ -2909,7 +2909,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "annotations": Object {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
-        "alb.ingress.kubernetes.io/load-balancer-name": "example-web-c-develop",
+        "alb.ingress.kubernetes.io/load-balancer-name": "example-test-web-c-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=example-development-local,instance=web,environment=development",
@@ -2927,7 +2927,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary-ingress",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "defaultBackend": Object {
@@ -2964,7 +2964,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "service": "example-development-local",
       },
       "name": "web-canary",
-      "namespace": "example",
+      "namespace": "example-test",
     },
     "spec": Object {
       "replicas": 1,
