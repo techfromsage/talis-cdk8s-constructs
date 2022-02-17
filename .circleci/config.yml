@@ -5,7 +5,7 @@ orbs:
 
 jobs:
   fan_out:
-    machine: true
+    executor: node/default
     steps:
       - run: echo "Building $CIRCLE_BRANCH"
 

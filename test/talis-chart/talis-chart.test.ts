@@ -8,7 +8,7 @@ describe("TalisChart", () => {
       app: "my-app",
       environment: "production",
       region: "eu",
-      watermark: "",
+      watermark: "test",
     });
     const results = Testing.synth(chart);
     expect(results).toHaveLength(1);
@@ -21,7 +21,7 @@ describe("TalisChart", () => {
       app: "my-app",
       environment: "production",
       region: "eu",
-      watermark: "",
+      watermark: "test",
     });
 
     new ApiObject(chart, "foo", {
@@ -47,7 +47,7 @@ describe("TalisChart", () => {
     const chart = new TalisChart(app, {
       app: "my-app",
       environment: "staging",
-      watermark: "",
+      watermark: "test",
       region: "eu",
       labels: {
         foo: "bar",
