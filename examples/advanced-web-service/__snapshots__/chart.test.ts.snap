@@ -33,7 +33,7 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+      "name": "config-c5654mfm82",
       "namespace": "example",
     },
   },
@@ -162,7 +162,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+      "name": "nginx-config-82htd5f6t7",
       "namespace": "example",
     },
   },
@@ -194,7 +194,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-c837099f",
+      "name": "web-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -238,13 +238,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-c801f615",
+      "name": "web-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-c837099f",
+          "name": "web-service",
           "port": Object {
             "number": 80,
           },
@@ -288,7 +288,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-canary-c818b415",
+      "name": "web-canary-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -332,13 +332,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-canary-c817d5cd",
+      "name": "web-canary-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-canary-c818b415",
+          "name": "web-canary-service",
           "port": Object {
             "number": 80,
           },
@@ -369,7 +369,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-deployment-canary-c8f1e5eb",
+      "name": "web-canary",
       "namespace": "example",
     },
     "spec": Object {
@@ -430,7 +430,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
               "envFrom": Array [
                 Object {
                   "configMapRef": Object {
-                    "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+                    "name": "config-c5654mfm82",
                   },
                 },
               ],
@@ -527,7 +527,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             Object {
               "configMap": Object {
                 "defaultMode": 292,
-                "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+                "name": "nginx-config-82htd5f6t7",
               },
               "name": "nginx-config",
             },
@@ -572,7 +572,7 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+      "name": "config-c5654mfm82",
       "namespace": "example",
     },
   },
@@ -701,7 +701,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+      "name": "nginx-config-82htd5f6t7",
       "namespace": "example",
     },
   },
@@ -733,7 +733,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-c837099f",
+      "name": "web-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -777,13 +777,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-c801f615",
+      "name": "web-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-c837099f",
+          "name": "web-service",
           "port": Object {
             "number": 80,
           },
@@ -814,7 +814,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-deployment-c8a6fbdc",
+      "name": "web",
       "namespace": "example",
     },
     "spec": Object {
@@ -874,7 +874,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
               "envFrom": Array [
                 Object {
                   "configMapRef": Object {
-                    "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+                    "name": "config-c5654mfm82",
                   },
                 },
               ],
@@ -971,7 +971,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             Object {
               "configMap": Object {
                 "defaultMode": 292,
-                "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+                "name": "nginx-config-82htd5f6t7",
               },
               "name": "nginx-config",
             },
@@ -994,7 +994,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-hpa-c8692541",
+      "name": "web-hpa",
       "namespace": "example",
     },
     "spec": Object {
@@ -1015,7 +1015,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "scaleTargetRef": Object {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
-        "name": "example-development-local-web-deployment-c8a6fbdc",
+        "name": "web",
       },
     },
   },
@@ -1047,7 +1047,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-canary-c818b415",
+      "name": "web-canary-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -1091,13 +1091,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-canary-c817d5cd",
+      "name": "web-canary-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-canary-c818b415",
+          "name": "web-canary-service",
           "port": Object {
             "number": 80,
           },
@@ -1128,7 +1128,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-deployment-canary-c8f1e5eb",
+      "name": "web-canary",
       "namespace": "example",
     },
     "spec": Object {
@@ -1189,7 +1189,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
               "envFrom": Array [
                 Object {
                   "configMapRef": Object {
-                    "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+                    "name": "config-c5654mfm82",
                   },
                 },
               ],
@@ -1286,7 +1286,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             Object {
               "configMap": Object {
                 "defaultMode": 292,
-                "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+                "name": "nginx-config-82htd5f6t7",
               },
               "name": "nginx-config",
             },
@@ -1331,7 +1331,7 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+      "name": "config-c5654mfm82",
       "namespace": "example",
     },
   },
@@ -1460,7 +1460,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+      "name": "nginx-config-82htd5f6t7",
       "namespace": "example",
     },
   },
@@ -1492,7 +1492,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-c837099f",
+      "name": "web-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -1536,13 +1536,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-c801f615",
+      "name": "web-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-c837099f",
+          "name": "web-service",
           "port": Object {
             "number": 80,
           },
@@ -1586,7 +1586,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-canary-c818b415",
+      "name": "web-canary-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -1630,13 +1630,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-canary-c817d5cd",
+      "name": "web-canary-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-canary-c818b415",
+          "name": "web-canary-service",
           "port": Object {
             "number": 80,
           },
@@ -1667,7 +1667,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-deployment-canary-c8f1e5eb",
+      "name": "web-canary",
       "namespace": "example",
     },
     "spec": Object {
@@ -1728,7 +1728,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
               "envFrom": Array [
                 Object {
                   "configMapRef": Object {
-                    "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+                    "name": "config-c5654mfm82",
                   },
                 },
               ],
@@ -1825,7 +1825,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             Object {
               "configMap": Object {
                 "defaultMode": 292,
-                "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+                "name": "nginx-config-82htd5f6t7",
               },
               "name": "nginx-config",
             },
@@ -1870,7 +1870,7 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+      "name": "config-c5654mfm82",
       "namespace": "example",
     },
   },
@@ -1999,7 +1999,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+      "name": "nginx-config-82htd5f6t7",
       "namespace": "example",
     },
   },
@@ -2031,7 +2031,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-c837099f",
+      "name": "web-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -2074,13 +2074,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-c801f615",
+      "name": "web-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-c837099f",
+          "name": "web-service",
           "port": Object {
             "number": 80,
           },
@@ -2111,7 +2111,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-deployment-c8a6fbdc",
+      "name": "web",
       "namespace": "example",
     },
     "spec": Object {
@@ -2171,7 +2171,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
               "envFrom": Array [
                 Object {
                   "configMapRef": Object {
-                    "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+                    "name": "config-c5654mfm82",
                   },
                 },
               ],
@@ -2268,7 +2268,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             Object {
               "configMap": Object {
                 "defaultMode": 292,
-                "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+                "name": "nginx-config-82htd5f6t7",
               },
               "name": "nginx-config",
             },
@@ -2291,7 +2291,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-hpa-c8692541",
+      "name": "web-hpa",
       "namespace": "example",
     },
     "spec": Object {
@@ -2312,7 +2312,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "scaleTargetRef": Object {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
-        "name": "example-development-local-web-deployment-c8a6fbdc",
+        "name": "web",
       },
     },
   },
@@ -2344,7 +2344,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-canary-c818b415",
+      "name": "web-canary-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -2388,13 +2388,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-canary-c817d5cd",
+      "name": "web-canary-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-canary-c818b415",
+          "name": "web-canary-service",
           "port": Object {
             "number": 80,
           },
@@ -2425,7 +2425,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-deployment-canary-c8f1e5eb",
+      "name": "web-canary",
       "namespace": "example",
     },
     "spec": Object {
@@ -2486,7 +2486,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
               "envFrom": Array [
                 Object {
                   "configMapRef": Object {
-                    "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+                    "name": "config-c5654mfm82",
                   },
                 },
               ],
@@ -2583,7 +2583,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             Object {
               "configMap": Object {
                 "defaultMode": 292,
-                "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+                "name": "nginx-config-82htd5f6t7",
               },
               "name": "nginx-config",
             },
@@ -2628,7 +2628,7 @@ Array [
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+      "name": "config-c5654mfm82",
       "namespace": "example",
     },
   },
@@ -2757,7 +2757,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "example-development-local",
       },
-      "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+      "name": "nginx-config-82htd5f6t7",
       "namespace": "example",
     },
   },
@@ -2789,7 +2789,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-c837099f",
+      "name": "web-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -2832,13 +2832,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-c801f615",
+      "name": "web-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-c837099f",
+          "name": "web-service",
           "port": Object {
             "number": 80,
           },
@@ -2882,7 +2882,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-service-canary-c818b415",
+      "name": "web-canary-service",
       "namespace": "example",
     },
     "spec": Object {
@@ -2926,13 +2926,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-ingress-canary-c817d5cd",
+      "name": "web-canary-ingress",
       "namespace": "example",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "example-development-local-web-service-canary-c818b415",
+          "name": "web-canary-service",
           "port": Object {
             "number": 80,
           },
@@ -2963,7 +2963,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "role": "server",
         "service": "example-development-local",
       },
-      "name": "example-development-local-web-deployment-canary-c8f1e5eb",
+      "name": "web-canary",
       "namespace": "example",
     },
     "spec": Object {
@@ -3024,7 +3024,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
               "envFrom": Array [
                 Object {
                   "configMapRef": Object {
-                    "name": "example-development-local-config-c8637291-hcbk5g8tb2",
+                    "name": "config-c5654mfm82",
                   },
                 },
               ],
@@ -3121,7 +3121,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             Object {
               "configMap": Object {
                 "defaultMode": 292,
-                "name": "example-development-local-nginx-config-c896c7f4-cbd2h4g7hb",
+                "name": "nginx-config-82htd5f6t7",
               },
               "name": "nginx-config",
             },

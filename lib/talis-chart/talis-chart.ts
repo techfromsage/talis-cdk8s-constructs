@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { Chart, ChartProps } from "cdk8s";
+import { ApiObject, Chart, ChartProps } from "cdk8s";
 import { KubeNamespace } from "../../imports/k8s";
 import { joinNameParts } from "../common";
 
@@ -50,5 +50,9 @@ export class TalisChart extends Chart {
     this.kubeNamespace = new KubeNamespace(this, "namespace", {
       metadata: { name: this.namespace },
     });
+  }
+
+  generateObjectName(apiObject: ApiObject): string {
+    return apiObject.node.id;
   }
 }

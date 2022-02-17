@@ -95,7 +95,7 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "test-web-service-c839d136",
+      "name": "test-web-web-service-c828a686",
       "namespace": "props-test",
     },
     "spec": Object {
@@ -140,13 +140,13 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "test-web-ingress-c822b2f2",
+      "name": "test-web-web-ingress-c8ed2b8e",
       "namespace": "props-test",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "test-web-service-c839d136",
+          "name": "test-web-web-service-c828a686",
           "port": Object {
             "number": 80,
           },
@@ -176,7 +176,7 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "test-web-deployment-c87ede4d",
+      "name": "test-web-c883b2c8",
       "namespace": "props-test",
     },
     "spec": Object {
@@ -402,7 +402,7 @@ Array [
         "region": "testing",
         "role": "server",
       },
-      "name": "test-web-hpa-c83b95a8",
+      "name": "test-web-web-hpa-c801f515",
       "namespace": "props-test",
     },
     "spec": Object {
@@ -423,7 +423,7 @@ Array [
       "scaleTargetRef": Object {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
-        "name": "test-web-deployment-c87ede4d",
+        "name": "test-web-c883b2c8",
       },
     },
   },
@@ -454,7 +454,7 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "test-web-service-canary-c881c87b",
+      "name": "test-web-web-canary-service-c852817c",
       "namespace": "props-test",
     },
     "spec": Object {
@@ -500,13 +500,13 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "test-web-ingress-canary-c8dd58b2",
+      "name": "test-web-web-canary-ingress-c8e1943e",
       "namespace": "props-test",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "test-web-service-canary-c881c87b",
+          "name": "test-web-web-canary-service-c852817c",
           "port": Object {
             "number": 80,
           },
@@ -536,7 +536,7 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "test-web-deployment-canary-c8903f24",
+      "name": "test-web-web-canary-c87fce47",
       "namespace": "props-test",
     },
     "spec": Object {
@@ -804,7 +804,7 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "service",
+      "name": "web-service",
       "namespace": "test",
     },
     "spec": Object {
@@ -839,13 +839,13 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "ingress",
+      "name": "web-ingress",
       "namespace": "test",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "service",
+          "name": "web-service",
           "port": Object {
             "number": 3000,
           },
@@ -863,7 +863,7 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "deployment",
+      "name": "web",
       "namespace": "test",
     },
     "spec": Object {
@@ -934,7 +934,7 @@ Array [
         "instance": "web",
         "role": "server",
       },
-      "name": "hpa",
+      "name": "web-hpa",
       "namespace": "test",
     },
     "spec": Object {
@@ -955,7 +955,7 @@ Array [
       "scaleTargetRef": Object {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
-        "name": "deployment",
+        "name": "web",
       },
     },
   },
@@ -990,7 +990,7 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "service",
+      "name": "web-service",
       "namespace": "test",
     },
     "spec": Object {
@@ -1025,13 +1025,13 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "ingress",
+      "name": "web-ingress",
       "namespace": "test",
     },
     "spec": Object {
       "defaultBackend": Object {
         "service": Object {
-          "name": "service",
+          "name": "web-service",
           "port": Object {
             "number": 3000,
           },
@@ -1049,7 +1049,7 @@ Array [
         "release": "test-123",
         "role": "server",
       },
-      "name": "deployment",
+      "name": "web",
       "namespace": "test",
     },
     "spec": Object {

@@ -101,7 +101,7 @@ export class WebService extends Construct {
         ...selectorLabels,
       };
 
-      const service = new KubeService(this, `service${instanceSuffix}`, {
+      const service = new KubeService(this, `${id}${instanceSuffix}-service`, {
         metadata: {
           annotations: {
             "talis.io/chat": props.chatUrl,
@@ -171,7 +171,7 @@ export class WebService extends Construct {
       this.validateLoadBalancerName(
         ingressAnnotations["alb.ingress.kubernetes.io/load-balancer-name"]
       );
-      new KubeIngress(this, `ingress${instanceSuffix}`, {
+      new KubeIngress(this, `${id}${instanceSuffix}-ingress`, {
         metadata: {
           annotations: ingressAnnotations,
           labels: instanceLabels,
@@ -197,41 +197,37 @@ export class WebService extends Construct {
         continue;
       }
 
-      const deployment = new KubeDeployment(
-        this,
-        `deployment${instanceSuffix}`,
-        {
-          metadata: {
-            labels: instanceLabels,
+      const deployment = new KubeDeployment(this, `${id}${instanceSuffix}`, {
+        metadata: {
+          labels: instanceLabels,
+        },
+        spec: {
+          replicas: isCanaryInstance ? 1 : props.replicas,
+          revisionHistoryLimit: props.revisionHistoryLimit ?? 1,
+          selector: {
+            matchLabels: selectorLabels,
           },
-          spec: {
-            replicas: isCanaryInstance ? 1 : props.replicas,
-            revisionHistoryLimit: props.revisionHistoryLimit ?? 1,
-            selector: {
-              matchLabels: selectorLabels,
-            },
-            template: {
-              metadata: {
-                labels: {
-                  ...labels, // chart labels are not applied to the Pod so we need to add them here
-                  ...selectorLabels,
-                },
-              },
-              spec: {
-                affinity: hasProp("affinity")
-                  ? props.affinity
-                  : affinityFunc(selectorLabels),
-                automountServiceAccountToken:
-                  props.automountServiceAccountToken ?? false,
-                imagePullSecrets: props.imagePullSecrets,
-                priorityClassName: props.priorityClassName ?? "web",
-                containers,
-                volumes: volumes.length > 0 ? volumes : undefined,
+          template: {
+            metadata: {
+              labels: {
+                ...labels, // chart labels are not applied to the Pod so we need to add them here
+                ...selectorLabels,
               },
             },
+            spec: {
+              affinity: hasProp("affinity")
+                ? props.affinity
+                : affinityFunc(selectorLabels),
+              automountServiceAccountToken:
+                props.automountServiceAccountToken ?? false,
+              imagePullSecrets: props.imagePullSecrets,
+              priorityClassName: props.priorityClassName ?? "web",
+              containers,
+              volumes: volumes.length > 0 ? volumes : undefined,
+            },
           },
-        }
-      );
+        },
+      });
 
       if (!isCanaryInstance && props.horizontalPodAutoscaler) {
         this.addHorizontalPodAutoscaler(
@@ -366,7 +362,7 @@ export class WebService extends Construct {
     props: HorizontalPodAutoscalerProps,
     labels: { [key: string]: string }
   ): void {
-    new KubeHorizontalPodAutoscalerV2Beta2(this, "hpa", {
+    new KubeHorizontalPodAutoscalerV2Beta2(this, `${deployment.node.id}-hpa`, {
       metadata: {
         labels,
       },
