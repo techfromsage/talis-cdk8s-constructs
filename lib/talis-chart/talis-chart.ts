@@ -2,14 +2,16 @@ import { Construct } from "constructs";
 import { ApiObject, Chart, ChartProps } from "cdk8s";
 import { KubeNamespace } from "../../imports/k8s";
 import { joinNameParts } from "../common";
+import { TalisRegion } from "./talis-region";
+import { TalisDeploymentEnvironment } from "./talis-deployment-environment";
 
 export interface TalisChartProps extends ChartProps {
   /** Name of the application this chart is for */
   readonly app?: string;
   /** Environment that this application is deployed in */
-  readonly environment: "production" | "staging" | "ondemand" | "development";
+  readonly environment:TalisDeploymentEnvironment;
   /** Short region code */
-  readonly region: "ca" | "eu" | "local";
+  readonly region: TalisRegion;
   /** An identifier, will be appended to the namespace */
   readonly watermark: string;
 }
@@ -29,8 +31,8 @@ export class TalisChart extends Chart {
 
   constructor(scope: Construct, props: TalisChartConstructorProps) {
     const { app, environment, region, watermark } = props;
-    const maybeEnvironment = environment !== "production" ? environment : "";
-    const maybeWatermark = environment === "ondemand" ? watermark : "";
+    const maybeEnvironment = environment !== TalisDeploymentEnvironment.PRODUCTION ? environment : "";
+    const maybeWatermark = environment === TalisDeploymentEnvironment.ONDEMAND ? watermark : "";
     const namespace = props.namespace ?? joinNameParts([app, watermark]);
     const id = `${namespace}-${environment}-${region}`;
 
