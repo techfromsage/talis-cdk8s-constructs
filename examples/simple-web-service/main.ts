@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { App, Chart, ChartProps } from "cdk8s";
 
-import { WebService } from "../../lib";
+import { WebService, TalisShortRegion, TalisDeploymentEnvironment } from "../../lib";
 import { Quantity } from "../../imports/k8s";
 
 export class SimpleWebServiceChart extends Chart {
@@ -41,8 +41,8 @@ const app = new App();
 new SimpleWebServiceChart(app, "app", {
   labels: {
     app: "example",
-    environment: "development",
-    region: "local",
+    environment: TalisDeploymentEnvironment.DEVELOPMENT,
+    region: TalisShortRegion.LOCAL,
   },
 });
 app.synth();

@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { ApiObject, Chart, ChartProps } from "cdk8s";
 import { KubeNamespace } from "../../imports/k8s";
 import { joinNameParts } from "../common";
-import { TalisRegion } from "./talis-region";
+import { TalisShortRegion } from "./talis-region";
 import { TalisDeploymentEnvironment } from "./talis-deployment-environment";
 
 export interface TalisChartProps extends ChartProps {
@@ -11,7 +11,7 @@ export interface TalisChartProps extends ChartProps {
   /** Environment that this application is deployed in */
   readonly environment:TalisDeploymentEnvironment;
   /** Short region code */
-  readonly region: TalisRegion;
+  readonly region: TalisShortRegion;
   /** An identifier, will be appended to the namespace */
   readonly watermark: string;
 }
