@@ -1,7 +1,11 @@
 import { Construct } from "constructs";
 import { App, Chart, ChartProps } from "cdk8s";
 
-import { WebService, TalisShortRegion, TalisDeploymentEnvironment } from "../../lib";
+import {
+  WebService,
+  TalisShortRegion,
+  TalisDeploymentEnvironment,
+} from "../../lib";
 import { Quantity } from "../../imports/k8s";
 
 export class SimpleWebServiceChart extends Chart {
