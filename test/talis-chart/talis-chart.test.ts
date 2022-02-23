@@ -1,13 +1,18 @@
 import { ApiObject, Testing } from "cdk8s";
-import { TalisChart, TalisChartProps } from "../../lib";
+import {
+  TalisChart,
+  TalisChartProps,
+  TalisShortRegion,
+  TalisDeploymentEnvironment,
+} from "../../lib";
 
 describe("TalisChart", () => {
   test("Creates a namespace", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
-      environment: "production",
-      region: "eu",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
+      region: TalisShortRegion.EU,
       watermark: "test",
     });
     const results = Testing.synth(chart);
@@ -19,8 +24,8 @@ describe("TalisChart", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
-      environment: "production",
-      region: "eu",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
+      region: TalisShortRegion.EU,
       watermark: "test",
     });
 
@@ -33,9 +38,9 @@ describe("TalisChart", () => {
     expect(results).toHaveLength(2);
     const expected = {
       app: "my-app",
-      environment: "production",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
       "managed-by": "cdk8s",
-      region: "eu",
+      region: TalisShortRegion.EU,
       service: "my-app-eu",
     };
     expect(results[0].metadata.labels).toEqual(expected);
@@ -46,9 +51,9 @@ describe("TalisChart", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
-      environment: "staging",
+      environment: TalisDeploymentEnvironment.STAGING,
       watermark: "test",
-      region: "eu",
+      region: TalisShortRegion.EU,
       labels: {
         foo: "bar",
       },
@@ -68,10 +73,10 @@ describe("TalisChart", () => {
     expect(results).toHaveLength(3);
     const expected = {
       app: "my-app",
-      environment: "staging",
+      environment: TalisDeploymentEnvironment.STAGING,
       foo: "bar",
       "managed-by": "cdk8s",
-      region: "eu",
+      region: TalisShortRegion.EU,
       service: "my-app-staging-eu",
     };
     expect(results[0].metadata.labels).toEqual(expected);
@@ -83,8 +88,8 @@ describe("TalisChart", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
-      environment: "ondemand",
-      region: "eu",
+      environment: TalisDeploymentEnvironment.ONDEMAND,
+      region: TalisShortRegion.EU,
       watermark: "plat-123",
     });
     new ApiObject(chart, "foo", {
@@ -98,20 +103,20 @@ describe("TalisChart", () => {
 
   const namespaceTests: (TalisChartProps & { expected: string })[] = [
     {
-      environment: "staging",
-      region: "eu",
+      environment: TalisDeploymentEnvironment.STAGING,
+      region: TalisShortRegion.EU,
       watermark: "test",
       expected: "my-app-test",
     },
     {
-      environment: "production",
-      region: "ca",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
+      region: TalisShortRegion.CANADA,
       watermark: "test",
       expected: "my-app-test",
     },
     {
-      environment: "ondemand",
-      region: "eu",
+      environment: TalisDeploymentEnvironment.ONDEMAND,
+      region: TalisShortRegion.EU,
       watermark: "plat-123",
       expected: "my-app-plat-123",
     },
@@ -141,8 +146,8 @@ describe("TalisChart", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
-      environment: "development",
-      region: "local",
+      environment: TalisDeploymentEnvironment.DEVELOPMENT,
+      region: TalisShortRegion.LOCAL,
       watermark: "my-watermark",
       namespace: "custom-namespace",
     });
@@ -159,26 +164,26 @@ describe("TalisChart", () => {
 
   const serviceLabelTests: (TalisChartProps & { expected: string })[] = [
     {
-      environment: "staging",
-      region: "eu",
+      environment: TalisDeploymentEnvironment.STAGING,
+      region: TalisShortRegion.EU,
       watermark: "test",
       expected: "my-app-staging-eu",
     },
     {
-      environment: "production",
-      region: "eu",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
+      region: TalisShortRegion.EU,
       watermark: "test",
       expected: "my-app-eu",
     },
     {
-      environment: "production",
-      region: "ca",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
+      region: TalisShortRegion.CANADA,
       watermark: "test",
       expected: "my-app-ca",
     },
     {
-      environment: "ondemand",
-      region: "eu",
+      environment: TalisDeploymentEnvironment.ONDEMAND,
+      region: TalisShortRegion.EU,
       watermark: "plat-123",
       expected: "my-app-plat-123-ondemand-eu",
     },
