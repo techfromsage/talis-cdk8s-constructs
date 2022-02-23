@@ -24,7 +24,7 @@ describe("name-util", () => {
         // empty
         namespace: "",
         labels: {},
-        expected: "",
+        expected: "develop",
       },
       {
         // local development
@@ -32,7 +32,7 @@ describe("name-util", () => {
         labels: {
           instance: "api",
           environment: TalisDeploymentEnvironment.DEVELOPMENT,
-          region: TalisShortRegion.EU,
+          region: TalisShortRegion.LOCAL,
         },
         expected: "my-app-api-develop",
       },

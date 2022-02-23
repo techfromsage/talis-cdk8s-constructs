@@ -22,7 +22,8 @@
     "lint": "npm run lint:prettier && npm run lint:eslint && npm run lint:ts",
     "prepare": "husky install",
     "release": "npm run build && semantic-release",
-    "test": "jest"
+    "test": "jest",
+    "test:update": "jest --updateSnapshot"
   },
   "peerDependencies": {
     "cdk8s": "^2.2.18",
