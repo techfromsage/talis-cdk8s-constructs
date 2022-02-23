@@ -9,7 +9,7 @@ export interface TalisChartProps extends ChartProps {
   /** Name of the application this chart is for */
   readonly app?: string;
   /** Environment that this application is deployed in */
-  readonly environment:TalisDeploymentEnvironment;
+  readonly environment: TalisDeploymentEnvironment;
   /** Short region code */
   readonly region: TalisShortRegion;
   /** An identifier, will be appended to the namespace */
@@ -31,8 +31,10 @@ export class TalisChart extends Chart {
 
   constructor(scope: Construct, props: TalisChartConstructorProps) {
     const { app, environment, region, watermark } = props;
-    const maybeEnvironment = environment !== TalisDeploymentEnvironment.PRODUCTION ? environment : "";
-    const maybeWatermark = environment === TalisDeploymentEnvironment.ONDEMAND ? watermark : "";
+    const maybeEnvironment =
+      environment !== TalisDeploymentEnvironment.PRODUCTION ? environment : "";
+    const maybeWatermark =
+      environment === TalisDeploymentEnvironment.ONDEMAND ? watermark : "";
     const namespace = props.namespace ?? joinNameParts([app, watermark]);
     const id = `${namespace}-${environment}-${region}`;
 
