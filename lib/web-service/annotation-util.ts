@@ -1,21 +1,23 @@
+import { TalisShortRegion } from "../talis-chart/talis-region";
+import { TalisDeploymentEnvironment } from "../talis-chart/talis-deployment-environment";
+
 function resolveEnvironmentRegionUrlPart(
-  environment: string,
-  region: string
+  environment: TalisDeploymentEnvironment,
+  region: TalisShortRegion
 ): string {
-  switch (`${environment}-${region}`) {
-    case "production-ca":
+  if (environment === TalisDeploymentEnvironment.PRODUCTION) {
+    if (region === TalisShortRegion.CANADA) {
       return ".ca";
-    case "production-eu":
-      return "-eu";
-    default:
-      return "-staging-eu";
+    }
+    return "-eu";
   }
+  return "-staging-eu";
 }
 
 function getServiceUrl(
   service: string,
-  environment: string,
-  region: string
+  environment: TalisDeploymentEnvironment,
+  region: TalisShortRegion
 ): string {
   const envRegionPart = resolveEnvironmentRegionUrlPart(environment, region);
   return `https://${service}-eks${envRegionPart}.talisaspire.com`;
@@ -25,8 +27,8 @@ function getServiceUrl(
  * Returns the URL for the Kubernetes Dashboard for the given namespace.
  */
 export function getEksDashboardUrl(
-  environment: string,
-  region: string,
+  environment: TalisDeploymentEnvironment,
+  region: TalisShortRegion,
   namespace: string
 ): string {
   const dashboardUrl = getServiceUrl("dashboard", environment, region);
@@ -37,8 +39,8 @@ export function getEksDashboardUrl(
  * Returns the URL for the Grafana workloads dashboard for the given namespace.
  */
 export function getGraphsUrl(
-  environment: string,
-  region: string,
+  environment: TalisDeploymentEnvironment,
+  region: TalisShortRegion,
   namespace: string
 ): string {
   const grafanaUrl = getServiceUrl("grafana", environment, region);
@@ -50,8 +52,8 @@ export function getGraphsUrl(
  * Returns the URL for the Loki logs dashboard for the given app.
  */
 export function getLogsUrl(
-  environment: string,
-  region: string,
+  environment: TalisDeploymentEnvironment,
+  region: TalisShortRegion,
   app: string
 ): string {
   const grafanaUrl = getServiceUrl("grafana", environment, region);

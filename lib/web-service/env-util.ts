@@ -1,8 +1,9 @@
 import { CanaryStage, canaryStages } from ".";
+import { TalisDeploymentEnvironment } from "../talis-chart/talis-deployment-environment";
 
 export function getDockerTag(
   envVarName: string,
-  environment: string,
+  environment: TalisDeploymentEnvironment,
   defaultTag = "latest"
 ): string {
   const tag = process.env[envVarName] ?? defaultTag;
@@ -12,7 +13,10 @@ export function getDockerTag(
   }
 
   if (
-    ["production", "staging"].includes(environment) &&
+    [
+      TalisDeploymentEnvironment.PRODUCTION,
+      TalisDeploymentEnvironment.STAGING,
+    ].includes(environment) &&
     ["latest", "stable", "release"].includes(tag)
   ) {
     throw new Error(
