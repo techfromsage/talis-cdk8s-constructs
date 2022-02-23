@@ -5,14 +5,16 @@ import {
   convertToStringList,
   convertToStringMap,
   convertToJsonContent,
+  TalisDeploymentEnvironment,
+  TalisShortRegion,
 } from "../../lib";
 
 describe("annotation-util", () => {
   describe("eksDashboardUrl, graphsUrl, logsUrl", () => {
     [
       {
-        environment: "staging",
-        region: "eu",
+        environment: TalisDeploymentEnvironment.STAGING,
+        region: TalisShortRegion.EU,
         app: "test1",
         expected: {
           eksDashboardUrl:
@@ -24,8 +26,8 @@ describe("annotation-util", () => {
         },
       },
       {
-        environment: "production",
-        region: "eu",
+        environment: TalisDeploymentEnvironment.PRODUCTION,
+        region: TalisShortRegion.EU,
         app: "test2",
         expected: {
           eksDashboardUrl:
@@ -37,8 +39,8 @@ describe("annotation-util", () => {
         },
       },
       {
-        environment: "production",
-        region: "ca",
+        environment: TalisDeploymentEnvironment.PRODUCTION,
+        region: TalisShortRegion.CANADA,
         app: "test3",
         expected: {
           eksDashboardUrl:
@@ -50,8 +52,8 @@ describe("annotation-util", () => {
         },
       },
       {
-        environment: "ondemand",
-        region: "eu",
+        environment: TalisDeploymentEnvironment.ONDEMAND,
+        region: TalisShortRegion.EU,
         app: "test4",
         expected: {
           eksDashboardUrl:

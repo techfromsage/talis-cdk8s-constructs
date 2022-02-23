@@ -1,4 +1,6 @@
+import { TalisShortRegion } from "../../lib";
 import { joinNameParts, makeLoadBalancerName } from "../../lib/common";
+import { TalisDeploymentEnvironment } from "../../lib/talis-chart/talis-deployment-environment";
 
 describe("name-util", () => {
   describe("joinNameParts", () => {
@@ -29,8 +31,8 @@ describe("name-util", () => {
         namespace: "my-app",
         labels: {
           instance: "api",
-          environment: "development",
-          region: "local",
+          environment: TalisDeploymentEnvironment.DEVELOPMENT,
+          region: TalisShortRegion.EU,
         },
         expected: "my-app-api-develop",
       },
@@ -39,8 +41,8 @@ describe("name-util", () => {
         namespace: "my-app",
         labels: {
           instance: "api",
-          environment: "staging",
-          region: "eu",
+          environment: TalisDeploymentEnvironment.STAGING,
+          region: TalisShortRegion.EU,
         },
         expected: "my-app-api-staging-eu",
       },
@@ -49,8 +51,8 @@ describe("name-util", () => {
         namespace: "my-app",
         labels: {
           instance: "api",
-          environment: "production",
-          region: "ca",
+          environment: TalisDeploymentEnvironment.PRODUCTION,
+          region: TalisShortRegion.CANADA,
         },
         expected: "my-app-api-prod-ca",
       },
@@ -60,8 +62,8 @@ describe("name-util", () => {
         labels: {
           instance: "api",
           canary: "false",
-          environment: "production",
-          region: "eu",
+          environment: TalisDeploymentEnvironment.PRODUCTION,
+          region: TalisShortRegion.EU,
         },
         expected: "my-app-api-prod-eu",
       },
@@ -71,8 +73,8 @@ describe("name-util", () => {
         labels: {
           instance: "api",
           canary: "true",
-          environment: "production",
-          region: "eu",
+          environment: TalisDeploymentEnvironment.PRODUCTION,
+          region: TalisShortRegion.EU,
         },
         expected: "my-app-api-c-prod-eu",
       },
@@ -82,8 +84,8 @@ describe("name-util", () => {
         labels: {
           instance: "api",
           canary: "true",
-          environment: "ondemand",
-          region: "eu",
+          environment: TalisDeploymentEnvironment.ONDEMAND,
+          region: TalisShortRegion.EU,
         },
         expected: "my-app-repo-1234-api-c-eu",
       },
