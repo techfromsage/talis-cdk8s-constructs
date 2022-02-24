@@ -71,3 +71,4 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
 - `npm run lint` will check code quality and style guidelines (using ESlint and Prettier)
 - `npm run format` will format the code (using Prettier)
 - `npm run test` run tests
+- `npm run test -- --updateSnapshot` update the test snapshots

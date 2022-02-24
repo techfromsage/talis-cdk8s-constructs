@@ -1,4 +1,8 @@
-import { getCanaryStage, getDockerTag } from "../../lib";
+import {
+  getCanaryStage,
+  getDockerTag,
+  TalisDeploymentEnvironment,
+} from "../../lib";
 
 describe("env-util", () => {
   const PROCESS_ENV = process.env;
@@ -15,30 +19,38 @@ describe("env-util", () => {
   describe("getDockerTag", () => {
     test("Gets a Docker tag from named env var", () => {
       process.env.APP_DOCKER_TAG = "v1";
-      expect(getDockerTag("APP_DOCKER_TAG", "development")).toBe("v1");
+      expect(
+        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.DEVELOPMENT)
+      ).toBe("v1");
     });
 
     test("Gets the default Docker tag if env var is not set", () => {
-      expect(getDockerTag("APP_DOCKER_TAG", "development")).toBe("latest");
+      expect(
+        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.DEVELOPMENT)
+      ).toBe("latest");
     });
 
     test("Gets the custom default Docker tag if env var is not set", () => {
-      expect(getDockerTag("APP_DOCKER_TAG", "development", "release")).toBe(
-        "release"
-      );
+      expect(
+        getDockerTag(
+          "APP_DOCKER_TAG",
+          TalisDeploymentEnvironment.DEVELOPMENT,
+          "release"
+        )
+      ).toBe("release");
     });
 
     test("Throws if env var is empty", () => {
       process.env.APP_DOCKER_TAG = "";
       expect(() =>
-        getDockerTag("APP_DOCKER_TAG", "development")
+        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.DEVELOPMENT)
       ).toThrowErrorMatchingSnapshot();
     });
 
     test("Throws if tag is not valid for the environment", () => {
       process.env.APP_DOCKER_TAG = "stable";
       expect(() =>
-        getDockerTag("APP_DOCKER_TAG", "production")
+        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.PRODUCTION)
       ).toThrowErrorMatchingSnapshot();
     });
   });
