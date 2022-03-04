@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CronJob Props All the props 1`] = `
+Array [
+  Object {
+    "apiVersion": "batch/v1",
+    "kind": "CronJob",
+    "metadata": Object {
+      "labels": Object {
+        "app": "my-app",
+        "environment": "test",
+        "instance": "test",
+        "region": "local",
+        "release": "v1",
+        "role": "cronjob",
+      },
+      "name": "test-cron-job-test-c88f7970",
+      "namespace": "test",
+    },
+    "spec": Object {
+      "jobTemplate": Object {
+        "spec": Object {
+          "template": Object {
+            "spec": Object {
+              "containers": Array [
+                Object {
+                  "args": Array [
+                    "--foo",
+                    "bar",
+                  ],
+                  "command": Array [
+                    "/bin/sh",
+                    "-c",
+                    "echo hello",
+                  ],
+                  "env": Array [
+                    Object {
+                      "name": "FOO",
+                      "value": "bar",
+                    },
+                  ],
+                  "envFrom": Array [
+                    Object {
+                      "configMapRef": Object {
+                        "name": "foo-config",
+                      },
+                    },
+                  ],
+                  "image": "talis/app:worker-v1",
+                  "imagePullPolicy": "Always",
+                  "name": "my-app",
+                  "resources": Object {
+                    "limits": Object {
+                      "cpu": 1,
+                      "memory": "1Gi",
+                    },
+                    "requests": Object {
+                      "cpu": 0.1,
+                      "memory": "100Mi",
+                    },
+                  },
+                  "securityContext": Object {
+                    "runAsGroup": 1000,
+                    "runAsNonRoot": true,
+                    "runAsUser": 1000,
+                  },
+                  "workingDir": "/some/path",
+                },
+              ],
+            },
+          },
+        },
+      },
+      "schedule": "0 0 13 * 5",
+    },
+  },
+]
+`;
+
+exports[`CronJob Props Minimal required props 1`] = `
+Array [
+  Object {
+    "apiVersion": "batch/v1",
+    "kind": "CronJob",
+    "metadata": Object {
+      "labels": Object {
+        "instance": "cron-job-test",
+        "release": "v1",
+        "role": "cronjob",
+      },
+      "name": "test-cron-job-test-c88f7970",
+    },
+    "spec": Object {
+      "jobTemplate": Object {
+        "spec": Object {
+          "template": Object {
+            "spec": Object {
+              "containers": Array [
+                Object {
+                  "image": "talis/app:worker-v1",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "app",
+                  "resources": Object {
+                    "requests": Object {
+                      "cpu": "100m",
+                      "memory": "100Mi",
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      "schedule": "0 0 13 * 5",
+    },
+  },
+]
+`;

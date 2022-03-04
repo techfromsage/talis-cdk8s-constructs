@@ -1,0 +1,175 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CronJob example Change release version 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-cron-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-cron-app-development-local",
+      },
+      "name": "example-cron-app-test",
+      "namespace": "example-cron-app-test",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
+    },
+    "kind": "Secret",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-cron-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-cron-app-development-local",
+      },
+      "name": "docker-hub-cred",
+      "namespace": "example-cron-app-test",
+    },
+    "type": "kubernetes.io/dockerconfigjson",
+  },
+  Object {
+    "apiVersion": "batch/v1",
+    "kind": "CronJob",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-cron-app",
+        "environment": "development",
+        "instance": "cron-job-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "v2.2",
+        "role": "cronjob",
+        "service": "example-cron-app-development-local",
+      },
+      "name": "cron-job-example",
+      "namespace": "example-cron-app-test",
+    },
+    "spec": Object {
+      "jobTemplate": Object {
+        "spec": Object {
+          "template": Object {
+            "spec": Object {
+              "containers": Array [
+                Object {
+                  "command": Array [
+                    "/bin/sh",
+                    "-c",
+                    "echo hello",
+                  ],
+                  "image": "docker.io/organization/my-app:cron-v2.2",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "example-cron-app",
+                  "resources": Object {
+                    "requests": Object {
+                      "cpu": "100m",
+                      "memory": "100Mi",
+                    },
+                  },
+                  "workingDir": "/some/path",
+                },
+              ],
+            },
+          },
+        },
+      },
+      "schedule": "0 0 13 * 5",
+    },
+  },
+]
+`;
+
+exports[`CronJob example Snapshot 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-cron-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-cron-app-development-local",
+      },
+      "name": "example-cron-app-test",
+      "namespace": "example-cron-app-test",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
+    },
+    "kind": "Secret",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-cron-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-cron-app-development-local",
+      },
+      "name": "docker-hub-cred",
+      "namespace": "example-cron-app-test",
+    },
+    "type": "kubernetes.io/dockerconfigjson",
+  },
+  Object {
+    "apiVersion": "batch/v1",
+    "kind": "CronJob",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-cron-app",
+        "environment": "development",
+        "instance": "cron-job-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "v1.0",
+        "role": "cronjob",
+        "service": "example-cron-app-development-local",
+      },
+      "name": "cron-job-example",
+      "namespace": "example-cron-app-test",
+    },
+    "spec": Object {
+      "jobTemplate": Object {
+        "spec": Object {
+          "template": Object {
+            "spec": Object {
+              "containers": Array [
+                Object {
+                  "command": Array [
+                    "/bin/sh",
+                    "-c",
+                    "echo hello",
+                  ],
+                  "image": "docker.io/organization/my-app:cron-v1.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "example-cron-app",
+                  "resources": Object {
+                    "requests": Object {
+                      "cpu": "100m",
+                      "memory": "100Mi",
+                    },
+                  },
+                  "workingDir": "/some/path",
+                },
+              ],
+            },
+          },
+        },
+      },
+      "schedule": "0 0 13 * 5",
+    },
+  },
+]
+`;

@@ -25,6 +25,13 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
   - Supports setting binary data.
   - Example use can be found in [WebService advanced example](./examples/advanced-web-service/README.md).
 
+- `CronJob`
+
+  - Represents a Cron Job that is run based on a schedule.
+  - Supports setting the Schedule.
+  - The command to run is defined as part of the container spec.
+  - Details in an [example](./examples/cron-job/README.md).
+
 - `Secret`
 
   - Represents a Kubernetes Secret.
