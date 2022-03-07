@@ -368,6 +368,7 @@ Array [
             },
           ],
           "priorityClassName": "high-priority",
+          "terminationGracePeriodSeconds": 60,
           "volumes": Array [
             Object {
               "awsElasticBlockStore": Object {
@@ -729,6 +730,7 @@ Array [
             },
           ],
           "priorityClassName": "high-priority",
+          "terminationGracePeriodSeconds": 60,
           "volumes": Array [
             Object {
               "awsElasticBlockStore": Object {

@@ -223,6 +223,8 @@ export class WebService extends Construct {
                 props.automountServiceAccountToken ?? false,
               imagePullSecrets: props.imagePullSecrets,
               priorityClassName: props.priorityClassName ?? "web",
+              terminationGracePeriodSeconds:
+                props.terminationGracePeriodSeconds,
               containers,
               volumes: volumes.length > 0 ? volumes : undefined,
             },
