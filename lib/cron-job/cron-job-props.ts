@@ -9,7 +9,7 @@ export interface CronJobProps
   /**
    * Custom selector labels, they will be merged with the default app, role, and instance.
    * They will be applied to the workload, the pod and the service.
-   * @default { app: "<app label from chart>", role: "worker", instance: "<construct id>" }
+   * @default { app: "<app label from chart>", role: "cronjob", instance: "<construct id>" }
    */
   readonly selectorLabels?: { [key: string]: string };
 

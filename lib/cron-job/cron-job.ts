@@ -32,6 +32,7 @@ export class CronJob extends Construct {
           spec: {
             template: {
               spec: {
+                volumes: props.volumes,
                 containers: [
                   {
                     name: props.containerName ?? app ?? "app",
