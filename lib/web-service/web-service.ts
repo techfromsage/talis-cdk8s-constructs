@@ -147,10 +147,11 @@ export class WebService extends Construct {
 
       const loadBalancerNameFunc =
         props.makeLoadBalancerName ?? makeLoadBalancerName;
+      const loadBalancerLabels = props.loadBalancerLabels ?? {};
       const ingressAnnotations = {
         "alb.ingress.kubernetes.io/load-balancer-name": loadBalancerNameFunc(
           namespace,
-          instanceLabels
+          { ...instanceLabels, ...loadBalancerLabels }
         ),
         "alb.ingress.kubernetes.io/load-balancer-attributes":
           convertToStringMap({
