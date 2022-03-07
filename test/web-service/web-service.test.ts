@@ -149,6 +149,9 @@ describe("WebService", () => {
           foo: "bar",
           instance: "my-app",
         },
+        loadBalancerLabels: {
+          instance: "api",
+        },
         tlsDomain: "*.example.com",
         ingressTargetType: "ip",
         terminationGracePeriodSeconds: 60,
@@ -334,6 +337,21 @@ describe("WebService", () => {
       expect(ingresses).toHaveLength(2);
       expect(getLbName(ingresses[0])).toEqual("test-web-live");
       expect(getLbName(ingresses[1])).toEqual("test-web-canary");
+    });
+
+    test("Allows overriding instance label for load balancer name", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        canary: true,
+        stage: "base",
+        loadBalancerLabels: {
+          instance: "api",
+        },
+      });
+      const ingresses = results.filter((obj) => obj.kind === "Ingress");
+      expect(ingresses).toHaveLength(2);
+      expect(getLbName(ingresses[0])).toEqual("test-api-develop");
+      expect(getLbName(ingresses[1])).toEqual("test-api-c-develop");
     });
 
     test("Creates internet-facing load balancer by default", () => {

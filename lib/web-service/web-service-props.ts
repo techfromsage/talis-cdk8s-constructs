@@ -148,6 +148,14 @@ export interface WebServiceProps
   readonly ingressTargetType?: "instance" | "ip";
 
   /**
+   * Label overrides for making the load balancer name.
+   * Helpful for making the load balancer name shorter.
+   */
+  readonly loadBalancerLabels?: {
+    instance?: string;
+  };
+
+  /**
    * Custom function to generate load balancer name.
    * @param namespace Namespace of the service.
    * @param instanceLabels Deployment's labels
