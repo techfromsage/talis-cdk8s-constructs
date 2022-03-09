@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Job Props All the props 1`] = `
+Array [
+  Object {
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": Object {
+      "labels": Object {
+        "app": "my-app",
+        "environment": "test",
+        "instance": "test",
+        "region": "local",
+        "release": "v1",
+        "role": "job",
+      },
+      "name": "test-job-test-c8bf5102",
+      "namespace": "test",
+    },
+    "spec": Object {
+      "template": Object {
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "args": Array [
+                "--foo",
+                "bar",
+              ],
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
+              "env": Array [
+                Object {
+                  "name": "FOO",
+                  "value": "bar",
+                },
+              ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "foo-config",
+                  },
+                },
+              ],
+              "image": "talis/app:worker-v1",
+              "imagePullPolicy": "Always",
+              "name": "my-app",
+              "resources": Object {
+                "limits": Object {
+                  "cpu": 1,
+                  "memory": "1Gi",
+                },
+                "requests": Object {
+                  "cpu": 0.1,
+                  "memory": "100Mi",
+                },
+              },
+              "securityContext": Object {
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000,
+              },
+              "workingDir": "/some/path",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`Job Props Minimal required props 1`] = `
+Array [
+  Object {
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": Object {
+      "labels": Object {
+        "instance": "job-test",
+        "release": "v1",
+        "role": "job",
+      },
+      "name": "test-job-test-c8bf5102",
+    },
+    "spec": Object {
+      "template": Object {
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "image": "talis/app:worker-v1",
+              "imagePullPolicy": "IfNotPresent",
+              "name": "app",
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "100m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
