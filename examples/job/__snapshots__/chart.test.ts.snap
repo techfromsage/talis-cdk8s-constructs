@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Job example Change release version 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-job-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-job-app-development-local",
+      },
+      "name": "example-job-app-test",
+      "namespace": "example-job-app-test",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
+    },
+    "kind": "Secret",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-job-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-job-app-development-local",
+      },
+      "name": "docker-hub-cred",
+      "namespace": "example-job-app-test",
+    },
+    "type": "kubernetes.io/dockerconfigjson",
+  },
+  Object {
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-job-app",
+        "environment": "development",
+        "instance": "job-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "v2.2",
+        "role": "job",
+        "service": "example-job-app-development-local",
+      },
+      "name": "job-example",
+      "namespace": "example-job-app-test",
+    },
+    "spec": Object {
+      "template": Object {
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
+              "image": "docker.io/organization/my-app:job-v2.2",
+              "imagePullPolicy": "IfNotPresent",
+              "name": "example-job-app",
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "100m",
+                  "memory": "100Mi",
+                },
+              },
+              "workingDir": "/some/path",
+            },
+          ],
+        },
+      },
+      "ttlSecondsAfterFinished": 100,
+    },
+  },
+]
+`;
+
+exports[`Job example Snapshot 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-job-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-job-app-development-local",
+      },
+      "name": "example-job-app-test",
+      "namespace": "example-job-app-test",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
+    },
+    "kind": "Secret",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-job-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-job-app-development-local",
+      },
+      "name": "docker-hub-cred",
+      "namespace": "example-job-app-test",
+    },
+    "type": "kubernetes.io/dockerconfigjson",
+  },
+  Object {
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-job-app",
+        "environment": "development",
+        "instance": "job-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "v1.0",
+        "role": "job",
+        "service": "example-job-app-development-local",
+      },
+      "name": "job-example",
+      "namespace": "example-job-app-test",
+    },
+    "spec": Object {
+      "template": Object {
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
+              "image": "docker.io/organization/my-app:job-v1.0",
+              "imagePullPolicy": "IfNotPresent",
+              "name": "example-job-app",
+              "resources": Object {
+                "requests": Object {
+                  "cpu": "100m",
+                  "memory": "100Mi",
+                },
+              },
+              "workingDir": "/some/path",
+            },
+          ],
+        },
+      },
+      "ttlSecondsAfterFinished": 100,
+    },
+  },
+]
+`;
