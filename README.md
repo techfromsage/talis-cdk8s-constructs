@@ -38,6 +38,14 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
   - The command to run is defined as part of the container spec.
   - Details in an [example](./examples/job/README.md).
 
+- `Redis`
+
+  - Represents a standalone singe node Redis server.
+  - The command to run is defined as part of the container spec.
+  - Supports setting the version of redis you wish to run.
+  - Uses the default redis-server config.
+  - Details in an [example](./examples/redis/README.md).
+
 - `Secret`
 
   - Represents a Kubernetes Secret.

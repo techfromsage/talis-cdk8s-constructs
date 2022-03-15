@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Redis example Snapshot 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-redis-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-redis-app-development-local",
+      },
+      "name": "example-redis-app-test",
+      "namespace": "example-redis-app-test",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-redis-app",
+        "environment": "development",
+        "instance": "redis-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "v1.0",
+        "role": "redis",
+        "service": "example-redis-app-development-local",
+      },
+      "name": "redis-example",
+      "namespace": "example-redis-app-test",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 6379,
+          "protocol": "TCP",
+        },
+      ],
+      "selector": Object {
+        "app": "example-redis-app",
+        "instance": "redis-example",
+        "role": "redis",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-redis-app",
+        "environment": "development",
+        "instance": "redis-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "v1.0",
+        "role": "redis",
+        "service": "example-redis-app-development-local",
+      },
+      "name": "redis-example-sts",
+      "namespace": "example-redis-app-test",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "example-redis-app",
+          "instance": "redis-example",
+          "role": "redis",
+        },
+      },
+      "serviceName": "redis-example",
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "example-redis-app",
+            "instance": "redis-example",
+            "role": "redis",
+          },
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "command": Array [
+                "redis-server",
+                "--appendonly",
+                "yes",
+              ],
+              "env": Array [
+                Object {
+                  "name": "MASTER",
+                  "value": "true",
+                },
+              ],
+              "image": "redis:v1.0",
+              "name": "redis",
+              "ports": Array [
+                Object {
+                  "containerPort": 6379,
+                },
+              ],
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "100m",
+                  "memory": "250Mb",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/redis-master-data",
+                  "name": "data",
+                },
+              ],
+            },
+          ],
+          "volumes": Array [
+            Object {
+              "emptyDir": Object {},
+              "name": "data",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
