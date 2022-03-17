@@ -6,7 +6,7 @@ export class RedisChart extends TalisChart {
     super(scope, { app: "example-redis-app", ...props });
 
     new Redis(this, "redis-example", {
-      release: "v1.0",
+      release: "5.0.7",
     });
   }
 }

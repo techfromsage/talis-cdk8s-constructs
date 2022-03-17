@@ -27,7 +27,7 @@ Array [
         "instance": "redis-example",
         "managed-by": "cdk8s",
         "region": "local",
-        "release": "v1.0",
+        "release": "5.0.7",
         "role": "redis",
         "service": "example-redis-app-development-local",
       },
@@ -58,7 +58,7 @@ Array [
         "instance": "redis-example",
         "managed-by": "cdk8s",
         "region": "local",
-        "release": "v1.0",
+        "release": "5.0.7",
         "role": "redis",
         "service": "example-redis-app-development-local",
       },
@@ -97,7 +97,7 @@ Array [
                   "value": "true",
                 },
               ],
-              "image": "redis:v1.0",
+              "image": "redis:5.0.7",
               "name": "redis",
               "ports": Array [
                 Object {
