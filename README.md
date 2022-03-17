@@ -38,6 +38,14 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
   - The command to run is defined as part of the container spec.
   - Details in an [example](./examples/job/README.md).
 
+- `Mongo`
+
+  - Represents a standalone single node Mongo server.
+  - The command to run is defined as part of the container spec.
+  - Supports setting the version of Mongo you wish to run.
+  - Supports setting the storageEngine.
+  - Details in an [example](./examples/mongo/README.md).
+
 - `Redis`
 
   - Represents a standalone singe node Redis server.

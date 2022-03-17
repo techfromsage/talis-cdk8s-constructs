@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mongo example Snapshot 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-mongo-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-mongo-app-development-local",
+      },
+      "name": "example-mongo-app-test",
+      "namespace": "example-mongo-app-test",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-mongo-app",
+        "environment": "development",
+        "instance": "redis-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "3.2.8",
+        "role": "mongo",
+        "service": "example-mongo-app-development-local",
+      },
+      "name": "redis-example",
+      "namespace": "example-mongo-app-test",
+    },
+    "spec": Object {
+      "ports": Array [
+        Object {
+          "port": 27107,
+          "protocol": "TCP",
+        },
+      ],
+      "selector": Object {
+        "app": "example-mongo-app",
+        "instance": "redis-example",
+        "role": "mongo",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-mongo-app",
+        "environment": "development",
+        "instance": "redis-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "3.2.8",
+        "role": "mongo",
+        "service": "example-mongo-app-development-local",
+      },
+      "name": "redis-example-sts",
+      "namespace": "example-mongo-app-test",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "example-mongo-app",
+          "instance": "redis-example",
+          "role": "mongo",
+        },
+      },
+      "serviceName": "redis-example",
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "example-mongo-app",
+            "instance": "redis-example",
+            "role": "mongo",
+          },
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "command": Array [
+                "--smallfiles",
+                "--storageEngine",
+                "mmapv1",
+              ],
+              "image": "mongo:3.2.8",
+              "name": "mongo",
+              "ports": Array [
+                Object {
+                  "containerPort": 27017,
+                },
+              ],
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "100m",
+                  "memory": "500Mb",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/mongo-data",
+                  "name": "data",
+                },
+              ],
+            },
+          ],
+          "volumes": Array [
+            Object {
+              "emptyDir": Object {},
+              "name": "data",
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
