@@ -3,17 +3,8 @@ import { Testing } from "cdk8s";
 import { TalisShortRegion, TalisDeploymentEnvironment } from "../../lib";
 
 describe("Mongo example", () => {
-  const PROCESS_ENV = process.env;
-
   beforeEach(() => {
     jest.resetModules();
-    process.env = { ...PROCESS_ENV };
-    process.env.DOCKER_USERNAME = "someuser";
-    process.env.DOCKER_PASSWORD = "secret123";
-  });
-
-  afterEach(() => {
-    process.env = PROCESS_ENV;
   });
 
   test("Snapshot", () => {

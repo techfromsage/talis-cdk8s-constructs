@@ -6,7 +6,7 @@ export class MongoChart extends TalisChart {
     super(scope, { app: "example-mongo-app", ...props });
 
     new Mongo(this, "redis-example", {
-      release: "v1.0",
+      release: "3.2.8",
     });
   }
 }

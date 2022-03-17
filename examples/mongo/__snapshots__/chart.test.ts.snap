@@ -27,7 +27,7 @@ Array [
         "instance": "redis-example",
         "managed-by": "cdk8s",
         "region": "local",
-        "release": "v1.0",
+        "release": "3.2.8",
         "role": "mongo",
         "service": "example-mongo-app-development-local",
       },
@@ -58,7 +58,7 @@ Array [
         "instance": "redis-example",
         "managed-by": "cdk8s",
         "region": "local",
-        "release": "v1.0",
+        "release": "3.2.8",
         "role": "mongo",
         "service": "example-mongo-app-development-local",
       },
@@ -91,7 +91,7 @@ Array [
                 "--storageEngine",
                 "mmapv1",
               ],
-              "image": "mongo:v1.0",
+              "image": "mongo:3.2.8",
               "name": "mongo",
               "ports": Array [
                 Object {
