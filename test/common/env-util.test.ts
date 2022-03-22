@@ -1,6 +1,7 @@
 import {
   getCanaryStage,
   getDockerTag,
+  getWatermark,
   TalisDeploymentEnvironment,
 } from "../../lib";
 
@@ -14,6 +15,38 @@ describe("env-util", () => {
 
   afterEach(() => {
     process.env = PROCESS_ENV;
+  });
+
+  describe("getWatermark", () => {
+    test("Gets a watermark", () => {
+      process.env.WATERMARK = "my-test";
+      expect(getWatermark()).toBe("my-test");
+    });
+
+    test("Gets a watermark from custom env var", () => {
+      process.env.MARCA_DE_AGUA = "mi-prueba";
+      expect(getWatermark({ envVarName: "MARCA_DE_AGUA" })).toBe("mi-prueba");
+    });
+
+    test("Returns the default watermark", () => {
+      expect(getWatermark()).toBe("ondemand");
+    });
+
+    test("Returns a custom default watermark", () => {
+      expect(getWatermark({ defaultValue: "wasserzeichen" })).toBe(
+        "wasserzeichen"
+      );
+    });
+
+    test("Returns the default if env var is empty", () => {
+      process.env.WATERMARKO = "";
+      expect(
+        getWatermark({
+          envVarName: "WATERMARKO",
+          defaultValue: "defaulto",
+        })
+      ).toBe("defaulto");
+    });
   });
 
   describe("getDockerTag", () => {
