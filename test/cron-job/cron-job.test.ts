@@ -81,6 +81,13 @@ describe("CronJob", () => {
             },
           },
         },
+        initContainers: [
+          {
+            name: "init-container",
+            image: "busybox:1.35.0",
+            command: ["/bin/sh", "-c", "echo hello"],
+          },
+        ],
       });
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();

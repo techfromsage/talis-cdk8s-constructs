@@ -65,6 +65,17 @@ Array [
               "workingDir": "/some/path",
             },
           ],
+          "initContainers": Array [
+            Object {
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
+              "image": "busybox:1.35.0",
+              "name": "init-container",
+            },
+          ],
         },
       },
     },
