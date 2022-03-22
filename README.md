@@ -86,6 +86,7 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
 - `createImagePullSecret` - Creates a secret with auth credentials for pulling images from a private registry.
 - `getCanaryStage` - Gets the stage of a canary deployment from an environment variable, and validates its value.
 - `getDockerTag` - Gets the Docker tag from an environment variable, and validates its value.
+- `getWatermark` - Gets the watermark from an environment variable.
 - `getEksDashboardUrl` - Builds the URL of the Kubernetes dashboard for a given cluster and namespace.
 - `getGraphsUrl` - Builds the URL of the Grafana workload dashboard for a given cluster and namespace.
 - `getLogsUrl` - Builds the URL of the Grafana logs dashboard for a given cluster and app.

@@ -1,5 +1,12 @@
-import { CanaryStage, canaryStages } from ".";
 import { TalisDeploymentEnvironment } from "../talis-chart/talis-deployment-environment";
+import { CanaryStage, canaryStages } from "../web-service";
+
+export function getWatermark({
+  envVarName = "WATERMARK",
+  defaultValue = "ondemand",
+}: { envVarName?: string; defaultValue?: string } = {}): string {
+  return process.env[envVarName] || defaultValue;
+}
 
 export function getDockerTag(
   envVarName: string,
