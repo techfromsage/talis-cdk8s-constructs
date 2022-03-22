@@ -53,6 +53,7 @@ export class BackgroundWorker extends Construct {
             priorityClassName: props.priorityClassName,
             terminationGracePeriodSeconds: props.terminationGracePeriodSeconds,
             volumes: props.volumes,
+            initContainers: props.initContainers,
             containers: [
               {
                 name: props.containerName ?? app ?? "app",

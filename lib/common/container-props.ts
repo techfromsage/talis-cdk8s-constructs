@@ -1,4 +1,5 @@
 import {
+  Container,
   EnvFromSource,
   EnvVar,
   Lifecycle,
@@ -59,4 +60,10 @@ export interface ContainerProps {
 
   /** Pod volumes to mount into the container's filesystem. */
   readonly volumeMounts?: VolumeMount[];
+
+  /**
+   * List of initialization containers belonging to the pod.
+   * More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+   */
+  readonly initContainers?: Container[];
 }

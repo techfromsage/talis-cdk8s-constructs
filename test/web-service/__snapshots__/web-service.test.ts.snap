@@ -367,6 +367,17 @@ Array [
               "name": "foo-secret",
             },
           ],
+          "initContainers": Array [
+            Object {
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
+              "image": "busybox:1.35.0",
+              "name": "init-container",
+            },
+          ],
           "priorityClassName": "high-priority",
           "terminationGracePeriodSeconds": 60,
           "volumes": Array [
@@ -727,6 +738,17 @@ Array [
           "imagePullSecrets": Array [
             Object {
               "name": "foo-secret",
+            },
+          ],
+          "initContainers": Array [
+            Object {
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
+              "image": "busybox:1.35.0",
+              "name": "init-container",
             },
           ],
           "priorityClassName": "high-priority",

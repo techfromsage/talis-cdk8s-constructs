@@ -225,7 +225,8 @@ export class WebService extends Construct {
               priorityClassName: props.priorityClassName ?? "web",
               terminationGracePeriodSeconds:
                 props.terminationGracePeriodSeconds,
-              containers,
+              initContainers: props.initContainers,
+              containers: containers,
               volumes: volumes.length > 0 ? volumes : undefined,
             },
           },
