@@ -17,6 +17,7 @@ export class CronJobChart extends TalisChart {
 
     new CronJob(this, "cron-job-example", {
       schedule: "0 0 13 * 5",
+      restartPolicy: "Never",
       image: `docker.io/organization/my-app:cron-${release}`,
       imagePullSecrets: [{ name: dockerHubSecret.name }],
       release,

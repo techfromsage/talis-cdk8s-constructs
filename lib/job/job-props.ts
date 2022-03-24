@@ -21,6 +21,17 @@ export interface JobProps
   readonly volumes?: Volume[];
 
   /**
+   * Restart policy for all containers within the pod.
+   */
+  readonly restartPolicy: "OnFailure" | "Never";
+
+  /**
+   * Specifies the number of retries before marking this job failed.
+   * @default 6
+   */
+  readonly backoffLimit?: number;
+
+  /**
    * ttlSecondsAfterFinished limits the lifetime of a Job that has finished execution (either Complete
    * or Failed). If this field is set, ttlSecondsAfterFinished after the Job finishes, it is eligible
    * to be automatically deleted. When the Job is being deleted, its lifecycle guarantees

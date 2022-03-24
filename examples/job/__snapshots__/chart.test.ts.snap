@@ -54,6 +54,7 @@ Array [
       "namespace": "example-job-app-test",
     },
     "spec": Object {
+      "backoffLimit": 6,
       "template": Object {
         "spec": Object {
           "containers": Array [
@@ -75,6 +76,7 @@ Array [
               "workingDir": "/some/path",
             },
           ],
+          "restartPolicy": "OnFailure",
         },
       },
       "ttlSecondsAfterFinished": 100,
@@ -137,6 +139,7 @@ Array [
       "namespace": "example-job-app-test",
     },
     "spec": Object {
+      "backoffLimit": 6,
       "template": Object {
         "spec": Object {
           "containers": Array [
@@ -158,6 +161,7 @@ Array [
               "workingDir": "/some/path",
             },
           ],
+          "restartPolicy": "OnFailure",
         },
       },
       "ttlSecondsAfterFinished": 100,

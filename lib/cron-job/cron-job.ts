@@ -30,9 +30,11 @@ export class CronJob extends Construct {
         schedule: props.schedule,
         jobTemplate: {
           spec: {
+            backoffLimit: props.backoffLimit ?? 6,
             template: {
               spec: {
                 volumes: props.volumes,
+                restartPolicy: props.restartPolicy,
                 initContainers: props.initContainers,
                 containers: [
                   {

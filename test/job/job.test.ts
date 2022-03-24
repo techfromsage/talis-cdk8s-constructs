@@ -2,7 +2,7 @@ import { Chart, Testing } from "cdk8s";
 import { Quantity } from "../../imports/k8s";
 import { Job, JobProps } from "../../lib";
 
-const requiredProps = {
+const requiredProps: JobProps = {
   image: "talis/app:worker-v1",
   release: "v1",
   resources: {
@@ -11,6 +11,8 @@ const requiredProps = {
       memory: Quantity.fromString("100Mi"),
     },
   },
+  backoffLimit: 0,
+  restartPolicy: "Never",
 };
 
 function synthJob(props: JobProps = requiredProps) {
@@ -90,6 +92,24 @@ describe("Job", () => {
       });
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+    });
+
+    test("Setting restartPolicy", () => {
+      const results = synthJob({
+        ...requiredProps,
+        restartPolicy: "Never",
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("spec.template.spec.restartPolicy", "Never");
+    });
+
+    test("Setting backoffLimit", () => {
+      const results = synthJob({
+        ...requiredProps,
+        backoffLimit: 42,
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("spec.backoffLimit", 42);
     });
   });
 

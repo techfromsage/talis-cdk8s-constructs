@@ -56,6 +56,7 @@ Array [
     "spec": Object {
       "jobTemplate": Object {
         "spec": Object {
+          "backoffLimit": 6,
           "template": Object {
             "spec": Object {
               "containers": Array [
@@ -77,6 +78,7 @@ Array [
                   "workingDir": "/some/path",
                 },
               ],
+              "restartPolicy": "Never",
             },
           },
         },
@@ -143,6 +145,7 @@ Array [
     "spec": Object {
       "jobTemplate": Object {
         "spec": Object {
+          "backoffLimit": 6,
           "template": Object {
             "spec": Object {
               "containers": Array [
@@ -164,6 +167,7 @@ Array [
                   "workingDir": "/some/path",
                 },
               ],
+              "restartPolicy": "Never",
             },
           },
         },
