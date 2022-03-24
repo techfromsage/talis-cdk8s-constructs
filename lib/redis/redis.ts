@@ -4,6 +4,8 @@ import { KubeService, KubeStatefulSet, Quantity } from "../../imports/k8s";
 import { RedisProps } from "./redis-props";
 
 export class Redis extends Construct {
+  readonly service: KubeService;
+
   constructor(scope: Construct, id: string, props: RedisProps) {
     super(scope, id);
 
@@ -27,7 +29,7 @@ export class Redis extends Construct {
       ...selectorLabels,
     };
 
-    const service = new KubeService(this, id, {
+    this.service = new KubeService(this, id, {
       metadata: {
         labels: instanceLabels,
       },
@@ -47,7 +49,7 @@ export class Redis extends Construct {
         labels: instanceLabels,
       },
       spec: {
-        serviceName: service.name,
+        serviceName: this.service.name,
         replicas: 1,
         selector: {
           matchLabels: selectorLabels,

@@ -4,6 +4,8 @@ import { KubeService, KubeStatefulSet, Quantity } from "../../imports/k8s";
 import { MongoProps } from "./mongo-props";
 
 export class Mongo extends Construct {
+  readonly service: KubeService;
+
   constructor(scope: Construct, id: string, props: MongoProps) {
     super(scope, id);
 
@@ -28,7 +30,7 @@ export class Mongo extends Construct {
       ...selectorLabels,
     };
 
-    const service = new KubeService(this, id, {
+    this.service = new KubeService(this, id, {
       metadata: {
         labels: instanceLabels,
       },
@@ -48,7 +50,7 @@ export class Mongo extends Construct {
         labels: instanceLabels,
       },
       spec: {
-        serviceName: service.name,
+        serviceName: this.service.name,
         replicas: 1,
         selector: {
           matchLabels: selectorLabels,

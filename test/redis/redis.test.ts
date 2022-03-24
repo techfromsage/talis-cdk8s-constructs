@@ -1,5 +1,7 @@
 import { Chart, Testing } from "cdk8s";
+import { KubeService } from "../../imports/k8s";
 import { Redis, RedisProps } from "../../lib";
+import { makeChart } from "../test-util";
 
 const requiredProps = {
   release: "v1",
@@ -43,6 +45,16 @@ describe("Redis", () => {
       });
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+    });
+  });
+
+  describe("Service instance", () => {
+    test("Exposes service object through property", () => {
+      const chart = makeChart();
+      const redis = new Redis(chart, "redis-test", requiredProps);
+      expect(redis.service).toBeDefined();
+      expect(redis.service).toBeInstanceOf(KubeService);
+      expect(redis.service.name).toEqual("redis-test");
     });
   });
 
