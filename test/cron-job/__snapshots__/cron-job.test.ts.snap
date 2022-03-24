@@ -20,6 +20,7 @@ Array [
     "spec": Object {
       "jobTemplate": Object {
         "spec": Object {
+          "backoffLimit": 2,
           "template": Object {
             "spec": Object {
               "containers": Array [
@@ -78,6 +79,7 @@ Array [
                   "name": "init-container",
                 },
               ],
+              "restartPolicy": "OnFailure",
             },
           },
         },
@@ -104,6 +106,7 @@ Array [
     "spec": Object {
       "jobTemplate": Object {
         "spec": Object {
+          "backoffLimit": 2,
           "template": Object {
             "spec": Object {
               "containers": Array [
@@ -119,6 +122,7 @@ Array [
                   },
                 },
               ],
+              "restartPolicy": "OnFailure",
             },
           },
         },

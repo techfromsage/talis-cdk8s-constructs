@@ -16,6 +16,7 @@ export class JobChart extends TalisChart {
     const dockerHubSecret = createDockerHubSecretFromEnv(this);
 
     new Job(this, "job-example", {
+      restartPolicy: "OnFailure",
       ttlSecondsAfterFinished: 100,
       image: `docker.io/organization/my-app:job-${release}`,
       imagePullSecrets: [{ name: dockerHubSecret.name }],

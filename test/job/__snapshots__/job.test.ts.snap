@@ -18,6 +18,7 @@ Array [
       "namespace": "test",
     },
     "spec": Object {
+      "backoffLimit": 0,
       "template": Object {
         "spec": Object {
           "containers": Array [
@@ -76,6 +77,7 @@ Array [
               "name": "init-container",
             },
           ],
+          "restartPolicy": "Never",
         },
       },
     },
@@ -97,6 +99,7 @@ Array [
       "name": "test-job-test-c8bf5102",
     },
     "spec": Object {
+      "backoffLimit": 0,
       "template": Object {
         "spec": Object {
           "containers": Array [
@@ -112,6 +115,7 @@ Array [
               },
             },
           ],
+          "restartPolicy": "Never",
         },
       },
     },

@@ -26,10 +26,12 @@ export class Job extends Construct {
         labels: { ...labels, ...selectorLabels },
       },
       spec: {
+        backoffLimit: props.backoffLimit ?? 6,
         ttlSecondsAfterFinished: props.ttlSecondsAfterFinished,
         template: {
           spec: {
             volumes: props.volumes,
+            restartPolicy: props.restartPolicy,
             initContainers: props.initContainers,
             containers: [
               {

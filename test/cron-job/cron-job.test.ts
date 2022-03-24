@@ -2,7 +2,7 @@ import { Chart, Testing } from "cdk8s";
 import { Quantity } from "../../imports/k8s";
 import { CronJob, CronJobProps } from "../../lib";
 
-const requiredProps = {
+const requiredProps: CronJobProps = {
   schedule: "0 0 13 * 5",
   image: "talis/app:worker-v1",
   release: "v1",
@@ -12,6 +12,8 @@ const requiredProps = {
       memory: Quantity.fromString("100Mi"),
     },
   },
+  backoffLimit: 2,
+  restartPolicy: "OnFailure",
 };
 
 function synthCronJob(props: CronJobProps = requiredProps) {
@@ -91,6 +93,27 @@ describe("CronJob", () => {
       });
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+    });
+
+    test("Setting restartPolicy", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        restartPolicy: "Never",
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).toHaveProperty(
+        "spec.jobTemplate.spec.template.spec.restartPolicy",
+        "Never"
+      );
+    });
+
+    test("Setting backoffLimit", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        backoffLimit: 42,
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).toHaveProperty("spec.jobTemplate.spec.backoffLimit", 42);
     });
   });
 

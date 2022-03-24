@@ -22,4 +22,15 @@ export interface CronJobProps
    * list of volumes that can be mounted by containers belonging to the pod.
    */
   readonly volumes?: Volume[];
+
+  /**
+   * Restart policy for all containers within the pod.
+   */
+  readonly restartPolicy: "OnFailure" | "Never";
+
+  /**
+   * Specifies the number of retries before marking this job failed.
+   * @default 6
+   */
+  readonly backoffLimit?: number;
 }
