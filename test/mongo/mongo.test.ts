@@ -1,5 +1,7 @@
 import { Chart, Testing } from "cdk8s";
+import { KubeService } from "../../imports/k8s";
 import { Mongo, MongoProps } from "../../lib";
+import { makeChart } from "../test-util";
 
 const requiredProps = {
   release: "v1",
@@ -43,6 +45,16 @@ describe("Mongo", () => {
       });
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+    });
+  });
+
+  describe("Service instance", () => {
+    test("Exposes service object through property", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo-test", requiredProps);
+      expect(mongo.service).toBeDefined();
+      expect(mongo.service).toBeInstanceOf(KubeService);
+      expect(mongo.service.name).toEqual("mongo-test");
     });
   });
 
