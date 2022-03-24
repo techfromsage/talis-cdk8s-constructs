@@ -2,6 +2,7 @@ import { Chart, Testing } from "cdk8s";
 import { IntOrString, KubeConfigMap, Quantity } from "../../imports/k8s";
 import { WebService, WebServiceProps } from "../../lib";
 import * as _ from "lodash";
+import { makeChart } from "../test-util";
 
 const requiredProps = {
   description: "Test web service",
@@ -32,16 +33,10 @@ function synthWebService(
   props: WebServiceProps = defaultProps,
   chartLabels: { [key: string]: string } = {}
 ) {
-  const app = Testing.app();
-  const chart = new Chart(app, "test", {
+  const chart = makeChart({
     namespace: "test",
     labels: chartLabels,
   });
-
-  // Just output node's id as the object's name
-  chart.generateObjectName = (obj) => {
-    return obj.node.id;
-  };
 
   new WebService(chart, "web", props);
 

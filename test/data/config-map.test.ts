@@ -2,15 +2,7 @@ import mockFs from "mock-fs";
 import { Lazy, Testing } from "cdk8s";
 import { ConfigMap } from "../../lib";
 import { KubePod } from "../../imports/k8s";
-
-function makeChart() {
-  const chart = Testing.chart();
-  // Just output node's id as the object's name
-  chart.generateObjectName = (obj) => {
-    return obj.node.id;
-  };
-  return chart;
-}
+import { makeChart } from "../test-util";
 
 describe("ConfigMap", () => {
   afterEach(() => {
