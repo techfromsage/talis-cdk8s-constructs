@@ -86,7 +86,7 @@ Array [
         "spec": Object {
           "containers": Array [
             Object {
-              "command": Array [
+              "args": Array [
                 "--smallfiles",
                 "--storageEngine",
                 "mmapv1",

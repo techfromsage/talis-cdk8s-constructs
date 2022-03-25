@@ -87,7 +87,7 @@ describe("Mongo", () => {
         ...requiredProps,
       });
       const mongo = results.find((obj) => obj.kind === "StatefulSet");
-      expect(mongo).toHaveProperty("spec.template.spec.containers[0].command", [
+      expect(mongo).toHaveProperty("spec.template.spec.containers[0].args", [
         "--smallfiles",
         "--storageEngine",
         "mmapv1",
@@ -100,7 +100,7 @@ describe("Mongo", () => {
         storageEngine: "wiredTiger",
       });
       const mongo = results.find((obj) => obj.kind === "StatefulSet");
-      expect(mongo).toHaveProperty("spec.template.spec.containers[0].command", [
+      expect(mongo).toHaveProperty("spec.template.spec.containers[0].args", [
         "--smallfiles",
         "--storageEngine",
         "wiredTiger",

@@ -70,7 +70,7 @@ export class Mongo extends Construct {
               {
                 name: "mongo",
                 image: `mongo:${release}`,
-                command: ["--smallfiles", "--storageEngine", storageEngine],
+                args: ["--smallfiles", "--storageEngine", storageEngine],
                 ports: [
                   {
                     containerPort: 27017,
