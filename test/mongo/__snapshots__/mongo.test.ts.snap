@@ -88,7 +88,7 @@ Array [
               },
               "volumeMounts": Array [
                 Object {
-                  "mountPath": "/mongo-data",
+                  "mountPath": "/data/db",
                   "name": "data",
                 },
               ],
@@ -184,7 +184,7 @@ Array [
               },
               "volumeMounts": Array [
                 Object {
-                  "mountPath": "/mongo-data",
+                  "mountPath": "/data/db",
                   "name": "data",
                 },
               ],
