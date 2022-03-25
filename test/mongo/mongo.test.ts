@@ -1,5 +1,5 @@
 import { Chart, Testing } from "cdk8s";
-import { KubeService } from "../../imports/k8s";
+import { KubeService, KubeStatefulSet } from "../../imports/k8s";
 import { Mongo, MongoProps } from "../../lib";
 import { makeChart } from "../test-util";
 
@@ -48,13 +48,21 @@ describe("Mongo", () => {
     });
   });
 
-  describe("Service instance", () => {
+  describe("Object instances", () => {
     test("Exposes service object through property", () => {
       const chart = makeChart();
       const mongo = new Mongo(chart, "mongo-test", requiredProps);
       expect(mongo.service).toBeDefined();
       expect(mongo.service).toBeInstanceOf(KubeService);
       expect(mongo.service.name).toEqual("mongo-test");
+    });
+
+    test("Exposes statefulSet object through property", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo-test", requiredProps);
+      expect(mongo.statefulSet).toBeDefined();
+      expect(mongo.statefulSet).toBeInstanceOf(KubeStatefulSet);
+      expect(mongo.statefulSet.name).toEqual("mongo-test-sts");
     });
   });
 

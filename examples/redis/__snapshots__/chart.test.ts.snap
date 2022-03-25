@@ -35,6 +35,7 @@ Array [
       "namespace": "example-redis-app-test",
     },
     "spec": Object {
+      "clusterIP": "None",
       "ports": Array [
         Object {
           "port": 6379,

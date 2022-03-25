@@ -18,6 +18,7 @@ Array [
       "namespace": "test",
     },
     "spec": Object {
+      "clusterIP": "None",
       "ports": Array [
         Object {
           "port": 27107,
@@ -120,6 +121,7 @@ Array [
       "name": "test-mongo-test-c844268f",
     },
     "spec": Object {
+      "clusterIP": "None",
       "ports": Array [
         Object {
           "port": 27107,

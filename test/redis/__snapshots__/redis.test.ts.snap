@@ -18,6 +18,7 @@ Array [
       "namespace": "test",
     },
     "spec": Object {
+      "clusterIP": "None",
       "ports": Array [
         Object {
           "port": 6379,
@@ -126,6 +127,7 @@ Array [
       "name": "test-redis-test-c8b56c58",
     },
     "spec": Object {
+      "clusterIP": "None",
       "ports": Array [
         Object {
           "port": 6379,
