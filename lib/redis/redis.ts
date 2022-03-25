@@ -84,7 +84,7 @@ export class Redis extends Construct {
                 resources: {
                   limits: {
                     cpu: Quantity.fromString("100m"),
-                    memory: Quantity.fromString("250Mb"),
+                    memory: Quantity.fromString("250Mi"),
                   },
                 },
                 volumeMounts: [

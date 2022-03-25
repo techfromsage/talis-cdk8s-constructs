@@ -79,7 +79,7 @@ export class Mongo extends Construct {
                 resources: {
                   limits: {
                     cpu: Quantity.fromString("100m"),
-                    memory: Quantity.fromString("500Mb"),
+                    memory: Quantity.fromString("500Mi"),
                   },
                 },
                 volumeMounts: [

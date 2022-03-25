@@ -107,7 +107,7 @@ Array [
               "resources": Object {
                 "limits": Object {
                   "cpu": "100m",
-                  "memory": "250Mb",
+                  "memory": "250Mi",
                 },
               },
               "volumeMounts": Array [
