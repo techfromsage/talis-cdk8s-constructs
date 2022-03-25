@@ -86,7 +86,7 @@ export class Mongo extends Construct {
                 },
                 volumeMounts: [
                   {
-                    mountPath: "/mongo-data",
+                    mountPath: "/data/db",
                     name: "data",
                   },
                 ],
