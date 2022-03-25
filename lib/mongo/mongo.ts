@@ -5,6 +5,7 @@ import { MongoProps } from "./mongo-props";
 
 export class Mongo extends Construct {
   readonly service: KubeService;
+  readonly statefulSet: KubeStatefulSet;
 
   constructor(scope: Construct, id: string, props: MongoProps) {
     super(scope, id);
@@ -35,6 +36,7 @@ export class Mongo extends Construct {
         labels: instanceLabels,
       },
       spec: {
+        clusterIp: "None",
         ports: [
           {
             port: 27107,
@@ -45,7 +47,7 @@ export class Mongo extends Construct {
       },
     });
 
-    new KubeStatefulSet(this, `${id}-sts`, {
+    this.statefulSet = new KubeStatefulSet(this, `${id}-sts`, {
       metadata: {
         labels: instanceLabels,
       },

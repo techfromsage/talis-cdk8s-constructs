@@ -5,6 +5,7 @@ import { RedisProps } from "./redis-props";
 
 export class Redis extends Construct {
   readonly service: KubeService;
+  readonly statefulSet: KubeStatefulSet;
 
   constructor(scope: Construct, id: string, props: RedisProps) {
     super(scope, id);
@@ -34,6 +35,7 @@ export class Redis extends Construct {
         labels: instanceLabels,
       },
       spec: {
+        clusterIp: "None",
         ports: [
           {
             port: 6379,
@@ -44,7 +46,7 @@ export class Redis extends Construct {
       },
     });
 
-    new KubeStatefulSet(this, `${id}-sts`, {
+    this.statefulSet = new KubeStatefulSet(this, `${id}-sts`, {
       metadata: {
         labels: instanceLabels,
       },
