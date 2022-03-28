@@ -88,4 +88,25 @@ describe("Redis", () => {
       );
     });
   });
+
+  describe("getDnsName", () => {
+    test("Builds a DNS name for the first Pod", () => {
+      const chart = makeChart();
+      const redis = new Redis(chart, "redis-test", requiredProps);
+      expect(redis.getDnsName()).toBe("redis-test-sts-0.redis-test");
+    });
+
+    const tests: [number, string][] = [
+      [0, "redis-test-sts-0.redis-test"],
+      [1, "redis-test-sts-1.redis-test"],
+      [3, "redis-test-sts-3.redis-test"],
+    ];
+    tests.forEach(([replica, expected]) => {
+      test("Builds a string from non-empty parts", () => {
+        const chart = makeChart();
+        const redis = new Redis(chart, "redis-test", requiredProps);
+        expect(redis.getDnsName(replica)).toBe(expected);
+      });
+    });
+  });
 });

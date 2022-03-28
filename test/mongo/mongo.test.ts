@@ -115,4 +115,25 @@ describe("Mongo", () => {
       ]);
     });
   });
+
+  describe("getDnsName", () => {
+    test("Builds a DNS name for the first Pod", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo-test", requiredProps);
+      expect(mongo.getDnsName()).toBe("mongo-test-sts-0.mongo-test");
+    });
+
+    const tests: [number, string][] = [
+      [0, "mongo-test-sts-0.mongo-test"],
+      [1, "mongo-test-sts-1.mongo-test"],
+      [3, "mongo-test-sts-3.mongo-test"],
+    ];
+    tests.forEach(([replica, expected]) => {
+      test("Builds a string from non-empty parts", () => {
+        const chart = makeChart();
+        const mongo = new Mongo(chart, "mongo-test", requiredProps);
+        expect(mongo.getDnsName(replica)).toBe(expected);
+      });
+    });
+  });
 });
