@@ -78,6 +78,11 @@ Array [
                   "workingDir": "/some/path",
                 },
               ],
+              "imagePullSecrets": Array [
+                Object {
+                  "name": "docker-hub-cred",
+                },
+              ],
               "restartPolicy": "Never",
             },
           },
@@ -165,6 +170,11 @@ Array [
                     },
                   },
                   "workingDir": "/some/path",
+                },
+              ],
+              "imagePullSecrets": Array [
+                Object {
+                  "name": "docker-hub-cred",
                 },
               ],
               "restartPolicy": "Never",

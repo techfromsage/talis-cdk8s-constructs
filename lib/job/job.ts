@@ -32,6 +32,7 @@ export class Job extends Construct {
           spec: {
             volumes: props.volumes,
             restartPolicy: props.restartPolicy,
+            imagePullSecrets: props.imagePullSecrets,
             initContainers: props.initContainers,
             containers: [
               {
@@ -45,6 +46,7 @@ export class Job extends Construct {
                 securityContext: props.securityContext,
                 env: props.env,
                 envFrom: props.envFrom,
+                lifecycle: props.lifecycle,
                 volumeMounts: props.volumeMounts,
               },
             ],

@@ -49,6 +49,26 @@ Array [
                   ],
                   "image": "talis/app:worker-v1",
                   "imagePullPolicy": "Always",
+                  "lifecycle": Object {
+                    "postStart": Object {
+                      "exec": Object {
+                        "command": Array [
+                          "/bin/sh",
+                          "-c",
+                          "echo hello",
+                        ],
+                      },
+                    },
+                    "preStop": Object {
+                      "exec": Object {
+                        "command": Array [
+                          "/bin/sh",
+                          "-c",
+                          "echo goodbye",
+                        ],
+                      },
+                    },
+                  },
                   "name": "my-app",
                   "resources": Object {
                     "limits": Object {
@@ -66,6 +86,11 @@ Array [
                     "runAsUser": 1000,
                   },
                   "workingDir": "/some/path",
+                },
+              ],
+              "imagePullSecrets": Array [
+                Object {
+                  "name": "foo-secret",
                 },
               ],
               "initContainers": Array [

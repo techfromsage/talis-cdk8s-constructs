@@ -55,6 +55,7 @@ describe("Job", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         imagePullPolicy: "Always",
+        imagePullSecrets: [{ name: "foo-secret" }],
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),
