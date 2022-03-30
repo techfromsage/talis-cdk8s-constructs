@@ -10,6 +10,10 @@
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "engines": {
+    "npm": ">=8.1.2",
+    "node": ">=16.13.2"
+  },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
