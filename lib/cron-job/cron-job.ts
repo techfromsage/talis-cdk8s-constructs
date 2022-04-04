@@ -2,6 +2,7 @@ import { Chart } from "cdk8s";
 import { Construct } from "constructs";
 import { KubeCronJob } from "../../imports/k8s";
 import { CronJobProps } from "./cron-job-props";
+import { parseExpression } from "cron-parser";
 
 export class CronJob extends Construct {
   constructor(scope: Construct, id: string, props: CronJobProps) {
@@ -65,5 +66,13 @@ export class CronJob extends Construct {
     if (!props.schedule) {
       throw new Error("Schedule must be specified");
     }
+
+    // Validate that we get a full 5 or 6 character cron expression
+    // parseExpression only checks for max length not min length
+    if (props.schedule.split(" ").length < 5) {
+      throw new Error("Invalid cron expression");
+    }
+
+    parseExpression(props.schedule);
   }
 }
