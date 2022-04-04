@@ -116,6 +116,42 @@ describe("CronJob", () => {
       const cron = results.find((obj) => obj.kind === "CronJob");
       expect(cron).toHaveProperty("spec.jobTemplate.spec.backoffLimit", 42);
     });
+
+    describe("Schedule Validation", () => {
+      test.each([
+        ["Schedule must be specified", "", "Empty schedule"],
+        [
+          "Invalid cron expression",
+          "* * * *",
+          "Too short cron schedule string",
+        ],
+        [
+          "Invalid cron expression",
+          "* * * * * * *",
+          "Too long cron schedule string",
+        ],
+        [
+          "Constraint error, got value 100 expected range 0-59",
+          "100 * * * * *",
+          "Invalid second",
+        ],
+        [
+          "Constraint error, got value 100 expected range 0-59",
+          "* 100 * * * *",
+          "Invalid minute",
+        ],
+      ])(
+        "Throws '%s' error with cron schedule (%s) - %s",
+        (errorMessage, schedule) => {
+          expect(() => {
+            synthCronJob({
+              ...requiredProps,
+              schedule: schedule,
+            });
+          }).toThrowError(errorMessage);
+        }
+      );
+    });
   });
 
   describe("Container name", () => {
