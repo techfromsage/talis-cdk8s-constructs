@@ -145,6 +145,12 @@ export class WebService extends Construct {
           "ELBSecurityPolicy-TLS-1-2-2017-01";
       }
 
+      const externalDns: Record<string, string> = props.externalHostname
+        ? {
+            "external-dns.alpha.kubernetes.io/hostname": props.externalHostname,
+          }
+        : {};
+
       const loadBalancerNameFunc =
         props.makeLoadBalancerName ?? makeLoadBalancerName;
       const loadBalancerLabels = props.loadBalancerLabels ?? {};
@@ -168,6 +174,7 @@ export class WebService extends Construct {
         }),
         ...ingressTlsAnnotations,
         ...props.ingressAnnotations, // Allow overriding of annotations.
+        ...externalDns,
       };
       this.validateLoadBalancerName(
         ingressAnnotations["alb.ingress.kubernetes.io/load-balancer-name"]

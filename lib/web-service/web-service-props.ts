@@ -170,4 +170,9 @@ export interface WebServiceProps
    * @default "web"
    */
   readonly priorityClassName?: string;
+
+  /**
+   * Hostname to add External DNS record for the ingress.
+   */
+  readonly externalHostname?: string;
 }

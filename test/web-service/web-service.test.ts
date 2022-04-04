@@ -203,6 +203,7 @@ describe("WebService", () => {
             command: ["/bin/sh", "-c", "echo hello"],
           },
         ],
+        externalHostname: "api.example.com",
       });
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
