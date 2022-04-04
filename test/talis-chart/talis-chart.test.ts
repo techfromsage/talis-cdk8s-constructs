@@ -205,4 +205,31 @@ describe("TalisChart", () => {
       expect(results[0].metadata.labels.service).toEqual(expected);
     });
   });
+
+  test("Allows to specify TTL", () => {
+    const app = Testing.app();
+    const chart = new TalisChart(app, {
+      app: "my-app",
+      environment: TalisDeploymentEnvironment.ONDEMAND,
+      region: TalisShortRegion.EU,
+      watermark: "test",
+      ttl: "2021-02-03T04:05:06Z",
+    });
+
+    new ApiObject(chart, "foo", {
+      apiVersion: "v1",
+      kind: "Foo",
+    });
+
+    const results = Testing.synth(chart);
+    expect(results).toHaveLength(2);
+    expect(results[0].metadata.labels).toHaveProperty(
+      "ttl",
+      "2021-02-03T04:05:06Z"
+    );
+    expect(results[1].metadata.labels).toHaveProperty(
+      "ttl",
+      "2021-02-03T04:05:06Z"
+    );
+  });
 });

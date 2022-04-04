@@ -2,6 +2,7 @@ import {
   getCanaryStage,
   getDockerTag,
   getWatermark,
+  getTtl,
   TalisDeploymentEnvironment,
 } from "../../lib";
 
@@ -46,6 +47,45 @@ describe("env-util", () => {
           defaultValue: "defaulto",
         })
       ).toBe("defaulto");
+    });
+  });
+
+  describe("getTtl", () => {
+    test("Gets TTL", () => {
+      process.env.TTL = "2021-02-03T04:05:06Z";
+      expect(getTtl()).toBe("2021-02-03T04:05:06Z");
+    });
+
+    test("Returns undefined if no TTL is set", () => {
+      expect(getTtl()).toBeUndefined();
+    });
+
+    test("Gets TTL from custom env var", () => {
+      process.env.EXPIRY_DATE = "2021-02-03T04:05:06+07:00";
+      expect(getTtl({ envVarName: "EXPIRY_DATE" })).toBe(
+        "2021-02-03T04:05:06+07:00"
+      );
+    });
+
+    test("Returns undefined if no custom env var is set", () => {
+      expect(getTtl({ envVarName: "EXPIRY_DATE" })).toBeUndefined();
+    });
+
+    [
+      "2021-02-03T04:05:0",
+      "2021-02-03T04:05:",
+      "2021-02-03T04:05",
+      "2021-02-03T04:",
+      "2021-02-03T",
+      "2021-02-03",
+      "2021-02",
+      "2021",
+      "foobar",
+    ].forEach((ttl) => {
+      test(`Throws on invalid TTL ${ttl}`, () => {
+        process.env.TTL = ttl;
+        expect(() => getTtl()).toThrowErrorMatchingSnapshot();
+      });
     });
   });
 
