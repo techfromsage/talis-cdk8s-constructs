@@ -18,3 +18,4 @@ lib/**/*.d.ts
 lib/**/*.js
 test/**/*.d.ts
 test/**/*.js
+!test/jest.setup.js

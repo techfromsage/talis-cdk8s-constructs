@@ -39,12 +39,21 @@ describe("Mongo", () => {
         instance: "test",
       };
 
-      new Mongo(chart, "mongo-test", {
+      const allProps: Required<MongoProps> = {
         ...requiredProps,
         selectorLabels,
-      });
+        storageEngine: "wiredTiger",
+      };
+      new Mongo(chart, "mongo-test", allProps);
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+
+      const statefulSet = results.find((obj) => obj.kind === "StatefulSet");
+      expect(statefulSet).toHaveAllProperties(allProps, [
+        "release",
+        "selectorLabels",
+        "storageEngine",
+      ]);
     });
   });
 
