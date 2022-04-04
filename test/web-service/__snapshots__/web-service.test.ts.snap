@@ -129,6 +129,7 @@ Array [
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=my-app,instance=web,environment=test",
         "alb.ingress.kubernetes.io/target-type": "ip",
+        "external-dns.alpha.kubernetes.io/hostname": "api.example.com",
       },
       "labels": Object {
         "app": "my-app",
@@ -501,6 +502,7 @@ Array [
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=my-app,instance=web,environment=test",
         "alb.ingress.kubernetes.io/target-type": "ip",
+        "external-dns.alpha.kubernetes.io/hostname": "api.example.com",
       },
       "labels": Object {
         "app": "my-app",

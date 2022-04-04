@@ -30,6 +30,7 @@ describe("ResqueWeb", () => {
           },
         },
       ],
+      externalHostname: "resque-web.example.com",
     });
     const results = Testing.synth(chart);
     expect(results).toMatchSnapshot();

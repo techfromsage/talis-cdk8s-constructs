@@ -214,6 +214,7 @@ Array [
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=resque,instance=resque-web",
         "alb.ingress.kubernetes.io/target-type": "instance",
+        "external-dns.alpha.kubernetes.io/hostname": "resque-web.example.com",
       },
       "labels": Object {
         "app": "resque",
