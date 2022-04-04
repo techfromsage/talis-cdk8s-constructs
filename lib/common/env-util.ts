@@ -8,6 +8,16 @@ export function getWatermark({
   return process.env[envVarName] || defaultValue;
 }
 
+export function getTtl({ envVarName = "TTL" } = {}): string | undefined {
+  const ttl = process.env[envVarName];
+
+  if (ttl && !/^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d/.test(ttl)) {
+    throw new Error(`Invalid TTL: ${ttl}`);
+  }
+
+  return ttl;
+}
+
 export function getDockerTag(
   envVarName: string,
   environment: TalisDeploymentEnvironment,

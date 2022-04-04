@@ -14,6 +14,8 @@ export interface TalisChartProps extends ChartProps {
   readonly region: TalisShortRegion;
   /** An identifier, will be appended to the namespace */
   readonly watermark: string;
+  /** Time and date after which the namespace will be deleted, in ISO 8601 format */
+  readonly ttl?: string;
 }
 
 /** @private */
@@ -30,7 +32,7 @@ export class TalisChart extends Chart {
   public readonly kubeNamespace: KubeNamespace;
 
   constructor(scope: Construct, props: TalisChartConstructorProps) {
-    const { app, environment, region, watermark } = props;
+    const { app, environment, region, watermark, ttl } = props;
     const maybeEnvironment =
       environment !== TalisDeploymentEnvironment.PRODUCTION ? environment : "";
     const maybeWatermark =
@@ -38,16 +40,22 @@ export class TalisChart extends Chart {
     const namespace = props.namespace ?? joinNameParts([app, watermark]);
     const id = `${namespace}-${environment}-${region}`;
 
+    const labels: Record<string, string> = {
+      app: app,
+      environment: environment,
+      region: region,
+      "managed-by": "cdk8s",
+      service: joinNameParts([app, maybeWatermark, maybeEnvironment, region]),
+      ...props.labels,
+    };
+
+    if (ttl) {
+      labels["ttl"] = ttl;
+    }
+
     super(scope, id, {
       namespace: namespace,
-      labels: {
-        app: app,
-        environment: environment,
-        region: region,
-        "managed-by": "cdk8s",
-        service: joinNameParts([app, maybeWatermark, maybeEnvironment, region]),
-        ...props.labels,
-      },
+      labels: labels,
     });
 
     this.app = app;
