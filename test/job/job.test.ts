@@ -46,12 +46,15 @@ describe("Job", () => {
         role: "job",
         instance: "test",
       };
-      new Job(chart, "job-test", {
+      const allProps: Required<JobProps> = {
         ...requiredProps,
         selectorLabels,
+        containerName: "my-container",
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
+        backoffLimit: 1,
+        ttlSecondsAfterFinished: 30,
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         imagePullPolicy: "Always",
@@ -90,9 +93,29 @@ describe("Job", () => {
             command: ["/bin/sh", "-c", "echo hello"],
           },
         ],
-      });
+        volumes: [
+          {
+            name: "tmp-dir",
+            emptyDir: {},
+          },
+        ],
+        volumeMounts: [
+          {
+            name: "tmp-dir",
+            mountPath: "/tmp",
+          },
+        ],
+      };
+      new Job(chart, "job-test", allProps);
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveAllProperties(allProps, [
+        "containerName",
+        "release",
+        "selectorLabels",
+      ]);
     });
 
     test("Setting restartPolicy", () => {

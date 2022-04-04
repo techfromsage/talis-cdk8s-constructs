@@ -71,7 +71,7 @@ Array [
               "args": Array [
                 "--smallfiles",
                 "--storageEngine",
-                "mmapv1",
+                "wiredTiger",
               ],
               "image": "mongo:v1",
               "name": "mongo",

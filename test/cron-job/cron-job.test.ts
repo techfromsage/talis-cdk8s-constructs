@@ -47,12 +47,14 @@ describe("CronJob", () => {
         role: "cronjob",
         instance: "test",
       };
-      new CronJob(chart, "cron-job-test", {
+      const allProps: Required<CronJobProps> = {
         ...requiredProps,
         selectorLabels,
+        containerName: "my-container",
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
+        backoffLimit: 1,
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         imagePullPolicy: "Always",
@@ -91,9 +93,29 @@ describe("CronJob", () => {
             command: ["/bin/sh", "-c", "echo hello"],
           },
         ],
-      });
+        volumes: [
+          {
+            name: "tmp-dir",
+            emptyDir: {},
+          },
+        ],
+        volumeMounts: [
+          {
+            name: "tmp-dir",
+            mountPath: "/tmp",
+          },
+        ],
+      };
+      new CronJob(chart, "cron-job-test", allProps);
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+
+      const cronJob = results.find((obj) => obj.kind === "CronJob");
+      expect(cronJob).toHaveAllProperties(allProps, [
+        "containerName",
+        "release",
+        "selectorLabels",
+      ]);
     });
 
     test("Setting restartPolicy", () => {

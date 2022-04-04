@@ -18,7 +18,7 @@ Array [
       "namespace": "test",
     },
     "spec": Object {
-      "backoffLimit": 0,
+      "backoffLimit": 1,
       "template": Object {
         "spec": Object {
           "containers": Array [
@@ -67,7 +67,7 @@ Array [
                   },
                 },
               },
-              "name": "my-app",
+              "name": "my-container",
               "resources": Object {
                 "limits": Object {
                   "cpu": 1,
@@ -83,6 +83,12 @@ Array [
                 "runAsNonRoot": true,
                 "runAsUser": 1000,
               },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/tmp",
+                  "name": "tmp-dir",
+                },
+              ],
               "workingDir": "/some/path",
             },
           ],
@@ -103,8 +109,15 @@ Array [
             },
           ],
           "restartPolicy": "Never",
+          "volumes": Array [
+            Object {
+              "emptyDir": Object {},
+              "name": "tmp-dir",
+            },
+          ],
         },
       },
+      "ttlSecondsAfterFinished": 30,
     },
   },
 ]

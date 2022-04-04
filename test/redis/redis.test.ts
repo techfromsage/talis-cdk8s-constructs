@@ -39,12 +39,19 @@ describe("Redis", () => {
         instance: "test",
       };
 
-      new Redis(chart, "redis-test", {
+      const allProps: Required<RedisProps> = {
         ...requiredProps,
         selectorLabels,
-      });
+      };
+      new Redis(chart, "redis-test", allProps);
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+
+      const statefulSet = results.find((obj) => obj.kind === "StatefulSet");
+      expect(statefulSet).toHaveAllProperties(allProps, [
+        "release",
+        "selectorLabels",
+      ]);
     });
   });
 

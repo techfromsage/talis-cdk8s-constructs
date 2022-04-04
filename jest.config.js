@@ -6,6 +6,7 @@ module.exports = {
   transform: {
     "^.+\\.ts$": "ts-jest",
   },
+  setupFilesAfterEnv: ["./test/jest.setup.js"],
   collectCoverageFrom: ["**/*.ts", "!**/node_modules/**", "!**/imports/**"],
   coverageReporters: ["clover", "json", "lcov", "text", "html-spa"],
 };

@@ -271,7 +271,7 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "name": "my-app",
+              "name": "my-container",
               "ports": Array [
                 Object {
                   "containerPort": 3000,
@@ -645,7 +645,7 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "name": "my-app",
+              "name": "my-container",
               "ports": Array [
                 Object {
                   "containerPort": 3000,

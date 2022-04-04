@@ -43,9 +43,12 @@ describe("BackgroundWorker", () => {
         app: "my-app",
         instance: "test",
       };
-      new BackgroundWorker(chart, "worker-test", {
+      const allProps: Required<
+        Omit<BackgroundWorkerProps, "stopSignal" | "makeAffinity">
+      > = {
         ...requiredProps,
         selectorLabels,
+        containerName: "worker",
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
@@ -133,9 +136,17 @@ describe("BackgroundWorker", () => {
             command: ["/bin/sh", "-c", "echo hello"],
           },
         ],
-      });
+      };
+      new BackgroundWorker(chart, "worker-test", allProps);
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveAllProperties(allProps, [
+        "containerName",
+        "release",
+        "selectorLabels",
+      ]);
     });
 
     test("Allows specifying no affinity", () => {

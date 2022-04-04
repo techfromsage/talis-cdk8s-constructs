@@ -4,7 +4,7 @@ import { WebService, WebServiceProps } from "../../lib";
 import * as _ from "lodash";
 import { makeChart } from "../test-util";
 
-const requiredProps = {
+const annotations = {
   description: "Test web service",
   chatUrl: "https://example.slack.com/archives/ABCDEF123",
   eksDashboardUrl: "https://example.io/dashboard",
@@ -16,7 +16,10 @@ const requiredProps = {
   repositoryUrl: "https://example.io/repo",
   runbookUrl: "https://example.io/wiki/runbook",
   uptimeUrl: "https://example.io/uptime",
+};
 
+const requiredProps = {
+  ...annotations,
   image: "my-image",
   release: "test-123",
   resources: {
@@ -77,8 +80,14 @@ describe("WebService", () => {
           region: "testing",
         },
       });
-      new WebService(chart, "web", {
+      const allProps: Required<
+        Omit<
+          WebServiceProps,
+          "makeAffinity" | "makeLoadBalancerName" | "replicas"
+        >
+      > = {
         ...requiredProps,
+        containerName: "my-container",
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
@@ -204,9 +213,28 @@ describe("WebService", () => {
           },
         ],
         externalHostname: "api.example.com",
-      });
+      };
+      new WebService(chart, "web", allProps);
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
+
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveAllProperties(allProps, [
+        ...Object.keys(annotations),
+        "canary",
+        "containerName",
+        "externalHostname",
+        "horizontalPodAutoscaler",
+        "ingressAnnotations",
+        "ingressTargetType",
+        "internal",
+        "loadBalancerLabels",
+        "nginx",
+        "release",
+        "selectorLabels",
+        "stage",
+        "tlsDomain",
+      ]);
     });
 
     test("Horizontal Pod Autoscaler", () => {
