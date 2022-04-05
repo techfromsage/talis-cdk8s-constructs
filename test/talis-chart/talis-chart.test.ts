@@ -213,7 +213,7 @@ describe("TalisChart", () => {
       environment: TalisDeploymentEnvironment.ONDEMAND,
       region: TalisShortRegion.EU,
       watermark: "test",
-      ttl: "2021-02-03T04:05:06Z",
+      ttl: 1234567890,
     });
 
     new ApiObject(chart, "foo", {
@@ -223,13 +223,7 @@ describe("TalisChart", () => {
 
     const results = Testing.synth(chart);
     expect(results).toHaveLength(2);
-    expect(results[0].metadata.labels).toHaveProperty(
-      "ttl",
-      "2021-02-03T04:05:06Z"
-    );
-    expect(results[1].metadata.labels).toHaveProperty(
-      "ttl",
-      "2021-02-03T04:05:06Z"
-    );
+    expect(results[0].metadata.labels).toHaveProperty("ttl", "1234567890");
+    expect(results[1].metadata.labels).toHaveProperty("ttl", "1234567890");
   });
 });

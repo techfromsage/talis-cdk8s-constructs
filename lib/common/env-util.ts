@@ -8,14 +8,20 @@ export function getWatermark({
   return process.env[envVarName] || defaultValue;
 }
 
-export function getTtl({ envVarName = "TTL" } = {}): string | undefined {
+export function getTtlTimestamp({ envVarName = "TTL" } = {}):
+  | number
+  | undefined {
   const ttl = process.env[envVarName];
 
-  if (ttl && !/^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d/.test(ttl)) {
+  if (!ttl) {
+    return undefined;
+  }
+
+  if (!/^\d{10,}$/.test(ttl)) {
     throw new Error(`Invalid TTL: ${ttl}`);
   }
 
-  return ttl;
+  return Number(ttl);
 }
 
 export function getDockerTag(
