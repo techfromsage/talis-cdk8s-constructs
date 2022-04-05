@@ -10,20 +10,12 @@ exports[`env-util getDockerTag Throws if env var is empty 1`] = `"Docker tag var
 
 exports[`env-util getDockerTag Throws if tag is not valid for the environment 1`] = `"\\"stable\\" is not a valid Docker tag for production, please set APP_DOCKER_TAG to a valid tag"`;
 
-exports[`env-util getTtl Throws on invalid TTL 2021 1`] = `"Invalid TTL: 2021"`;
+exports[`env-util getTtlTimestamp Throws on invalid TTL 123456789 1`] = `"Invalid TTL: 123456789"`;
 
-exports[`env-util getTtl Throws on invalid TTL 2021-02 1`] = `"Invalid TTL: 2021-02"`;
+exports[`env-util getTtlTimestamp Throws on invalid TTL 123456789a 1`] = `"Invalid TTL: 123456789a"`;
 
-exports[`env-util getTtl Throws on invalid TTL 2021-02-03 1`] = `"Invalid TTL: 2021-02-03"`;
+exports[`env-util getTtlTimestamp Throws on invalid TTL 1234567890.12 1`] = `"Invalid TTL: 1234567890.12"`;
 
-exports[`env-util getTtl Throws on invalid TTL 2021-02-03T 1`] = `"Invalid TTL: 2021-02-03T"`;
+exports[`env-util getTtlTimestamp Throws on invalid TTL a123456789 1`] = `"Invalid TTL: a123456789"`;
 
-exports[`env-util getTtl Throws on invalid TTL 2021-02-03T04: 1`] = `"Invalid TTL: 2021-02-03T04:"`;
-
-exports[`env-util getTtl Throws on invalid TTL 2021-02-03T04:05 1`] = `"Invalid TTL: 2021-02-03T04:05"`;
-
-exports[`env-util getTtl Throws on invalid TTL 2021-02-03T04:05: 1`] = `"Invalid TTL: 2021-02-03T04:05:"`;
-
-exports[`env-util getTtl Throws on invalid TTL 2021-02-03T04:05:0 1`] = `"Invalid TTL: 2021-02-03T04:05:0"`;
-
-exports[`env-util getTtl Throws on invalid TTL foobar 1`] = `"Invalid TTL: foobar"`;
+exports[`env-util getTtlTimestamp Throws on invalid TTL foobar 1`] = `"Invalid TTL: foobar"`;

@@ -2,7 +2,7 @@ import {
   getCanaryStage,
   getDockerTag,
   getWatermark,
-  getTtl,
+  getTtlTimestamp,
   TalisDeploymentEnvironment,
 } from "../../lib";
 
@@ -50,41 +50,35 @@ describe("env-util", () => {
     });
   });
 
-  describe("getTtl", () => {
+  describe("getTtlTimestamp", () => {
     test("Gets TTL", () => {
-      process.env.TTL = "2021-02-03T04:05:06Z";
-      expect(getTtl()).toBe("2021-02-03T04:05:06Z");
+      process.env.TTL = "1650172800";
+      expect(getTtlTimestamp()).toBe(1650172800);
     });
 
     test("Returns undefined if no TTL is set", () => {
-      expect(getTtl()).toBeUndefined();
+      expect(getTtlTimestamp()).toBeUndefined();
     });
 
     test("Gets TTL from custom env var", () => {
-      process.env.EXPIRY_DATE = "2021-02-03T04:05:06+07:00";
-      expect(getTtl({ envVarName: "EXPIRY_DATE" })).toBe(
-        "2021-02-03T04:05:06+07:00"
-      );
+      process.env.EXPIRY_DATE = "2147483647";
+      expect(getTtlTimestamp({ envVarName: "EXPIRY_DATE" })).toBe(2147483647);
     });
 
     test("Returns undefined if no custom env var is set", () => {
-      expect(getTtl({ envVarName: "EXPIRY_DATE" })).toBeUndefined();
+      expect(getTtlTimestamp({ envVarName: "EXPIRY_DATE" })).toBeUndefined();
     });
 
     [
-      "2021-02-03T04:05:0",
-      "2021-02-03T04:05:",
-      "2021-02-03T04:05",
-      "2021-02-03T04:",
-      "2021-02-03T",
-      "2021-02-03",
-      "2021-02",
-      "2021",
+      "1234567890.12",
+      "a123456789",
+      "123456789a",
+      "123456789",
       "foobar",
     ].forEach((ttl) => {
       test(`Throws on invalid TTL ${ttl}`, () => {
         process.env.TTL = ttl;
-        expect(() => getTtl()).toThrowErrorMatchingSnapshot();
+        expect(() => getTtlTimestamp()).toThrowErrorMatchingSnapshot();
       });
     });
   });

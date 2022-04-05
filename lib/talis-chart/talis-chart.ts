@@ -14,8 +14,8 @@ export interface TalisChartProps extends ChartProps {
   readonly region: TalisShortRegion;
   /** An identifier, will be appended to the namespace */
   readonly watermark: string;
-  /** Time and date after which the namespace will be deleted, in ISO 8601 format */
-  readonly ttl?: string;
+  /** Timestamp after which the namespace will be deleted */
+  readonly ttl?: number;
 }
 
 /** @private */
@@ -50,7 +50,7 @@ export class TalisChart extends Chart {
     };
 
     if (ttl) {
-      labels["ttl"] = ttl;
+      labels["ttl"] = ttl.toString();
     }
 
     super(scope, id, {
