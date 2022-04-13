@@ -36,7 +36,10 @@ export class TalisChart extends Chart {
     const maybeEnvironment =
       environment !== TalisDeploymentEnvironment.PRODUCTION ? environment : "";
     const maybeWatermark =
-      environment === TalisDeploymentEnvironment.ONDEMAND ? watermark : "";
+      environment === TalisDeploymentEnvironment.ONDEMAND ||
+      environment === TalisDeploymentEnvironment.PREVIEW
+        ? watermark
+        : "";
     const namespace = props.namespace ?? joinNameParts([app, watermark]);
     const id = `${namespace}-${environment}-${region}`;
 
