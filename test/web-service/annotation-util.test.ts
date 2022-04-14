@@ -64,6 +64,19 @@ describe("annotation-util", () => {
             "https://grafana-eks-staging-eu.talisaspire.com/d/lokiR6qB0/loki-logs?var-apps=test4",
         },
       },
+      {
+        environment: TalisDeploymentEnvironment.PREVIEW,
+        region: TalisShortRegion.EU,
+        app: "test5",
+        expected: {
+          eksDashboardUrl:
+            "https://dashboard-eks-staging-eu.talisaspire.com/#/overview?namespace=test5",
+          graphsUrl:
+            "https://grafana-eks-staging-eu.talisaspire.com/d/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?var-namespace=test5",
+          logsUrl:
+            "https://grafana-eks-staging-eu.talisaspire.com/d/lokiR6qB0/loki-logs?var-apps=test5",
+        },
+      },
     ].forEach(({ environment, region, app, expected }) => {
       test(`Creates Kubernetes dashboard URL for ${environment}-${region}`, () => {
         const urls = {

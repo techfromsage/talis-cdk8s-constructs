@@ -89,6 +89,17 @@ describe("name-util", () => {
         },
         expected: "my-app-repo-1234-api-c-eu",
       },
+      {
+        // preview app with watermarked namespace
+        namespace: "my-app-repo-1234",
+        labels: {
+          instance: "api",
+          canary: "true",
+          environment: TalisDeploymentEnvironment.PREVIEW,
+          region: TalisShortRegion.EU,
+        },
+        expected: "my-app-repo-1234-api-c-eu",
+      },
     ].forEach(({ namespace, labels, expected }) => {
       test("Builds a load balancer name", () => {
         expect(makeLoadBalancerName(namespace, labels)).toBe(expected);

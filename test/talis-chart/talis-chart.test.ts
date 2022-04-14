@@ -187,6 +187,12 @@ describe("TalisChart", () => {
       watermark: "plat-123",
       expected: "my-app-plat-123-ondemand-eu",
     },
+    {
+      environment: TalisDeploymentEnvironment.PREVIEW,
+      region: TalisShortRegion.EU,
+      watermark: "test",
+      expected: "my-app-test-preview-eu",
+    },
   ];
   serviceLabelTests.forEach(({ environment, region, watermark, expected }) => {
     test(`Sets service label for ${environment}-${region}`, () => {
@@ -206,24 +212,43 @@ describe("TalisChart", () => {
     });
   });
 
-  test("Allows to specify TTL", () => {
-    const app = Testing.app();
-    const chart = new TalisChart(app, {
-      app: "my-app",
+  const ttlTests = [
+    {
       environment: TalisDeploymentEnvironment.ONDEMAND,
       region: TalisShortRegion.EU,
       watermark: "test",
       ttl: 1234567890,
-    });
+      expected: "1234567890",
+    },
+    {
+      environment: TalisDeploymentEnvironment.PREVIEW,
+      region: TalisShortRegion.EU,
+      watermark: "test",
+      ttl: 1234567890,
+      expected: "1234567890",
+    },
+  ];
 
-    new ApiObject(chart, "foo", {
-      apiVersion: "v1",
-      kind: "Foo",
-    });
+  ttlTests.forEach(({ environment, region, watermark, ttl, expected }) => {
+    test(`Allows to specify TTL for ${environment}-${region}`, () => {
+      const app = Testing.app();
+      const chart = new TalisChart(app, {
+        app: "my-app",
+        environment,
+        region,
+        watermark,
+        ttl,
+      });
 
-    const results = Testing.synth(chart);
-    expect(results).toHaveLength(2);
-    expect(results[0].metadata.labels).toHaveProperty("ttl", "1234567890");
-    expect(results[1].metadata.labels).toHaveProperty("ttl", "1234567890");
+      new ApiObject(chart, "foo", {
+        apiVersion: "v1",
+        kind: "Foo",
+      });
+
+      const results = Testing.synth(chart);
+      expect(results).toHaveLength(2);
+      expect(results[0].metadata.labels).toHaveProperty("ttl", expected);
+      expect(results[1].metadata.labels).toHaveProperty("ttl", expected);
+    });
   });
 });
