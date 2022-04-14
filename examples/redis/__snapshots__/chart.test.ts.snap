@@ -80,8 +80,13 @@ Array [
         "metadata": Object {
           "labels": Object {
             "app": "example-redis-app",
+            "environment": "development",
             "instance": "redis-example",
+            "managed-by": "cdk8s",
+            "region": "local",
+            "release": "5.0.7",
             "role": "redis",
+            "service": "example-redis-app-development-local",
           },
         },
         "spec": Object {

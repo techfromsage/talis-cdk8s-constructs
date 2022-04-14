@@ -64,7 +64,7 @@ export class Redis extends Construct {
         },
         template: {
           metadata: {
-            labels: selectorLabels,
+            labels: instanceLabels,
           },
           spec: {
             volumes: [

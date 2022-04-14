@@ -93,7 +93,7 @@ export class Mongo extends Construct {
         ],
         template: {
           metadata: {
-            labels: selectorLabels,
+            labels: instanceLabels,
           },
           spec: {
             containers: [

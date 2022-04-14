@@ -61,7 +61,10 @@ Array [
         "metadata": Object {
           "labels": Object {
             "app": "my-app",
+            "environment": "test",
             "instance": "test",
+            "region": "local",
+            "release": "v1",
             "role": "mongo",
           },
         },
@@ -186,6 +189,7 @@ Array [
         "metadata": Object {
           "labels": Object {
             "instance": "mongo-test",
+            "release": "v1",
             "role": "mongo",
           },
         },
