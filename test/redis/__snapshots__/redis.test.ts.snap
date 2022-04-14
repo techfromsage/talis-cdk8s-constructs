@@ -80,12 +80,31 @@ Array [
                 },
               ],
               "image": "redis:v1",
+              "livenessProbe": Object {
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "tcpSocket": Object {
+                  "port": 6379,
+                },
+                "timeoutSeconds": 5,
+              },
               "name": "redis",
               "ports": Array [
                 Object {
                   "containerPort": 6379,
                 },
               ],
+              "readinessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "redis-cli",
+                    "ping",
+                  ],
+                },
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "timeoutSeconds": 5,
+              },
               "resources": Object {
                 "limits": Object {
                   "cpu": "100m",
@@ -182,12 +201,31 @@ Array [
                 },
               ],
               "image": "redis:v1",
+              "livenessProbe": Object {
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "tcpSocket": Object {
+                  "port": 6379,
+                },
+                "timeoutSeconds": 5,
+              },
               "name": "redis",
               "ports": Array [
                 Object {
                   "containerPort": 6379,
                 },
               ],
+              "readinessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "redis-cli",
+                    "ping",
+                  ],
+                },
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "timeoutSeconds": 5,
+              },
               "resources": Object {
                 "limits": Object {
                   "cpu": "100m",
