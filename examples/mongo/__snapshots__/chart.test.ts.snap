@@ -80,8 +80,13 @@ Array [
         "metadata": Object {
           "labels": Object {
             "app": "example-mongo-app",
+            "environment": "development",
             "instance": "redis-example",
+            "managed-by": "cdk8s",
+            "region": "local",
+            "release": "3.2.8",
             "role": "mongo",
+            "service": "example-mongo-app-development-local",
           },
         },
         "spec": Object {

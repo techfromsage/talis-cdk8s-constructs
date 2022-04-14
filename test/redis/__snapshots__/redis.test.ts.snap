@@ -61,7 +61,10 @@ Array [
         "metadata": Object {
           "labels": Object {
             "app": "my-app",
+            "environment": "test",
             "instance": "test",
+            "region": "local",
+            "release": "v1",
             "role": "redis",
           },
         },
@@ -183,6 +186,7 @@ Array [
         "metadata": Object {
           "labels": Object {
             "instance": "redis-test",
+            "release": "v1",
             "role": "redis",
           },
         },
