@@ -1,6 +1,11 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import { KubeService, KubeStatefulSet, Quantity } from "../../imports/k8s";
+import {
+  IntOrString,
+  KubeService,
+  KubeStatefulSet,
+  Quantity,
+} from "../../imports/k8s";
 import { MongoProps } from "./mongo-props";
 
 export class Mongo extends Construct {
@@ -13,6 +18,7 @@ export class Mongo extends Construct {
     const chart = Chart.of(this);
     const app = chart.labels.app ?? props.selectorLabels?.app;
     const release = props.release ?? "3.2.8";
+    const port = 27017;
     const storageEngine = props.storageEngine ?? "mmapv1";
     const labels = {
       ...chart.labels,
@@ -38,6 +44,12 @@ export class Mongo extends Construct {
       ...selectorLabels,
     };
 
+    const args = ["--storageEngine", storageEngine];
+
+    if (storageEngine === "mmapv1") {
+      args.push("--smallfiles");
+    }
+
     this.service = new KubeService(this, id, {
       metadata: {
         labels: instanceLabels,
@@ -46,7 +58,7 @@ export class Mongo extends Construct {
         clusterIp: "None",
         ports: [
           {
-            port: 27107,
+            port: port,
             protocol: "TCP",
           },
         ],
@@ -88,13 +100,29 @@ export class Mongo extends Construct {
               {
                 name: "mongo",
                 image: `mongo:${release}`,
-                args: ["--smallfiles", "--storageEngine", storageEngine],
+                args: args,
                 ports: [
                   {
-                    containerPort: 27017,
+                    containerPort: port,
                   },
                 ],
                 resources: resources,
+                livenessProbe: {
+                  tcpSocket: {
+                    port: IntOrString.fromNumber(port),
+                  },
+                  initialDelaySeconds: 5,
+                  timeoutSeconds: 5,
+                  failureThreshold: 5,
+                },
+                readinessProbe: {
+                  exec: {
+                    command: ["mongo", "--eval", "db.adminCommand('ping')"],
+                  },
+                  initialDelaySeconds: 5,
+                  timeoutSeconds: 5,
+                  failureThreshold: 5,
+                },
                 volumeMounts: [
                   {
                     mountPath: "/data/db",
