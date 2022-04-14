@@ -1,6 +1,11 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import { KubeService, KubeStatefulSet, Quantity } from "../../imports/k8s";
+import {
+  IntOrString,
+  KubeService,
+  KubeStatefulSet,
+  Quantity,
+} from "../../imports/k8s";
 import { RedisProps } from "./redis-props";
 
 export class Redis extends Construct {
@@ -13,6 +18,7 @@ export class Redis extends Construct {
     const chart = Chart.of(this);
     const app = chart.labels.app ?? props.selectorLabels?.app;
     const release = props.release ?? "5.0.7";
+    const port = 6379;
     const labels = {
       ...chart.labels,
       release: release,
@@ -38,7 +44,7 @@ export class Redis extends Construct {
         clusterIp: "None",
         ports: [
           {
-            port: 6379,
+            port: port,
             protocol: "TCP",
           },
         ],
@@ -80,7 +86,7 @@ export class Redis extends Construct {
                 ],
                 ports: [
                   {
-                    containerPort: 6379,
+                    containerPort: port,
                   },
                 ],
                 resources: {
@@ -88,6 +94,22 @@ export class Redis extends Construct {
                     cpu: Quantity.fromString("100m"),
                     memory: Quantity.fromString("250Mi"),
                   },
+                },
+                livenessProbe: {
+                  tcpSocket: {
+                    port: IntOrString.fromNumber(port),
+                  },
+                  initialDelaySeconds: 5,
+                  timeoutSeconds: 5,
+                  failureThreshold: 5,
+                },
+                readinessProbe: {
+                  exec: {
+                    command: ["redis-cli", "ping"],
+                  },
+                  initialDelaySeconds: 5,
+                  timeoutSeconds: 5,
+                  failureThreshold: 5,
                 },
                 volumeMounts: [
                   {
