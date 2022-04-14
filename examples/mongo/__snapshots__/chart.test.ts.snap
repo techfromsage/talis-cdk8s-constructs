@@ -38,7 +38,7 @@ Array [
       "clusterIP": "None",
       "ports": Array [
         Object {
-          "port": 27107,
+          "port": 27017,
           "protocol": "TCP",
         },
       ],
@@ -88,17 +88,37 @@ Array [
           "containers": Array [
             Object {
               "args": Array [
-                "--smallfiles",
                 "--storageEngine",
                 "mmapv1",
+                "--smallfiles",
               ],
               "image": "mongo:3.2.8",
+              "livenessProbe": Object {
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "tcpSocket": Object {
+                  "port": 27017,
+                },
+                "timeoutSeconds": 5,
+              },
               "name": "mongo",
               "ports": Array [
                 Object {
                   "containerPort": 27017,
                 },
               ],
+              "readinessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "mongo",
+                    "--eval",
+                    "db.adminCommand('ping')",
+                  ],
+                },
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "timeoutSeconds": 5,
+              },
               "resources": Object {
                 "limits": Object {
                   "cpu": "100m",
