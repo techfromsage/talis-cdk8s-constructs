@@ -18,6 +18,13 @@ export class Mongo extends Construct {
       ...chart.labels,
       release: release,
     };
+    const storageSize = props.storageSize ?? Quantity.fromString("20Gi");
+    const resources = props.resources ?? {
+      limits: {
+        cpu: Quantity.fromString("100m"),
+        memory: Quantity.fromString("500Mi"),
+      },
+    };
 
     const selectorLabels: { [key: string]: string } = {
       app: app,
@@ -57,17 +64,26 @@ export class Mongo extends Construct {
         selector: {
           matchLabels: selectorLabels,
         },
+        volumeClaimTemplates: [
+          {
+            metadata: {
+              name: "mongo-data",
+            },
+            spec: {
+              storageClassName: "general-purpose-delete",
+              resources: {
+                requests: {
+                  storage: storageSize,
+                },
+              },
+            },
+          },
+        ],
         template: {
           metadata: {
             labels: selectorLabels,
           },
           spec: {
-            volumes: [
-              {
-                name: "data",
-                emptyDir: {},
-              },
-            ],
             containers: [
               {
                 name: "mongo",
@@ -78,16 +94,11 @@ export class Mongo extends Construct {
                     containerPort: 27017,
                   },
                 ],
-                resources: {
-                  limits: {
-                    cpu: Quantity.fromString("100m"),
-                    memory: Quantity.fromString("500Mi"),
-                  },
-                },
+                resources: resources,
                 volumeMounts: [
                   {
                     mountPath: "/data/db",
-                    name: "data",
+                    name: "mongo-data",
                   },
                 ],
               },
