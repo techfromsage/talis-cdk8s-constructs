@@ -108,19 +108,28 @@ Array [
               "volumeMounts": Array [
                 Object {
                   "mountPath": "/data/db",
-                  "name": "data",
+                  "name": "mongo-data",
                 },
               ],
             },
           ],
-          "volumes": Array [
-            Object {
-              "emptyDir": Object {},
-              "name": "data",
-            },
-          ],
         },
       },
+      "volumeClaimTemplates": Array [
+        Object {
+          "metadata": Object {
+            "name": "mongo-data",
+          },
+          "spec": Object {
+            "resources": Object {
+              "requests": Object {
+                "storage": "20Gi",
+              },
+            },
+            "storageClassName": "general-purpose-delete",
+          },
+        },
+      ],
     },
   },
 ]

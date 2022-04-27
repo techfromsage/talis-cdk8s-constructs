@@ -1,5 +1,5 @@
 import { Chart, Testing } from "cdk8s";
-import { KubeService, KubeStatefulSet } from "../../imports/k8s";
+import { KubeService, KubeStatefulSet, Quantity } from "../../imports/k8s";
 import { Mongo, MongoProps } from "../../lib";
 import { makeChart } from "../test-util";
 
@@ -43,6 +43,13 @@ describe("Mongo", () => {
         ...requiredProps,
         selectorLabels,
         storageEngine: "wiredTiger",
+        storageSize: Quantity.fromString("20Gi"),
+        resources: {
+          limits: {
+            cpu: Quantity.fromString("100m"),
+            memory: Quantity.fromString("500Mi"),
+          },
+        },
       };
       new Mongo(chart, "mongo-test", allProps);
       const results = Testing.synth(chart);
@@ -53,6 +60,8 @@ describe("Mongo", () => {
         "release",
         "selectorLabels",
         "storageEngine",
+        "storageSize",
+        "resources",
       ]);
     });
   });
