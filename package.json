@@ -24,11 +24,10 @@
     "lint:prettier": "prettier --check .",
     "lint:ts": "tsc --noEmit",
     "lint": "npm run lint:prettier && npm run lint:eslint && npm run lint:ts",
-    "prepare": "husky install",
+    "prepare": "husky install && ./e2e/install-detik.sh",
     "release": "npm run build && semantic-release",
     "e2e": "bats --jobs 2 --no-parallelize-within-files --timing --print-output-on-failure e2e/",
-    "test": "jest",
-    "postinstall": "./e2e/install-detik.sh"
+    "test": "jest"
   },
   "peerDependencies": {
     "cdk8s": "^2.2.85",
