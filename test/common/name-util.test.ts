@@ -37,6 +37,16 @@ describe("name-util", () => {
         expected: "my-app-api-develop",
       },
       {
+        // CI build
+        namespace: "my-app",
+        labels: {
+          instance: "api",
+          environment: TalisDeploymentEnvironment.BUILD,
+          region: TalisShortRegion.LOCAL,
+        },
+        expected: "my-app-api",
+      },
+      {
         // staging app
         namespace: "my-app",
         labels: {
