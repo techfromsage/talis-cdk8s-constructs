@@ -1,13 +1,51 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.0
+  aws-cli: circleci/aws-cli@2.0.6
+  kubernetes: circleci/kubernetes@1.3.0
+  node: circleci/node@5.0.2
+
+parameters:
+  cluster_name:
+    type: string
+    default: "staging-eu"
+
+commands:
+  cluster_setup:
+    steps:
+      - aws-cli/setup
+      - kubernetes/install-kubectl:
+          kubectl-version: v1.21.5
+      - run:
+          name: Set up cluster context
+          command: aws eks update-kubeconfig --name << pipeline.parameters.cluster_name >> --alias << pipeline.parameters.cluster_name >>
+
+  node_setup:
+    steps:
+      - node/install:
+          node-version: "" # use .nvmrc
+      - node/install-packages:
+          include-branch-in-cache-key: false
 
 jobs:
   fan_out:
     executor: node/default
     steps:
       - run: echo "Building $CIRCLE_BRANCH"
+
+  e2e:
+    executor: node/default
+    steps:
+      - checkout
+      - cluster_setup
+      - node_setup
+      - run:
+          name: Run e2e tests
+          environment:
+            DEBUG_DETIK: "true"
+          command: npm run e2e
+      - store_artifacts:
+          path: /tmp/detik
 
 workflows:
   build:
@@ -46,10 +84,17 @@ workflows:
           requires:
             - fan_out
             - be_kind_to_your_colleagues
-      - node/run:
-          name: semantic-release
-          npm-run: release
+      - e2e:
+          context:
+            - docker-hub-secrets
+            - k8s-deploy-to-shared-aspire-20220211
+            - aws-region-eu
           requires:
             - build
             - lint
             - test
+      - node/run:
+          name: semantic-release
+          npm-run: release
+          requires:
+            - e2e

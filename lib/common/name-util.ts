@@ -18,6 +18,7 @@ function abbreviateEnvironment(
     case TalisDeploymentEnvironment.PRODUCTION:
       return "prod";
 
+    case TalisDeploymentEnvironment.BUILD:
     case TalisDeploymentEnvironment.ONDEMAND:
     case TalisDeploymentEnvironment.PREVIEW:
       // Omit, because namespace should include watermark.

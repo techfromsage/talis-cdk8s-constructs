@@ -17,3 +17,9 @@ test/**/*.js
 
 # CDK8s output
 dist/
+dist-*/
+
+# DETIK
+e2e/lib/detik.bash
+e2e/lib/linter.bash
+e2e/lib/utils.bash
