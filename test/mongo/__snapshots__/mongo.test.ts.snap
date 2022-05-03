@@ -124,6 +124,9 @@ Array [
             "name": "mongo-data",
           },
           "spec": Object {
+            "accessModes": Array [
+              "ReadWriteOnce",
+            ],
             "resources": Object {
               "requests": Object {
                 "storage": "20Gi",
@@ -250,6 +253,9 @@ Array [
             "name": "mongo-data",
           },
           "spec": Object {
+            "accessModes": Array [
+              "ReadWriteOnce",
+            ],
             "resources": Object {
               "requests": Object {
                 "storage": "20Gi",

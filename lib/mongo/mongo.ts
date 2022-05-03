@@ -82,6 +82,7 @@ export class Mongo extends Construct {
               name: "mongo-data",
             },
             spec: {
+              accessModes: ["ReadWriteOnce"],
               storageClassName: "general-purpose-delete",
               resources: {
                 requests: {
