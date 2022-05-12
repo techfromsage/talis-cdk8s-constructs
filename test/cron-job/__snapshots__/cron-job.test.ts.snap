@@ -122,6 +122,7 @@ Array [
         },
       },
       "schedule": "0 0 13 * 5",
+      "startingDeadlineSeconds": 200,
     },
   },
 ]

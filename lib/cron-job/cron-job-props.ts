@@ -33,4 +33,9 @@ export interface CronJobProps
    * @default 6
    */
   readonly backoffLimit?: number;
+
+  /**
+   * Specifies the deadline in seconds for starting the job if it misses its scheduled time.
+   */
+  readonly startingDeadlineSeconds?: number;
 }

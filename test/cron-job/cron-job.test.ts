@@ -59,6 +59,7 @@ describe("CronJob", () => {
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         imagePullPolicy: "Always",
         imagePullSecrets: [{ name: "foo-secret" }],
+        startingDeadlineSeconds: 200,
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),
