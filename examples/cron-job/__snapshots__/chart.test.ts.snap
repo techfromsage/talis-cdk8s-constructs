@@ -54,6 +54,7 @@ Array [
       "namespace": "example-cron-app-test",
     },
     "spec": Object {
+      "failedJobsHistoryLimit": 1,
       "jobTemplate": Object {
         "spec": Object {
           "backoffLimit": 6,
@@ -89,6 +90,7 @@ Array [
         },
       },
       "schedule": "0 0 13 * 5",
+      "successfulJobsHistoryLimit": 3,
     },
   },
 ]
@@ -148,6 +150,7 @@ Array [
       "namespace": "example-cron-app-test",
     },
     "spec": Object {
+      "failedJobsHistoryLimit": 1,
       "jobTemplate": Object {
         "spec": Object {
           "backoffLimit": 6,
@@ -183,6 +186,7 @@ Array [
         },
       },
       "schedule": "0 0 13 * 5",
+      "successfulJobsHistoryLimit": 3,
     },
   },
 ]
