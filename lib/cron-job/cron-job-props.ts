@@ -40,12 +40,12 @@ export interface CronJobProps
   readonly startingDeadlineSeconds?: number;
 
   /**
-   * Specifies the number of successful finished jobs to retain.
+   * Specifies the number of successful finished jobs to retain. @default 3
    */
   readonly successfulJobsHistoryLimit?: number;
 
   /**
-   * Specifies the number of failed finished jobs to retain.
+   * Specifies the number of failed finished jobs to retain. @default 1
    */
   readonly failedJobsHistoryLimit?: number;
 }
