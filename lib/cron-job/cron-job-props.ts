@@ -38,4 +38,16 @@ export interface CronJobProps
    * Specifies the deadline in seconds for starting the job if it misses its scheduled time.
    */
   readonly startingDeadlineSeconds?: number;
+
+  /**
+   * Specifies the number of successful finished jobs to retain.
+   * @default 3
+   */
+  readonly successfulJobsHistoryLimit?: number;
+
+  /**
+   * Specifies the number of failed finished jobs to retain.
+   * @default 1
+   */
+  readonly failedJobsHistoryLimit?: number;
 }

@@ -30,6 +30,8 @@ export class CronJob extends Construct {
       spec: {
         schedule: props.schedule,
         startingDeadlineSeconds: props.startingDeadlineSeconds,
+        successfulJobsHistoryLimit: props.successfulJobsHistoryLimit ?? 3,
+        failedJobsHistoryLimit: props.failedJobsHistoryLimit ?? 1,
         jobTemplate: {
           spec: {
             backoffLimit: props.backoffLimit ?? 6,

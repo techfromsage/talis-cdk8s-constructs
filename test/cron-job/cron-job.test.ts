@@ -60,6 +60,8 @@ describe("CronJob", () => {
         imagePullPolicy: "Always",
         imagePullSecrets: [{ name: "foo-secret" }],
         startingDeadlineSeconds: 200,
+        successfulJobsHistoryLimit: 4,
+        failedJobsHistoryLimit: 2,
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),

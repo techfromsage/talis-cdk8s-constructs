@@ -18,6 +18,7 @@ Array [
       "namespace": "test",
     },
     "spec": Object {
+      "failedJobsHistoryLimit": 2,
       "jobTemplate": Object {
         "spec": Object {
           "backoffLimit": 1,
@@ -123,6 +124,7 @@ Array [
       },
       "schedule": "0 0 13 * 5",
       "startingDeadlineSeconds": 200,
+      "successfulJobsHistoryLimit": 4,
     },
   },
 ]
@@ -142,6 +144,7 @@ Array [
       "name": "test-cron-job-test-c88f7970",
     },
     "spec": Object {
+      "failedJobsHistoryLimit": 1,
       "jobTemplate": Object {
         "spec": Object {
           "backoffLimit": 2,
@@ -166,6 +169,7 @@ Array [
         },
       },
       "schedule": "0 0 13 * 5",
+      "successfulJobsHistoryLimit": 3,
     },
   },
 ]
