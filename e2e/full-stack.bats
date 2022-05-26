@@ -3,6 +3,8 @@ load "lib/utils"
 load "lib/detik"
 load "lib/test_helper"
 
+: "${CIRCLE_BUILD_NUM:=local}"
+
 setup_file() {
   cd "$(dirname "$BATS_TEST_FILENAME")" || exit 1
   set_detik_client
