@@ -20,6 +20,16 @@ Array [
     "spec": Object {
       "backoffLimit": 1,
       "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "my-app",
+            "environment": "test",
+            "instance": "test",
+            "region": "local",
+            "release": "v1",
+            "role": "job",
+          },
+        },
         "spec": Object {
           "containers": Array [
             Object {
@@ -139,6 +149,13 @@ Array [
     "spec": Object {
       "backoffLimit": 0,
       "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "instance": "job-test",
+            "release": "v1",
+            "role": "job",
+          },
+        },
         "spec": Object {
           "containers": Array [
             Object {

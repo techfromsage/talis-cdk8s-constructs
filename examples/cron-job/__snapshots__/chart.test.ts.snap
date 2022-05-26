@@ -59,6 +59,18 @@ Array [
         "spec": Object {
           "backoffLimit": 6,
           "template": Object {
+            "metadata": Object {
+              "labels": Object {
+                "app": "example-cron-app",
+                "environment": "development",
+                "instance": "cron-job-example",
+                "managed-by": "cdk8s",
+                "region": "local",
+                "release": "v2.2",
+                "role": "cronjob",
+                "service": "example-cron-app-development-local",
+              },
+            },
             "spec": Object {
               "containers": Array [
                 Object {
@@ -155,6 +167,18 @@ Array [
         "spec": Object {
           "backoffLimit": 6,
           "template": Object {
+            "metadata": Object {
+              "labels": Object {
+                "app": "example-cron-app",
+                "environment": "development",
+                "instance": "cron-job-example",
+                "managed-by": "cdk8s",
+                "region": "local",
+                "release": "v1.0",
+                "role": "cronjob",
+                "service": "example-cron-app-development-local",
+              },
+            },
             "spec": Object {
               "containers": Array [
                 Object {

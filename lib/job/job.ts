@@ -29,6 +29,12 @@ export class Job extends Construct {
         backoffLimit: props.backoffLimit ?? 6,
         ttlSecondsAfterFinished: props.ttlSecondsAfterFinished,
         template: {
+          metadata: {
+            labels: {
+              ...labels, // chart labels are not applied to the Pod so we need to add them here
+              ...selectorLabels,
+            },
+          },
           spec: {
             volumes: props.volumes,
             restartPolicy: props.restartPolicy,

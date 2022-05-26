@@ -56,6 +56,18 @@ Array [
     "spec": Object {
       "backoffLimit": 6,
       "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "example-job-app",
+            "environment": "development",
+            "instance": "job-example",
+            "managed-by": "cdk8s",
+            "region": "local",
+            "release": "v2.2",
+            "role": "job",
+            "service": "example-job-app-development-local",
+          },
+        },
         "spec": Object {
           "containers": Array [
             Object {
@@ -146,6 +158,18 @@ Array [
     "spec": Object {
       "backoffLimit": 6,
       "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "example-job-app",
+            "environment": "development",
+            "instance": "job-example",
+            "managed-by": "cdk8s",
+            "region": "local",
+            "release": "v1.0",
+            "role": "job",
+            "service": "example-job-app-development-local",
+          },
+        },
         "spec": Object {
           "containers": Array [
             Object {
