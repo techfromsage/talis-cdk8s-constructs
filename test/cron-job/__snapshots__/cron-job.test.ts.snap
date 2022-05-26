@@ -23,6 +23,16 @@ Array [
         "spec": Object {
           "backoffLimit": 1,
           "template": Object {
+            "metadata": Object {
+              "labels": Object {
+                "app": "my-app",
+                "environment": "test",
+                "instance": "test",
+                "region": "local",
+                "release": "v1",
+                "role": "cronjob",
+              },
+            },
             "spec": Object {
               "containers": Array [
                 Object {
@@ -149,6 +159,13 @@ Array [
         "spec": Object {
           "backoffLimit": 2,
           "template": Object {
+            "metadata": Object {
+              "labels": Object {
+                "instance": "cron-job-test",
+                "release": "v1",
+                "role": "cronjob",
+              },
+            },
             "spec": Object {
               "containers": Array [
                 Object {

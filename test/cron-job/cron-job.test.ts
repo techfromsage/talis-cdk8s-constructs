@@ -1,6 +1,7 @@
 import { Chart, Testing } from "cdk8s";
 import { Quantity } from "../../imports/k8s";
 import { CronJob, CronJobProps } from "../../lib";
+import { makeChart } from "../test-util";
 
 const requiredProps: CronJobProps = {
   schedule: "0 0 13 * 5",
@@ -16,8 +17,14 @@ const requiredProps: CronJobProps = {
   restartPolicy: "OnFailure",
 };
 
-function synthCronJob(props: CronJobProps = requiredProps) {
-  const chart = Testing.chart();
+function synthCronJob(
+  props: CronJobProps = requiredProps,
+  chartLabels: { [key: string]: string } = {}
+) {
+  const chart = makeChart({
+    namespace: "test",
+    labels: chartLabels,
+  });
   new CronJob(chart, "cron-job-test", props);
   const results = Testing.synth(chart);
   return results;
@@ -227,6 +234,73 @@ describe("CronJob", () => {
         "spec.jobTemplate.spec.template.spec.containers[0].name",
         "explicit-name"
       );
+    });
+  });
+
+  describe("Labels and annotations", () => {
+    test("Inherits labels from the chart", () => {
+      const results = synthCronJob(requiredProps, {
+        app: "my-app",
+        environment: "test",
+        region: "dev",
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+
+      expect(cron.metadata.labels).toEqual({
+        app: "my-app",
+        environment: "test",
+        instance: "cron-job-test",
+        region: "dev",
+        release: "v1",
+        role: "cronjob",
+      });
+
+      expect(cron.spec.jobTemplate.spec.template.metadata.labels).toEqual({
+        app: "my-app",
+        environment: "test",
+        instance: "cron-job-test",
+        region: "dev",
+        release: "v1",
+        role: "cronjob",
+      });
+    });
+
+    test("Allows to set custom selectorLabels", () => {
+      const results = synthCronJob(
+        {
+          ...requiredProps,
+          selectorLabels: {
+            app: "side-app",
+            special: "special-value",
+          },
+        },
+        {
+          app: "my-app",
+          environment: "test",
+          region: "dev",
+        }
+      );
+      const cron = results.find((obj) => obj.kind === "CronJob");
+
+      expect(cron.metadata.labels).toEqual({
+        app: "side-app",
+        environment: "test",
+        instance: "cron-job-test",
+        region: "dev",
+        release: "v1",
+        role: "cronjob",
+        special: "special-value",
+      });
+
+      expect(cron.spec.jobTemplate.spec.template.metadata.labels).toEqual({
+        app: "side-app",
+        environment: "test",
+        instance: "cron-job-test",
+        region: "dev",
+        release: "v1",
+        role: "cronjob",
+        special: "special-value",
+      });
     });
   });
 });

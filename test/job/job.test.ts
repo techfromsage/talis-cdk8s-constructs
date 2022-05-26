@@ -1,6 +1,7 @@
 import { Chart, Testing } from "cdk8s";
 import { Quantity } from "../../imports/k8s";
 import { Job, JobProps } from "../../lib";
+import { makeChart } from "../test-util";
 
 const requiredProps: JobProps = {
   image: "talis/app:worker-v1",
@@ -15,8 +16,14 @@ const requiredProps: JobProps = {
   restartPolicy: "Never",
 };
 
-function synthJob(props: JobProps = requiredProps) {
-  const chart = Testing.chart();
+function synthJob(
+  props: JobProps = requiredProps,
+  chartLabels: { [key: string]: string } = {}
+) {
+  const chart = makeChart({
+    namespace: "test",
+    labels: chartLabels,
+  });
   new Job(chart, "job-test", props);
   const results = Testing.synth(chart);
   return results;
@@ -194,6 +201,73 @@ describe("Job", () => {
       });
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty("spec.ttlSecondsAfterFinished", 100);
+    });
+  });
+
+  describe("Labels and annotations", () => {
+    test("Inherits labels from the chart", () => {
+      const results = synthJob(requiredProps, {
+        app: "my-app",
+        environment: "test",
+        region: "dev",
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+
+      expect(job.metadata.labels).toEqual({
+        app: "my-app",
+        environment: "test",
+        instance: "job-test",
+        region: "dev",
+        release: "v1",
+        role: "job",
+      });
+
+      expect(job.spec.template.metadata.labels).toEqual({
+        app: "my-app",
+        environment: "test",
+        instance: "job-test",
+        region: "dev",
+        release: "v1",
+        role: "job",
+      });
+    });
+
+    test("Allows to set custom selectorLabels", () => {
+      const results = synthJob(
+        {
+          ...requiredProps,
+          selectorLabels: {
+            app: "side-app",
+            special: "special-value",
+          },
+        },
+        {
+          app: "my-app",
+          environment: "test",
+          region: "dev",
+        }
+      );
+      const job = results.find((obj) => obj.kind === "Job");
+
+      expect(job.metadata.labels).toEqual({
+        app: "side-app",
+        environment: "test",
+        instance: "job-test",
+        region: "dev",
+        release: "v1",
+        role: "job",
+        special: "special-value",
+      });
+
+      expect(job.spec.template.metadata.labels).toEqual({
+        app: "side-app",
+        environment: "test",
+        instance: "job-test",
+        region: "dev",
+        release: "v1",
+        role: "job",
+        special: "special-value",
+      });
     });
   });
 });
