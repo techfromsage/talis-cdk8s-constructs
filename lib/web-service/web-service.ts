@@ -21,6 +21,9 @@ import { defaultAffinity, makeLoadBalancerName } from "../common";
 import { supportsTls } from "./tls-util";
 
 export class WebService extends Construct {
+  readonly service!: KubeService;
+  readonly canaryService?: KubeService;
+
   constructor(scope: Construct, id: string, props: WebServiceProps) {
     super(scope, id);
     this.validateProps(props);
@@ -130,6 +133,12 @@ export class WebService extends Construct {
           selector: serviceLabels,
         },
       });
+
+      if (isCanaryInstance) {
+        this.canaryService = service;
+      } else {
+        this.service = service;
+      }
 
       const ingressTls = [];
       const ingressListenPorts: { [key: string]: number }[] = [{ HTTP: 80 }];

@@ -1,5 +1,10 @@
 import { Chart, Testing } from "cdk8s";
-import { IntOrString, KubeConfigMap, Quantity } from "../../imports/k8s";
+import {
+  IntOrString,
+  KubeConfigMap,
+  KubeService,
+  Quantity,
+} from "../../imports/k8s";
 import { WebService, WebServiceProps } from "../../lib";
 import * as _ from "lodash";
 import { makeChart } from "../test-util";
@@ -904,6 +909,34 @@ describe("WebService", () => {
           nginx: { configMap: configMap.name, port: 80 },
         });
       }).toThrowErrorMatchingSnapshot();
+    });
+  });
+
+  describe("Object instances", () => {
+    test("Exposes service object through property", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", defaultProps);
+      expect(web.service).toBeDefined();
+      expect(web.service).toBeInstanceOf(KubeService);
+      expect(web.service.name).toEqual("web-service");
+    });
+
+    test("Exposes canary service object through property", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", {
+        ...defaultProps,
+        canary: true,
+        stage: "base",
+      });
+      expect(web.canaryService).toBeDefined();
+      expect(web.canaryService).toBeInstanceOf(KubeService);
+      expect(web.canaryService?.name).toEqual("web-canary-service");
+    });
+
+    test("Canary service is not defined if canaries are not enabled", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", defaultProps);
+      expect(web.canaryService).not.toBeDefined();
     });
   });
 });
