@@ -135,6 +135,12 @@ export interface WebServiceProps
   readonly tlsDomain?: string;
 
   /**
+   * Whether to include Ingress and provision an Application Load Balancer.
+   * @default true
+   */
+  readonly includeIngress?: boolean;
+
+  /**
    * Overrides for Ingress annotations.
    * @see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/ingress/annotations/
    */

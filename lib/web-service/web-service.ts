@@ -34,6 +34,7 @@ export class WebService extends Construct {
     const namespace = chart.namespace;
     const internal = props.internal ?? false;
     const enableCanary = props.canary ?? false;
+    const includeIngress = props.includeIngress ?? true;
     const stage = props.stage ?? "base";
     const ingressTargetType = props.ingressTargetType ?? "instance";
     const chartLabels = chart.labels;
@@ -140,74 +141,77 @@ export class WebService extends Construct {
         this.service = service;
       }
 
-      const ingressTls = [];
-      const ingressListenPorts: { [key: string]: number }[] = [{ HTTP: 80 }];
-      const ingressTlsAnnotations: { [key: string]: string } = {};
-      if (supportsTls(props)) {
-        if (props.tlsDomain) {
-          ingressTls.push({
-            hosts: [props.tlsDomain],
-          });
-        }
-        ingressListenPorts.push({ HTTPS: 443 });
-        ingressTlsAnnotations["alb.ingress.kubernetes.io/ssl-policy"] =
-          "ELBSecurityPolicy-TLS-1-2-2017-01";
-      }
-
-      const externalDns: Record<string, string> = props.externalHostname
-        ? {
-            "external-dns.alpha.kubernetes.io/hostname": props.externalHostname,
+      if (includeIngress) {
+        const ingressTls = [];
+        const ingressListenPorts: { [key: string]: number }[] = [{ HTTP: 80 }];
+        const ingressTlsAnnotations: { [key: string]: string } = {};
+        if (supportsTls(props)) {
+          if (props.tlsDomain) {
+            ingressTls.push({
+              hosts: [props.tlsDomain],
+            });
           }
-        : {};
+          ingressListenPorts.push({ HTTPS: 443 });
+          ingressTlsAnnotations["alb.ingress.kubernetes.io/ssl-policy"] =
+            "ELBSecurityPolicy-TLS-1-2-2017-01";
+        }
 
-      const loadBalancerNameFunc =
-        props.makeLoadBalancerName ?? makeLoadBalancerName;
-      const loadBalancerLabels = props.loadBalancerLabels ?? {};
-      const ingressAnnotations = {
-        "alb.ingress.kubernetes.io/load-balancer-name": loadBalancerNameFunc(
-          namespace,
-          { ...instanceLabels, ...loadBalancerLabels }
-        ),
-        "alb.ingress.kubernetes.io/load-balancer-attributes":
-          convertToStringMap({
-            "idle_timeout.timeout_seconds": "60",
+        const externalDns: Record<string, string> = props.externalHostname
+          ? {
+              "external-dns.alpha.kubernetes.io/hostname":
+                props.externalHostname,
+            }
+          : {};
+
+        const loadBalancerNameFunc =
+          props.makeLoadBalancerName ?? makeLoadBalancerName;
+        const loadBalancerLabels = props.loadBalancerLabels ?? {};
+        const ingressAnnotations = {
+          "alb.ingress.kubernetes.io/load-balancer-name": loadBalancerNameFunc(
+            namespace,
+            { ...instanceLabels, ...loadBalancerLabels }
+          ),
+          "alb.ingress.kubernetes.io/load-balancer-attributes":
+            convertToStringMap({
+              "idle_timeout.timeout_seconds": "60",
+            }),
+          "alb.ingress.kubernetes.io/listen-ports":
+            convertToJsonContent(ingressListenPorts),
+          "alb.ingress.kubernetes.io/success-codes": "200,303",
+          "alb.ingress.kubernetes.io/target-type": ingressTargetType,
+          "alb.ingress.kubernetes.io/tags": convertToStringMap({
+            service: instanceLabels.service ?? app,
+            instance: id,
+            environment: environment,
           }),
-        "alb.ingress.kubernetes.io/listen-ports":
-          convertToJsonContent(ingressListenPorts),
-        "alb.ingress.kubernetes.io/success-codes": "200,303",
-        "alb.ingress.kubernetes.io/target-type": ingressTargetType,
-        "alb.ingress.kubernetes.io/tags": convertToStringMap({
-          service: instanceLabels.service ?? app,
-          instance: id,
-          environment: environment,
-        }),
-        ...ingressTlsAnnotations,
-        ...props.ingressAnnotations, // Allow overriding of annotations.
-        ...externalDns,
-      };
-      this.validateLoadBalancerName(
-        ingressAnnotations["alb.ingress.kubernetes.io/load-balancer-name"]
-      );
-      new KubeIngress(this, `${id}${instanceSuffix}-ingress`, {
-        metadata: {
-          annotations: ingressAnnotations,
-          labels: instanceLabels,
-        },
-        spec: {
-          ingressClassName: internal
-            ? "aws-load-balancer-internal"
-            : "aws-load-balancer-internet-facing",
-          tls: ingressTls.length > 0 ? ingressTls : undefined,
-          defaultBackend: {
-            service: {
-              name: service.name,
-              port: {
-                number: servicePort,
+          ...ingressTlsAnnotations,
+          ...props.ingressAnnotations, // Allow overriding of annotations.
+          ...externalDns,
+        };
+        this.validateLoadBalancerName(
+          ingressAnnotations["alb.ingress.kubernetes.io/load-balancer-name"]
+        );
+        new KubeIngress(this, `${id}${instanceSuffix}-ingress`, {
+          metadata: {
+            annotations: ingressAnnotations,
+            labels: instanceLabels,
+          },
+          spec: {
+            ingressClassName: internal
+              ? "aws-load-balancer-internal"
+              : "aws-load-balancer-internet-facing",
+            tls: ingressTls.length > 0 ? ingressTls : undefined,
+            defaultBackend: {
+              service: {
+                name: service.name,
+                port: {
+                  number: servicePort,
+                },
               },
             },
           },
-        },
-      });
+        });
+      }
 
       // Don't include the live deployment during canary stages.
       if (!isCanaryInstance && ["canary", "post-canary"].includes(stage)) {
