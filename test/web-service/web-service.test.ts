@@ -88,7 +88,10 @@ describe("WebService", () => {
       const allProps: Required<
         Omit<
           WebServiceProps,
-          "makeAffinity" | "makeLoadBalancerName" | "replicas"
+          | "includeIngress"
+          | "makeAffinity"
+          | "makeLoadBalancerName"
+          | "replicas"
         >
       > = {
         ...requiredProps,
@@ -468,6 +471,16 @@ describe("WebService", () => {
       expect(
         ingress.metadata.annotations["alb.ingress.kubernetes.io/target-type"]
       ).toBe("ip");
+    });
+
+    test("Allows to skip Ingress", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        includeIngress: false,
+      });
+      expect(results).toHaveLength(2);
+      const ingress = results.find((obj) => obj.kind === "Ingress");
+      expect(ingress).toBeUndefined();
     });
 
     test("Allows specifying no affinity", () => {
