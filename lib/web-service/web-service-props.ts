@@ -37,6 +37,9 @@ export interface NginxContainerProps {
   /** Overrides for resource requirements and limits for the container. */
   readonly resources?: ResourceRequirements;
 
+  /** Indicates that the Pod has successfully initialized. Container will be restarted if the probe fails. */
+  readonly startupProbe?: Probe;
+
   /** Override for liveness probe. Defaults to a probe that checks /livez endpoint. */
   readonly livenessProbe?: Probe;
 

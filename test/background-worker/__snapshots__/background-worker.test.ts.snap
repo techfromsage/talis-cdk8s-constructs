@@ -173,6 +173,20 @@ Array [
                 "runAsNonRoot": true,
                 "runAsUser": 1000,
               },
+              "startupProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "/bin/sh",
+                    "-c",
+                    "test $(stat -c %Y /tmp/live) -gt $(($(date +%s) - 60))",
+                  ],
+                },
+                "failureThreshold": 30,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
               "volumeMounts": Array [
                 Object {
                   "mountPath": "/tmp",

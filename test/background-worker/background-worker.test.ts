@@ -103,6 +103,20 @@ describe("BackgroundWorker", () => {
             },
           },
         },
+        startupProbe: {
+          exec: {
+            command: [
+              "/bin/sh",
+              "-c",
+              "test $(stat -c %Y /tmp/live) -gt $(($(date +%s) - 60))",
+            ],
+          },
+          initialDelaySeconds: 30,
+          periodSeconds: 10,
+          failureThreshold: 30,
+          successThreshold: 1,
+          timeoutSeconds: 2,
+        },
         livenessProbe: {
           exec: {
             command: [

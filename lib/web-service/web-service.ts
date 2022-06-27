@@ -62,6 +62,7 @@ export class WebService extends Construct {
         env: props.env,
         envFrom: props.envFrom,
         lifecycle: props.lifecycle,
+        startupProbe: props.startupProbe,
         livenessProbe: props.livenessProbe,
         readinessProbe: props.readinessProbe,
         volumeMounts: props.volumeMounts,
@@ -347,6 +348,7 @@ export class WebService extends Construct {
         },
       },
       ports: [{ containerPort: nginxPort, protocol: "TCP" }],
+      startupProbe: nginx.startupProbe,
       livenessProbe: nginx.livenessProbe ?? {
         failureThreshold: 3,
         httpGet: {
