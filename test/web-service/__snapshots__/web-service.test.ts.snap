@@ -304,6 +304,17 @@ Array [
                 "runAsNonRoot": true,
                 "runAsUser": 1000,
               },
+              "startupProbe": Object {
+                "failureThreshold": 30,
+                "httpGet": Object {
+                  "path": "/health/alive",
+                  "port": 3000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
+              },
               "volumeMounts": Array [
                 Object {
                   "mountPath": "/data/foo",
@@ -677,6 +688,17 @@ Array [
                 "runAsGroup": 1000,
                 "runAsNonRoot": true,
                 "runAsUser": 1000,
+              },
+              "startupProbe": Object {
+                "failureThreshold": 30,
+                "httpGet": Object {
+                  "path": "/health/alive",
+                  "port": 3000,
+                },
+                "initialDelaySeconds": 0,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 2,
               },
               "volumeMounts": Array [
                 Object {

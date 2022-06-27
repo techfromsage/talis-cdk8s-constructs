@@ -52,6 +52,9 @@ export interface ContainerProps {
   /** Lifecycle describes actions that the management system should take in response to container lifecycle events. */
   readonly lifecycle?: Lifecycle;
 
+  /** Indicates that the Pod has successfully initialized. Container will be restarted if the probe fails. */
+  readonly startupProbe?: Probe;
+
   /** Periodic probe of container liveness. Container will be restarted if the probe fails. */
   readonly livenessProbe?: Probe;
 

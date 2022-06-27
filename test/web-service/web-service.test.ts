@@ -174,6 +174,17 @@ describe("WebService", () => {
             },
           },
         },
+        startupProbe: {
+          httpGet: {
+            path: "/health/alive",
+            port: IntOrString.fromNumber(3000),
+          },
+          initialDelaySeconds: 0,
+          periodSeconds: 10,
+          failureThreshold: 30,
+          successThreshold: 1,
+          timeoutSeconds: 2,
+        },
         readinessProbe: {
           httpGet: {
             path: "/health/ready",

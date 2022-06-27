@@ -67,6 +67,7 @@ export class BackgroundWorker extends Construct {
                 env: props.env,
                 envFrom: props.envFrom,
                 lifecycle: this.createLifecycle(props),
+                startupProbe: props.startupProbe,
                 livenessProbe: props.livenessProbe,
                 volumeMounts: props.volumeMounts,
               },

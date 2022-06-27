@@ -2,7 +2,10 @@ import { ContainerProps } from "../common";
 import { LocalObjectReference, Volume } from "../../imports/k8s";
 
 export interface CronJobProps
-  extends Omit<ContainerProps, "readinessProbe" | "livenessProbe"> {
+  extends Omit<
+    ContainerProps,
+    "startupProbe" | "readinessProbe" | "livenessProbe"
+  > {
   /** The schedule in Cron format, see https://en.wikipedia.org/wiki/Cron */
   readonly schedule: string;
 
