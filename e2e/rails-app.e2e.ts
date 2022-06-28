@@ -15,16 +15,18 @@ import {
   TalisChartProps,
   Postgres,
   Secret,
+  Memcached,
 } from "../lib";
 import { getBuildWatermark, makeTtlTimestamp } from "./test-util";
 
-export class RedminePostgresChart extends TalisChart {
+export class RubyOnRailsAppChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "cdk8s-redmine", ...props });
+    super(scope, { app: "cdk8s-rails", ...props });
 
     const applicationPort = 3000;
     const redmineVersion = "5.0.2";
     const postgresVersion = "14.4";
+    const memcachedVersion = "1.6.15";
     const busyboxVersion = "1.35.0";
 
     const commonResources: ResourceRequirements = {
@@ -59,6 +61,11 @@ export class RedminePostgresChart extends TalisChart {
       ],
     });
     const postgresHost = postgres.getDnsName();
+
+    const memcached = new Memcached(this, "memcached", {
+      release: memcachedVersion,
+    });
+    const memcachedHost = memcached.getDnsName();
 
     const redmineProbe: Probe = {
       httpGet: {
@@ -101,6 +108,16 @@ export class RedminePostgresChart extends TalisChart {
           ],
           resources: commonResources,
         },
+        {
+          name: "init-memcached",
+          image: `docker.io/busybox:${busyboxVersion}`,
+          command: [
+            "sh",
+            "-c",
+            `until nc -vz -w1 ${memcachedHost} 11211; do echo waiting for memcached; sleep 1; done`,
+          ],
+          resources: commonResources,
+        },
       ],
       env: [
         {
@@ -134,6 +151,14 @@ export class RedminePostgresChart extends TalisChart {
             },
           },
         },
+        {
+          name: "MEMCACHED_HOST",
+          value: memcachedHost,
+        },
+        {
+          name: "MEMCACHED_PORT",
+          value: "11211",
+        },
       ],
       startupProbe: {
         ...redmineProbe,
@@ -146,7 +171,7 @@ export class RedminePostgresChart extends TalisChart {
 }
 
 const app = new App();
-new RedminePostgresChart(app, {
+new RubyOnRailsAppChart(app, {
   environment: TalisDeploymentEnvironment.BUILD,
   region: TalisShortRegion.LOCAL,
   watermark: getBuildWatermark(),

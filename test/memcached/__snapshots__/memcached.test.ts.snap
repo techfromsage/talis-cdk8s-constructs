@@ -1,0 +1,212 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Memcached Props All the props 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "labels": Object {
+        "app": "my-app",
+        "environment": "test",
+        "instance": "test",
+        "region": "local",
+        "release": "v1",
+        "role": "memcached",
+      },
+      "name": "test-memcached-test-c803ac31",
+      "namespace": "test",
+    },
+    "spec": Object {
+      "clusterIP": "None",
+      "ports": Array [
+        Object {
+          "port": 11211,
+          "protocol": "TCP",
+        },
+      ],
+      "selector": Object {
+        "app": "my-app",
+        "instance": "test",
+        "role": "memcached",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "metadata": Object {
+      "labels": Object {
+        "app": "my-app",
+        "environment": "test",
+        "instance": "test",
+        "region": "local",
+        "release": "v1",
+        "role": "memcached",
+      },
+      "name": "test-memcached-test-memcached-test-sts-c8eb6f20",
+      "namespace": "test",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "my-app",
+          "instance": "test",
+          "role": "memcached",
+        },
+      },
+      "serviceName": "test-memcached-test-c803ac31",
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "my-app",
+            "environment": "test",
+            "instance": "test",
+            "region": "local",
+            "release": "v1",
+            "role": "memcached",
+          },
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "args": Array [
+                "--memory-limit=64",
+              ],
+              "image": "memcached:v1",
+              "livenessProbe": Object {
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "tcpSocket": Object {
+                  "port": 11211,
+                },
+                "timeoutSeconds": 5,
+              },
+              "name": "memcached",
+              "ports": Array [
+                Object {
+                  "containerPort": 11211,
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "tcpSocket": Object {
+                  "port": 11211,
+                },
+                "timeoutSeconds": 5,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "50m",
+                  "memory": "64Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`Memcached Props Minimal required props 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "labels": Object {
+        "instance": "memcached-test",
+        "release": "v1",
+        "role": "memcached",
+      },
+      "name": "test-memcached-test-c803ac31",
+    },
+    "spec": Object {
+      "clusterIP": "None",
+      "ports": Array [
+        Object {
+          "port": 11211,
+          "protocol": "TCP",
+        },
+      ],
+      "selector": Object {
+        "instance": "memcached-test",
+        "role": "memcached",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "metadata": Object {
+      "labels": Object {
+        "instance": "memcached-test",
+        "release": "v1",
+        "role": "memcached",
+      },
+      "name": "test-memcached-test-memcached-test-sts-c8eb6f20",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "instance": "memcached-test",
+          "role": "memcached",
+        },
+      },
+      "serviceName": "test-memcached-test-c803ac31",
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "instance": "memcached-test",
+            "release": "v1",
+            "role": "memcached",
+          },
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "args": Array [
+                "--memory-limit=64",
+              ],
+              "image": "memcached:v1",
+              "livenessProbe": Object {
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "tcpSocket": Object {
+                  "port": 11211,
+                },
+                "timeoutSeconds": 5,
+              },
+              "name": "memcached",
+              "ports": Array [
+                Object {
+                  "containerPort": 11211,
+                },
+              ],
+              "readinessProbe": Object {
+                "failureThreshold": 5,
+                "initialDelaySeconds": 5,
+                "tcpSocket": Object {
+                  "port": 11211,
+                },
+                "timeoutSeconds": 5,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "50m",
+                  "memory": "64Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+`;
