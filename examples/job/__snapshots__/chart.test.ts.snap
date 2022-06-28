@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`Job example Change release version 1`] = `
-Array [
-  Object {
+exports[`Job example > Change release version 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Namespace",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-job-app",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -17,14 +17,14 @@ Array [
       "namespace": "example-job-app-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
     },
     "kind": "Secret",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-job-app",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -36,11 +36,11 @@ Array [
     },
     "type": "kubernetes.io/dockerconfigjson",
   },
-  Object {
+  {
     "apiVersion": "batch/v1",
     "kind": "Job",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-job-app",
         "environment": "development",
         "instance": "job-example",
@@ -53,11 +53,11 @@ Array [
       "name": "job-example",
       "namespace": "example-job-app-test",
     },
-    "spec": Object {
+    "spec": {
       "backoffLimit": 6,
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "example-job-app",
             "environment": "development",
             "instance": "job-example",
@@ -68,10 +68,10 @@ Array [
             "service": "example-job-app-development-local",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "command": Array [
+        "spec": {
+          "containers": [
+            {
+              "command": [
                 "/bin/sh",
                 "-c",
                 "echo hello",
@@ -79,8 +79,8 @@ Array [
               "image": "docker.io/organization/my-app:job-v2.2",
               "imagePullPolicy": "IfNotPresent",
               "name": "example-job-app",
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "100m",
                   "memory": "100Mi",
                 },
@@ -88,8 +88,8 @@ Array [
               "workingDir": "/some/path",
             },
           ],
-          "imagePullSecrets": Array [
-            Object {
+          "imagePullSecrets": [
+            {
               "name": "docker-hub-cred",
             },
           ],
@@ -102,13 +102,13 @@ Array [
 ]
 `;
 
-exports[`Job example Snapshot 1`] = `
-Array [
-  Object {
+exports[`Job example > Snapshot 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Namespace",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-job-app",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -119,14 +119,14 @@ Array [
       "namespace": "example-job-app-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
     },
     "kind": "Secret",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-job-app",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -138,11 +138,11 @@ Array [
     },
     "type": "kubernetes.io/dockerconfigjson",
   },
-  Object {
+  {
     "apiVersion": "batch/v1",
     "kind": "Job",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-job-app",
         "environment": "development",
         "instance": "job-example",
@@ -155,11 +155,11 @@ Array [
       "name": "job-example",
       "namespace": "example-job-app-test",
     },
-    "spec": Object {
+    "spec": {
       "backoffLimit": 6,
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "example-job-app",
             "environment": "development",
             "instance": "job-example",
@@ -170,10 +170,10 @@ Array [
             "service": "example-job-app-development-local",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "command": Array [
+        "spec": {
+          "containers": [
+            {
+              "command": [
                 "/bin/sh",
                 "-c",
                 "echo hello",
@@ -181,8 +181,8 @@ Array [
               "image": "docker.io/organization/my-app:job-v1.0",
               "imagePullPolicy": "IfNotPresent",
               "name": "example-job-app",
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "100m",
                   "memory": "100Mi",
                 },
@@ -190,8 +190,8 @@ Array [
               "workingDir": "/some/path",
             },
           ],
-          "imagePullSecrets": Array [
-            Object {
+          "imagePullSecrets": [
+            {
               "name": "docker-hub-cred",
             },
           ],

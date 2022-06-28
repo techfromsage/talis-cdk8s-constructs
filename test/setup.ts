@@ -1,5 +1,5 @@
 expect.extend({
-  toHaveAllProperties(received, props, omit = []) {
+  toHaveAllProperties(received, props: object, omit: string[] = []) {
     let pass = true;
     const missing = [];
 

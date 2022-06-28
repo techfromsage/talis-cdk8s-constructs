@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`Postgres Props All the props 1`] = `
-Array [
-  Object {
+exports[`Postgres > Props > All the props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -17,26 +17,26 @@ Array [
       "name": "test-postgres-test-c8f77601",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 5432,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "my-app",
         "instance": "test",
         "role": "postgres",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -47,19 +47,19 @@ Array [
       "name": "test-postgres-test-postgres-test-sts-c8803176",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "my-app",
           "instance": "test",
           "role": "postgres",
         },
       },
       "serviceName": "test-postgres-test-c8f77601",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "my-app",
             "environment": "test",
             "instance": "test",
@@ -68,26 +68,26 @@ Array [
             "role": "postgres",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+        "spec": {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "POSTGRES_PASSWORD",
                   "value": "secret123",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "test",
                   },
                 },
               ],
               "image": "postgres:v1",
-              "livenessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "livenessProbe": {
+                "exec": {
+                  "command": [
                     "pg_isready",
                   ],
                 },
@@ -98,14 +98,14 @@ Array [
                 "timeoutSeconds": 5,
               },
               "name": "postgres",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 5432,
                 },
               ],
-              "readinessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "readinessProbe": {
+                "exec": {
+                  "command": [
                     "pg_isready",
                   ],
                 },
@@ -115,28 +115,28 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "100m",
                   "memory": "500Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/var/lib/postgresql/data",
                   "name": "postgres-data",
                   "subPath": "postgres",
                 },
-                Object {
+                {
                   "mountPath": "/tmp",
                   "name": "tmp-dir",
                 },
               ],
             },
           ],
-          "initContainers": Array [
-            Object {
-              "command": Array [
+          "initContainers": [
+            {
+              "command": [
                 "/bin/sh",
                 "-c",
                 "echo hello",
@@ -145,25 +145,25 @@ Array [
               "name": "init-container",
             },
           ],
-          "volumes": Array [
-            Object {
-              "emptyDir": Object {},
+          "volumes": [
+            {
+              "emptyDir": {},
               "name": "tmp-dir",
             },
           ],
         },
       },
-      "volumeClaimTemplates": Array [
-        Object {
-          "metadata": Object {
+      "volumeClaimTemplates": [
+        {
+          "metadata": {
             "name": "postgres-data",
           },
-          "spec": Object {
-            "accessModes": Array [
+          "spec": {
+            "accessModes": [
               "ReadWriteOnce",
             ],
-            "resources": Object {
-              "requests": Object {
+            "resources": {
+              "requests": {
                 "storage": "20Gi",
               },
             },
@@ -176,68 +176,68 @@ Array [
 ]
 `;
 
-exports[`Postgres Props Minimal required props 1`] = `
-Array [
-  Object {
+exports[`Postgres > Props > Minimal required props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "postgres-test",
         "release": "v1",
         "role": "postgres",
       },
       "name": "test-postgres-test-c8f77601",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 5432,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "instance": "postgres-test",
         "role": "postgres",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "postgres-test",
         "release": "v1",
         "role": "postgres",
       },
       "name": "test-postgres-test-postgres-test-sts-c8803176",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "instance": "postgres-test",
           "role": "postgres",
         },
       },
       "serviceName": "test-postgres-test-c8f77601",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "instance": "postgres-test",
             "release": "v1",
             "role": "postgres",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
+        "spec": {
+          "containers": [
+            {
               "image": "postgres:v1",
-              "livenessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "livenessProbe": {
+                "exec": {
+                  "command": [
                     "pg_isready",
                   ],
                 },
@@ -248,14 +248,14 @@ Array [
                 "timeoutSeconds": 5,
               },
               "name": "postgres",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 5432,
                 },
               ],
-              "readinessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "readinessProbe": {
+                "exec": {
+                  "command": [
                     "pg_isready",
                   ],
                 },
@@ -265,14 +265,14 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "100m",
                   "memory": "500Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/var/lib/postgresql/data",
                   "name": "postgres-data",
                   "subPath": "postgres",
@@ -282,17 +282,17 @@ Array [
           ],
         },
       },
-      "volumeClaimTemplates": Array [
-        Object {
-          "metadata": Object {
+      "volumeClaimTemplates": [
+        {
+          "metadata": {
             "name": "postgres-data",
           },
-          "spec": Object {
-            "accessModes": Array [
+          "spec": {
+            "accessModes": [
               "ReadWriteOnce",
             ],
-            "resources": Object {
-              "requests": Object {
+            "resources": {
+              "requests": {
                 "storage": "20Gi",
               },
             },

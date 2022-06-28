@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`ResqueWeb Creates resque web objects 1`] = `
-Array [
-  Object {
+exports[`ResqueWeb > Creates resque web objects 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://talis.slack.com/archives/C04P9DPCX",
         "talis.io/description": "Frontend to the Resque job queue system",
         "talis.io/eks-dashboard": "None",
@@ -19,7 +19,7 @@ Array [
         "talis.io/uptime": "None",
         "talis.io/url": "http://resque.example.com",
       },
-      "labels": Object {
+      "labels": {
         "app": "resque",
         "instance": "resque-web",
         "release": "stable",
@@ -27,15 +27,15 @@ Array [
       },
       "name": "test-resque-web-resque-web-service-c81bf306",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 3000,
           "protocol": "TCP",
           "targetPort": 3000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "resque",
         "instance": "resque-web",
         "role": "server",
@@ -43,11 +43,11 @@ Array [
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "resque-web-develop",
@@ -55,7 +55,7 @@ Array [
         "alb.ingress.kubernetes.io/tags": "service=resque,instance=resque-web",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "resque",
         "instance": "resque-web",
         "release": "stable",
@@ -63,11 +63,11 @@ Array [
       },
       "name": "test-resque-web-resque-web-ingress-c8c81984",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "test-resque-web-resque-web-service-c81bf306",
-          "port": Object {
+          "port": {
             "number": 3000,
           },
         },
@@ -75,11 +75,11 @@ Array [
       "ingressClassName": "aws-load-balancer-internal",
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "resque",
         "instance": "resque-web",
         "release": "stable",
@@ -87,33 +87,33 @@ Array [
       },
       "name": "test-resque-web-c82b282b",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "resque",
           "instance": "resque-web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "resque",
             "instance": "resque-web",
             "release": "stable",
             "role": "server",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "resque",
                         "instance": "resque-web",
                         "role": "server",
@@ -127,23 +127,23 @@ Array [
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
+          "containers": [
+            {
               "image": "talis/resque-web:stable",
               "imagePullPolicy": "IfNotPresent",
               "name": "resque",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 3000,
                   "protocol": "TCP",
                 },
               ],
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "100m",
                   "memory": "200Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
@@ -158,13 +158,13 @@ Array [
 ]
 `;
 
-exports[`ResqueWeb Customizations 1`] = `
-Array [
-  Object {
+exports[`ResqueWeb > Customizations 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://talis.slack.com/archives/C04P9DPCX",
         "talis.io/description": "Frontend to the Resque job queue system",
         "talis.io/eks-dashboard": "None",
@@ -177,7 +177,7 @@ Array [
         "talis.io/uptime": "None",
         "talis.io/url": "https://resque-web.example.com",
       },
-      "labels": Object {
+      "labels": {
         "app": "resque",
         "instance": "resque-web",
         "release": "latest",
@@ -185,15 +185,15 @@ Array [
       },
       "name": "test-resque-web-resque-web-service-c81bf306",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 3000,
           "protocol": "TCP",
           "targetPort": 3000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "resque",
         "instance": "resque-web",
         "role": "server",
@@ -201,11 +201,11 @@ Array [
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "resque-web-develop",
@@ -216,7 +216,7 @@ Array [
         "alb.ingress.kubernetes.io/target-type": "instance",
         "external-dns.alpha.kubernetes.io/hostname": "resque-web.example.com",
       },
-      "labels": Object {
+      "labels": {
         "app": "resque",
         "instance": "resque-web",
         "release": "latest",
@@ -224,30 +224,30 @@ Array [
       },
       "name": "test-resque-web-resque-web-ingress-c8c81984",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "test-resque-web-resque-web-service-c81bf306",
-          "port": Object {
+          "port": {
             "number": 3000,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internal",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "resque",
         "instance": "resque-web",
         "release": "latest",
@@ -255,33 +255,33 @@ Array [
       },
       "name": "test-resque-web-c82b282b",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "resque",
           "instance": "resque-web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "resque",
             "instance": "resque-web",
             "release": "latest",
             "role": "server",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "resque",
                         "instance": "resque-web",
                         "role": "server",
@@ -295,21 +295,21 @@ Array [
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "RAILS_ENV",
                   "value": "production",
                 },
-                Object {
+                {
                   "name": "RAILS_RESQUE_REDIS",
                   "value": "redis:6379",
                 },
-                Object {
+                {
                   "name": "SECRET_KEY_BASE",
-                  "valueFrom": Object {
-                    "secretKeyRef": Object {
+                  "valueFrom": {
+                    "secretKeyRef": {
                       "key": "SECRET_KEY_BASE",
                       "name": "resque-web-secrets",
                     },
@@ -319,18 +319,18 @@ Array [
               "image": "talis/resque-web:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "resque",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 3000,
                   "protocol": "TCP",
                 },
               ],
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "100m",
                   "memory": "200Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "100Mi",
                 },

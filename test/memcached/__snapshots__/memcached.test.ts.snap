@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`Memcached Props All the props 1`] = `
-Array [
-  Object {
+exports[`Memcached > Props > All the props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -17,26 +17,26 @@ Array [
       "name": "test-memcached-test-c803ac31",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 11211,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "my-app",
         "instance": "test",
         "role": "memcached",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -47,19 +47,19 @@ Array [
       "name": "test-memcached-test-memcached-test-sts-c8eb6f20",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "my-app",
           "instance": "test",
           "role": "memcached",
         },
       },
       "serviceName": "test-memcached-test-c803ac31",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "my-app",
             "environment": "test",
             "instance": "test",
@@ -68,37 +68,37 @@ Array [
             "role": "memcached",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "args": Array [
+        "spec": {
+          "containers": [
+            {
+              "args": [
                 "--memory-limit=64",
               ],
               "image": "memcached:v1",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 11211,
                 },
                 "timeoutSeconds": 5,
               },
               "name": "memcached",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 11211,
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 11211,
                 },
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "50m",
                   "memory": "64Mi",
                 },
@@ -112,92 +112,92 @@ Array [
 ]
 `;
 
-exports[`Memcached Props Minimal required props 1`] = `
-Array [
-  Object {
+exports[`Memcached > Props > Minimal required props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "memcached-test",
         "release": "v1",
         "role": "memcached",
       },
       "name": "test-memcached-test-c803ac31",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 11211,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "instance": "memcached-test",
         "role": "memcached",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "memcached-test",
         "release": "v1",
         "role": "memcached",
       },
       "name": "test-memcached-test-memcached-test-sts-c8eb6f20",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "instance": "memcached-test",
           "role": "memcached",
         },
       },
       "serviceName": "test-memcached-test-c803ac31",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "instance": "memcached-test",
             "release": "v1",
             "role": "memcached",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "args": Array [
+        "spec": {
+          "containers": [
+            {
+              "args": [
                 "--memory-limit=64",
               ],
               "image": "memcached:v1",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 11211,
                 },
                 "timeoutSeconds": 5,
               },
               "name": "memcached",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 11211,
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 11211,
                 },
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "50m",
                   "memory": "64Mi",
                 },

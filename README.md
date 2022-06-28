@@ -8,6 +8,8 @@ This project follows [conventional commits](https://www.conventionalcommits.org/
 
 Builds are conducted by CircleCI, and upon successful build of the `main` branch, [`semantic-release`](https://semantic-release.gitbook.io/semantic-release/) will generate a new release, an appropriate version (based on commits), and release-notes to cover the content of the commit log.
 
+For tests, this project uses [`vitest`](https://vitest.dev/).
+
 ## Available constructs
 
 - `BackgroundWorker`
@@ -115,4 +117,5 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
 - `npm run lint` will check code quality and style guidelines (using ESlint and Prettier)
 - `npm run format` will format the code (using Prettier)
 - `npm run test` run tests
-- `npm run test -- --updateSnapshot` update the test snapshots
+- `npm run test -- --update` update the test snapshots
+- `npm run coverage` run tests and calculate coverage

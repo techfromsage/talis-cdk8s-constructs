@@ -6,7 +6,7 @@ describe("Advanced WebService example", () => {
   const PROCESS_ENV = process.env;
 
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
     process.env = { ...PROCESS_ENV };
   });
 

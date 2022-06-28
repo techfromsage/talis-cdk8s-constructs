@@ -80,7 +80,8 @@ workflows:
             - be_kind_to_your_colleagues
       - node/test:
           name: test
-          test-results-for: jest
+          run-command: test -- run --reporter default --reporter junit --outputFile.junit=junit.xml
+          test-results-path: junit.xml
           requires:
             - fan_out
             - be_kind_to_your_colleagues

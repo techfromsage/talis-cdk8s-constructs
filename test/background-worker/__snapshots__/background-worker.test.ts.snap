@@ -1,21 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`BackgroundWorker Custom stop signal Either stopSignal or lifecycle.preStop can be specified 1`] = `"stopSignal and lifecycle.preStop are mutually exclusive"`;
+exports[`BackgroundWorker > Custom stop signal > Either stopSignal or lifecycle.preStop can be specified 1`] = `"stopSignal and lifecycle.preStop are mutually exclusive"`;
 
-exports[`BackgroundWorker Custom stop signal Merge stopSignal and postStart hook 1`] = `
-Object {
-  "postStart": Object {
-    "exec": Object {
-      "command": Array [
+exports[`BackgroundWorker > Custom stop signal > Merge stopSignal and postStart hook 1`] = `
+{
+  "postStart": {
+    "exec": {
+      "command": [
         "/bin/sh",
         "-c",
         "echo hello",
       ],
     },
   },
-  "preStop": Object {
-    "exec": Object {
-      "command": Array [
+  "preStop": {
+    "exec": {
+      "command": [
         "/bin/sh",
         "-c",
         "kill -QUIT 1 && while kill -0 1; do sleep 1; done",
@@ -25,11 +25,11 @@ Object {
 }
 `;
 
-exports[`BackgroundWorker Custom stop signal Setting stopSignal creates a preStop hook 1`] = `
-Object {
-  "preStop": Object {
-    "exec": Object {
-      "command": Array [
+exports[`BackgroundWorker > Custom stop signal > Setting stopSignal creates a preStop hook 1`] = `
+{
+  "preStop": {
+    "exec": {
+      "command": [
         "/bin/sh",
         "-c",
         "kill -QUIT 1 && while kill -0 1; do sleep 1; done",
@@ -39,13 +39,13 @@ Object {
 }
 `;
 
-exports[`BackgroundWorker Props All the props 1`] = `
-Array [
-  Object {
+exports[`BackgroundWorker > Props > All the props 1`] = `
+[
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -56,19 +56,19 @@ Array [
       "name": "test-worker-test-c860ab13",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 4,
       "revisionHistoryLimit": 5,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "my-app",
           "instance": "test",
           "role": "worker",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "my-app",
             "environment": "test",
             "instance": "test",
@@ -77,14 +77,14 @@ Array [
             "role": "worker",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "my-app",
                         "instance": "test",
                       },
@@ -97,45 +97,45 @@ Array [
             },
           },
           "automountServiceAccountToken": true,
-          "containers": Array [
-            Object {
-              "args": Array [
+          "containers": [
+            {
+              "args": [
                 "--foo",
                 "bar",
               ],
-              "command": Array [
+              "command": [
                 "/bin/sh",
                 "-c",
                 "echo hello",
               ],
-              "env": Array [
-                Object {
+              "env": [
+                {
                   "name": "FOO",
                   "value": "bar",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "foo-config",
                   },
                 },
               ],
               "image": "talis/app:worker-v1",
               "imagePullPolicy": "Always",
-              "lifecycle": Object {
-                "postStart": Object {
-                  "exec": Object {
-                    "command": Array [
+              "lifecycle": {
+                "postStart": {
+                  "exec": {
+                    "command": [
                       "/bin/sh",
                       "-c",
                       "echo hello",
                     ],
                   },
                 },
-                "preStop": Object {
-                  "exec": Object {
-                    "command": Array [
+                "preStop": {
+                  "exec": {
+                    "command": [
                       "/bin/sh",
                       "-c",
                       "echo goodbye",
@@ -143,9 +143,9 @@ Array [
                   },
                 },
               },
-              "livenessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "livenessProbe": {
+                "exec": {
+                  "command": [
                     "/bin/sh",
                     "-c",
                     "test $(stat -c %Y /tmp/live) -gt $(($(date +%s) - 60))",
@@ -158,24 +158,24 @@ Array [
                 "timeoutSeconds": 2,
               },
               "name": "worker",
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": 1,
                   "memory": "1Gi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": 0.1,
                   "memory": "100Mi",
                 },
               },
-              "securityContext": Object {
+              "securityContext": {
                 "runAsGroup": 1000,
                 "runAsNonRoot": true,
                 "runAsUser": 1000,
               },
-              "startupProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "startupProbe": {
+                "exec": {
+                  "command": [
                     "/bin/sh",
                     "-c",
                     "test $(stat -c %Y /tmp/live) -gt $(($(date +%s) - 60))",
@@ -187,8 +187,8 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/tmp",
                   "name": "tmp-dir",
                 },
@@ -196,14 +196,14 @@ Array [
               "workingDir": "/some/path",
             },
           ],
-          "imagePullSecrets": Array [
-            Object {
+          "imagePullSecrets": [
+            {
               "name": "foo-secret",
             },
           ],
-          "initContainers": Array [
-            Object {
-              "command": Array [
+          "initContainers": [
+            {
+              "command": [
                 "/bin/sh",
                 "-c",
                 "echo hello",
@@ -214,9 +214,9 @@ Array [
           ],
           "priorityClassName": "high-priority",
           "terminationGracePeriodSeconds": 300,
-          "volumes": Array [
-            Object {
-              "emptyDir": Object {},
+          "volumes": [
+            {
+              "emptyDir": {},
               "name": "tmp-dir",
             },
           ],
@@ -227,17 +227,17 @@ Array [
 ]
 `;
 
-exports[`BackgroundWorker Props Allows specifying custom logic to make affinity 1`] = `
-Object {
-  "podAffinity": Object {
-    "requiredDuringSchedulingIgnoredDuringExecution": Array [
-      Object {
-        "labelSelector": Object {
-          "matchExpressions": Array [
-            Object {
+exports[`BackgroundWorker > Props > Allows specifying custom logic to make affinity 1`] = `
+{
+  "podAffinity": {
+    "requiredDuringSchedulingIgnoredDuringExecution": [
+      {
+        "labelSelector": {
+          "matchExpressions": [
+            {
               "key": "role",
               "operator": "In",
-              "values": Array [
+              "values": [
                 "worker",
               ],
             },
@@ -250,43 +250,43 @@ Object {
 }
 `;
 
-exports[`BackgroundWorker Props Minimal required props 1`] = `
-Array [
-  Object {
+exports[`BackgroundWorker > Props > Minimal required props 1`] = `
+[
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "worker-test",
         "release": "v1",
         "role": "worker",
       },
       "name": "test-worker-test-c860ab13",
     },
-    "spec": Object {
+    "spec": {
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "instance": "worker-test",
           "role": "worker",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "instance": "worker-test",
             "release": "v1",
             "role": "worker",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "instance": "worker-test",
                         "role": "worker",
                       },
@@ -299,13 +299,13 @@ Array [
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
+          "containers": [
+            {
               "image": "talis/app:worker-v1",
               "imagePullPolicy": "IfNotPresent",
               "name": "app",
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "100m",
                   "memory": "100Mi",
                 },

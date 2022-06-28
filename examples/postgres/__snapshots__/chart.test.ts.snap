@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`Postgres example Snapshot 1`] = `
-Array [
-  Object {
+exports[`Postgres example > Snapshot 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Namespace",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-postgres-app",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -17,9 +17,9 @@ Array [
       "namespace": "example-postgres-app-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "create-schema.sql": "CREATE TABLE sample(
           id uuid,
           name varchar(64),
@@ -27,8 +27,8 @@ Array [
         );",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-postgres-app",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -40,11 +40,11 @@ Array [
       "namespace": "example-postgres-app-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-postgres-app",
         "environment": "development",
         "instance": "postgres-example",
@@ -57,26 +57,26 @@ Array [
       "name": "postgres-example",
       "namespace": "example-postgres-app-test",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 5432,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "example-postgres-app",
         "instance": "postgres-example",
         "role": "postgres",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-postgres-app",
         "environment": "development",
         "instance": "postgres-example",
@@ -89,19 +89,19 @@ Array [
       "name": "postgres-example-sts",
       "namespace": "example-postgres-app-test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "example-postgres-app",
           "instance": "postgres-example",
           "role": "postgres",
         },
       },
       "serviceName": "postgres-example",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "example-postgres-app",
             "environment": "development",
             "instance": "postgres-example",
@@ -112,27 +112,27 @@ Array [
             "service": "example-postgres-app-development-local",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+        "spec": {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "POSTGRES_PASSWORD",
                   "value": "secret",
                 },
-                Object {
+                {
                   "name": "POSTGRES_USER",
                   "value": "appuser",
                 },
-                Object {
+                {
                   "name": "POSTGRES_DB",
                   "value": "mypostgresdb",
                 },
               ],
               "image": "postgres:9.5",
-              "livenessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "livenessProbe": {
+                "exec": {
+                  "command": [
                     "pg_isready",
                   ],
                 },
@@ -143,14 +143,14 @@ Array [
                 "timeoutSeconds": 5,
               },
               "name": "postgres",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 5432,
                 },
               ],
-              "readinessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "readinessProbe": {
+                "exec": {
+                  "command": [
                     "pg_isready",
                   ],
                 },
@@ -160,28 +160,28 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "100m",
                   "memory": "500Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/var/lib/postgresql/data",
                   "name": "postgres-data",
                   "subPath": "postgres",
                 },
-                Object {
+                {
                   "mountPath": "/docker-entrypoint-initdb.d",
                   "name": "initdb",
                 },
               ],
             },
           ],
-          "volumes": Array [
-            Object {
-              "configMap": Object {
+          "volumes": [
+            {
+              "configMap": {
                 "name": "postgres-init-27d7dggmb6",
               },
               "name": "initdb",
@@ -189,17 +189,17 @@ Array [
           ],
         },
       },
-      "volumeClaimTemplates": Array [
-        Object {
-          "metadata": Object {
+      "volumeClaimTemplates": [
+        {
+          "metadata": {
             "name": "postgres-data",
           },
-          "spec": Object {
-            "accessModes": Array [
+          "spec": {
+            "accessModes": [
               "ReadWriteOnce",
             ],
-            "resources": Object {
-              "requests": Object {
+            "resources": {
+              "requests": {
                 "storage": "20Gi",
               },
             },
