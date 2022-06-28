@@ -1,0 +1,306 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Postgres Props All the props 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "labels": Object {
+        "app": "my-app",
+        "environment": "test",
+        "instance": "test",
+        "region": "local",
+        "release": "v1",
+        "role": "postgres",
+      },
+      "name": "test-postgres-test-c8f77601",
+      "namespace": "test",
+    },
+    "spec": Object {
+      "clusterIP": "None",
+      "ports": Array [
+        Object {
+          "port": 5432,
+          "protocol": "TCP",
+        },
+      ],
+      "selector": Object {
+        "app": "my-app",
+        "instance": "test",
+        "role": "postgres",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "metadata": Object {
+      "labels": Object {
+        "app": "my-app",
+        "environment": "test",
+        "instance": "test",
+        "region": "local",
+        "release": "v1",
+        "role": "postgres",
+      },
+      "name": "test-postgres-test-postgres-test-sts-c8803176",
+      "namespace": "test",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "my-app",
+          "instance": "test",
+          "role": "postgres",
+        },
+      },
+      "serviceName": "test-postgres-test-c8f77601",
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "my-app",
+            "environment": "test",
+            "instance": "test",
+            "region": "local",
+            "release": "v1",
+            "role": "postgres",
+          },
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "POSTGRES_PASSWORD",
+                  "value": "secret123",
+                },
+              ],
+              "envFrom": Array [
+                Object {
+                  "configMapRef": Object {
+                    "name": "test",
+                  },
+                },
+              ],
+              "image": "postgres:v1",
+              "livenessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "pg_isready",
+                  ],
+                },
+                "failureThreshold": 3,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 5,
+              },
+              "name": "postgres",
+              "ports": Array [
+                Object {
+                  "containerPort": 5432,
+                },
+              ],
+              "readinessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "pg_isready",
+                  ],
+                },
+                "failureThreshold": 3,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 5,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "100m",
+                  "memory": "500Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/var/lib/postgresql/data",
+                  "name": "postgres-data",
+                  "subPath": "postgres",
+                },
+                Object {
+                  "mountPath": "/tmp",
+                  "name": "tmp-dir",
+                },
+              ],
+            },
+          ],
+          "initContainers": Array [
+            Object {
+              "command": Array [
+                "/bin/sh",
+                "-c",
+                "echo hello",
+              ],
+              "image": "busybox:1.35.0",
+              "name": "init-container",
+            },
+          ],
+          "volumes": Array [
+            Object {
+              "emptyDir": Object {},
+              "name": "tmp-dir",
+            },
+          ],
+        },
+      },
+      "volumeClaimTemplates": Array [
+        Object {
+          "metadata": Object {
+            "name": "postgres-data",
+          },
+          "spec": Object {
+            "accessModes": Array [
+              "ReadWriteOnce",
+            ],
+            "resources": Object {
+              "requests": Object {
+                "storage": "20Gi",
+              },
+            },
+            "storageClassName": "general-purpose-delete",
+          },
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`Postgres Props Minimal required props 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "labels": Object {
+        "instance": "postgres-test",
+        "release": "v1",
+        "role": "postgres",
+      },
+      "name": "test-postgres-test-c8f77601",
+    },
+    "spec": Object {
+      "clusterIP": "None",
+      "ports": Array [
+        Object {
+          "port": 5432,
+          "protocol": "TCP",
+        },
+      ],
+      "selector": Object {
+        "instance": "postgres-test",
+        "role": "postgres",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "metadata": Object {
+      "labels": Object {
+        "instance": "postgres-test",
+        "release": "v1",
+        "role": "postgres",
+      },
+      "name": "test-postgres-test-postgres-test-sts-c8803176",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "instance": "postgres-test",
+          "role": "postgres",
+        },
+      },
+      "serviceName": "test-postgres-test-c8f77601",
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "instance": "postgres-test",
+            "release": "v1",
+            "role": "postgres",
+          },
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "image": "postgres:v1",
+              "livenessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "pg_isready",
+                  ],
+                },
+                "failureThreshold": 3,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 5,
+              },
+              "name": "postgres",
+              "ports": Array [
+                Object {
+                  "containerPort": 5432,
+                },
+              ],
+              "readinessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "pg_isready",
+                  ],
+                },
+                "failureThreshold": 3,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 5,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "100m",
+                  "memory": "500Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/var/lib/postgresql/data",
+                  "name": "postgres-data",
+                  "subPath": "postgres",
+                },
+              ],
+            },
+          ],
+        },
+      },
+      "volumeClaimTemplates": Array [
+        Object {
+          "metadata": Object {
+            "name": "postgres-data",
+          },
+          "spec": Object {
+            "accessModes": Array [
+              "ReadWriteOnce",
+            ],
+            "resources": Object {
+              "requests": Object {
+                "storage": "20Gi",
+              },
+            },
+            "storageClassName": "general-purpose-delete",
+          },
+        },
+      ],
+    },
+  },
+]
+`;

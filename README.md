@@ -46,6 +46,13 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
   - Supports setting the storageEngine.
   - Details in an [example](./examples/mongo/README.md).
 
+- `Postgres`
+
+  - Represents a standalone single node Postgres server.
+  - Supports setting the version of Postgres you wish to run.
+  - Supports setting initContainers and volumes to run init scripts.
+  - Details in an [example](./examples/postgres/README.md).
+
 - `Redis`
 
   - Represents a standalone singe node Redis server.
