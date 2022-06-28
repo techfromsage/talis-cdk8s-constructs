@@ -38,6 +38,12 @@ Builds are conducted by CircleCI, and upon successful build of the `main` branch
   - The command to run is defined as part of the container spec.
   - Details in an [example](./examples/job/README.md).
 
+- `Memcached`
+
+  - Represents a standalone singe node Memcached server.
+  - Supports setting the version of Memcached you wish to run.
+  - Details in an [example](./examples/memcached/README.md).
+
 - `Mongo`
 
   - Represents a standalone single node Mongo server.
