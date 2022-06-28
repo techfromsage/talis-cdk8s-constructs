@@ -26,7 +26,7 @@
     "lint": "npm run lint:prettier && npm run lint:eslint && npm run lint:ts",
     "prepare": "husky install && ./e2e/install-detik.sh",
     "release": "npm run build && semantic-release",
-    "e2e": "bats --jobs 2 --no-parallelize-within-files --timing --print-output-on-failure e2e/",
+    "e2e": "bats --jobs 3 --no-parallelize-within-files --timing --print-output-on-failure e2e/",
     "test": "jest"
   },
   "peerDependencies": {

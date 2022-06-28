@@ -1,0 +1,213 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Postgres example Snapshot 1`] = `
+Array [
+  Object {
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-postgres-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-postgres-app-development-local",
+      },
+      "name": "example-postgres-app-test",
+      "namespace": "example-postgres-app-test",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "data": Object {
+      "create-schema.sql": "CREATE TABLE sample(
+          id uuid,
+          name varchar(64),
+          creation_date date
+        );",
+    },
+    "kind": "ConfigMap",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-postgres-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "prunable": "true",
+        "region": "local",
+        "service": "example-postgres-app-development-local",
+      },
+      "name": "postgres-init-27d7dggmb6",
+      "namespace": "example-postgres-app-test",
+    },
+  },
+  Object {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-postgres-app",
+        "environment": "development",
+        "instance": "postgres-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "9.5",
+        "role": "postgres",
+        "service": "example-postgres-app-development-local",
+      },
+      "name": "postgres-example",
+      "namespace": "example-postgres-app-test",
+    },
+    "spec": Object {
+      "clusterIP": "None",
+      "ports": Array [
+        Object {
+          "port": 5432,
+          "protocol": "TCP",
+        },
+      ],
+      "selector": Object {
+        "app": "example-postgres-app",
+        "instance": "postgres-example",
+        "role": "postgres",
+      },
+    },
+  },
+  Object {
+    "apiVersion": "apps/v1",
+    "kind": "StatefulSet",
+    "metadata": Object {
+      "labels": Object {
+        "app": "example-postgres-app",
+        "environment": "development",
+        "instance": "postgres-example",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "release": "9.5",
+        "role": "postgres",
+        "service": "example-postgres-app-development-local",
+      },
+      "name": "postgres-example-sts",
+      "namespace": "example-postgres-app-test",
+    },
+    "spec": Object {
+      "replicas": 1,
+      "selector": Object {
+        "matchLabels": Object {
+          "app": "example-postgres-app",
+          "instance": "postgres-example",
+          "role": "postgres",
+        },
+      },
+      "serviceName": "postgres-example",
+      "template": Object {
+        "metadata": Object {
+          "labels": Object {
+            "app": "example-postgres-app",
+            "environment": "development",
+            "instance": "postgres-example",
+            "managed-by": "cdk8s",
+            "region": "local",
+            "release": "9.5",
+            "role": "postgres",
+            "service": "example-postgres-app-development-local",
+          },
+        },
+        "spec": Object {
+          "containers": Array [
+            Object {
+              "env": Array [
+                Object {
+                  "name": "POSTGRES_PASSWORD",
+                  "value": "secret",
+                },
+                Object {
+                  "name": "POSTGRES_USER",
+                  "value": "appuser",
+                },
+                Object {
+                  "name": "POSTGRES_DB",
+                  "value": "mypostgresdb",
+                },
+              ],
+              "image": "postgres:9.5",
+              "livenessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "pg_isready",
+                  ],
+                },
+                "failureThreshold": 3,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 5,
+              },
+              "name": "postgres",
+              "ports": Array [
+                Object {
+                  "containerPort": 5432,
+                },
+              ],
+              "readinessProbe": Object {
+                "exec": Object {
+                  "command": Array [
+                    "pg_isready",
+                  ],
+                },
+                "failureThreshold": 3,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 10,
+                "successThreshold": 1,
+                "timeoutSeconds": 5,
+              },
+              "resources": Object {
+                "limits": Object {
+                  "cpu": "100m",
+                  "memory": "500Mi",
+                },
+              },
+              "volumeMounts": Array [
+                Object {
+                  "mountPath": "/var/lib/postgresql/data",
+                  "name": "postgres-data",
+                  "subPath": "postgres",
+                },
+                Object {
+                  "mountPath": "/docker-entrypoint-initdb.d",
+                  "name": "initdb",
+                },
+              ],
+            },
+          ],
+          "volumes": Array [
+            Object {
+              "configMap": Object {
+                "name": "postgres-init-27d7dggmb6",
+              },
+              "name": "initdb",
+            },
+          ],
+        },
+      },
+      "volumeClaimTemplates": Array [
+        Object {
+          "metadata": Object {
+            "name": "postgres-data",
+          },
+          "spec": Object {
+            "accessModes": Array [
+              "ReadWriteOnce",
+            ],
+            "resources": Object {
+              "requests": Object {
+                "storage": "20Gi",
+              },
+            },
+            "storageClassName": "general-purpose-delete",
+          },
+        },
+      ],
+    },
+  },
+]
+`;
