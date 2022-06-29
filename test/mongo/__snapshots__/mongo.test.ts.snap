@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`Mongo Props All the props 1`] = `
-Array [
-  Object {
+exports[`Mongo > Props > All the props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -17,26 +17,26 @@ Array [
       "name": "test-mongo-test-c844268f",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 27017,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "my-app",
         "instance": "test",
         "role": "mongo",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -47,19 +47,19 @@ Array [
       "name": "test-mongo-test-mongo-test-sts-c8cbd639",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "my-app",
           "instance": "test",
           "role": "mongo",
         },
       },
       "serviceName": "test-mongo-test-c844268f",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "my-app",
             "environment": "test",
             "instance": "test",
@@ -68,31 +68,31 @@ Array [
             "role": "mongo",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "args": Array [
+        "spec": {
+          "containers": [
+            {
+              "args": [
                 "--storageEngine",
                 "wiredTiger",
               ],
               "image": "mongo:v1",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 27017,
                 },
                 "timeoutSeconds": 5,
               },
               "name": "mongo",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 27017,
                 },
               ],
-              "readinessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "readinessProbe": {
+                "exec": {
+                  "command": [
                     "mongo",
                     "--eval",
                     "db.adminCommand('ping')",
@@ -102,14 +102,14 @@ Array [
                 "initialDelaySeconds": 5,
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "100m",
                   "memory": "500Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/data/db",
                   "name": "mongo-data",
                 },
@@ -118,17 +118,17 @@ Array [
           ],
         },
       },
-      "volumeClaimTemplates": Array [
-        Object {
-          "metadata": Object {
+      "volumeClaimTemplates": [
+        {
+          "metadata": {
             "name": "mongo-data",
           },
-          "spec": Object {
-            "accessModes": Array [
+          "spec": {
+            "accessModes": [
               "ReadWriteOnce",
             ],
-            "resources": Object {
-              "requests": Object {
+            "resources": {
+              "requests": {
                 "storage": "20Gi",
               },
             },
@@ -141,87 +141,87 @@ Array [
 ]
 `;
 
-exports[`Mongo Props Minimal required props 1`] = `
-Array [
-  Object {
+exports[`Mongo > Props > Minimal required props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "mongo-test",
         "release": "v1",
         "role": "mongo",
       },
       "name": "test-mongo-test-c844268f",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 27017,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "instance": "mongo-test",
         "role": "mongo",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "mongo-test",
         "release": "v1",
         "role": "mongo",
       },
       "name": "test-mongo-test-mongo-test-sts-c8cbd639",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "instance": "mongo-test",
           "role": "mongo",
         },
       },
       "serviceName": "test-mongo-test-c844268f",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "instance": "mongo-test",
             "release": "v1",
             "role": "mongo",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "args": Array [
+        "spec": {
+          "containers": [
+            {
+              "args": [
                 "--storageEngine",
                 "mmapv1",
                 "--smallfiles",
               ],
               "image": "mongo:v1",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 27017,
                 },
                 "timeoutSeconds": 5,
               },
               "name": "mongo",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 27017,
                 },
               ],
-              "readinessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "readinessProbe": {
+                "exec": {
+                  "command": [
                     "mongo",
                     "--eval",
                     "db.adminCommand('ping')",
@@ -231,14 +231,14 @@ Array [
                 "initialDelaySeconds": 5,
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "100m",
                   "memory": "500Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/data/db",
                   "name": "mongo-data",
                 },
@@ -247,17 +247,17 @@ Array [
           ],
         },
       },
-      "volumeClaimTemplates": Array [
-        Object {
-          "metadata": Object {
+      "volumeClaimTemplates": [
+        {
+          "metadata": {
             "name": "mongo-data",
           },
-          "spec": Object {
-            "accessModes": Array [
+          "spec": {
+            "accessModes": [
               "ReadWriteOnce",
             ],
-            "resources": Object {
-              "requests": Object {
+            "resources": {
+              "requests": {
                 "storage": "20Gi",
               },
             },

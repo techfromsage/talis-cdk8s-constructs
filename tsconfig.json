@@ -18,6 +18,7 @@
     "skipLibCheck": true,
     "strict": true,
     "stripInternal": true,
+    "types": ["vitest/globals"],
     "typeRoots": ["./node_modules/@types"]
   },
   "include": ["examples/**/*.ts", "lib/**/*.ts", "test/**/*.ts"],

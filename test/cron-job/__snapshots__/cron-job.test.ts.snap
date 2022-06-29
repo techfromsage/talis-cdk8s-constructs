@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`CronJob Props All the props 1`] = `
-Array [
-  Object {
+exports[`CronJob > Props > All the props 1`] = `
+[
+  {
     "apiVersion": "batch/v1",
     "kind": "CronJob",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -17,14 +17,14 @@ Array [
       "name": "test-cron-job-test-c88f7970",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "failedJobsHistoryLimit": 2,
-      "jobTemplate": Object {
-        "spec": Object {
+      "jobTemplate": {
+        "spec": {
           "backoffLimit": 1,
-          "template": Object {
-            "metadata": Object {
-              "labels": Object {
+          "template": {
+            "metadata": {
+              "labels": {
                 "app": "my-app",
                 "environment": "test",
                 "instance": "test",
@@ -33,46 +33,46 @@ Array [
                 "role": "cronjob",
               },
             },
-            "spec": Object {
-              "containers": Array [
-                Object {
-                  "args": Array [
+            "spec": {
+              "containers": [
+                {
+                  "args": [
                     "--foo",
                     "bar",
                   ],
-                  "command": Array [
+                  "command": [
                     "/bin/sh",
                     "-c",
                     "echo hello",
                   ],
-                  "env": Array [
-                    Object {
+                  "env": [
+                    {
                       "name": "FOO",
                       "value": "bar",
                     },
                   ],
-                  "envFrom": Array [
-                    Object {
-                      "configMapRef": Object {
+                  "envFrom": [
+                    {
+                      "configMapRef": {
                         "name": "foo-config",
                       },
                     },
                   ],
                   "image": "talis/app:worker-v1",
                   "imagePullPolicy": "Always",
-                  "lifecycle": Object {
-                    "postStart": Object {
-                      "exec": Object {
-                        "command": Array [
+                  "lifecycle": {
+                    "postStart": {
+                      "exec": {
+                        "command": [
                           "/bin/sh",
                           "-c",
                           "echo hello",
                         ],
                       },
                     },
-                    "preStop": Object {
-                      "exec": Object {
-                        "command": Array [
+                    "preStop": {
+                      "exec": {
+                        "command": [
                           "/bin/sh",
                           "-c",
                           "echo goodbye",
@@ -81,23 +81,23 @@ Array [
                     },
                   },
                   "name": "my-container",
-                  "resources": Object {
-                    "limits": Object {
+                  "resources": {
+                    "limits": {
                       "cpu": 1,
                       "memory": "1Gi",
                     },
-                    "requests": Object {
+                    "requests": {
                       "cpu": 0.1,
                       "memory": "100Mi",
                     },
                   },
-                  "securityContext": Object {
+                  "securityContext": {
                     "runAsGroup": 1000,
                     "runAsNonRoot": true,
                     "runAsUser": 1000,
                   },
-                  "volumeMounts": Array [
-                    Object {
+                  "volumeMounts": [
+                    {
                       "mountPath": "/tmp",
                       "name": "tmp-dir",
                     },
@@ -105,14 +105,14 @@ Array [
                   "workingDir": "/some/path",
                 },
               ],
-              "imagePullSecrets": Array [
-                Object {
+              "imagePullSecrets": [
+                {
                   "name": "foo-secret",
                 },
               ],
-              "initContainers": Array [
-                Object {
-                  "command": Array [
+              "initContainers": [
+                {
+                  "command": [
                     "/bin/sh",
                     "-c",
                     "echo hello",
@@ -122,9 +122,9 @@ Array [
                 },
               ],
               "restartPolicy": "OnFailure",
-              "volumes": Array [
-                Object {
-                  "emptyDir": Object {},
+              "volumes": [
+                {
+                  "emptyDir": {},
                   "name": "tmp-dir",
                 },
               ],
@@ -140,40 +140,40 @@ Array [
 ]
 `;
 
-exports[`CronJob Props Minimal required props 1`] = `
-Array [
-  Object {
+exports[`CronJob > Props > Minimal required props 1`] = `
+[
+  {
     "apiVersion": "batch/v1",
     "kind": "CronJob",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "cron-job-test",
         "release": "v1",
         "role": "cronjob",
       },
       "name": "test-cron-job-test-c88f7970",
     },
-    "spec": Object {
+    "spec": {
       "failedJobsHistoryLimit": 1,
-      "jobTemplate": Object {
-        "spec": Object {
+      "jobTemplate": {
+        "spec": {
           "backoffLimit": 2,
-          "template": Object {
-            "metadata": Object {
-              "labels": Object {
+          "template": {
+            "metadata": {
+              "labels": {
                 "instance": "cron-job-test",
                 "release": "v1",
                 "role": "cronjob",
               },
             },
-            "spec": Object {
-              "containers": Array [
-                Object {
+            "spec": {
+              "containers": [
+                {
                   "image": "talis/app:worker-v1",
                   "imagePullPolicy": "IfNotPresent",
                   "name": "app",
-                  "resources": Object {
-                    "requests": Object {
+                  "resources": {
+                    "requests": {
                       "cpu": "100m",
                       "memory": "100Mi",
                     },

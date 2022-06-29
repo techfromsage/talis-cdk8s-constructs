@@ -1,49 +1,49 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`ConfigMap Accessors Metadata getter 1`] = `
+exports[`ConfigMap > Accessors > Metadata getter 1`] = `
 ApiObjectMetadataDefinition {
-  "_additionalAttributes": Object {
-    "labels": Object {
+  "_additionalAttributes": {
+    "labels": {
       "prunable": "true",
       "test": "true",
     },
     "name": Lazy {
-      "producer": Object {
+      "producer": {
         "produce": [Function],
       },
     },
     "namespace": undefined,
   },
-  "annotations": Object {},
-  "finalizers": Array [],
-  "labels": Object {
+  "annotations": {},
+  "finalizers": [],
+  "labels": {
     "prunable": "true",
     "test": "true",
   },
   "name": Lazy {
-    "producer": Object {
+    "producer": {
       "produce": [Function],
     },
   },
   "namespace": undefined,
-  "ownerReferences": Array [],
+  "ownerReferences": [],
 }
 `;
 
-exports[`ConfigMap Accessors Throws when trying to set binaryData key on data 1`] = `"ConfigMap key \\"test\\" is already used in binaryData"`;
+exports[`ConfigMap > Accessors > Throws when trying to set binaryData key on data 1`] = `"ConfigMap key \\"test\\" is already used in binaryData"`;
 
-exports[`ConfigMap Accessors Throws when trying to set data key on binaryData 1`] = `"ConfigMap key \\"test\\" is already used in data"`;
+exports[`ConfigMap > Accessors > Throws when trying to set data key on binaryData 1`] = `"ConfigMap key \\"test\\" is already used in data"`;
 
-exports[`ConfigMap Loading files Setting value from binary file's contents 1`] = `
-Array [
-  Object {
+exports[`ConfigMap > Loading files > Setting value from binary file's contents 1`] = `
+[
+  {
     "apiVersion": "v1",
-    "binaryData": Object {
+    "binaryData": {
       "file.bin": "0101010",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "prunable": "true",
       },
       "name": "test-c8eb60f8-bmgdfkhtdc",
@@ -52,16 +52,16 @@ Array [
 ]
 `;
 
-exports[`ConfigMap Loading files Setting value from binary file's contents with custom key 1`] = `
-Array [
-  Object {
+exports[`ConfigMap > Loading files > Setting value from binary file's contents with custom key 1`] = `
+[
+  {
     "apiVersion": "v1",
-    "binaryData": Object {
+    "binaryData": {
       "greeting.bin": "0101010",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "prunable": "true",
       },
       "name": "test-c8eb60f8-d6tg59df79",
@@ -70,16 +70,16 @@ Array [
 ]
 `;
 
-exports[`ConfigMap Loading files Setting value from file's contents 1`] = `
-Array [
-  Object {
+exports[`ConfigMap > Loading files > Setting value from file's contents 1`] = `
+[
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "file.txt": "hello world!",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "prunable": "true",
       },
       "name": "test-c8eb60f8-9d44k9f5tb",
@@ -88,16 +88,16 @@ Array [
 ]
 `;
 
-exports[`ConfigMap Loading files Setting value from file's contents with custom key 1`] = `
-Array [
-  Object {
+exports[`ConfigMap > Loading files > Setting value from file's contents with custom key 1`] = `
+[
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "greeting.txt": "hello world!",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "prunable": "true",
       },
       "name": "test-c8eb60f8-g88dtg6tg9",
@@ -106,23 +106,23 @@ Array [
 ]
 `;
 
-exports[`ConfigMap Props ConfigMap from props 1`] = `
-Array [
-  Object {
+exports[`ConfigMap > Props > ConfigMap from props 1`] = `
+[
+  {
     "apiVersion": "v1",
-    "binaryData": Object {
+    "binaryData": {
       "bin": "010101",
     },
-    "data": Object {
+    "data": {
       "foo": "bar",
     },
     "immutable": true,
     "kind": "ConfigMap",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "annotation": "test",
       },
-      "labels": Object {
+      "labels": {
         "label": "test",
         "prunable": "true",
       },
@@ -132,13 +132,13 @@ Array [
 ]
 `;
 
-exports[`ConfigMap Props Empty ConfigMap 1`] = `
-Array [
-  Object {
+exports[`ConfigMap > Props > Empty ConfigMap 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "prunable": "true",
       },
       "name": "test-c8eb60f8-hfh6t42gd2",

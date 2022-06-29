@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`Advanced WebService example Change release version 1`] = `
-Array [
-  Object {
+exports[`Advanced WebService example > Change release version 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Namespace",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -17,15 +17,15 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "ENVIRONMENT": "demo",
       "MESSAGE": "Hello CDK8s!",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -37,9 +37,9 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "default.conf": "map $http_upgrade $connection_upgrade {
     default \\"upgrade\\";
     \\"\\" \\"\\";
@@ -153,8 +153,8 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 ",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -166,11 +166,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -183,7 +183,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -197,15 +197,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "canary": "false",
         "instance": "web",
@@ -214,11 +214,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
@@ -227,7 +227,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -241,30 +241,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -277,7 +277,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -291,15 +291,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "canary": "true",
         "instance": "web",
@@ -308,11 +308,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
@@ -321,7 +321,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -335,30 +335,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-canary-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -372,20 +372,20 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary",
       "namespace": "advanced-test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "advanced",
             "canary": "true",
             "environment": "development",
@@ -397,14 +397,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "service": "advanced-development-local",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "advanced",
                         "canary": "true",
                         "instance": "web",
@@ -419,26 +419,26 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "config-c5654mfm82",
                   },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.2",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/",
                   "port": 8000,
                 },
@@ -448,15 +448,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "advanced",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 8000,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/portal",
                   "port": 8000,
                 },
@@ -465,19 +465,19 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
               },
             },
-            Object {
+            {
               "image": "public.ecr.aws/nginx/nginx:1.21.5",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -487,15 +487,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "nginx",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 80,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 2,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -504,17 +504,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 10,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "memory": "128Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "32Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/etc/nginx/conf.d",
                   "name": "nginx-config",
                   "readOnly": true,
@@ -523,9 +523,9 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           ],
           "priorityClassName": "web",
-          "volumes": Array [
-            Object {
-              "configMap": Object {
+          "volumes": [
+            {
+              "configMap": {
                 "defaultMode": 292,
                 "name": "nginx-config-82htd5f6t7",
               },
@@ -539,13 +539,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 ]
 `;
 
-exports[`Advanced WebService example Snapshot base stage 1`] = `
-Array [
-  Object {
+exports[`Advanced WebService example > Snapshot base stage 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Namespace",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -556,15 +556,15 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "ENVIRONMENT": "demo",
       "MESSAGE": "Hello CDK8s!",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -576,9 +576,9 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "default.conf": "map $http_upgrade $connection_upgrade {
     default \\"upgrade\\";
     \\"\\" \\"\\";
@@ -692,8 +692,8 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 ",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -705,11 +705,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -722,7 +722,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -736,15 +736,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "canary": "false",
         "instance": "web",
@@ -753,11 +753,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
@@ -766,7 +766,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -780,30 +780,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -817,19 +817,19 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web",
       "namespace": "advanced-test",
     },
-    "spec": Object {
+    "spec": {
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "advanced",
           "canary": "false",
           "instance": "web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "advanced",
             "canary": "false",
             "environment": "development",
@@ -841,14 +841,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "service": "advanced-development-local",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "advanced",
                         "canary": "false",
                         "instance": "web",
@@ -863,26 +863,26 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "config-c5654mfm82",
                   },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/",
                   "port": 8000,
                 },
@@ -892,15 +892,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "advanced",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 8000,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/portal",
                   "port": 8000,
                 },
@@ -909,19 +909,19 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
               },
             },
-            Object {
+            {
               "image": "public.ecr.aws/nginx/nginx:1.21.5",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -931,15 +931,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "nginx",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 80,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 2,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -948,17 +948,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 10,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "memory": "128Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "32Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/etc/nginx/conf.d",
                   "name": "nginx-config",
                   "readOnly": true,
@@ -967,9 +967,9 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           ],
           "priorityClassName": "web",
-          "volumes": Array [
-            Object {
-              "configMap": Object {
+          "volumes": [
+            {
+              "configMap": {
                 "defaultMode": 292,
                 "name": "nginx-config-82htd5f6t7",
               },
@@ -980,11 +980,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       },
     },
   },
-  Object {
+  {
     "apiVersion": "autoscaling/v2beta2",
     "kind": "HorizontalPodAutoscaler",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -997,13 +997,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-hpa",
       "namespace": "advanced-test",
     },
-    "spec": Object {
+    "spec": {
       "maxReplicas": 5,
-      "metrics": Array [
-        Object {
-          "resource": Object {
+      "metrics": [
+        {
+          "resource": {
             "name": "cpu",
-            "target": Object {
+            "target": {
               "averageUtilization": 50,
               "type": "Utilization",
             },
@@ -1012,18 +1012,18 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "minReplicas": 1,
-      "scaleTargetRef": Object {
+      "scaleTargetRef": {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "web",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -1036,7 +1036,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -1050,15 +1050,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "canary": "true",
         "instance": "web",
@@ -1067,11 +1067,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
@@ -1080,7 +1080,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -1094,30 +1094,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-canary-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -1131,20 +1131,20 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary",
       "namespace": "advanced-test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "advanced",
             "canary": "true",
             "environment": "development",
@@ -1156,14 +1156,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "service": "advanced-development-local",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "advanced",
                         "canary": "true",
                         "instance": "web",
@@ -1178,26 +1178,26 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "config-c5654mfm82",
                   },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/",
                   "port": 8000,
                 },
@@ -1207,15 +1207,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "advanced",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 8000,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/portal",
                   "port": 8000,
                 },
@@ -1224,19 +1224,19 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
               },
             },
-            Object {
+            {
               "image": "public.ecr.aws/nginx/nginx:1.21.5",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -1246,15 +1246,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "nginx",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 80,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 2,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -1263,17 +1263,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 10,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "memory": "128Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "32Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/etc/nginx/conf.d",
                   "name": "nginx-config",
                   "readOnly": true,
@@ -1282,9 +1282,9 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           ],
           "priorityClassName": "web",
-          "volumes": Array [
-            Object {
-              "configMap": Object {
+          "volumes": [
+            {
+              "configMap": {
                 "defaultMode": 292,
                 "name": "nginx-config-82htd5f6t7",
               },
@@ -1298,13 +1298,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 ]
 `;
 
-exports[`Advanced WebService example Snapshot canary stage 1`] = `
-Array [
-  Object {
+exports[`Advanced WebService example > Snapshot canary stage 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Namespace",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -1315,15 +1315,15 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "ENVIRONMENT": "demo",
       "MESSAGE": "Hello CDK8s!",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -1335,9 +1335,9 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "default.conf": "map $http_upgrade $connection_upgrade {
     default \\"upgrade\\";
     \\"\\" \\"\\";
@@ -1451,8 +1451,8 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 ",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -1464,11 +1464,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -1481,7 +1481,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -1495,15 +1495,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "canary": "false",
         "instance": "web",
@@ -1512,11 +1512,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
@@ -1525,7 +1525,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -1539,30 +1539,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -1575,7 +1575,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -1589,15 +1589,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "canary": "true",
         "instance": "web",
@@ -1606,11 +1606,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
@@ -1619,7 +1619,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -1633,30 +1633,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-canary-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -1670,20 +1670,20 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary",
       "namespace": "advanced-test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "advanced",
             "canary": "true",
             "environment": "development",
@@ -1695,14 +1695,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "service": "advanced-development-local",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "advanced",
                         "canary": "true",
                         "instance": "web",
@@ -1717,26 +1717,26 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "config-c5654mfm82",
                   },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/",
                   "port": 8000,
                 },
@@ -1746,15 +1746,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "advanced",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 8000,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/portal",
                   "port": 8000,
                 },
@@ -1763,19 +1763,19 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
               },
             },
-            Object {
+            {
               "image": "public.ecr.aws/nginx/nginx:1.21.5",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -1785,15 +1785,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "nginx",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 80,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 2,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -1802,17 +1802,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 10,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "memory": "128Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "32Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/etc/nginx/conf.d",
                   "name": "nginx-config",
                   "readOnly": true,
@@ -1821,9 +1821,9 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           ],
           "priorityClassName": "web",
-          "volumes": Array [
-            Object {
-              "configMap": Object {
+          "volumes": [
+            {
+              "configMap": {
                 "defaultMode": 292,
                 "name": "nginx-config-82htd5f6t7",
               },
@@ -1837,13 +1837,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 ]
 `;
 
-exports[`Advanced WebService example Snapshot full stage 1`] = `
-Array [
-  Object {
+exports[`Advanced WebService example > Snapshot full stage 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Namespace",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -1854,15 +1854,15 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "ENVIRONMENT": "demo",
       "MESSAGE": "Hello CDK8s!",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -1874,9 +1874,9 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "default.conf": "map $http_upgrade $connection_upgrade {
     default \\"upgrade\\";
     \\"\\" \\"\\";
@@ -1990,8 +1990,8 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 ",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -2003,11 +2003,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -2020,7 +2020,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -2034,15 +2034,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "instance": "web",
         "role": "server",
@@ -2050,11 +2050,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
@@ -2063,7 +2063,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -2077,30 +2077,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -2114,19 +2114,19 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web",
       "namespace": "advanced-test",
     },
-    "spec": Object {
+    "spec": {
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "advanced",
           "canary": "false",
           "instance": "web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "advanced",
             "canary": "false",
             "environment": "development",
@@ -2138,14 +2138,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "service": "advanced-development-local",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "advanced",
                         "canary": "false",
                         "instance": "web",
@@ -2160,26 +2160,26 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "config-c5654mfm82",
                   },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/",
                   "port": 8000,
                 },
@@ -2189,15 +2189,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "advanced",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 8000,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/portal",
                   "port": 8000,
                 },
@@ -2206,19 +2206,19 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
               },
             },
-            Object {
+            {
               "image": "public.ecr.aws/nginx/nginx:1.21.5",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -2228,15 +2228,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "nginx",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 80,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 2,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -2245,17 +2245,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 10,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "memory": "128Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "32Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/etc/nginx/conf.d",
                   "name": "nginx-config",
                   "readOnly": true,
@@ -2264,9 +2264,9 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           ],
           "priorityClassName": "web",
-          "volumes": Array [
-            Object {
-              "configMap": Object {
+          "volumes": [
+            {
+              "configMap": {
                 "defaultMode": 292,
                 "name": "nginx-config-82htd5f6t7",
               },
@@ -2277,11 +2277,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       },
     },
   },
-  Object {
+  {
     "apiVersion": "autoscaling/v2beta2",
     "kind": "HorizontalPodAutoscaler",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -2294,13 +2294,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-hpa",
       "namespace": "advanced-test",
     },
-    "spec": Object {
+    "spec": {
       "maxReplicas": 5,
-      "metrics": Array [
-        Object {
-          "resource": Object {
+      "metrics": [
+        {
+          "resource": {
             "name": "cpu",
-            "target": Object {
+            "target": {
               "averageUtilization": 50,
               "type": "Utilization",
             },
@@ -2309,18 +2309,18 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         },
       ],
       "minReplicas": 1,
-      "scaleTargetRef": Object {
+      "scaleTargetRef": {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "web",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -2333,7 +2333,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -2347,15 +2347,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "canary": "true",
         "instance": "web",
@@ -2364,11 +2364,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
@@ -2377,7 +2377,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -2391,30 +2391,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-canary-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -2428,20 +2428,20 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary",
       "namespace": "advanced-test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "advanced",
             "canary": "true",
             "environment": "development",
@@ -2453,14 +2453,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "service": "advanced-development-local",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "advanced",
                         "canary": "true",
                         "instance": "web",
@@ -2475,26 +2475,26 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "config-c5654mfm82",
                   },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/",
                   "port": 8000,
                 },
@@ -2504,15 +2504,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "advanced",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 8000,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/portal",
                   "port": 8000,
                 },
@@ -2521,19 +2521,19 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
               },
             },
-            Object {
+            {
               "image": "public.ecr.aws/nginx/nginx:1.21.5",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -2543,15 +2543,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "nginx",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 80,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 2,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -2560,17 +2560,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 10,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "memory": "128Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "32Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/etc/nginx/conf.d",
                   "name": "nginx-config",
                   "readOnly": true,
@@ -2579,9 +2579,9 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           ],
           "priorityClassName": "web",
-          "volumes": Array [
-            Object {
-              "configMap": Object {
+          "volumes": [
+            {
+              "configMap": {
                 "defaultMode": 292,
                 "name": "nginx-config-82htd5f6t7",
               },
@@ -2595,13 +2595,13 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 ]
 `;
 
-exports[`Advanced WebService example Snapshot post-canary stage 1`] = `
-Array [
-  Object {
+exports[`Advanced WebService example > Snapshot post-canary stage 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Namespace",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -2612,15 +2612,15 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "ENVIRONMENT": "demo",
       "MESSAGE": "Hello CDK8s!",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -2632,9 +2632,9 @@ Array [
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       "default.conf": "map $http_upgrade $connection_upgrade {
     default \\"upgrade\\";
     \\"\\" \\"\\";
@@ -2748,8 +2748,8 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
 ",
     },
     "kind": "ConfigMap",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -2761,11 +2761,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "namespace": "advanced-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -2778,7 +2778,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -2792,15 +2792,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "instance": "web",
         "role": "server",
@@ -2808,11 +2808,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-develop",
@@ -2821,7 +2821,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "false",
         "environment": "development",
@@ -2835,30 +2835,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -2871,7 +2871,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -2885,15 +2885,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-service",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 8000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "advanced",
         "canary": "true",
         "instance": "web",
@@ -2902,11 +2902,11 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "advanced-test-web-c-develop",
@@ -2915,7 +2915,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "alb.ingress.kubernetes.io/tags": "service=advanced-development-local,instance=web,environment=development",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -2929,30 +2929,30 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary-ingress",
       "namespace": "advanced-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-canary-service",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "advanced",
         "canary": "true",
         "environment": "development",
@@ -2966,20 +2966,20 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
       "name": "web-canary",
       "namespace": "advanced-test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "advanced",
           "canary": "true",
           "instance": "web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "advanced",
             "canary": "true",
             "environment": "development",
@@ -2991,14 +2991,14 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             "service": "advanced-development-local",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "app": "advanced",
                         "canary": "true",
                         "instance": "web",
@@ -3013,26 +3013,26 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
-              "env": Array [
-                Object {
+          "containers": [
+            {
+              "env": [
+                {
                   "name": "ROLLUP_WATCH",
                   "value": "0",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "config-c5654mfm82",
                   },
                 },
               ],
               "image": "docker.io/rodolphoalves/swapi-deno:v0.2.1",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/",
                   "port": 8000,
                 },
@@ -3042,15 +3042,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "advanced",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 8000,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/portal",
                   "port": 8000,
                 },
@@ -3059,19 +3059,19 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
               },
             },
-            Object {
+            {
               "image": "public.ecr.aws/nginx/nginx:1.21.5",
               "imagePullPolicy": "IfNotPresent",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -3081,15 +3081,15 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "timeoutSeconds": 2,
               },
               "name": "nginx",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 80,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 2,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -3098,17 +3098,17 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
                 "successThreshold": 1,
                 "timeoutSeconds": 10,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "memory": "128Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "32Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/etc/nginx/conf.d",
                   "name": "nginx-config",
                   "readOnly": true,
@@ -3117,9 +3117,9 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             },
           ],
           "priorityClassName": "web",
-          "volumes": Array [
-            Object {
-              "configMap": Object {
+          "volumes": [
+            {
+              "configMap": {
                 "defaultMode": 292,
                 "name": "nginx-config-82htd5f6t7",
               },

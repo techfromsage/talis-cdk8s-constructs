@@ -6,7 +6,7 @@ describe("CronJob example", () => {
   const PROCESS_ENV = process.env;
 
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
     process.env = { ...PROCESS_ENV };
     process.env.DOCKER_USERNAME = "someuser";
     process.env.DOCKER_PASSWORD = "secret123";

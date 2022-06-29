@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`WebService Nginx Allows to create nginx container: container 1`] = `
-Object {
+exports[`WebService > Nginx > Allows to create nginx container > container 1`] = `
+{
   "image": "public.ecr.aws/nginx/nginx:1.21.5",
   "imagePullPolicy": "IfNotPresent",
-  "livenessProbe": Object {
+  "livenessProbe": {
     "failureThreshold": 3,
-    "httpGet": Object {
+    "httpGet": {
       "path": "/livez",
       "port": 80,
     },
@@ -16,15 +16,15 @@ Object {
     "timeoutSeconds": 2,
   },
   "name": "nginx",
-  "ports": Array [
-    Object {
+  "ports": [
+    {
       "containerPort": 80,
       "protocol": "TCP",
     },
   ],
-  "readinessProbe": Object {
+  "readinessProbe": {
     "failureThreshold": 2,
-    "httpGet": Object {
+    "httpGet": {
       "path": "/livez",
       "port": 80,
     },
@@ -33,17 +33,17 @@ Object {
     "successThreshold": 1,
     "timeoutSeconds": 10,
   },
-  "resources": Object {
-    "limits": Object {
+  "resources": {
+    "limits": {
       "memory": "128Mi",
     },
-    "requests": Object {
+    "requests": {
       "cpu": "50m",
       "memory": "32Mi",
     },
   },
-  "volumeMounts": Array [
-    Object {
+  "volumeMounts": [
+    {
       "mountPath": "/etc/nginx/conf.d",
       "name": "nginx-config",
       "readOnly": true,
@@ -52,10 +52,10 @@ Object {
 }
 `;
 
-exports[`WebService Nginx Allows to create nginx container: volumes 1`] = `
-Array [
-  Object {
-    "configMap": Object {
+exports[`WebService > Nginx > Allows to create nginx container > volumes 1`] = `
+[
+  {
+    "configMap": {
       "defaultMode": 292,
       "name": "test-nginx-config-c80869a4",
     },
@@ -64,15 +64,15 @@ Array [
 ]
 `;
 
-exports[`WebService Nginx Validates that application port and nginx port are not the same 1`] = `"Application and nginx ports must be different"`;
+exports[`WebService > Nginx > Validates that application port and nginx port are not the same 1`] = `"Application and nginx ports must be different"`;
 
-exports[`WebService Props All the props 1`] = `
-Array [
-  Object {
+exports[`WebService > Props > All the props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -85,7 +85,7 @@ Array [
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "my-app",
         "canary": "false",
         "environment": "test",
@@ -98,15 +98,15 @@ Array [
       "name": "test-web-web-service-c828a686",
       "namespace": "props-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 3000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "my-app",
         "foo": "bar",
         "instance": "my-app",
@@ -115,11 +115,11 @@ Array [
       "type": "ClusterIP",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/healthcheck-path": "/ping",
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
@@ -131,7 +131,7 @@ Array [
         "alb.ingress.kubernetes.io/target-type": "ip",
         "external-dns.alpha.kubernetes.io/hostname": "api.example.com",
       },
-      "labels": Object {
+      "labels": {
         "app": "my-app",
         "canary": "false",
         "environment": "test",
@@ -144,30 +144,30 @@ Array [
       "name": "test-web-web-ingress-c8ed2b8e",
       "namespace": "props-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "test-web-web-service-c828a686",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "canary": "false",
         "environment": "test",
@@ -180,10 +180,10 @@ Array [
       "name": "test-web-c883b2c8",
       "namespace": "props-test",
     },
-    "spec": Object {
+    "spec": {
       "revisionHistoryLimit": 5,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "my-app",
           "canary": "false",
           "foo": "bar",
@@ -191,9 +191,9 @@ Array [
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "my-app",
             "canary": "false",
             "environment": "test",
@@ -204,14 +204,14 @@ Array [
             "role": "server",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "role": "server",
                       },
                     },
@@ -223,36 +223,36 @@ Array [
             },
           },
           "automountServiceAccountToken": true,
-          "containers": Array [
-            Object {
-              "args": Array [
+          "containers": [
+            {
+              "args": [
                 "--foo",
                 "bar",
               ],
-              "command": Array [
+              "command": [
                 "/bin/sh",
                 "-c",
                 "echo hello",
               ],
-              "env": Array [
-                Object {
+              "env": [
+                {
                   "name": "FOO",
                   "value": "bar",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "foo-config",
                   },
                 },
               ],
               "image": "my-image",
               "imagePullPolicy": "Always",
-              "lifecycle": Object {
-                "preStop": Object {
-                  "exec": Object {
-                    "command": Array [
+              "lifecycle": {
+                "preStop": {
+                  "exec": {
+                    "command": [
                       "/bin/sh",
                       "-c",
                       "echo hello",
@@ -260,9 +260,9 @@ Array [
                   },
                 },
               },
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/health/alive",
                   "port": 3000,
                 },
@@ -272,15 +272,15 @@ Array [
                 "timeoutSeconds": 2,
               },
               "name": "my-container",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 3000,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/health/ready",
                   "port": 3000,
                 },
@@ -289,24 +289,24 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": 1,
                   "memory": "1Gi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": 0.1,
                   "memory": "100Mi",
                 },
               },
-              "securityContext": Object {
+              "securityContext": {
                 "runAsGroup": 1000,
                 "runAsNonRoot": true,
                 "runAsUser": 1000,
               },
-              "startupProbe": Object {
+              "startupProbe": {
                 "failureThreshold": 30,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/health/alive",
                   "port": 3000,
                 },
@@ -315,8 +315,8 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/data/foo",
                   "name": "foo-volume",
                   "readOnly": true,
@@ -324,12 +324,12 @@ Array [
               ],
               "workingDir": "/some/path",
             },
-            Object {
+            {
               "image": "ubuntu/nginx:1.18-21.10_edge",
               "imagePullPolicy": "Always",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -339,15 +339,15 @@ Array [
                 "timeoutSeconds": 2,
               },
               "name": "nginx",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 80,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 2,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -356,17 +356,17 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 10,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "memory": "128Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "32Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/etc/nginx/conf.d",
                   "name": "nginx-config",
                   "readOnly": true,
@@ -374,14 +374,14 @@ Array [
               ],
             },
           ],
-          "imagePullSecrets": Array [
-            Object {
+          "imagePullSecrets": [
+            {
               "name": "foo-secret",
             },
           ],
-          "initContainers": Array [
-            Object {
-              "command": Array [
+          "initContainers": [
+            {
+              "command": [
                 "/bin/sh",
                 "-c",
                 "echo hello",
@@ -392,17 +392,17 @@ Array [
           ],
           "priorityClassName": "high-priority",
           "terminationGracePeriodSeconds": 60,
-          "volumes": Array [
-            Object {
-              "awsElasticBlockStore": Object {
+          "volumes": [
+            {
+              "awsElasticBlockStore": {
                 "fsType": "ext4",
                 "readOnly": true,
                 "volumeID": "vol-123",
               },
               "name": "foo-volume",
             },
-            Object {
-              "configMap": Object {
+            {
+              "configMap": {
                 "defaultMode": 292,
                 "name": "nginx-config",
               },
@@ -413,11 +413,11 @@ Array [
       },
     },
   },
-  Object {
+  {
     "apiVersion": "autoscaling/v2beta2",
     "kind": "HorizontalPodAutoscaler",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "canary": "false",
         "environment": "test",
@@ -429,13 +429,13 @@ Array [
       "name": "test-web-web-hpa-c801f515",
       "namespace": "props-test",
     },
-    "spec": Object {
+    "spec": {
       "maxReplicas": 10,
-      "metrics": Array [
-        Object {
-          "resource": Object {
+      "metrics": [
+        {
+          "resource": {
             "name": "cpu",
-            "target": Object {
+            "target": {
               "averageUtilization": 100,
               "type": "Utilization",
             },
@@ -444,18 +444,18 @@ Array [
         },
       ],
       "minReplicas": 2,
-      "scaleTargetRef": Object {
+      "scaleTargetRef": {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "test-web-c883b2c8",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -468,7 +468,7 @@ Array [
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "app": "my-app",
         "canary": "true",
         "environment": "test",
@@ -481,15 +481,15 @@ Array [
       "name": "test-web-web-canary-service-c852817c",
       "namespace": "props-test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 80,
           "protocol": "TCP",
           "targetPort": 3000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "my-app",
         "canary": "true",
         "foo": "bar",
@@ -499,11 +499,11 @@ Array [
       "type": "ClusterIP",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/healthcheck-path": "/ping",
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
@@ -515,7 +515,7 @@ Array [
         "alb.ingress.kubernetes.io/target-type": "ip",
         "external-dns.alpha.kubernetes.io/hostname": "api.example.com",
       },
-      "labels": Object {
+      "labels": {
         "app": "my-app",
         "canary": "true",
         "environment": "test",
@@ -528,30 +528,30 @@ Array [
       "name": "test-web-web-canary-ingress-c8e1943e",
       "namespace": "props-test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "test-web-web-canary-service-c852817c",
-          "port": Object {
+          "port": {
             "number": 80,
           },
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "tls": Array [
-        Object {
-          "hosts": Array [
+      "tls": [
+        {
+          "hosts": [
             "*.example.com",
           ],
         },
       ],
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "canary": "true",
         "environment": "test",
@@ -564,11 +564,11 @@ Array [
       "name": "test-web-web-canary-c87fce47",
       "namespace": "props-test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
       "revisionHistoryLimit": 5,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "my-app",
           "canary": "true",
           "foo": "bar",
@@ -576,9 +576,9 @@ Array [
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "my-app",
             "canary": "true",
             "environment": "test",
@@ -589,14 +589,14 @@ Array [
             "role": "server",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "role": "server",
                       },
                     },
@@ -608,36 +608,36 @@ Array [
             },
           },
           "automountServiceAccountToken": true,
-          "containers": Array [
-            Object {
-              "args": Array [
+          "containers": [
+            {
+              "args": [
                 "--foo",
                 "bar",
               ],
-              "command": Array [
+              "command": [
                 "/bin/sh",
                 "-c",
                 "echo hello",
               ],
-              "env": Array [
-                Object {
+              "env": [
+                {
                   "name": "FOO",
                   "value": "bar",
                 },
               ],
-              "envFrom": Array [
-                Object {
-                  "configMapRef": Object {
+              "envFrom": [
+                {
+                  "configMapRef": {
                     "name": "foo-config",
                   },
                 },
               ],
               "image": "my-image",
               "imagePullPolicy": "Always",
-              "lifecycle": Object {
-                "preStop": Object {
-                  "exec": Object {
-                    "command": Array [
+              "lifecycle": {
+                "preStop": {
+                  "exec": {
+                    "command": [
                       "/bin/sh",
                       "-c",
                       "echo hello",
@@ -645,9 +645,9 @@ Array [
                   },
                 },
               },
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/health/alive",
                   "port": 3000,
                 },
@@ -657,15 +657,15 @@ Array [
                 "timeoutSeconds": 2,
               },
               "name": "my-container",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 3000,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/health/ready",
                   "port": 3000,
                 },
@@ -674,24 +674,24 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": 1,
                   "memory": "1Gi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": 0.1,
                   "memory": "100Mi",
                 },
               },
-              "securityContext": Object {
+              "securityContext": {
                 "runAsGroup": 1000,
                 "runAsNonRoot": true,
                 "runAsUser": 1000,
               },
-              "startupProbe": Object {
+              "startupProbe": {
                 "failureThreshold": 30,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/health/alive",
                   "port": 3000,
                 },
@@ -700,8 +700,8 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 2,
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/data/foo",
                   "name": "foo-volume",
                   "readOnly": true,
@@ -709,12 +709,12 @@ Array [
               ],
               "workingDir": "/some/path",
             },
-            Object {
+            {
               "image": "ubuntu/nginx:1.18-21.10_edge",
               "imagePullPolicy": "Always",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 3,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -724,15 +724,15 @@ Array [
                 "timeoutSeconds": 2,
               },
               "name": "nginx",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 80,
                   "protocol": "TCP",
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 2,
-                "httpGet": Object {
+                "httpGet": {
                   "path": "/livez",
                   "port": 80,
                 },
@@ -741,17 +741,17 @@ Array [
                 "successThreshold": 1,
                 "timeoutSeconds": 10,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "memory": "128Mi",
                 },
-                "requests": Object {
+                "requests": {
                   "cpu": "50m",
                   "memory": "32Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/etc/nginx/conf.d",
                   "name": "nginx-config",
                   "readOnly": true,
@@ -759,14 +759,14 @@ Array [
               ],
             },
           ],
-          "imagePullSecrets": Array [
-            Object {
+          "imagePullSecrets": [
+            {
               "name": "foo-secret",
             },
           ],
-          "initContainers": Array [
-            Object {
-              "command": Array [
+          "initContainers": [
+            {
+              "command": [
                 "/bin/sh",
                 "-c",
                 "echo hello",
@@ -777,17 +777,17 @@ Array [
           ],
           "priorityClassName": "high-priority",
           "terminationGracePeriodSeconds": 60,
-          "volumes": Array [
-            Object {
-              "awsElasticBlockStore": Object {
+          "volumes": [
+            {
+              "awsElasticBlockStore": {
                 "fsType": "ext4",
                 "readOnly": true,
                 "volumeID": "vol-123",
               },
               "name": "foo-volume",
             },
-            Object {
-              "configMap": Object {
+            {
+              "configMap": {
                 "defaultMode": 292,
                 "name": "nginx-config",
               },
@@ -801,17 +801,17 @@ Array [
 ]
 `;
 
-exports[`WebService Props Allows specifying custom logic to make affinity 1`] = `
-Object {
-  "podAffinity": Object {
-    "requiredDuringSchedulingIgnoredDuringExecution": Array [
-      Object {
-        "labelSelector": Object {
-          "matchExpressions": Array [
-            Object {
+exports[`WebService > Props > Allows specifying custom logic to make affinity 1`] = `
+{
+  "podAffinity": {
+    "requiredDuringSchedulingIgnoredDuringExecution": [
+      {
+        "labelSelector": {
+          "matchExpressions": [
+            {
               "key": "role",
               "operator": "In",
-              "values": Array [
+              "values": [
                 "server",
               ],
             },
@@ -824,17 +824,17 @@ Object {
 }
 `;
 
-exports[`WebService Props Either horizontalPodAutoscaler or replicas can be specified, not both 1`] = `"Either horizontalPodAutoscaler or replicas can be specified, not both"`;
+exports[`WebService > Props > Either horizontalPodAutoscaler or replicas can be specified, not both 1`] = `"Either horizontalPodAutoscaler or replicas can be specified, not both"`;
 
-exports[`WebService Props Either horizontalPodAutoscaler or replicas must be specified 1`] = `"Either horizontalPodAutoscaler or replicas must be specified"`;
+exports[`WebService > Props > Either horizontalPodAutoscaler or replicas must be specified 1`] = `"Either horizontalPodAutoscaler or replicas must be specified"`;
 
-exports[`WebService Props Horizontal Pod Autoscaler 1`] = `
-Array [
-  Object {
+exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -847,7 +847,7 @@ Array [
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "instance": "web",
         "release": "test-123",
         "role": "server",
@@ -855,26 +855,26 @@ Array [
       "name": "web-service",
       "namespace": "test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 3000,
           "protocol": "TCP",
           "targetPort": 3000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "instance": "web",
         "role": "server",
       },
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
@@ -882,7 +882,7 @@ Array [
         "alb.ingress.kubernetes.io/tags": "instance=web",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "instance": "web",
         "release": "test-123",
         "role": "server",
@@ -890,11 +890,11 @@ Array [
       "name": "web-ingress",
       "namespace": "test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-service",
-          "port": Object {
+          "port": {
             "number": 3000,
           },
         },
@@ -902,11 +902,11 @@ Array [
       "ingressClassName": "aws-load-balancer-internet-facing",
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "web",
         "release": "test-123",
         "role": "server",
@@ -914,30 +914,30 @@ Array [
       "name": "web",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "instance": "web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "instance": "web",
             "release": "test-123",
             "role": "server",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "instance": "web",
                         "role": "server",
                       },
@@ -950,19 +950,19 @@ Array [
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
+          "containers": [
+            {
               "image": "my-image",
               "imagePullPolicy": "IfNotPresent",
               "name": "app",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 3000,
                   "protocol": "TCP",
                 },
               ],
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "100m",
                   "memory": "100Mi",
                 },
@@ -974,24 +974,24 @@ Array [
       },
     },
   },
-  Object {
+  {
     "apiVersion": "autoscaling/v2beta2",
     "kind": "HorizontalPodAutoscaler",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "web",
         "role": "server",
       },
       "name": "web-hpa",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "maxReplicas": 4,
-      "metrics": Array [
-        Object {
-          "resource": Object {
+      "metrics": [
+        {
+          "resource": {
             "name": "cpu",
-            "target": Object {
+            "target": {
               "averageUtilization": 100,
               "type": "Utilization",
             },
@@ -1000,7 +1000,7 @@ Array [
         },
       ],
       "minReplicas": 2,
-      "scaleTargetRef": Object {
+      "scaleTargetRef": {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "web",
@@ -1010,17 +1010,17 @@ Array [
 ]
 `;
 
-exports[`WebService Props Load balancer name must not be empty 1`] = `"Load balancer name must not be empty"`;
+exports[`WebService > Props > Load balancer name must not be empty 1`] = `"Load balancer name must not be empty"`;
 
-exports[`WebService Props Load balancer name must not exceed 32 characters 1`] = `"Load balancer name must not exceed 32 characters. Given: test-web-non-abbreviable-env-test"`;
+exports[`WebService > Props > Load balancer name must not exceed 32 characters 1`] = `"Load balancer name must not exceed 32 characters. Given: test-web-non-abbreviable-env-test"`;
 
-exports[`WebService Props Minimal required props 1`] = `
-Array [
-  Object {
+exports[`WebService > Props > Minimal required props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
         "talis.io/eks-dashboard": "https://example.io/dashboard",
@@ -1033,7 +1033,7 @@ Array [
         "talis.io/uptime": "https://example.io/uptime",
         "talis.io/url": "https://api.example.com/",
       },
-      "labels": Object {
+      "labels": {
         "instance": "web",
         "release": "test-123",
         "role": "server",
@@ -1041,26 +1041,26 @@ Array [
       "name": "web-service",
       "namespace": "test",
     },
-    "spec": Object {
-      "ports": Array [
-        Object {
+    "spec": {
+      "ports": [
+        {
           "port": 3000,
           "protocol": "TCP",
           "targetPort": 3000,
         },
       ],
-      "selector": Object {
+      "selector": {
         "instance": "web",
         "role": "server",
       },
       "type": "NodePort",
     },
   },
-  Object {
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
-    "metadata": Object {
-      "annotations": Object {
+    "metadata": {
+      "annotations": {
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
@@ -1068,7 +1068,7 @@ Array [
         "alb.ingress.kubernetes.io/tags": "instance=web",
         "alb.ingress.kubernetes.io/target-type": "instance",
       },
-      "labels": Object {
+      "labels": {
         "instance": "web",
         "release": "test-123",
         "role": "server",
@@ -1076,11 +1076,11 @@ Array [
       "name": "web-ingress",
       "namespace": "test",
     },
-    "spec": Object {
-      "defaultBackend": Object {
-        "service": Object {
+    "spec": {
+      "defaultBackend": {
+        "service": {
           "name": "web-service",
-          "port": Object {
+          "port": {
             "number": 3000,
           },
         },
@@ -1088,11 +1088,11 @@ Array [
       "ingressClassName": "aws-load-balancer-internet-facing",
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "Deployment",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "web",
         "release": "test-123",
         "role": "server",
@@ -1100,31 +1100,31 @@ Array [
       "name": "web",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
       "revisionHistoryLimit": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "instance": "web",
           "role": "server",
         },
       },
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "instance": "web",
             "release": "test-123",
             "role": "server",
           },
         },
-        "spec": Object {
-          "affinity": Object {
-            "podAntiAffinity": Object {
-              "preferredDuringSchedulingIgnoredDuringExecution": Array [
-                Object {
-                  "podAffinityTerm": Object {
-                    "labelSelector": Object {
-                      "matchLabels": Object {
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
                         "instance": "web",
                         "role": "server",
                       },
@@ -1137,19 +1137,19 @@ Array [
             },
           },
           "automountServiceAccountToken": false,
-          "containers": Array [
-            Object {
+          "containers": [
+            {
               "image": "my-image",
               "imagePullPolicy": "IfNotPresent",
               "name": "app",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 3000,
                   "protocol": "TCP",
                 },
               ],
-              "resources": Object {
-                "requests": Object {
+              "resources": {
+                "requests": {
                   "cpu": "100m",
                   "memory": "100Mi",
                 },
@@ -1164,6 +1164,6 @@ Array [
 ]
 `;
 
-exports[`WebService Props Release stage must be specified when canary deployments are enabled 1`] = `"Release stage must be specified when canary deployments are enabled"`;
+exports[`WebService > Props > Release stage must be specified when canary deployments are enabled 1`] = `"Release stage must be specified when canary deployments are enabled"`;
 
-exports[`WebService Props Validates load balancer name even if overridden 1`] = `"Load balancer name must not exceed 32 characters. Given: a-load-balancer-name-exceeding-32"`;
+exports[`WebService > Props > Validates load balancer name even if overridden 1`] = `"Load balancer name must not exceed 32 characters. Given: a-load-balancer-name-exceeding-32"`;

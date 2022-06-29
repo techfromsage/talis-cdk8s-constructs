@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`Memcached example Snapshot 1`] = `
-Array [
-  Object {
+exports[`Memcached example > Snapshot 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Namespace",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-memcached-app",
         "environment": "development",
         "managed-by": "cdk8s",
@@ -17,11 +17,11 @@ Array [
       "namespace": "example-memcached-app-test",
     },
   },
-  Object {
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-memcached-app",
         "environment": "development",
         "instance": "memcached-example",
@@ -34,26 +34,26 @@ Array [
       "name": "memcached-example",
       "namespace": "example-memcached-app-test",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 11211,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "example-memcached-app",
         "instance": "memcached-example",
         "role": "memcached",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "example-memcached-app",
         "environment": "development",
         "instance": "memcached-example",
@@ -66,19 +66,19 @@ Array [
       "name": "memcached-example-sts",
       "namespace": "example-memcached-app-test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "example-memcached-app",
           "instance": "memcached-example",
           "role": "memcached",
         },
       },
       "serviceName": "memcached-example",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "example-memcached-app",
             "environment": "development",
             "instance": "memcached-example",
@@ -89,37 +89,37 @@ Array [
             "service": "example-memcached-app-development-local",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "args": Array [
+        "spec": {
+          "containers": [
+            {
+              "args": [
                 "--memory-limit=64",
               ],
               "image": "memcached:1.5.20",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 11211,
                 },
                 "timeoutSeconds": 5,
               },
               "name": "memcached",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 11211,
                 },
               ],
-              "readinessProbe": Object {
+              "readinessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 11211,
                 },
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "50m",
                   "memory": "64Mi",
                 },

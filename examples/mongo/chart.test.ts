@@ -4,7 +4,7 @@ import { TalisShortRegion, TalisDeploymentEnvironment } from "../../lib";
 
 describe("Mongo example", () => {
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   test("Snapshot", () => {

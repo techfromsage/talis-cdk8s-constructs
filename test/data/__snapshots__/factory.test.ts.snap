@@ -1,14 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`factory createDockerHubSecretFromEnv Creates config with Docker Hub credentials from env vars 1`] = `
-Array [
-  Object {
+exports[`factory > createDockerHubSecretFromEnv > Creates config with Docker Hub credentials from env vars 1`] = `
+[
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
     },
     "kind": "Secret",
-    "metadata": Object {
+    "metadata": {
       "name": "test-docker-hub-cred-c8d251b2",
     },
     "type": "kubernetes.io/dockerconfigjson",
@@ -16,17 +16,17 @@ Array [
 ]
 `;
 
-exports[`factory createDockerHubSecretFromEnv Throws if Docker credentials env vars are not set 1`] = `"DOCKER_USERNAME and DOCKER_PASSWORD must be set in the environment"`;
+exports[`factory > createDockerHubSecretFromEnv > Throws if Docker credentials env vars are not set 1`] = `"DOCKER_USERNAME and DOCKER_PASSWORD must be set in the environment"`;
 
-exports[`factory createImagePullSecret Creates config with Docker Hub credentials by default 1`] = `
-Array [
-  Object {
+exports[`factory > createImagePullSecret > Creates config with Docker Hub credentials by default 1`] = `
+[
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImRYTmxjanAwWlhOMCJ9fX0=",
     },
     "kind": "Secret",
-    "metadata": Object {
+    "metadata": {
       "name": "test-image-pull-secret-c859bf04",
     },
     "type": "kubernetes.io/dockerconfigjson",
@@ -34,15 +34,15 @@ Array [
 ]
 `;
 
-exports[`factory createImagePullSecret Creates config with auth as-is 1`] = `
-Array [
-  Object {
+exports[`factory > createImagePullSecret > Creates config with auth as-is 1`] = `
+[
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       ".dockerconfigjson": "eyJhdXRocyI6eyIxMjM0NTY3ODkwMDAuZGtyLmVjci5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbSI6eyJhdXRoIjoiUVZkVE9uTnZiV1V0YzJWamNtVjBMVVZEVWkxclpYaz0ifX19",
     },
     "kind": "Secret",
-    "metadata": Object {
+    "metadata": {
       "name": "test-image-pull-secret-c859bf04",
     },
     "type": "kubernetes.io/dockerconfigjson",
@@ -50,15 +50,15 @@ Array [
 ]
 `;
 
-exports[`factory createImagePullSecret Creates config with custom registry 1`] = `
-Array [
-  Object {
+exports[`factory > createImagePullSecret > Creates config with custom registry 1`] = `
+[
+  {
     "apiVersion": "v1",
-    "data": Object {
+    "data": {
       ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL3JlZ2lzdHJ5LmV4YW1wbGUuaW8vIjp7ImF1dGgiOiJkWE5sY201aGJXVTZjR0Z6YzNkdmNtUT0ifX19",
     },
     "kind": "Secret",
-    "metadata": Object {
+    "metadata": {
       "name": "test-image-pull-secret-c859bf04",
     },
     "type": "kubernetes.io/dockerconfigjson",

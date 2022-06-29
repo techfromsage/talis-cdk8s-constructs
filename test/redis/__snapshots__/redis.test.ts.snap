@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`Redis Props All the props 1`] = `
-Array [
-  Object {
+exports[`Redis > Props > All the props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -17,26 +17,26 @@ Array [
       "name": "test-redis-test-c8b56c58",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 6379,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "app": "my-app",
         "instance": "test",
         "role": "redis",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "app": "my-app",
         "environment": "test",
         "instance": "test",
@@ -47,19 +47,19 @@ Array [
       "name": "test-redis-test-redis-test-sts-c82d6e34",
       "namespace": "test",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "app": "my-app",
           "instance": "test",
           "role": "redis",
         },
       },
       "serviceName": "test-redis-test-c8b56c58",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "app": "my-app",
             "environment": "test",
             "instance": "test",
@@ -68,38 +68,38 @@ Array [
             "role": "redis",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "command": Array [
+        "spec": {
+          "containers": [
+            {
+              "command": [
                 "redis-server",
                 "--appendonly",
                 "yes",
               ],
-              "env": Array [
-                Object {
+              "env": [
+                {
                   "name": "MASTER",
                   "value": "true",
                 },
               ],
               "image": "redis:v1",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 6379,
                 },
                 "timeoutSeconds": 5,
               },
               "name": "redis",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 6379,
                 },
               ],
-              "readinessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "readinessProbe": {
+                "exec": {
+                  "command": [
                     "redis-cli",
                     "ping",
                   ],
@@ -108,23 +108,23 @@ Array [
                 "initialDelaySeconds": 5,
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "100m",
                   "memory": "250Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/redis-master-data",
                   "name": "data",
                 },
               ],
             },
           ],
-          "volumes": Array [
-            Object {
-              "emptyDir": Object {},
+          "volumes": [
+            {
+              "emptyDir": {},
               "name": "data",
             },
           ],
@@ -135,93 +135,93 @@ Array [
 ]
 `;
 
-exports[`Redis Props Minimal required props 1`] = `
-Array [
-  Object {
+exports[`Redis > Props > Minimal required props 1`] = `
+[
+  {
     "apiVersion": "v1",
     "kind": "Service",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "redis-test",
         "release": "v1",
         "role": "redis",
       },
       "name": "test-redis-test-c8b56c58",
     },
-    "spec": Object {
+    "spec": {
       "clusterIP": "None",
-      "ports": Array [
-        Object {
+      "ports": [
+        {
           "port": 6379,
           "protocol": "TCP",
         },
       ],
-      "selector": Object {
+      "selector": {
         "instance": "redis-test",
         "role": "redis",
       },
     },
   },
-  Object {
+  {
     "apiVersion": "apps/v1",
     "kind": "StatefulSet",
-    "metadata": Object {
-      "labels": Object {
+    "metadata": {
+      "labels": {
         "instance": "redis-test",
         "release": "v1",
         "role": "redis",
       },
       "name": "test-redis-test-redis-test-sts-c82d6e34",
     },
-    "spec": Object {
+    "spec": {
       "replicas": 1,
-      "selector": Object {
-        "matchLabels": Object {
+      "selector": {
+        "matchLabels": {
           "instance": "redis-test",
           "role": "redis",
         },
       },
       "serviceName": "test-redis-test-c8b56c58",
-      "template": Object {
-        "metadata": Object {
-          "labels": Object {
+      "template": {
+        "metadata": {
+          "labels": {
             "instance": "redis-test",
             "release": "v1",
             "role": "redis",
           },
         },
-        "spec": Object {
-          "containers": Array [
-            Object {
-              "command": Array [
+        "spec": {
+          "containers": [
+            {
+              "command": [
                 "redis-server",
                 "--appendonly",
                 "yes",
               ],
-              "env": Array [
-                Object {
+              "env": [
+                {
                   "name": "MASTER",
                   "value": "true",
                 },
               ],
               "image": "redis:v1",
-              "livenessProbe": Object {
+              "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
-                "tcpSocket": Object {
+                "tcpSocket": {
                   "port": 6379,
                 },
                 "timeoutSeconds": 5,
               },
               "name": "redis",
-              "ports": Array [
-                Object {
+              "ports": [
+                {
                   "containerPort": 6379,
                 },
               ],
-              "readinessProbe": Object {
-                "exec": Object {
-                  "command": Array [
+              "readinessProbe": {
+                "exec": {
+                  "command": [
                     "redis-cli",
                     "ping",
                   ],
@@ -230,23 +230,23 @@ Array [
                 "initialDelaySeconds": 5,
                 "timeoutSeconds": 5,
               },
-              "resources": Object {
-                "limits": Object {
+              "resources": {
+                "limits": {
                   "cpu": "100m",
                   "memory": "250Mi",
                 },
               },
-              "volumeMounts": Array [
-                Object {
+              "volumeMounts": [
+                {
                   "mountPath": "/redis-master-data",
                   "name": "data",
                 },
               ],
             },
           ],
-          "volumes": Array [
-            Object {
-              "emptyDir": Object {},
+          "volumes": [
+            {
+              "emptyDir": {},
               "name": "data",
             },
           ],

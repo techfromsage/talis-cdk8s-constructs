@@ -4,7 +4,7 @@ import { TalisShortRegion, TalisDeploymentEnvironment } from "../../lib";
 
 describe("Postgres example", () => {
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   test("Snapshot", () => {

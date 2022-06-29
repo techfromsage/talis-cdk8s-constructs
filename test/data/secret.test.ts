@@ -262,7 +262,7 @@ describe("Secret", () => {
     const PROCESS_ENV = process.env;
 
     beforeEach(() => {
-      jest.resetModules();
+      vi.resetModules();
       process.env = { ...PROCESS_ENV };
       process.env.CDK8S_REDACT_SECRET_DATA = "true";
     });
