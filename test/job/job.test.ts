@@ -142,6 +142,16 @@ describe("Job", () => {
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty("spec.backoffLimit", 42);
     });
+
+    test("selectorLabels can override app", () => {
+      const results = synthJob({
+        ...requiredProps,
+        selectorLabels: { app: "foobar" },
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("metadata.labels.app", "foobar");
+      expect(job).toHaveProperty("spec.template.metadata.labels.app", "foobar");
+    });
   });
 
   describe("Container name", () => {

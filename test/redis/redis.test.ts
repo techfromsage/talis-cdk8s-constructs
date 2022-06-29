@@ -53,6 +53,28 @@ describe("Redis", () => {
         "selectorLabels",
       ]);
     });
+
+    test("selectorLabels can override app", () => {
+      const results = synthRedis({
+        ...requiredProps,
+        selectorLabels: { app: "foobar" },
+      });
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty("metadata.labels.app", "foobar");
+      expect(sts).toHaveProperty("spec.selector.matchLabels.app", "foobar");
+      expect(sts).toHaveProperty("spec.template.metadata.labels.app", "foobar");
+    });
+
+    test("selectorLabels can override role", () => {
+      const results = synthRedis({
+        ...requiredProps,
+        selectorLabels: { role: "queue" },
+      });
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty("metadata.labels.role", "queue");
+      expect(sts).toHaveProperty("spec.selector.matchLabels.role", "queue");
+      expect(sts).toHaveProperty("spec.template.metadata.labels.role", "queue");
+    });
   });
 
   describe("Object instances", () => {
@@ -76,8 +98,8 @@ describe("Redis", () => {
   describe("Container release", () => {
     test("Default container release", () => {
       const results = synthRedis();
-      const job = results.find((obj) => obj.kind === "StatefulSet");
-      expect(job).toHaveProperty(
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty(
         "spec.template.spec.containers[0].image",
         "redis:v1"
       );
@@ -88,8 +110,8 @@ describe("Redis", () => {
         ...requiredProps,
         release: "12345",
       });
-      const job = results.find((obj) => obj.kind === "StatefulSet");
-      expect(job).toHaveProperty(
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty(
         "spec.template.spec.containers[0].image",
         "redis:12345"
       );

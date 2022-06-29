@@ -94,6 +94,31 @@ describe("Postgres", () => {
         "resources",
       ]);
     });
+
+    test("selectorLabels can override app", () => {
+      const results = synthPostgres({
+        ...requiredProps,
+        selectorLabels: { app: "foobar" },
+      });
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty("metadata.labels.app", "foobar");
+      expect(sts).toHaveProperty("spec.selector.matchLabels.app", "foobar");
+      expect(sts).toHaveProperty("spec.template.metadata.labels.app", "foobar");
+    });
+
+    test("selectorLabels can override role", () => {
+      const results = synthPostgres({
+        ...requiredProps,
+        selectorLabels: { role: "database" },
+      });
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty("metadata.labels.role", "database");
+      expect(sts).toHaveProperty("spec.selector.matchLabels.role", "database");
+      expect(sts).toHaveProperty(
+        "spec.template.metadata.labels.role",
+        "database"
+      );
+    });
   });
 
   describe("Object instances", () => {

@@ -12,7 +12,7 @@ export class BackgroundWorker extends Construct {
     const hasProp = (key: string) =>
       Object.prototype.hasOwnProperty.call(props, key);
     const chart = Chart.of(this);
-    const app = chart.labels.app ?? props.selectorLabels?.app;
+    const app = props.selectorLabels?.app ?? chart.labels.app;
     const labels = {
       ...chart.labels,
       release: props.release,

@@ -10,7 +10,7 @@ export class CronJob extends Construct {
     this.validateProps(props);
 
     const chart = Chart.of(this);
-    const app = chart.labels.app ?? props.selectorLabels?.app;
+    const app = props.selectorLabels?.app ?? chart.labels.app;
     const labels = {
       ...chart.labels,
       release: props.release,

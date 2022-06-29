@@ -542,6 +542,23 @@ describe("WebService", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).not.toHaveProperty("spec.template.spec.affinity");
     });
+
+    test("selectorLabels can override app", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        selectorLabels: { app: "foobar" },
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty("metadata.labels.app", "foobar");
+      expect(deployment).toHaveProperty(
+        "spec.selector.matchLabels.app",
+        "foobar"
+      );
+      expect(deployment).toHaveProperty(
+        "spec.template.metadata.labels.app",
+        "foobar"
+      );
+    });
   });
 
   describe("Container name", () => {

@@ -53,6 +53,28 @@ describe("Memcached", () => {
         "selectorLabels",
       ]);
     });
+
+    test("selectorLabels can override app", () => {
+      const results = synthMemcached({
+        ...requiredProps,
+        selectorLabels: { app: "foobar" },
+      });
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty("metadata.labels.app", "foobar");
+      expect(sts).toHaveProperty("spec.selector.matchLabels.app", "foobar");
+      expect(sts).toHaveProperty("spec.template.metadata.labels.app", "foobar");
+    });
+
+    test("selectorLabels can override role", () => {
+      const results = synthMemcached({
+        ...requiredProps,
+        selectorLabels: { role: "cache" },
+      });
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty("metadata.labels.role", "cache");
+      expect(sts).toHaveProperty("spec.selector.matchLabels.role", "cache");
+      expect(sts).toHaveProperty("spec.template.metadata.labels.role", "cache");
+    });
   });
 
   describe("Object instances", () => {
@@ -76,8 +98,8 @@ describe("Memcached", () => {
   describe("Container release", () => {
     test("Default container release", () => {
       const results = synthMemcached();
-      const job = results.find((obj) => obj.kind === "StatefulSet");
-      expect(job).toHaveProperty(
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty(
         "spec.template.spec.containers[0].image",
         "memcached:v1"
       );
@@ -88,8 +110,8 @@ describe("Memcached", () => {
         ...requiredProps,
         release: "12345",
       });
-      const job = results.find((obj) => obj.kind === "StatefulSet");
-      expect(job).toHaveProperty(
+      const sts = results.find((obj) => obj.kind === "StatefulSet");
+      expect(sts).toHaveProperty(
         "spec.template.spec.containers[0].image",
         "memcached:12345"
       );

@@ -185,6 +185,19 @@ describe("CronJob", () => {
         }
       );
     });
+
+    test("selectorLabels can override app", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        selectorLabels: { app: "foobar" },
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).toHaveProperty("metadata.labels.app", "foobar");
+      expect(cron).toHaveProperty(
+        "spec.jobTemplate.spec.template.metadata.labels.app",
+        "foobar"
+      );
+    });
   });
 
   describe("Container name", () => {

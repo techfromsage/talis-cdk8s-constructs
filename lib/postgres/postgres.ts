@@ -11,7 +11,7 @@ export class Postgres extends Construct {
     super(scope, id);
 
     const chart = Chart.of(this);
-    const app = chart.labels.app ?? props.selectorLabels?.app;
+    const app = props.selectorLabels?.app ?? chart.labels.app;
     const release = props.release ?? "14.4";
     const port = 5432;
     const labels = {
