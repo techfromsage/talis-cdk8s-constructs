@@ -135,6 +135,7 @@ exports[`CronJob > Props > All the props 1`] = `
       "schedule": "0 0 13 * 5",
       "startingDeadlineSeconds": 200,
       "successfulJobsHistoryLimit": 4,
+      "suspend": false,
     },
   },
 ]
