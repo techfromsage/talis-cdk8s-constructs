@@ -16,7 +16,7 @@ export class Mongo extends Construct {
     super(scope, id);
 
     const chart = Chart.of(this);
-    const app = chart.labels.app ?? props.selectorLabels?.app;
+    const app = props.selectorLabels?.app ?? chart.labels.app;
     const release = props.release ?? "3.2.8";
     const port = 27017;
     const storageEngine = props.storageEngine ?? "mmapv1";

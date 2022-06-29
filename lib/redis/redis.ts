@@ -16,7 +16,7 @@ export class Redis extends Construct {
     super(scope, id);
 
     const chart = Chart.of(this);
-    const app = chart.labels.app ?? props.selectorLabels?.app;
+    const app = props.selectorLabels?.app ?? chart.labels.app;
     const release = props.release ?? "5.0.7";
     const port = 6379;
     const labels = {

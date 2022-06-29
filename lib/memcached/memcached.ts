@@ -16,7 +16,7 @@ export class Memcached extends Construct {
     super(scope, id);
 
     const chart = Chart.of(this);
-    const app = chart.labels.app ?? props.selectorLabels?.app;
+    const app = props.selectorLabels?.app ?? chart.labels.app;
     const release = props.release ?? "1.6.15";
     const port = 11211;
     const labels = {
