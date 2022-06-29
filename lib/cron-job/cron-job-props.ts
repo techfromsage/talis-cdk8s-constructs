@@ -10,6 +10,12 @@ export interface CronJobProps
   readonly schedule: string;
 
   /**
+   * This flag tells the controller to suspend subsequent executions.
+   * @default false
+   */
+  readonly suspend?: boolean;
+
+  /**
    * Custom selector labels, they will be merged with the default app, role, and instance.
    * They will be applied to the workload, the pod and the service.
    * @default { app: "<app label from chart>", role: "cronjob", instance: "<construct id>" }

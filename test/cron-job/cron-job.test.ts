@@ -57,6 +57,7 @@ describe("CronJob", () => {
       const allProps: Required<CronJobProps> = {
         ...requiredProps,
         selectorLabels,
+        suspend: false,
         containerName: "my-container",
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
