@@ -258,4 +258,24 @@ describe("Secret", () => {
       });
     });
   });
+  describe("when CDK8S_REDACT_SECRET_DATA is set to true", () => {
+    const PROCESS_ENV = process.env;
+
+    beforeEach(() => {
+      jest.resetModules();
+      process.env = { ...PROCESS_ENV };
+      process.env.CDK8S_REDACT_SECRET_DATA = "true";
+    });
+
+    afterEach(() => {
+      process.env = PROCESS_ENV;
+    });
+
+    test("secrets are redacted", () => {
+      const chart = Testing.chart();
+      const secret = new Secret(chart, "test");
+      secret.setData("test", "this will be redacted");
+      expect(secret.data).toEqual({ test: "****************************" });
+    });
+  });
 });

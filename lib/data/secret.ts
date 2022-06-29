@@ -146,6 +146,10 @@ export class Secret extends Construct {
       value = Buffer.from(value).toString("base64");
     }
 
+    if (process.env.CDK8S_REDACT_SECRET_DATA) {
+      value = value.replace(/./g, "*");
+    }
+
     this._data[key] = value;
   }
 
