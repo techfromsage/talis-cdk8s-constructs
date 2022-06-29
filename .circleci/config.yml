@@ -43,7 +43,7 @@ jobs:
           name: Run e2e tests
           environment:
             DEBUG_DETIK: "true"
-          command: npm run e2e
+          command: ./node_modules/.bin/bats --jobs 3 --no-parallelize-within-files --timing --print-output-on-failure e2e/
       - store_artifacts:
           path: /tmp/detik
 
