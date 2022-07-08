@@ -33,6 +33,16 @@ jobs:
     steps:
       - run: echo "Building $CIRCLE_BRANCH"
 
+  commitlint:
+    executor: node/default
+    steps:
+      - checkout
+      - node_setup
+      - run:
+          name: Lint all commits on the branch
+          command: |
+            npx commitlint --from $(git merge-base main $CIRCLE_BRANCH) --to HEAD --verbose
+
   e2e:
     executor: node/default
     steps:
@@ -66,6 +76,15 @@ workflows:
               ignore:
                 - main
                 - /^dependabot-.*$/
+      - commitlint:
+          filters:
+            branches:
+              ignore:
+                - main
+                - /^dependabot-.*$/
+          requires:
+            - fan_out
+            - be_kind_to_your_colleagues
       - node/run:
           name: build
           npm-run: build
