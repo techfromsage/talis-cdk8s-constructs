@@ -6,7 +6,8 @@
     "imports/**/*.js",
     "imports/**/*.d.ts",
     "lib/**/*.d.ts",
-    "lib/**/*.js"
+    "lib/**/*.js",
+    "lib/web-service/nginx"
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
