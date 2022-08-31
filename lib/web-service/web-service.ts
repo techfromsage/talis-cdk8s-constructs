@@ -7,6 +7,7 @@ import {
   KubeHorizontalPodAutoscalerV2Beta2,
   KubeIngress,
   KubeService,
+  MetricSpecV2Beta2,
   Quantity,
   Volume,
 } from "../../imports/k8s";
@@ -282,6 +283,18 @@ export class WebService extends Construct {
         "Release stage must be specified when canary deployments are enabled"
       );
     }
+
+    if (
+      props.horizontalPodAutoscaler &&
+      !(
+        props.horizontalPodAutoscaler.cpuTargetUtilization ||
+        props.horizontalPodAutoscaler.memoryTargetUtilization
+      )
+    ) {
+      throw new Error(
+        "Either cpuTargetUtilization or memoryTargetUtilization must be specified to use a horizontalPodAutoscaler"
+      );
+    }
   }
 
   findPorts(props: WebServiceProps): {
@@ -388,6 +401,34 @@ export class WebService extends Construct {
     props: HorizontalPodAutoscalerProps,
     labels: { [key: string]: string }
   ): void {
+    const metrics: Array<MetricSpecV2Beta2> = [];
+
+    if (props.cpuTargetUtilization) {
+      metrics.push({
+        type: "Resource",
+        resource: {
+          name: "cpu",
+          target: {
+            type: "Utilization",
+            averageUtilization: props.cpuTargetUtilization,
+          },
+        },
+      });
+    }
+
+    if (props.memoryTargetUtilization) {
+      metrics.push({
+        type: "Resource",
+        resource: {
+          name: "memory",
+          target: {
+            type: "Utilization",
+            averageUtilization: props.memoryTargetUtilization,
+          },
+        },
+      });
+    }
+
     new KubeHorizontalPodAutoscalerV2Beta2(this, `${deployment.node.id}-hpa`, {
       metadata: {
         labels,
@@ -400,18 +441,7 @@ export class WebService extends Construct {
         },
         minReplicas: props.minReplicas,
         maxReplicas: props.maxReplicas,
-        metrics: [
-          {
-            type: "Resource",
-            resource: {
-              name: "cpu",
-              target: {
-                type: "Utilization",
-                averageUtilization: props.cpuTargetUtilization,
-              },
-            },
-          },
-        ],
+        metrics: metrics,
       },
     });
   }
