@@ -288,6 +288,43 @@ describe("WebService", () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
+    test("horizontalPodAutoscaler requires at least one of cpuTargetUtilization or memoryTargetUtilization", () => {
+      expect(() => {
+        new WebService(Testing.chart(), "web", {
+          ...requiredProps,
+          horizontalPodAutoscaler: {
+            minReplicas: 1,
+            maxReplicas: 4,
+          },
+        });
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    test("Horizontal Pod Autoscaler for memory", () => {
+      const results = synthWebService({
+        ...requiredProps,
+        horizontalPodAutoscaler: {
+          minReplicas: 2,
+          maxReplicas: 4,
+          memoryTargetUtilization: 100,
+        },
+      });
+      expect(results).toMatchSnapshot();
+    });
+
+    test("Horizontal Pod Autoscaler for both memory and cpu", () => {
+      const results = synthWebService({
+        ...requiredProps,
+        horizontalPodAutoscaler: {
+          minReplicas: 2,
+          maxReplicas: 4,
+          memoryTargetUtilization: 100,
+          cpuTargetUtilization: 80,
+        },
+      });
+      expect(results).toMatchSnapshot();
+    });
+
     test("Release stage must be specified when canary deployments are enabled", () => {
       expect(() => {
         new WebService(Testing.chart(), "web", {

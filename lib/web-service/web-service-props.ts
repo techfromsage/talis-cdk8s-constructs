@@ -12,7 +12,10 @@ export interface HorizontalPodAutoscalerProps {
   readonly maxReplicas: number;
 
   /** Target average CPU utilization, as a percentage of the request. */
-  readonly cpuTargetUtilization: number;
+  readonly cpuTargetUtilization?: number;
+
+  /** Target average memory utilization, as a percentage of the request. */
+  readonly memoryTargetUtilization?: number;
 }
 
 export interface NginxContainerProps {

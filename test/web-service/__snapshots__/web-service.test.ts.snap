@@ -1010,6 +1010,380 @@ exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
 ]
 `;
 
+exports[`WebService > Props > Horizontal Pod Autoscaler for both memory and cpu 1`] = `
+[
+  {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Test web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://example.io/repo/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://example.io/repo",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": {
+        "instance": "web",
+        "release": "test-123",
+        "role": "server",
+      },
+      "name": "web-service",
+      "namespace": "test",
+    },
+    "spec": {
+      "ports": [
+        {
+          "port": 3000,
+          "protocol": "TCP",
+          "targetPort": 3000,
+        },
+      ],
+      "selector": {
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": {
+      "annotations": {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": {
+        "instance": "web",
+        "release": "test-123",
+        "role": "server",
+      },
+      "name": "web-ingress",
+      "namespace": "test",
+    },
+    "spec": {
+      "defaultBackend": {
+        "service": {
+          "name": "web-service",
+          "port": {
+            "number": 3000,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "labels": {
+        "instance": "web",
+        "release": "test-123",
+        "role": "server",
+      },
+      "name": "web",
+      "namespace": "test",
+    },
+    "spec": {
+      "revisionHistoryLimit": 1,
+      "selector": {
+        "matchLabels": {
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "instance": "web",
+            "release": "test-123",
+            "role": "server",
+          },
+        },
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": [
+            {
+              "image": "my-image",
+              "imagePullPolicy": "IfNotPresent",
+              "name": "app",
+              "ports": [
+                {
+                  "containerPort": 3000,
+                  "protocol": "TCP",
+                },
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+          ],
+          "priorityClassName": "web",
+        },
+      },
+    },
+  },
+  {
+    "apiVersion": "autoscaling/v2beta2",
+    "kind": "HorizontalPodAutoscaler",
+    "metadata": {
+      "labels": {
+        "instance": "web",
+        "role": "server",
+      },
+      "name": "web-hpa",
+      "namespace": "test",
+    },
+    "spec": {
+      "maxReplicas": 4,
+      "metrics": [
+        {
+          "resource": {
+            "name": "cpu",
+            "target": {
+              "averageUtilization": 80,
+              "type": "Utilization",
+            },
+          },
+          "type": "Resource",
+        },
+        {
+          "resource": {
+            "name": "memory",
+            "target": {
+              "averageUtilization": 100,
+              "type": "Utilization",
+            },
+          },
+          "type": "Resource",
+        },
+      ],
+      "minReplicas": 2,
+      "scaleTargetRef": {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "name": "web",
+      },
+    },
+  },
+]
+`;
+
+exports[`WebService > Props > Horizontal Pod Autoscaler for memory 1`] = `
+[
+  {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
+        "talis.io/description": "Test web service",
+        "talis.io/eks-dashboard": "https://example.io/dashboard",
+        "talis.io/graphs": "https://example.io/grafana",
+        "talis.io/incidents": "https://example.io/incidents",
+        "talis.io/issues": "https://example.io/repo/issues",
+        "talis.io/logs": "https://example.io/loki",
+        "talis.io/repository": "https://example.io/repo",
+        "talis.io/runbook": "https://example.io/wiki/runbook",
+        "talis.io/uptime": "https://example.io/uptime",
+        "talis.io/url": "https://api.example.com/",
+      },
+      "labels": {
+        "instance": "web",
+        "release": "test-123",
+        "role": "server",
+      },
+      "name": "web-service",
+      "namespace": "test",
+    },
+    "spec": {
+      "ports": [
+        {
+          "port": 3000,
+          "protocol": "TCP",
+          "targetPort": 3000,
+        },
+      ],
+      "selector": {
+        "instance": "web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": {
+      "annotations": {
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "instance=web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": {
+        "instance": "web",
+        "release": "test-123",
+        "role": "server",
+      },
+      "name": "web-ingress",
+      "namespace": "test",
+    },
+    "spec": {
+      "defaultBackend": {
+        "service": {
+          "name": "web-service",
+          "port": {
+            "number": 3000,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internet-facing",
+    },
+  },
+  {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "labels": {
+        "instance": "web",
+        "release": "test-123",
+        "role": "server",
+      },
+      "name": "web",
+      "namespace": "test",
+    },
+    "spec": {
+      "revisionHistoryLimit": 1,
+      "selector": {
+        "matchLabels": {
+          "instance": "web",
+          "role": "server",
+        },
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "instance": "web",
+            "release": "test-123",
+            "role": "server",
+          },
+        },
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
+                        "instance": "web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": [
+            {
+              "image": "my-image",
+              "imagePullPolicy": "IfNotPresent",
+              "name": "app",
+              "ports": [
+                {
+                  "containerPort": 3000,
+                  "protocol": "TCP",
+                },
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+          ],
+          "priorityClassName": "web",
+        },
+      },
+    },
+  },
+  {
+    "apiVersion": "autoscaling/v2beta2",
+    "kind": "HorizontalPodAutoscaler",
+    "metadata": {
+      "labels": {
+        "instance": "web",
+        "role": "server",
+      },
+      "name": "web-hpa",
+      "namespace": "test",
+    },
+    "spec": {
+      "maxReplicas": 4,
+      "metrics": [
+        {
+          "resource": {
+            "name": "memory",
+            "target": {
+              "averageUtilization": 100,
+              "type": "Utilization",
+            },
+          },
+          "type": "Resource",
+        },
+      ],
+      "minReplicas": 2,
+      "scaleTargetRef": {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "name": "web",
+      },
+    },
+  },
+]
+`;
+
 exports[`WebService > Props > Load balancer name must not be empty 1`] = `"Load balancer name must not be empty"`;
 
 exports[`WebService > Props > Load balancer name must not exceed 32 characters 1`] = `"Load balancer name must not exceed 32 characters. Given: test-web-non-abbreviable-env-test"`;
@@ -1167,3 +1541,5 @@ exports[`WebService > Props > Minimal required props 1`] = `
 exports[`WebService > Props > Release stage must be specified when canary deployments are enabled 1`] = `"Release stage must be specified when canary deployments are enabled"`;
 
 exports[`WebService > Props > Validates load balancer name even if overridden 1`] = `"Load balancer name must not exceed 32 characters. Given: a-load-balancer-name-exceeding-32"`;
+
+exports[`WebService > Props > horizontalPodAutoscaler requires at least one of cpuTargetUtilization or memoryTargetUtilization 1`] = `"Either cpuTargetUtilization or memoryTargetUtilization must be specified to use a horizontalPodAutoscaler"`;
