@@ -19,7 +19,6 @@ export class Mongo extends Construct {
     const app = props.selectorLabels?.app ?? chart.labels.app;
     const release = props.release ?? "3.2.8";
     const port = 27017;
-    const storageEngine = props.storageEngine ?? "mmapv1";
     const labels = {
       ...chart.labels,
       release: release,
@@ -44,11 +43,7 @@ export class Mongo extends Construct {
       ...selectorLabels,
     };
 
-    const args = ["--storageEngine", storageEngine];
-
-    if (storageEngine === "mmapv1") {
-      args.push("--smallfiles");
-    }
+    const args = this.getCommandArgs(props);
 
     this.service = new KubeService(this, id, {
       metadata: {
@@ -149,5 +144,20 @@ export class Mongo extends Construct {
    */
   public getDnsName(replica = 0): string {
     return `${this.statefulSet.name}-${replica}.${this.service.name}`;
+  }
+
+  private getCommandArgs(props: MongoProps): string[] {
+    if (props.customArgs) {
+      return props.customArgs;
+    }
+
+    const storageEngine = props.storageEngine ?? "mmapv1";
+    const args = ["--storageEngine", storageEngine];
+
+    if (storageEngine === "mmapv1") {
+      args.push("--smallfiles");
+    }
+
+    return args;
   }
 }
