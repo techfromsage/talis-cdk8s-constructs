@@ -39,7 +39,7 @@ describe("Mongo", () => {
         instance: "test",
       };
 
-      const allProps: Required<MongoProps> = {
+      const allProps: Required<Omit<MongoProps, "customArgs">> = {
         ...requiredProps,
         selectorLabels,
         storageEngine: "wiredTiger",
@@ -154,6 +154,21 @@ describe("Mongo", () => {
       expect(mongo).toHaveProperty("spec.template.spec.containers[0].args", [
         "--storageEngine",
         "wiredTiger",
+      ]);
+    });
+  });
+
+  describe("customArgs", () => {
+    test("It accepts custom arg that override the default", () => {
+      const results = synthMongo({
+        ...requiredProps,
+        customArgs: ["--smallfiles", "--quotaFiles", "8"],
+      });
+      const mongo = results.find((obj) => obj.kind === "StatefulSet");
+      expect(mongo).toHaveProperty("spec.template.spec.containers[0].args", [
+        "--smallfiles",
+        "--quotaFiles",
+        "8",
       ]);
     });
   });

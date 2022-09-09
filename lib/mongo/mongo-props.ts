@@ -18,6 +18,11 @@ export interface MongoProps {
   readonly storageEngine?: "wiredTiger" | "inMemory" | "mmapv1";
 
   /**
+   * Override the default arguments (storageEngine) to the container.
+   */
+  readonly customArgs?: string[];
+
+  /**
    * Storage for the mongo pod
    * @default Quantity.fromString("20Gi")
    */
