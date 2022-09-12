@@ -2,6 +2,7 @@ import { Chart } from "cdk8s";
 import { Construct } from "constructs";
 import {
   Container,
+  IngressRule,
   IntOrString,
   KubeDeployment,
   KubeHorizontalPodAutoscalerV2Beta2,
@@ -165,6 +166,29 @@ export class WebService extends Construct {
             }
           : {};
 
+        const ingressRules: IngressRule[] = [];
+        for (const hostname of props.additionalExternalHostnames ?? []) {
+          ingressRules.push({
+            host: hostname,
+            http: {
+              paths: [
+                {
+                  pathType: "Prefix",
+                  path: "/",
+                  backend: {
+                    service: {
+                      name: service.name,
+                      port: {
+                        number: servicePort,
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          });
+        }
+
         const loadBalancerNameFunc =
           props.makeLoadBalancerName ?? makeLoadBalancerName;
         const loadBalancerLabels = props.loadBalancerLabels ?? {};
@@ -211,6 +235,7 @@ export class WebService extends Construct {
                 },
               },
             },
+            rules: ingressRules.length > 0 ? ingressRules : undefined,
           },
         });
       }

@@ -41,6 +41,7 @@ export class FullStackChart extends TalisChart {
     const busyboxVersion = "1.35.0";
     const busyboxImage = `docker.io/busybox:${busyboxVersion}`;
     const externalHostname = `cdk8s-e2e-${watermark}-web-service.${domain}`;
+    const additionalHostname = `cdk8s-e2e-${watermark}-extra.${domain}`;
     const resqueHostname = `cdk8s-e2e-${watermark}-resque.${domain}`;
 
     const commonResources: ResourceRequirements = {
@@ -161,6 +162,7 @@ export class FullStackChart extends TalisChart {
       replicas: 2,
       tlsDomain: `*.${domain}`,
       externalHostname: externalHostname,
+      additionalExternalHostnames: [additionalHostname],
       externalUrl: `https://${externalHostname}/`,
       repositoryUrl: "https://github.com/stefanprodan/podinfo",
       issuesUrl: "https://github.com/talis/talis-cdk8s-constructs/issues",

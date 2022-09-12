@@ -187,4 +187,9 @@ export interface WebServiceProps
    * Hostname to add External DNS record for the ingress.
    */
   readonly externalHostname?: string;
+
+  /**
+   *
+   */
+  readonly additionalExternalHostnames?: string[];
 }
