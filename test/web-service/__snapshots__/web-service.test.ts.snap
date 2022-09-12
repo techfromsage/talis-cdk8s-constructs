@@ -543,7 +543,6 @@ exports[`WebService > Props > All the props 1`] = `
         "alb.ingress.kubernetes.io/success-codes": "200,303",
         "alb.ingress.kubernetes.io/tags": "service=my-app,instance=web,environment=test",
         "alb.ingress.kubernetes.io/target-type": "ip",
-        "external-dns.alpha.kubernetes.io/hostname": "api.example.com",
       },
       "labels": {
         "app": "my-app",
@@ -568,27 +567,6 @@ exports[`WebService > Props > All the props 1`] = `
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
-      "rules": [
-        {
-          "host": "api2.example.com",
-          "http": {
-            "paths": [
-              {
-                "backend": {
-                  "service": {
-                    "name": "test-web-web-canary-service-c852817c",
-                    "port": {
-                      "number": 80,
-                    },
-                  },
-                },
-                "path": "/",
-                "pathType": "Prefix",
-              },
-            ],
-          },
-        },
-      ],
       "tls": [
         {
           "hosts": [

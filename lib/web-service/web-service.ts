@@ -144,6 +144,9 @@ export class WebService extends Construct {
         this.service = service;
       }
 
+      const externalDns: Record<string, string> = {};
+      const ingressRules: IngressRule[] = [];
+
       if (includeIngress) {
         const ingressTls = [];
         const ingressListenPorts: { [key: string]: number }[] = [{ HTTP: 80 }];
@@ -159,34 +162,33 @@ export class WebService extends Construct {
             "ELBSecurityPolicy-TLS-1-2-2017-01";
         }
 
-        const externalDns: Record<string, string> = props.externalHostname
-          ? {
-              "external-dns.alpha.kubernetes.io/hostname":
-                props.externalHostname,
-            }
-          : {};
+        if (!isCanaryInstance) {
+          if (props.externalHostname) {
+            externalDns["external-dns.alpha.kubernetes.io/hostname"] =
+              props.externalHostname;
+          }
 
-        const ingressRules: IngressRule[] = [];
-        for (const hostname of props.additionalExternalHostnames ?? []) {
-          ingressRules.push({
-            host: hostname,
-            http: {
-              paths: [
-                {
-                  pathType: "Prefix",
-                  path: "/",
-                  backend: {
-                    service: {
-                      name: service.name,
-                      port: {
-                        number: servicePort,
+          for (const hostname of props.additionalExternalHostnames ?? []) {
+            ingressRules.push({
+              host: hostname,
+              http: {
+                paths: [
+                  {
+                    pathType: "Prefix",
+                    path: "/",
+                    backend: {
+                      service: {
+                        name: service.name,
+                        port: {
+                          number: servicePort,
+                        },
                       },
                     },
                   },
-                },
-              ],
-            },
-          });
+                ],
+              },
+            });
+          }
         }
 
         const loadBalancerNameFunc =
