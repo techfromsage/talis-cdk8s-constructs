@@ -1,4 +1,9 @@
-import { Affinity, LocalObjectReference, Volume } from "../../imports/k8s";
+import {
+  Affinity,
+  HostAlias,
+  LocalObjectReference,
+  Volume,
+} from "../../imports/k8s";
 
 export function defaultAffinity(matchLabels: {
   [key: string]: string;
@@ -70,4 +75,9 @@ export interface WorkloadProps {
    * List of volumes that can be mounted by containers belonging to the Pod.
    */
   readonly volumes?: Volume[];
+
+  /**
+   * An optional list of hosts and IPs that will be injected into the pod's hosts file.
+   */
+  readonly hostAliases?: HostAlias[];
 }
