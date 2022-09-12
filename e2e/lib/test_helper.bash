@@ -34,7 +34,7 @@ cdk8s_synth() {
 # @param {string} URL to get
 http_get() {
   curl --silent --show-error --fail \
-    --retry 15 --retry-delay 10 --retry-max-time 150 --retry-connrefused "$1"
+    --retry 20 --retry-delay 10 --retry-max-time 150 --retry-connrefused "$1"
 }
 
 # Gets the value of a column.
