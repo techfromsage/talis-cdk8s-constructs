@@ -40,7 +40,7 @@ teardown_file() {
 }
 
 @test "full-stack: verify ResqueWeb load balancer" {
-  attempts=10 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "resque-web-ingress"
+  attempts=20 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "resque-web-ingress"
   alb_hostname="$output"
   assert_contains "$alb_hostname" "internal-"
   assert_contains "$alb_hostname" ".elb.amazonaws.com"
@@ -54,7 +54,7 @@ teardown_file() {
 }
 
 @test "full-stack: verify WebService load balancer" {
-  attempts=10 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "web-svc-ingress"
+  attempts=20 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "web-svc-ingress"
   alb_hostname="$output"
   assert_contains "$alb_hostname" ".elb.amazonaws.com"
 

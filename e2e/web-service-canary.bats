@@ -32,11 +32,11 @@ teardown_file() {
   run_kubectl apply -f dist-web-service-stage-canary/
   run_kubectl rollout status deployment web-svc-canary --watch
 
-  attempts=10 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "web-svc-ingress"
+  attempts=20 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "web-svc-ingress"
   alb_hostname="$output"
   assert_contains "$alb_hostname" ".elb.amazonaws.com"
 
-  attempts=10 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "web-svc-canary-ingress"
+  attempts=20 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "web-svc-canary-ingress"
   alb_canary_hostname="$output"
   assert_contains "$alb_canary_hostname" ".elb.amazonaws.com"
 
