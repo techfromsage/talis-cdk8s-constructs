@@ -196,6 +196,15 @@ exports[`BackgroundWorker > Props > All the props 1`] = `
               "workingDir": "/some/path",
             },
           ],
+          "hostAliases": [
+            {
+              "hostnames": [
+                "foo.example.com",
+                "bar.example.com",
+              ],
+              "ip": "127.0.0.1",
+            },
+          ],
           "imagePullSecrets": [
             {
               "name": "foo-secret",

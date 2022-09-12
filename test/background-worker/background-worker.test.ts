@@ -131,6 +131,12 @@ describe("BackgroundWorker", () => {
           successThreshold: 1,
           timeoutSeconds: 2,
         },
+        hostAliases: [
+          {
+            ip: "127.0.0.1",
+            hostnames: ["foo.example.com", "bar.example.com"],
+          },
+        ],
         volumes: [
           {
             name: "tmp-dir",

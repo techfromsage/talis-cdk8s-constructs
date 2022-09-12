@@ -395,6 +395,15 @@ exports[`WebService > Props > All the props 1`] = `
               ],
             },
           ],
+          "hostAliases": [
+            {
+              "hostnames": [
+                "foo.example.com",
+                "bar.example.com",
+              ],
+              "ip": "127.0.0.1",
+            },
+          ],
           "imagePullSecrets": [
             {
               "name": "foo-secret",
@@ -799,6 +808,15 @@ exports[`WebService > Props > All the props 1`] = `
                   "readOnly": true,
                 },
               ],
+            },
+          ],
+          "hostAliases": [
+            {
+              "hostnames": [
+                "foo.example.com",
+                "bar.example.com",
+              ],
+              "ip": "127.0.0.1",
             },
           ],
           "imagePullSecrets": [

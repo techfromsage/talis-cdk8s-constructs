@@ -274,6 +274,7 @@ export class WebService extends Construct {
                 props.terminationGracePeriodSeconds,
               initContainers: props.initContainers,
               containers: containers,
+              hostAliases: props.hostAliases,
               volumes: volumes.length > 0 ? volumes : undefined,
             },
           },
