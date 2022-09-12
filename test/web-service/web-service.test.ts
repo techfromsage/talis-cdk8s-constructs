@@ -232,6 +232,7 @@ describe("WebService", () => {
           },
         ],
         externalHostname: "api.example.com",
+        additionalExternalHostnames: ["api2.example.com"],
       };
       new WebService(chart, "web", allProps);
       const results = Testing.synth(chart);
@@ -240,6 +241,7 @@ describe("WebService", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveAllProperties(allProps, [
         ...Object.keys(annotations),
+        "additionalExternalHostnames",
         "canary",
         "containerName",
         "externalHostname",

@@ -65,4 +65,8 @@ teardown_file() {
 @test "full-stack: verify WebService external DNS" {
   run http_get "https://cdk8s-e2e-${CIRCLE_BUILD_NUM}-web-service.talis.io/env"
   assert_contains "$output" "WATERMARK=${CIRCLE_BUILD_NUM}"
+
+  # Additional external DNS
+  run http_get "https://cdk8s-e2e-${CIRCLE_BUILD_NUM}-extra.talis.io/env"
+  assert_contains "$output" "WATERMARK=${CIRCLE_BUILD_NUM}"
 }

@@ -154,6 +154,27 @@ exports[`WebService > Props > All the props 1`] = `
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "rules": [
+        {
+          "host": "api2.example.com",
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "test-web-web-service-c828a686",
+                    "port": {
+                      "number": 80,
+                    },
+                  },
+                },
+                "path": "/",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
       "tls": [
         {
           "hosts": [
@@ -538,6 +559,27 @@ exports[`WebService > Props > All the props 1`] = `
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "rules": [
+        {
+          "host": "api2.example.com",
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "test-web-web-canary-service-c852817c",
+                    "port": {
+                      "number": 80,
+                    },
+                  },
+                },
+                "path": "/",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
       "tls": [
         {
           "hosts": [
