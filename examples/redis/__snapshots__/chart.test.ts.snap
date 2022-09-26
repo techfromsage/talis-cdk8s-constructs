@@ -143,6 +143,7 @@ exports[`Redis example > Snapshot 1`] = `
               ],
             },
           ],
+          "priorityClassName": "database",
           "volumes": [
             {
               "emptyDir": {},

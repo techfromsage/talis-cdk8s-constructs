@@ -85,6 +85,7 @@ export class Postgres extends Construct {
             labels: instanceLabels,
           },
           spec: {
+            priorityClassName: props.priorityClassName ?? "database",
             initContainers: props.initContainers,
             volumes: props.volumes,
             containers: [

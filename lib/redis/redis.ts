@@ -67,6 +67,7 @@ export class Redis extends Construct {
             labels: instanceLabels,
           },
           spec: {
+            priorityClassName: props.priorityClassName ?? "database",
             volumes: [
               {
                 name: "data",

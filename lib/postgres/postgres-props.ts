@@ -31,6 +31,12 @@ export interface PostgresProps {
    */
   readonly resources?: ResourceRequirements;
 
+  /**
+   * Pod's priority class.
+   * @default "database"
+   */
+  readonly priorityClassName?: string;
+
   /* List of environment variables to set in the container. */
   readonly env?: EnvVar[];
 

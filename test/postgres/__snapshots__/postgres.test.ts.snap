@@ -145,6 +145,7 @@ exports[`Postgres > Props > All the props 1`] = `
               "name": "init-container",
             },
           ],
+          "priorityClassName": "test",
           "volumes": [
             {
               "emptyDir": {},
@@ -280,6 +281,7 @@ exports[`Postgres > Props > Minimal required props 1`] = `
               ],
             },
           ],
+          "priorityClassName": "database",
         },
       },
       "volumeClaimTemplates": [

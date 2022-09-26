@@ -122,6 +122,7 @@ exports[`Redis > Props > All the props 1`] = `
               ],
             },
           ],
+          "priorityClassName": "test",
           "volumes": [
             {
               "emptyDir": {},
@@ -244,6 +245,7 @@ exports[`Redis > Props > Minimal required props 1`] = `
               ],
             },
           ],
+          "priorityClassName": "database",
           "volumes": [
             {
               "emptyDir": {},

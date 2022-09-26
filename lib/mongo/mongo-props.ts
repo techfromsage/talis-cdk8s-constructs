@@ -33,4 +33,10 @@ export interface MongoProps {
    * @default { limits: { cpu: "100m", memory: "500Mi" } }
    */
   readonly resources?: ResourceRequirements;
+
+  /**
+   * Pod's priority class.
+   * @default "database"
+   */
+  readonly priorityClassName?: string;
 }
