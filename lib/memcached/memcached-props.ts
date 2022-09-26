@@ -8,4 +8,10 @@ export interface MemcachedProps {
 
   /** Release version of the Docker image. */
   readonly release: string;
+
+  /**
+   * Pod's priority class.
+   * @default "database"
+   */
+  readonly priorityClassName?: string;
 }

@@ -126,6 +126,7 @@ exports[`Memcached example > Snapshot 1`] = `
               },
             },
           ],
+          "priorityClassName": "database",
         },
       },
     },

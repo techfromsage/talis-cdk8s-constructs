@@ -42,6 +42,7 @@ describe("Redis", () => {
       const allProps: Required<RedisProps> = {
         ...requiredProps,
         selectorLabels,
+        priorityClassName: "test",
       };
       new Redis(chart, "redis-test", allProps);
       const results = Testing.synth(chart);

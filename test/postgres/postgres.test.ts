@@ -43,6 +43,7 @@ describe("Postgres", () => {
         ...requiredProps,
         selectorLabels,
         storageSize: Quantity.fromString("20Gi"),
+        priorityClassName: "test",
         env: [
           {
             name: "POSTGRES_PASSWORD",

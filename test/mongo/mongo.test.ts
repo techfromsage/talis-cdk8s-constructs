@@ -50,6 +50,7 @@ describe("Mongo", () => {
             memory: Quantity.fromString("500Mi"),
           },
         },
+        priorityClassName: "test",
       };
       new Mongo(chart, "mongo-test", allProps);
       const results = Testing.synth(chart);

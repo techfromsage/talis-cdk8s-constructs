@@ -116,6 +116,7 @@ exports[`Mongo > Props > All the props 1`] = `
               ],
             },
           ],
+          "priorityClassName": "test",
         },
       },
       "volumeClaimTemplates": [
@@ -245,6 +246,7 @@ exports[`Mongo > Props > Minimal required props 1`] = `
               ],
             },
           ],
+          "priorityClassName": "database",
         },
       },
       "volumeClaimTemplates": [

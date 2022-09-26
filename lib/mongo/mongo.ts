@@ -92,6 +92,7 @@ export class Mongo extends Construct {
             labels: instanceLabels,
           },
           spec: {
+            priorityClassName: props.priorityClassName ?? "database",
             containers: [
               {
                 name: "mongo",

@@ -42,6 +42,7 @@ describe("Memcached", () => {
       const allProps: Required<MemcachedProps> = {
         ...requiredProps,
         selectorLabels,
+        priorityClassName: "test",
       };
       new Memcached(chart, "memcached-test", allProps);
       const results = Testing.synth(chart);

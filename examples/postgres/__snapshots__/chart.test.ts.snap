@@ -179,6 +179,7 @@ exports[`Postgres example > Snapshot 1`] = `
               ],
             },
           ],
+          "priorityClassName": "database",
           "volumes": [
             {
               "configMap": {

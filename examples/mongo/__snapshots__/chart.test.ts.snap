@@ -138,6 +138,7 @@ exports[`Mongo example > Snapshot 1`] = `
               ],
             },
           ],
+          "priorityClassName": "database",
         },
       },
       "volumeClaimTemplates": [
