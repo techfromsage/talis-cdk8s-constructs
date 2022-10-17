@@ -51,6 +51,7 @@ export class BackgroundWorker extends Construct {
               props.automountServiceAccountToken ?? false,
             imagePullSecrets: props.imagePullSecrets,
             priorityClassName: props.priorityClassName,
+            restartPolicy: props.restartPolicy,
             terminationGracePeriodSeconds: props.terminationGracePeriodSeconds,
             volumes: props.volumes,
             hostAliases: props.hostAliases,

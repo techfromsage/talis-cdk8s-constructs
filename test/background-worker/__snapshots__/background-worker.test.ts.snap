@@ -222,6 +222,7 @@ exports[`BackgroundWorker > Props > All the props 1`] = `
             },
           ],
           "priorityClassName": "high-priority",
+          "restartPolicy": "OnFailure",
           "terminationGracePeriodSeconds": 300,
           "volumes": [
             {
