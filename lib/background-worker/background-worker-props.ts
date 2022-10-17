@@ -15,4 +15,10 @@ export interface BackgroundWorkerProps
    * @default { app: "<app label from chart>", role: "worker", instance: "<construct id>" }
    */
   readonly selectorLabels?: { [key: string]: string };
+
+  /**
+   * Restart policy for all containers within the pod.
+   * @default "Always"
+   */
+  readonly restartPolicy?: "Always" | "OnFailure" | "Never";
 }

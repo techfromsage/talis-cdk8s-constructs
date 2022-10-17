@@ -59,6 +59,7 @@ describe("BackgroundWorker", () => {
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
         revisionHistoryLimit: 5,
+        restartPolicy: "OnFailure",
         affinity: {
           podAntiAffinity: {
             preferredDuringSchedulingIgnoredDuringExecution: [
