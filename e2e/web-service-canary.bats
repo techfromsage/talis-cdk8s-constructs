@@ -8,12 +8,12 @@ setup_file() {
   set_detik_client
   PODINFO_VERSION=6.1.2 STAGE=base cdk8s_synth web-service-canary.e2e.ts dist-web-service-stage-base
   PODINFO_VERSION=6.1.3 STAGE=canary cdk8s_synth web-service-canary.e2e.ts dist-web-service-stage-canary
-  run_kubectl apply -f dist-web-service-stage-base/
+  run_kubectl apply -f dist-web-service-stage-base/*.yaml
 }
 
 teardown_file() {
   cd "$(dirname "$BATS_TEST_FILENAME")" || exit 1
-  run_kubectl delete -f dist-web-service-stage-base/ --now=true --wait=false
+  run_kubectl delete -f dist-web-service-stage-base/*.yaml --now=true --wait=false
 }
 
 @test "web-service-canary: verify WebService deployment" {
@@ -29,7 +29,7 @@ teardown_file() {
 }
 
 @test "web-service-canary: verify WebService canary stage" {
-  run_kubectl apply -f dist-web-service-stage-canary/
+  run_kubectl apply -f dist-web-service-stage-canary/*.yaml
   run_kubectl rollout status deployment web-svc-canary --watch
 
   attempts=20 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "web-svc-ingress"

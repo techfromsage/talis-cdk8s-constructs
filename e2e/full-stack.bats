@@ -9,12 +9,12 @@ setup_file() {
   cd "$(dirname "$BATS_TEST_FILENAME")" || exit 1
   set_detik_client
   cdk8s_synth full-stack.e2e.ts dist-full-stack
-  run_kubectl apply -f dist-full-stack/
+  run_kubectl apply -f dist-full-stack/*.yaml
 }
 
 teardown_file() {
   cd "$(dirname "$BATS_TEST_FILENAME")" || exit 1
-  run_kubectl delete -f dist-full-stack/ --now=true --wait=false
+  run_kubectl delete -f dist-full-stack/*.yaml --now=true --wait=false
 }
 
 @test "full-stack: verify BackgroundWorker deployment" {
