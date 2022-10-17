@@ -9,12 +9,12 @@ setup_file() {
   cd "$(dirname "$BATS_TEST_FILENAME")" || exit 1
   set_detik_client
   cdk8s_synth rails-app.e2e.ts dist-rails-app
-  run_kubectl apply -f dist-rails-app/
+  run_kubectl apply -f dist-rails-app/*.yaml
 }
 
 teardown_file() {
   cd "$(dirname "$BATS_TEST_FILENAME")" || exit 1
-  run_kubectl delete -f dist-rails-app/ --now=true --wait=false
+  run_kubectl delete -f dist-rails-app/*.yaml --now=true --wait=false
 }
 
 @test "rails-app: verify Postgres is running" {
