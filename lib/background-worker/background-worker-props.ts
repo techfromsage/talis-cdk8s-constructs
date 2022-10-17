@@ -20,5 +20,5 @@ export interface BackgroundWorkerProps
    * Restart policy for all containers within the pod.
    * @default "Always"
    */
-  readonly restartPolicy?: "Always" | "OnFailure" | "Never";
+  readonly restartPolicy?: "Always";
 }
