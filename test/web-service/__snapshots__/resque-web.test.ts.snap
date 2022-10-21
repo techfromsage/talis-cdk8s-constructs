@@ -404,3 +404,405 @@ exports[`ResqueWeb > Customizations 1`] = `
   },
 ]
 `;
+
+exports[`ResqueWeb > ingressAnnotations are merged 1`] = `
+[
+  {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "talis.io/chat": "https://talis.slack.com/archives/C04P9DPCX",
+        "talis.io/description": "Frontend to the Resque job queue system",
+        "talis.io/eks-dashboard": "None",
+        "talis.io/graphs": "None",
+        "talis.io/incidents": "None",
+        "talis.io/issues": "https://github.com/talis/platform/issues",
+        "talis.io/logs": "None",
+        "talis.io/repository": "https://github.com/talis/resque-web-container",
+        "talis.io/runbook": "None",
+        "talis.io/uptime": "None",
+        "talis.io/url": "http://resque.example.com",
+      },
+      "labels": {
+        "app": "resque",
+        "instance": "resque-web",
+        "release": "stable",
+        "role": "server",
+      },
+      "name": "test-resque-web-resque-web-service-c81bf306",
+    },
+    "spec": {
+      "ports": [
+        {
+          "port": 3000,
+          "protocol": "TCP",
+          "targetPort": 3000,
+        },
+      ],
+      "selector": {
+        "app": "resque",
+        "instance": "resque-web",
+        "role": "server",
+      },
+      "type": "NodePort",
+    },
+  },
+  {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": {
+      "annotations": {
+        "alb.ingress.kubernetes.io/healthcheck-path": "/status",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "resque-web-develop",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/ssl-redirect": "443",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "service=resque,instance=resque-web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+        "talis.io/foo": "bar",
+      },
+      "labels": {
+        "app": "resque",
+        "instance": "resque-web",
+        "release": "stable",
+        "role": "server",
+      },
+      "name": "test-resque-web-resque-web-ingress-c8c81984",
+    },
+    "spec": {
+      "defaultBackend": {
+        "service": {
+          "name": "test-resque-web-resque-web-service-c81bf306",
+          "port": {
+            "number": 3000,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internal",
+      "tls": [
+        {
+          "hosts": [
+            "*.example.com",
+          ],
+        },
+      ],
+    },
+  },
+  {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "labels": {
+        "app": "resque",
+        "instance": "resque-web",
+        "release": "stable",
+        "role": "server",
+      },
+      "name": "test-resque-web-c82b282b",
+    },
+    "spec": {
+      "replicas": 1,
+      "revisionHistoryLimit": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "resque",
+          "instance": "resque-web",
+          "role": "server",
+        },
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "app": "resque",
+            "instance": "resque-web",
+            "release": "stable",
+            "role": "server",
+          },
+        },
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
+                        "app": "resque",
+                        "instance": "resque-web",
+                        "role": "server",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": [
+            {
+              "image": "talis/resque-web:stable",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 5,
+                "successThreshold": 1,
+                "timeoutSeconds": 1,
+              },
+              "name": "resque",
+              "ports": [
+                {
+                  "containerPort": 3000,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 5,
+                "successThreshold": 1,
+                "timeoutSeconds": 1,
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "100m",
+                  "memory": "200Mi",
+                },
+                "requests": {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+              "startupProbe": {
+                "failureThreshold": 30,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 2,
+                "timeoutSeconds": 1,
+              },
+            },
+          ],
+          "priorityClassName": "web",
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`ResqueWeb > selectorLabels are merged 1`] = `
+[
+  {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "talis.io/chat": "https://talis.slack.com/archives/C04P9DPCX",
+        "talis.io/description": "Frontend to the Resque job queue system",
+        "talis.io/eks-dashboard": "None",
+        "talis.io/graphs": "None",
+        "talis.io/incidents": "None",
+        "talis.io/issues": "https://github.com/talis/platform/issues",
+        "talis.io/logs": "None",
+        "talis.io/repository": "https://github.com/talis/resque-web-container",
+        "talis.io/runbook": "None",
+        "talis.io/uptime": "None",
+        "talis.io/url": "http://resque.example.com",
+      },
+      "labels": {
+        "app": "resque",
+        "instance": "resque-web",
+        "release": "stable",
+        "role": "server",
+        "test": "true",
+      },
+      "name": "test-resque-web-resque-web-service-c81bf306",
+    },
+    "spec": {
+      "ports": [
+        {
+          "port": 3000,
+          "protocol": "TCP",
+          "targetPort": 3000,
+        },
+      ],
+      "selector": {
+        "app": "resque",
+        "instance": "resque-web",
+        "role": "server",
+        "test": "true",
+      },
+      "type": "NodePort",
+    },
+  },
+  {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": {
+      "annotations": {
+        "alb.ingress.kubernetes.io/healthcheck-path": "/status",
+        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
+        "alb.ingress.kubernetes.io/load-balancer-name": "resque-web-develop",
+        "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
+        "alb.ingress.kubernetes.io/ssl-redirect": "443",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "service=resque,instance=resque-web",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": {
+        "app": "resque",
+        "instance": "resque-web",
+        "release": "stable",
+        "role": "server",
+        "test": "true",
+      },
+      "name": "test-resque-web-resque-web-ingress-c8c81984",
+    },
+    "spec": {
+      "defaultBackend": {
+        "service": {
+          "name": "test-resque-web-resque-web-service-c81bf306",
+          "port": {
+            "number": 3000,
+          },
+        },
+      },
+      "ingressClassName": "aws-load-balancer-internal",
+      "tls": [
+        {
+          "hosts": [
+            "*.example.com",
+          ],
+        },
+      ],
+    },
+  },
+  {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "labels": {
+        "app": "resque",
+        "instance": "resque-web",
+        "release": "stable",
+        "role": "server",
+        "test": "true",
+      },
+      "name": "test-resque-web-c82b282b",
+    },
+    "spec": {
+      "replicas": 1,
+      "revisionHistoryLimit": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "resque",
+          "instance": "resque-web",
+          "role": "server",
+          "test": "true",
+        },
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "app": "resque",
+            "instance": "resque-web",
+            "release": "stable",
+            "role": "server",
+            "test": "true",
+          },
+        },
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
+                        "app": "resque",
+                        "instance": "resque-web",
+                        "role": "server",
+                        "test": "true",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": [
+            {
+              "image": "talis/resque-web:stable",
+              "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 5,
+                "successThreshold": 1,
+                "timeoutSeconds": 1,
+              },
+              "name": "resque",
+              "ports": [
+                {
+                  "containerPort": 3000,
+                  "protocol": "TCP",
+                },
+              ],
+              "readinessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 5,
+                "successThreshold": 1,
+                "timeoutSeconds": 1,
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "100m",
+                  "memory": "200Mi",
+                },
+                "requests": {
+                  "cpu": "50m",
+                  "memory": "100Mi",
+                },
+              },
+              "startupProbe": {
+                "failureThreshold": 30,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 2,
+                "timeoutSeconds": 1,
+              },
+            },
+          ],
+          "priorityClassName": "web",
+        },
+      },
+    },
+  },
+]
+`;
