@@ -35,4 +35,30 @@ describe("ResqueWeb", () => {
     const results = Testing.synth(chart);
     expect(results).toMatchSnapshot();
   });
+
+  test("selectorLabels are merged", () => {
+    const chart = Testing.chart();
+    new ResqueWeb(chart, "resque-web", {
+      externalUrl: "http://resque.example.com",
+      tlsDomain: "*.example.com",
+      selectorLabels: {
+        test: "true",
+      },
+    });
+    const results = Testing.synth(chart);
+    expect(results).toMatchSnapshot();
+  });
+
+  test("ingressAnnotations are merged", () => {
+    const chart = Testing.chart();
+    new ResqueWeb(chart, "resque-web", {
+      externalUrl: "http://resque.example.com",
+      tlsDomain: "*.example.com",
+      ingressAnnotations: {
+        "talis.io/foo": "bar",
+      },
+    });
+    const results = Testing.synth(chart);
+    expect(results).toMatchSnapshot();
+  });
 });

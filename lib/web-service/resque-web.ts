@@ -38,15 +38,6 @@ export class ResqueWeb extends Construct {
       eksDashboardUrl: "None",
       uptimeUrl: "None",
 
-      // Ingress options
-      internal: true,
-      canary: false,
-      selectorLabels: {
-        app: "resque",
-        ...props.selectorLabels,
-      },
-      ingressAnnotations: ingressAnnotations,
-
       // Container options
       image: `talis/resque-web:${release}`,
       release: release,
@@ -92,8 +83,20 @@ export class ResqueWeb extends Construct {
         successThreshold: 1,
       },
 
+      // Ingress options
+      internal: true,
+      canary: false,
+
       // Overrides
       ...props,
+      selectorLabels: {
+        app: "resque",
+        ...props.selectorLabels,
+      },
+      ingressAnnotations: {
+        ...ingressAnnotations,
+        ...props.ingressAnnotations,
+      },
     });
   }
 }
