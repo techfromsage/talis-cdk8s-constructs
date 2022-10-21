@@ -12,6 +12,9 @@ imports/**/*.js
 **/nginx/*.conf
 
 # Typescript is our source-code; generated JS and d.ts is left unlinted.
+e2e/**/*.d.ts
+e2e/**/*.js
+e2e/**/construct-metadata.json
 examples/**/*.d.ts
 examples/**/*.js
 lib/**/*.d.ts
