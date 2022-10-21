@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import { WebService, WebServiceProps } from ".";
-import { Quantity } from "../../imports/k8s";
+import { IntOrString, Quantity } from "../../imports/k8s";
 import { supportsTls } from "./tls-util";
 
 export interface ResqueWebProps
@@ -16,8 +16,11 @@ export class ResqueWeb extends Construct {
     super(scope, id);
 
     const release = props.release ?? "stable";
+    const applicationPort = props.port ?? 3000;
 
-    const ingressAnnotations: { [key: string]: string } = {};
+    const ingressAnnotations: { [key: string]: string } = {
+      "alb.ingress.kubernetes.io/healthcheck-path": "/status",
+    };
     if (supportsTls(props)) {
       ingressAnnotations["alb.ingress.kubernetes.io/ssl-redirect"] = "443";
     }
@@ -48,7 +51,7 @@ export class ResqueWeb extends Construct {
       image: `talis/resque-web:${release}`,
       release: release,
       replicas: props.replicas ?? 1,
-      port: 3000,
+      port: applicationPort,
       resources: {
         requests: {
           cpu: Quantity.fromString("50m"),
@@ -58,6 +61,35 @@ export class ResqueWeb extends Construct {
           cpu: Quantity.fromString("100m"),
           memory: Quantity.fromString("200Mi"),
         },
+      },
+      startupProbe: {
+        httpGet: {
+          path: "/status",
+          port: IntOrString.fromNumber(applicationPort),
+        },
+        periodSeconds: 2,
+        timeoutSeconds: 1,
+        failureThreshold: 30,
+      },
+      livenessProbe: {
+        httpGet: {
+          path: "/status",
+          port: IntOrString.fromNumber(applicationPort),
+        },
+        periodSeconds: 5,
+        timeoutSeconds: 1,
+        failureThreshold: 3,
+        successThreshold: 1,
+      },
+      readinessProbe: {
+        httpGet: {
+          path: "/status",
+          port: IntOrString.fromNumber(applicationPort),
+        },
+        periodSeconds: 5,
+        timeoutSeconds: 1,
+        failureThreshold: 3,
+        successThreshold: 1,
       },
 
       // Overrides

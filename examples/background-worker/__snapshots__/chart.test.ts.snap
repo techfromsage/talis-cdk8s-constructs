@@ -87,6 +87,7 @@ exports[`BackgroundWorker example > Change release version 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/healthcheck-path": "/status",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "worker-test-resque-develop",
@@ -199,6 +200,16 @@ exports[`BackgroundWorker example > Change release version 1`] = `
               ],
               "image": "talis/resque-web:stable",
               "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 5,
+                "successThreshold": 1,
+                "timeoutSeconds": 1,
+              },
               "name": "worker",
               "ports": [
                 {
@@ -206,6 +217,16 @@ exports[`BackgroundWorker example > Change release version 1`] = `
                   "protocol": "TCP",
                 },
               ],
+              "readinessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 5,
+                "successThreshold": 1,
+                "timeoutSeconds": 1,
+              },
               "resources": {
                 "limits": {
                   "cpu": "100m",
@@ -215,6 +236,15 @@ exports[`BackgroundWorker example > Change release version 1`] = `
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
+              },
+              "startupProbe": {
+                "failureThreshold": 30,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 2,
+                "timeoutSeconds": 1,
               },
             },
           ],
@@ -434,6 +464,7 @@ exports[`BackgroundWorker example > Snapshot 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/healthcheck-path": "/status",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "worker-test-resque-develop",
@@ -546,6 +577,16 @@ exports[`BackgroundWorker example > Snapshot 1`] = `
               ],
               "image": "talis/resque-web:stable",
               "imagePullPolicy": "IfNotPresent",
+              "livenessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 5,
+                "successThreshold": 1,
+                "timeoutSeconds": 1,
+              },
               "name": "worker",
               "ports": [
                 {
@@ -553,6 +594,16 @@ exports[`BackgroundWorker example > Snapshot 1`] = `
                   "protocol": "TCP",
                 },
               ],
+              "readinessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 5,
+                "successThreshold": 1,
+                "timeoutSeconds": 1,
+              },
               "resources": {
                 "limits": {
                   "cpu": "100m",
@@ -562,6 +613,15 @@ exports[`BackgroundWorker example > Snapshot 1`] = `
                   "cpu": "50m",
                   "memory": "100Mi",
                 },
+              },
+              "startupProbe": {
+                "failureThreshold": 30,
+                "httpGet": {
+                  "path": "/status",
+                  "port": 3000,
+                },
+                "periodSeconds": 2,
+                "timeoutSeconds": 1,
               },
             },
           ],
