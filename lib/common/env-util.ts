@@ -3,9 +3,26 @@ import { CanaryStage, canaryStages } from "../web-service";
 
 export function getWatermark({
   envVarName = "WATERMARK",
-  defaultValue = "ondemand",
+  defaultValue = undefined,
 }: { envVarName?: string; defaultValue?: string } = {}): string {
-  return process.env[envVarName] || defaultValue;
+  const watermark = process.env[envVarName] || defaultValue;
+  const watermarkRegex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
+
+  if (!watermark) {
+    throw new Error(`Watermark variable ${envVarName} is not set`);
+  }
+
+  if (watermark.length > 63) {
+    throw new Error("Watermark must not exceed 63 characters");
+  }
+
+  if (!watermarkRegex.test(watermark)) {
+    throw new Error(
+      "Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."
+    );
+  }
+
+  return watermark;
 }
 
 export function getTtlTimestamp({ envVarName = "TTL" } = {}):
