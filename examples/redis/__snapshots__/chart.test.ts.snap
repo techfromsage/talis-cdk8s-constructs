@@ -19,6 +19,28 @@ exports[`Redis example > Snapshot 1`] = `
   },
   {
     "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "example-redis-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-redis-app-development-local",
+      },
+      "name": "quota",
+      "namespace": "example-redis-app-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "200m",
+        "memory": "500Mi",
+        "pods": 2,
+      },
+    },
+  },
+  {
+    "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
       "labels": {

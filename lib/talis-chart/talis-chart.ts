@@ -1,9 +1,10 @@
 import { Construct } from "constructs";
-import { ApiObject, Chart, ChartProps } from "cdk8s";
-import { KubeNamespace } from "../../imports/k8s";
+import { ApiObject, Chart, ChartProps, Lazy } from "cdk8s";
+import { KubeNamespace, KubeResourceQuota } from "../../imports/k8s";
 import { joinNameParts } from "../common";
 import { TalisShortRegion } from "./talis-region";
 import { TalisDeploymentEnvironment } from "./talis-deployment-environment";
+import { calculateResourceQuota } from "./calculate-resource-quota";
 
 export interface TalisChartProps extends ChartProps {
   /** Name of the application this chart is for */
@@ -16,6 +17,11 @@ export interface TalisChartProps extends ChartProps {
   readonly watermark: string;
   /** Timestamp after which the namespace will be deleted */
   readonly ttl?: number;
+  /**
+   * Whether to include an automatically-calculated ResourceQuota for the chart's namespace.
+   * @default true
+   */
+  readonly includeResourceQuota?: boolean;
 }
 
 /** @private */
@@ -66,6 +72,14 @@ export class TalisChart extends Chart {
     this.kubeNamespace = new KubeNamespace(this, "namespace", {
       metadata: { name: this.namespace },
     });
+
+    if (props.includeResourceQuota ?? true) {
+      new KubeResourceQuota(this, "quota", {
+        spec: Lazy.any({
+          produce: () => calculateResourceQuota(this.node.findAll()),
+        }),
+      });
+    }
   }
 
   generateObjectName(apiObject: ApiObject): string {

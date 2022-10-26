@@ -19,6 +19,28 @@ exports[`Postgres example > Snapshot 1`] = `
   },
   {
     "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "example-postgres-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-postgres-app-development-local",
+      },
+      "name": "quota",
+      "namespace": "example-postgres-app-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "200m",
+        "memory": "1000Mi",
+        "pods": 2,
+      },
+    },
+  },
+  {
+    "apiVersion": "v1",
     "data": {
       "create-schema.sql": "CREATE TABLE sample(
           id uuid,

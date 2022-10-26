@@ -25,6 +25,9 @@ import { supportsTls } from "./tls-util";
 export class WebService extends Construct {
   readonly service!: KubeService;
   readonly canaryService?: KubeService;
+  readonly deployment!: KubeDeployment;
+  readonly canaryDeployment?: KubeDeployment;
+  readonly hpa?: KubeHorizontalPodAutoscalerV2Beta2;
 
   constructor(scope: Construct, id: string, props: WebServiceProps) {
     super(scope, id);
@@ -47,6 +50,7 @@ export class WebService extends Construct {
       release: props.release,
     };
     const affinityFunc = props.makeAffinity ?? defaultAffinity;
+    const canaryReplicas = 1;
 
     const { applicationPort, servicePort, nginxPort } = this.findPorts(props);
 
@@ -242,17 +246,12 @@ export class WebService extends Construct {
         });
       }
 
-      // Don't include the live deployment during canary stages.
-      if (!isCanaryInstance && ["canary", "post-canary"].includes(stage)) {
-        continue;
-      }
-
       const deployment = new KubeDeployment(this, `${id}${instanceSuffix}`, {
         metadata: {
           labels: instanceLabels,
         },
         spec: {
-          replicas: isCanaryInstance ? 1 : props.replicas,
+          replicas: isCanaryInstance ? canaryReplicas : props.replicas,
           revisionHistoryLimit: props.revisionHistoryLimit ?? 1,
           selector: {
             matchLabels: selectorLabels,
@@ -283,12 +282,29 @@ export class WebService extends Construct {
         },
       });
 
+      if (isCanaryInstance) {
+        this.canaryDeployment = deployment;
+      } else {
+        this.deployment = deployment;
+      }
+
+      // Don't include the live deployment during canary stages.
+      const skipLiveDeployment =
+        !isCanaryInstance && ["canary", "post-canary"].includes(stage);
+
+      if (skipLiveDeployment) {
+        this.node.tryRemoveChild(deployment.node.id);
+      }
+
       if (!isCanaryInstance && props.horizontalPodAutoscaler) {
-        this.addHorizontalPodAutoscaler(
+        this.hpa = this.addHorizontalPodAutoscaler(
           deployment,
           props.horizontalPodAutoscaler,
           selectorLabels
         );
+        if (skipLiveDeployment) {
+          this.node.tryRemoveChild(this.hpa.node.id);
+        }
       }
     }
   }
@@ -428,7 +444,7 @@ export class WebService extends Construct {
     deployment: KubeDeployment,
     props: HorizontalPodAutoscalerProps,
     labels: { [key: string]: string }
-  ): void {
+  ) {
     const metrics: Array<MetricSpecV2Beta2> = [];
 
     if (props.cpuTargetUtilization) {
@@ -457,20 +473,24 @@ export class WebService extends Construct {
       });
     }
 
-    new KubeHorizontalPodAutoscalerV2Beta2(this, `${deployment.node.id}-hpa`, {
-      metadata: {
-        labels,
-      },
-      spec: {
-        scaleTargetRef: {
-          apiVersion: deployment.apiVersion,
-          kind: deployment.kind,
-          name: deployment.name,
+    return new KubeHorizontalPodAutoscalerV2Beta2(
+      this,
+      `${deployment.node.id}-hpa`,
+      {
+        metadata: {
+          labels,
         },
-        minReplicas: props.minReplicas,
-        maxReplicas: props.maxReplicas,
-        metrics: metrics,
-      },
-    });
+        spec: {
+          scaleTargetRef: {
+            apiVersion: deployment.apiVersion,
+            kind: deployment.kind,
+            name: deployment.name,
+          },
+          minReplicas: props.minReplicas,
+          maxReplicas: props.maxReplicas,
+          metrics: metrics,
+        },
+      }
+    );
   }
 }
