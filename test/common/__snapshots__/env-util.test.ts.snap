@@ -19,3 +19,17 @@ exports[`env-util > getTtlTimestamp > Throws on invalid TTL 1234567890.12 1`] = 
 exports[`env-util > getTtlTimestamp > Throws on invalid TTL a123456789 1`] = `"Invalid TTL: a123456789"`;
 
 exports[`env-util > getTtlTimestamp > Throws on invalid TTL foobar 1`] = `"Invalid TTL: foobar"`;
+
+exports[`env-util > getWatermark > Throws if env var is empty 1`] = `"Watermark variable WATERMARK is not set"`;
+
+exports[`env-util > getWatermark > Throws if env var is unset 1`] = `"Watermark variable WATERMARK is not set"`;
+
+exports[`env-util > getWatermark > Throws if value is not valid 1`] = `"Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."`;
+
+exports[`env-util > getWatermark > Throws if value is not valid 2`] = `"Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."`;
+
+exports[`env-util > getWatermark > Throws if value is not valid 3`] = `"Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."`;
+
+exports[`env-util > getWatermark > Throws if value is not valid 4`] = `"Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."`;
+
+exports[`env-util > getWatermark > Throws if value is too long 1`] = `"Watermark must not exceed 63 characters"`;

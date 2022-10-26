@@ -30,13 +30,7 @@ describe("env-util", () => {
     });
 
     test("Returns the default watermark", () => {
-      expect(getWatermark()).toBe("ondemand");
-    });
-
-    test("Returns a custom default watermark", () => {
-      expect(getWatermark({ defaultValue: "wasserzeichen" })).toBe(
-        "wasserzeichen"
-      );
+      expect(getWatermark({ defaultValue: "ondemand" })).toBe("ondemand");
     });
 
     test("Returns the default if env var is empty", () => {
@@ -47,6 +41,27 @@ describe("env-util", () => {
           defaultValue: "defaulto",
         })
       ).toBe("defaulto");
+    });
+
+    test("Throws if env var is unset", () => {
+      expect(() => getWatermark()).toThrowErrorMatchingSnapshot();
+    });
+
+    test("Throws if env var is empty", () => {
+      process.env.WATERMARK = "";
+      expect(() => getWatermark()).toThrowErrorMatchingSnapshot();
+    });
+
+    test("Throws if value is too long", () => {
+      process.env.WATERMARK = "a".repeat(64);
+      expect(() => getWatermark()).toThrowErrorMatchingSnapshot();
+    });
+
+    ["-test", "test-", "Foo", "foo_bar"].forEach((watermark) => {
+      test("Throws if value is not valid", () => {
+        process.env.WATERMARK = watermark;
+        expect(() => getWatermark()).toThrowErrorMatchingSnapshot();
+      });
     });
   });
 
