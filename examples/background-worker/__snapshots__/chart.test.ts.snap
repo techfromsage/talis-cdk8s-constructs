@@ -19,6 +19,28 @@ exports[`BackgroundWorker example > Change release version 1`] = `
   },
   {
     "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "worker",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "worker-development-local",
+      },
+      "name": "quota",
+      "namespace": "worker-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "200m",
+        "memory": "400Mi",
+        "pods": 4,
+      },
+    },
+  },
+  {
+    "apiVersion": "v1",
     "data": {
       ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
     },
@@ -392,6 +414,28 @@ exports[`BackgroundWorker example > Snapshot 1`] = `
       },
       "name": "worker-test",
       "namespace": "worker-test",
+    },
+  },
+  {
+    "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "worker",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "worker-development-local",
+      },
+      "name": "quota",
+      "namespace": "worker-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "200m",
+        "memory": "400Mi",
+        "pods": 4,
+      },
     },
   },
   {

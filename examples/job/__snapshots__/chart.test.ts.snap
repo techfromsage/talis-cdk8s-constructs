@@ -19,6 +19,28 @@ exports[`Job example > Change release version 1`] = `
   },
   {
     "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "example-job-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-job-app-development-local",
+      },
+      "name": "quota",
+      "namespace": "example-job-app-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "200m",
+        "memory": "200Mi",
+        "pods": 2,
+      },
+    },
+  },
+  {
+    "apiVersion": "v1",
     "data": {
       ".dockerconfigjson": "eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsiYXV0aCI6ImMyOXRaWFZ6WlhJNmMyVmpjbVYwTVRJeiJ9fX0=",
     },
@@ -117,6 +139,28 @@ exports[`Job example > Snapshot 1`] = `
       },
       "name": "example-job-app-test",
       "namespace": "example-job-app-test",
+    },
+  },
+  {
+    "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "example-job-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-job-app-development-local",
+      },
+      "name": "quota",
+      "namespace": "example-job-app-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "200m",
+        "memory": "200Mi",
+        "pods": 2,
+      },
     },
   },
   {

@@ -2,6 +2,7 @@ import { Chart, Testing } from "cdk8s";
 import {
   IntOrString,
   KubeConfigMap,
+  KubeDeployment,
   KubeService,
   Quantity,
 } from "../../imports/k8s";
@@ -1023,6 +1024,52 @@ describe("WebService", () => {
       const chart = makeChart();
       const web = new WebService(chart, "web", defaultProps);
       expect(web.canaryService).not.toBeDefined();
+    });
+
+    test("Exposes deployment object through property", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", defaultProps);
+      expect(web.deployment).toBeDefined();
+      expect(web.deployment).toBeInstanceOf(KubeDeployment);
+      expect(web.deployment.name).toEqual("web");
+    });
+
+    test("Exposes canary deployment object through property", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", {
+        ...defaultProps,
+        canary: true,
+        stage: "base",
+      });
+      expect(web.canaryDeployment).toBeDefined();
+      expect(web.canaryDeployment).toBeInstanceOf(KubeDeployment);
+      expect(web.canaryDeployment?.name).toEqual("web-canary");
+    });
+
+    test("Canary deployment is not defined if canaries are not enabled", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", defaultProps);
+      expect(web.canaryDeployment).not.toBeDefined();
+    });
+
+    test("Exposes HPA object through property", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", {
+        ...requiredProps,
+        horizontalPodAutoscaler: {
+          minReplicas: 2,
+          maxReplicas: 4,
+          cpuTargetUtilization: 100,
+        },
+      });
+      expect(web.hpa).toBeDefined();
+      expect(web.hpa?.name).toEqual("web-hpa");
+    });
+
+    test("HPA property is not defined if not enabled", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", defaultProps);
+      expect(web.hpa).not.toBeDefined();
     });
   });
 });

@@ -19,6 +19,28 @@ exports[`Mongo example > Snapshot 1`] = `
   },
   {
     "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "example-mongo-app",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "example-mongo-app-development-local",
+      },
+      "name": "quota",
+      "namespace": "example-mongo-app-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "200m",
+        "memory": "1000Mi",
+        "pods": 2,
+      },
+    },
+  },
+  {
+    "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
       "labels": {

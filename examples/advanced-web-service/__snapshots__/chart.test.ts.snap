@@ -19,6 +19,28 @@ exports[`Advanced WebService example > Change release version 1`] = `
   },
   {
     "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "advanced-development-local",
+      },
+      "name": "quota",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "900m",
+        "memory": "1188Mi",
+        "pods": 9,
+      },
+    },
+  },
+  {
+    "apiVersion": "v1",
     "data": {
       "ENVIRONMENT": "demo",
       "MESSAGE": "Hello CDK8s!",
@@ -554,6 +576,28 @@ exports[`Advanced WebService example > Snapshot base stage 1`] = `
       },
       "name": "advanced-test",
       "namespace": "advanced-test",
+    },
+  },
+  {
+    "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "advanced-development-local",
+      },
+      "name": "quota",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "900m",
+        "memory": "1188Mi",
+        "pods": 9,
+      },
     },
   },
   {
@@ -1317,6 +1361,28 @@ exports[`Advanced WebService example > Snapshot canary stage 1`] = `
   },
   {
     "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "advanced-development-local",
+      },
+      "name": "quota",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "900m",
+        "memory": "1188Mi",
+        "pods": 9,
+      },
+    },
+  },
+  {
+    "apiVersion": "v1",
     "data": {
       "ENVIRONMENT": "demo",
       "MESSAGE": "Hello CDK8s!",
@@ -1852,6 +1918,28 @@ exports[`Advanced WebService example > Snapshot full stage 1`] = `
       },
       "name": "advanced-test",
       "namespace": "advanced-test",
+    },
+  },
+  {
+    "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "advanced-development-local",
+      },
+      "name": "quota",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "900m",
+        "memory": "1188Mi",
+        "pods": 9,
+      },
     },
   },
   {
@@ -2610,6 +2698,28 @@ exports[`Advanced WebService example > Snapshot post-canary stage 1`] = `
       },
       "name": "advanced-test",
       "namespace": "advanced-test",
+    },
+  },
+  {
+    "apiVersion": "v1",
+    "kind": "ResourceQuota",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "environment": "development",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "service": "advanced-development-local",
+      },
+      "name": "quota",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "hard": {
+        "cpu": "900m",
+        "memory": "1188Mi",
+        "pods": 9,
+      },
     },
   },
   {
