@@ -189,7 +189,7 @@ export interface WebServiceProps
   readonly externalHostname?: string;
 
   /**
-   *
+   * Additional external hostnames, they will be added as Ingress rules.
    */
   readonly additionalExternalHostnames?: string[];
 }
