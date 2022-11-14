@@ -492,6 +492,21 @@ describe("WebService", () => {
       });
     });
 
+    test("Allows to set multiple TLS domains", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        tlsDomain: ["*.example.com", "*.example.org"],
+      });
+      const ingress = results.find((obj) => obj.kind === "Ingress");
+      expect(ingress).toHaveProperty("spec.tls[0].hosts[0]", "*.example.com");
+      expect(ingress).toHaveProperty("spec.tls[0].hosts[1]", "*.example.org");
+      expect(ingress.metadata.annotations).toMatchObject({
+        "alb.ingress.kubernetes.io/listen-ports": `[{"HTTP":80},{"HTTPS":443}]`,
+        "alb.ingress.kubernetes.io/ssl-policy":
+          "ELBSecurityPolicy-TLS-1-2-2017-01",
+      });
+    });
+
     test("Allows to set certificate ARN", () => {
       const results = synthWebService({
         ...defaultProps,

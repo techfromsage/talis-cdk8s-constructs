@@ -3,6 +3,7 @@ import { Construct } from "constructs";
 import {
   Container,
   IngressRule,
+  IngressTls,
   IntOrString,
   KubeDeployment,
   KubeHorizontalPodAutoscalerV2Beta2,
@@ -19,7 +20,7 @@ import {
   NginxContainerProps,
   WebServiceProps,
 } from ".";
-import { defaultAffinity, makeLoadBalancerName } from "../common";
+import { defaultAffinity, makeLoadBalancerName, ensureArray } from "../common";
 import { supportsTls } from "./tls-util";
 
 export class WebService extends Construct {
@@ -150,17 +151,16 @@ export class WebService extends Construct {
         this.service = service;
       }
 
-      const externalDns: Record<string, string> = {};
-      const ingressRules: IngressRule[] = [];
-
       if (includeIngress) {
-        const ingressTls = [];
-        const ingressListenPorts: { [key: string]: number }[] = [{ HTTP: 80 }];
-        const ingressTlsAnnotations: { [key: string]: string } = {};
+        const externalDns: Record<string, string> = {};
+        const ingressRules: IngressRule[] = [];
+        const ingressTls: IngressTls[] = [];
+        const ingressListenPorts: Record<string, number>[] = [{ HTTP: 80 }];
+        const ingressTlsAnnotations: Record<string, string> = {};
         if (supportsTls(props)) {
           if (props.tlsDomain) {
             ingressTls.push({
-              hosts: [props.tlsDomain],
+              hosts: ensureArray(props.tlsDomain),
             });
           }
           ingressListenPorts.push({ HTTPS: 443 });

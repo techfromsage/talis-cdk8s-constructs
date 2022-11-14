@@ -138,7 +138,7 @@ export interface WebServiceProps
    * Domain name for TLS certificate discovery.
    * @see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/ingress/cert_discovery/
    */
-  readonly tlsDomain?: string;
+  readonly tlsDomain?: string | string[];
 
   /**
    * Whether to include Ingress and provision an Application Load Balancer.
