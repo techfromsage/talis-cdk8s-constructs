@@ -3,6 +3,7 @@ import {
   IntOrString,
   KubeConfigMap,
   KubeDeployment,
+  KubeIngress,
   KubeService,
   Quantity,
 } from "../../imports/k8s";
@@ -1024,6 +1025,42 @@ describe("WebService", () => {
       const chart = makeChart();
       const web = new WebService(chart, "web", defaultProps);
       expect(web.canaryService).not.toBeDefined();
+    });
+
+    test("Exposes ingress object through property", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", defaultProps);
+      expect(web.ingress).toBeDefined();
+      expect(web.ingress).toBeInstanceOf(KubeIngress);
+      expect(web.ingress.name).toEqual("web-ingress");
+    });
+
+    test("Exposes canary ingress object through property", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", {
+        ...defaultProps,
+        canary: true,
+        stage: "base",
+      });
+      expect(web.canaryIngress).toBeDefined();
+      expect(web.canaryIngress).toBeInstanceOf(KubeIngress);
+      expect(web.canaryIngress?.name).toEqual("web-canary-ingress");
+    });
+
+    test("Ingress is not defined if ingress is not included", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", {
+        ...defaultProps,
+        includeIngress: false,
+      });
+      expect(web.ingress).not.toBeDefined();
+      expect(web.canaryIngress).not.toBeDefined();
+    });
+
+    test("Canary ingress is not defined if canaries are not enabled", () => {
+      const chart = makeChart();
+      const web = new WebService(chart, "web", defaultProps);
+      expect(web.canaryIngress).not.toBeDefined();
     });
 
     test("Exposes deployment object through property", () => {

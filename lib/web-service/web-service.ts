@@ -25,6 +25,8 @@ import { supportsTls } from "./tls-util";
 export class WebService extends Construct {
   readonly service!: KubeService;
   readonly canaryService?: KubeService;
+  readonly ingress!: KubeIngress;
+  readonly canaryIngress?: KubeIngress;
   readonly deployment!: KubeDeployment;
   readonly canaryDeployment?: KubeDeployment;
   readonly hpa?: KubeHorizontalPodAutoscalerV2Beta2;
@@ -223,27 +225,37 @@ export class WebService extends Construct {
         this.validateLoadBalancerName(
           ingressAnnotations["alb.ingress.kubernetes.io/load-balancer-name"]
         );
-        new KubeIngress(this, `${id}${instanceSuffix}-ingress`, {
-          metadata: {
-            annotations: ingressAnnotations,
-            labels: instanceLabels,
-          },
-          spec: {
-            ingressClassName: internal
-              ? "aws-load-balancer-internal"
-              : "aws-load-balancer-internet-facing",
-            tls: ingressTls.length > 0 ? ingressTls : undefined,
-            defaultBackend: {
-              service: {
-                name: service.name,
-                port: {
-                  number: servicePort,
+        const ingress = new KubeIngress(
+          this,
+          `${id}${instanceSuffix}-ingress`,
+          {
+            metadata: {
+              annotations: ingressAnnotations,
+              labels: instanceLabels,
+            },
+            spec: {
+              ingressClassName: internal
+                ? "aws-load-balancer-internal"
+                : "aws-load-balancer-internet-facing",
+              tls: ingressTls.length > 0 ? ingressTls : undefined,
+              defaultBackend: {
+                service: {
+                  name: service.name,
+                  port: {
+                    number: servicePort,
+                  },
                 },
               },
+              rules: ingressRules.length > 0 ? ingressRules : undefined,
             },
-            rules: ingressRules.length > 0 ? ingressRules : undefined,
-          },
-        });
+          }
+        );
+
+        if (isCanaryInstance) {
+          this.canaryIngress = ingress;
+        } else {
+          this.ingress = ingress;
+        }
       }
 
       const deployment = new KubeDeployment(this, `${id}${instanceSuffix}`, {
