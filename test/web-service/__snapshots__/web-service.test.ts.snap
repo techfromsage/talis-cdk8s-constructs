@@ -120,6 +120,7 @@ exports[`WebService > Props > All the props 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/ping",
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
@@ -169,6 +170,24 @@ exports[`WebService > Props > All the props 1`] = `
                   },
                 },
                 "path": "/",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+        {
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "server-status-rule",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/server-status",
                 "pathType": "Prefix",
               },
             ],
@@ -534,6 +553,7 @@ exports[`WebService > Props > All the props 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/ping",
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
@@ -567,6 +587,26 @@ exports[`WebService > Props > All the props 1`] = `
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "rules": [
+        {
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "server-status-rule",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/server-status",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
       "tls": [
         {
           "hosts": [
@@ -913,6 +953,7 @@ exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
@@ -938,6 +979,26 @@ exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "rules": [
+        {
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "server-status-rule",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/server-status",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
     },
   },
   {
@@ -1095,6 +1156,7 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for both memory and cpu 
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
@@ -1120,6 +1182,26 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for both memory and cpu 
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "rules": [
+        {
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "server-status-rule",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/server-status",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
     },
   },
   {
@@ -1287,6 +1369,7 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for memory 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
@@ -1312,6 +1395,26 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for memory 1`] = `
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "rules": [
+        {
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "server-status-rule",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/server-status",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
     },
   },
   {
@@ -1473,6 +1576,7 @@ exports[`WebService > Props > Minimal required props 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
@@ -1498,6 +1602,26 @@ exports[`WebService > Props > Minimal required props 1`] = `
         },
       },
       "ingressClassName": "aws-load-balancer-internet-facing",
+      "rules": [
+        {
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "server-status-rule",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/server-status",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
     },
   },
   {
