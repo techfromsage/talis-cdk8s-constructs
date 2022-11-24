@@ -218,6 +218,15 @@ export class WebService extends Construct {
             instance: id,
             environment: environment,
           }),
+          "alb.ingress.kubernetes.io/actions.server-status-rule":
+            convertToJsonContent({
+              type: "fixed-response",
+              fixedResponseConfig: {
+                statusCode: "404",
+                contentType: "text/plain",
+                messageBody: "404: Not Found",
+              },
+            }),
           ...ingressTlsAnnotations,
           ...props.ingressAnnotations, // Allow overriding of annotations.
           ...externalDns,
@@ -225,6 +234,26 @@ export class WebService extends Construct {
         this.validateLoadBalancerName(
           ingressAnnotations["alb.ingress.kubernetes.io/load-balancer-name"]
         );
+
+        ingressRules.push({
+          http: {
+            paths: [
+              {
+                pathType: "Prefix",
+                path: "/server-status",
+                backend: {
+                  service: {
+                    name: "server-status-rule",
+                    port: {
+                      name: "use-annotation",
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        });
+
         const ingress = new KubeIngress(
           this,
           `${id}${instanceSuffix}-ingress`,

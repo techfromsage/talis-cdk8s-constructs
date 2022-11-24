@@ -109,6 +109,7 @@ exports[`BackgroundWorker example > Change release version 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/status",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
@@ -142,6 +143,26 @@ exports[`BackgroundWorker example > Change release version 1`] = `
         },
       },
       "ingressClassName": "aws-load-balancer-internal",
+      "rules": [
+        {
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "server-status-rule",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/server-status",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
       "tls": [
         {
           "hosts": [
@@ -508,6 +529,7 @@ exports[`BackgroundWorker example > Snapshot 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/status",
         "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
@@ -541,6 +563,26 @@ exports[`BackgroundWorker example > Snapshot 1`] = `
         },
       },
       "ingressClassName": "aws-load-balancer-internal",
+      "rules": [
+        {
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "server-status-rule",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/server-status",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
       "tls": [
         {
           "hosts": [
