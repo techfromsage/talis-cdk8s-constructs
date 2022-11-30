@@ -1,6 +1,11 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import { KubeService, KubeStatefulSet, Quantity } from "../../imports/k8s";
+import {
+  IoK8SApiCoreV1ServicePortProtocol,
+  KubeService,
+  KubeStatefulSet,
+  Quantity,
+} from "../../imports/k8s";
 import { PostgresProps } from "./postgres-props";
 
 export class Postgres extends Construct {
@@ -47,7 +52,7 @@ export class Postgres extends Construct {
         ports: [
           {
             port: port,
-            protocol: "TCP",
+            protocol: IoK8SApiCoreV1ServicePortProtocol.TCP,
           },
         ],
         selector: selectorLabels,

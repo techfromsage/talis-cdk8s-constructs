@@ -1,6 +1,7 @@
 import { Chart, Testing } from "cdk8s";
 import {
   IntOrString,
+  IoK8SApiCoreV1ContainerImagePullPolicy,
   KubeConfigMap,
   KubeDeployment,
   KubeIngress,
@@ -104,7 +105,7 @@ describe("WebService", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: true,
-        imagePullPolicy: "Always",
+        imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
         revisionHistoryLimit: 5,
@@ -155,7 +156,7 @@ describe("WebService", () => {
         port: 3000,
         nginx: {
           image: "ubuntu/nginx:1.18-21.10_edge",
-          imagePullPolicy: "Always",
+          imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
           configMap: "nginx-config",
           port: 80,
         },

@@ -2,6 +2,7 @@ import { Chart } from "cdk8s";
 import { Construct } from "constructs";
 import {
   IntOrString,
+  IoK8SApiCoreV1ServicePortProtocol,
   KubeService,
   KubeStatefulSet,
   Quantity,
@@ -54,7 +55,7 @@ export class Mongo extends Construct {
         ports: [
           {
             port: port,
-            protocol: "TCP",
+            protocol: IoK8SApiCoreV1ServicePortProtocol.TCP,
           },
         ],
         selector: selectorLabels,

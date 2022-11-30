@@ -32,37 +32,37 @@
     "coverage": "vitest run --coverage"
   },
   "peerDependencies": {
-    "cdk8s": "^2.5.44",
-    "constructs": "^10.1.159"
+    "cdk8s": "^2.5.60",
+    "constructs": "^10.1.175"
   },
   "dependencies": {
-    "cron-parser": "4.6.0",
+    "cron-parser": "4.7.0",
     "dotenv": "^14.3.2",
     "sort-keys": "^4.2.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.2.0",
-    "@commitlint/config-conventional": "^17.2.0",
-    "@types/lodash": "^4.14.188",
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
+    "@types/lodash": "^4.14.190",
     "@types/mock-fs": "^4.13.1",
     "@types/node": "^18.11.9",
-    "@typescript-eslint/eslint-plugin": "^5.42.1",
-    "@typescript-eslint/parser": "^5.42.1",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
     "bats": "^1.8.2",
     "c8": "^7.12.0",
-    "cdk8s": "^2.5.44",
-    "cdk8s-cli": "^2.1.46",
-    "constructs": "^10.1.159",
-    "eslint": "^8.27.0",
+    "cdk8s": "^2.5.60",
+    "cdk8s-cli": "^2.1.62",
+    "constructs": "^10.1.175",
+    "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.2",
-    "lint-staged": "^13.0.3",
+    "lint-staged": "^13.0.4",
     "lodash": "^4.17.21",
     "mock-fs": "^5.2.0",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.0",
     "semantic-release": "^19.0.5",
     "ts-node": "^10.9.1",
-    "typescript": "^4.8.4",
-    "vitest": "^0.25.1"
+    "typescript": "^4.9.3",
+    "vitest": "^0.25.3"
   }
 }

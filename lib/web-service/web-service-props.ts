@@ -1,4 +1,8 @@
-import { Probe, ResourceRequirements } from "../../imports/k8s";
+import {
+  IoK8SApiCoreV1ContainerImagePullPolicy,
+  Probe,
+  ResourceRequirements,
+} from "../../imports/k8s";
 import { ContainerProps, WorkloadProps } from "../common";
 
 export const canaryStages = ["base", "canary", "post-canary", "full"] as const;
@@ -24,9 +28,9 @@ export interface NginxContainerProps {
 
   /**
    * Affects when the kubelet attempts to pull the specified image.
-   * @default IfNotPresent
+   * @default IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT
    */
-  readonly imagePullPolicy?: "Always" | "Never" | "IfNotPresent";
+  readonly imagePullPolicy?: IoK8SApiCoreV1ContainerImagePullPolicy;
 
   /**
    * Port (what container will listen on).

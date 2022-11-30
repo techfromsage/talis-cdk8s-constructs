@@ -1,5 +1,9 @@
 import { Chart, Testing } from "cdk8s";
-import { Quantity } from "../../imports/k8s";
+import {
+  IoK8SApiCoreV1ContainerImagePullPolicy,
+  IoK8SApiCoreV1PodSpecRestartPolicy,
+  Quantity,
+} from "../../imports/k8s";
 import { CronJob, CronJobProps } from "../../lib";
 import { makeChart } from "../test-util";
 
@@ -14,7 +18,7 @@ const requiredProps: CronJobProps = {
     },
   },
   backoffLimit: 2,
-  restartPolicy: "OnFailure",
+  restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.ON_FAILURE,
 };
 
 function synthCronJob(
@@ -65,7 +69,7 @@ describe("CronJob", () => {
         backoffLimit: 1,
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
-        imagePullPolicy: "Always",
+        imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         startingDeadlineSeconds: 200,
         successfulJobsHistoryLimit: 4,
@@ -132,7 +136,7 @@ describe("CronJob", () => {
     test("Setting restartPolicy", () => {
       const results = synthCronJob({
         ...requiredProps,
-        restartPolicy: "Never",
+        restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
       });
       const cron = results.find((obj) => obj.kind === "CronJob");
       expect(cron).toHaveProperty(

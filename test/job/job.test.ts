@@ -1,5 +1,9 @@
 import { Chart, Testing } from "cdk8s";
-import { Quantity } from "../../imports/k8s";
+import {
+  IoK8SApiCoreV1ContainerImagePullPolicy,
+  IoK8SApiCoreV1PodSpecRestartPolicy,
+  Quantity,
+} from "../../imports/k8s";
 import { Job, JobProps } from "../../lib";
 import { makeChart } from "../test-util";
 
@@ -13,7 +17,7 @@ const requiredProps: JobProps = {
     },
   },
   backoffLimit: 0,
-  restartPolicy: "Never",
+  restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
 };
 
 function synthJob(
@@ -64,7 +68,7 @@ describe("Job", () => {
         ttlSecondsAfterFinished: 30,
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
-        imagePullPolicy: "Always",
+        imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         resources: {
           requests: {
@@ -128,7 +132,7 @@ describe("Job", () => {
     test("Setting restartPolicy", () => {
       const results = synthJob({
         ...requiredProps,
-        restartPolicy: "Never",
+        restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
       });
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty("spec.template.spec.restartPolicy", "Never");

@@ -1,6 +1,9 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import { KubeJob } from "../../imports/k8s";
+import {
+  IoK8SApiCoreV1ContainerImagePullPolicy,
+  KubeJob,
+} from "../../imports/k8s";
 import { JobProps } from "./job-props";
 
 export class Job extends Construct {
@@ -44,7 +47,9 @@ export class Job extends Construct {
               {
                 name: props.containerName ?? app ?? "app",
                 image: props.image,
-                imagePullPolicy: props.imagePullPolicy ?? "IfNotPresent",
+                imagePullPolicy:
+                  props.imagePullPolicy ??
+                  IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT,
                 workingDir: props.workingDir,
                 command: props.command,
                 args: props.args,
