@@ -1,6 +1,10 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import { KubeDeployment, Lifecycle } from "../../imports/k8s";
+import {
+  IoK8SApiCoreV1ContainerImagePullPolicy,
+  KubeDeployment,
+  Lifecycle,
+} from "../../imports/k8s";
 import { defaultAffinity } from "../common";
 import { BackgroundWorkerProps } from "./background-worker-props";
 
@@ -60,7 +64,9 @@ export class BackgroundWorker extends Construct {
               {
                 name: props.containerName ?? app ?? "app",
                 image: props.image,
-                imagePullPolicy: props.imagePullPolicy ?? "IfNotPresent",
+                imagePullPolicy:
+                  props.imagePullPolicy ??
+                  IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT,
                 workingDir: props.workingDir,
                 command: props.command,
                 args: props.args,
