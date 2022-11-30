@@ -463,7 +463,7 @@ exports[`WebService > Props > All the props 1`] = `
     },
   },
   {
-    "apiVersion": "autoscaling/v2beta2",
+    "apiVersion": "autoscaling/v2",
     "kind": "HorizontalPodAutoscaler",
     "metadata": {
       "labels": {
@@ -1074,7 +1074,7 @@ exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
     },
   },
   {
-    "apiVersion": "autoscaling/v2beta2",
+    "apiVersion": "autoscaling/v2",
     "kind": "HorizontalPodAutoscaler",
     "metadata": {
       "labels": {
@@ -1277,7 +1277,7 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for both memory and cpu 
     },
   },
   {
-    "apiVersion": "autoscaling/v2beta2",
+    "apiVersion": "autoscaling/v2",
     "kind": "HorizontalPodAutoscaler",
     "metadata": {
       "labels": {
@@ -1490,7 +1490,7 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for memory 1`] = `
     },
   },
   {
-    "apiVersion": "autoscaling/v2beta2",
+    "apiVersion": "autoscaling/v2",
     "kind": "HorizontalPodAutoscaler",
     "metadata": {
       "labels": {

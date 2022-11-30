@@ -6,10 +6,10 @@ import {
   IngressTls,
   IntOrString,
   KubeDeployment,
-  KubeHorizontalPodAutoscalerV2Beta2,
+  KubeHorizontalPodAutoscalerV2,
   KubeIngress,
   KubeService,
-  MetricSpecV2Beta2,
+  MetricSpecV2,
   Quantity,
   Volume,
 } from "../../imports/k8s";
@@ -30,7 +30,7 @@ export class WebService extends Construct {
   readonly canaryIngress?: KubeIngress;
   readonly deployment!: KubeDeployment;
   readonly canaryDeployment?: KubeDeployment;
-  readonly hpa?: KubeHorizontalPodAutoscalerV2Beta2;
+  readonly hpa?: KubeHorizontalPodAutoscalerV2;
 
   constructor(scope: Construct, id: string, props: WebServiceProps) {
     super(scope, id);
@@ -486,7 +486,7 @@ export class WebService extends Construct {
     props: HorizontalPodAutoscalerProps,
     labels: { [key: string]: string }
   ) {
-    const metrics: Array<MetricSpecV2Beta2> = [];
+    const metrics: Array<MetricSpecV2> = [];
 
     if (props.cpuTargetUtilization) {
       metrics.push({
@@ -514,7 +514,7 @@ export class WebService extends Construct {
       });
     }
 
-    return new KubeHorizontalPodAutoscalerV2Beta2(
+    return new KubeHorizontalPodAutoscalerV2(
       this,
       `${deployment.node.id}-hpa`,
       {
