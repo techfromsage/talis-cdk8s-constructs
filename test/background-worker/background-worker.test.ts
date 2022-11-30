@@ -1,5 +1,9 @@
 import { Chart, Testing } from "cdk8s";
-import { Quantity } from "../../imports/k8s";
+import {
+  IoK8SApiCoreV1ContainerImagePullPolicy,
+  IoK8SApiCoreV1PodSpecRestartPolicy,
+  Quantity,
+} from "../../imports/k8s";
 import { BackgroundWorker, BackgroundWorkerProps } from "../../lib";
 
 const requiredProps = {
@@ -55,11 +59,11 @@ describe("BackgroundWorker", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: true,
-        imagePullPolicy: "Always",
+        imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
         revisionHistoryLimit: 5,
-        restartPolicy: "Always",
+        restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.ALWAYS,
         affinity: {
           podAntiAffinity: {
             preferredDuringSchedulingIgnoredDuringExecution: [

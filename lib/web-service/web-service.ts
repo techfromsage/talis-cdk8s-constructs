@@ -5,6 +5,9 @@ import {
   IngressRule,
   IngressTls,
   IntOrString,
+  IoK8SApiCoreV1ContainerImagePullPolicy,
+  IoK8SApiCoreV1ServicePortProtocol,
+  IoK8SApiCoreV1ServiceSpecType,
   KubeDeployment,
   KubeHorizontalPodAutoscalerV2,
   KubeIngress,
@@ -61,7 +64,9 @@ export class WebService extends Construct {
       {
         name: props.containerName ?? app ?? "app",
         image: props.image,
-        imagePullPolicy: props.imagePullPolicy ?? "IfNotPresent",
+        imagePullPolicy:
+          props.imagePullPolicy ??
+          IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT,
         workingDir: props.workingDir,
         command: props.command,
         args: props.args,
@@ -133,12 +138,15 @@ export class WebService extends Construct {
           labels: instanceLabels,
         },
         spec: {
-          type: ingressTargetType === "instance" ? "NodePort" : "ClusterIP",
+          type:
+            ingressTargetType === "instance"
+              ? IoK8SApiCoreV1ServiceSpecType.NODE_PORT
+              : IoK8SApiCoreV1ServiceSpecType.CLUSTER_IP,
           ports: [
             {
               port: servicePort,
               targetPort: IntOrString.fromNumber(applicationPort),
-              protocol: "TCP",
+              protocol: IoK8SApiCoreV1ServicePortProtocol.TCP,
             },
           ],
           selector: serviceLabels,
@@ -435,7 +443,9 @@ export class WebService extends Construct {
     const container: Container = {
       name: "nginx",
       image: nginx.image ?? "public.ecr.aws/nginx/nginx:1.21.5",
-      imagePullPolicy: nginx.imagePullPolicy ?? "IfNotPresent",
+      imagePullPolicy:
+        nginx.imagePullPolicy ??
+        IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT,
       resources: nginx.resources ?? {
         requests: {
           cpu: Quantity.fromString("50m"),

@@ -5,6 +5,7 @@ import {
   Container,
   EnvFromSource,
   IntOrString,
+  IoK8SApiCoreV1PodSpecRestartPolicy,
   Quantity,
   ResourceRequirements,
 } from "../imports/k8s";
@@ -116,7 +117,7 @@ export class FullStackChart extends TalisChart {
       image: busyboxImage,
       release: busyboxVersion,
       command: ["sh", "-c", "echo 'hello world'"],
-      restartPolicy: "Never",
+      restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
       resources: commonResources,
     });
 
@@ -125,7 +126,7 @@ export class FullStackChart extends TalisChart {
       image: `docker.io/mongo:${mongoVersion}`,
       release: mongoVersion,
       command: ["mongo", `--host=${mongoHost}`, "--eval", "db.stats()"],
-      restartPolicy: "Never",
+      restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
       resources: commonResources,
     });
 

@@ -1,3 +1,4 @@
+import { IoK8SApiCoreV1PodSpecRestartPolicy } from "../../imports/k8s";
 import { ContainerProps, WorkloadProps } from "../common";
 
 export interface BackgroundWorkerProps
@@ -18,7 +19,7 @@ export interface BackgroundWorkerProps
 
   /**
    * Restart policy for all containers within the pod.
-   * @default "Always"
+   * @default IoK8SApiCoreV1PodSpecRestartPolicy.ALWAYS
    */
-  readonly restartPolicy?: "Always";
+  readonly restartPolicy?: IoK8SApiCoreV1PodSpecRestartPolicy;
 }
