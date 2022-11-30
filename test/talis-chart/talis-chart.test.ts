@@ -2,6 +2,7 @@ import { ApiObject, Testing } from "cdk8s";
 import {
   DeploymentSpec,
   IntOrString,
+  IoK8SApiAppsV1DeploymentStrategyType,
   KubeCronJob,
   KubeDaemonSet,
   KubeDeployment,
@@ -424,7 +425,7 @@ describe("TalisChart", () => {
       makeDeployment(chart, "my-deploy", {
         replicas: 3,
         strategy: {
-          type: "RollingUpdate",
+          type: IoK8SApiAppsV1DeploymentStrategyType.ROLLING_UPDATE,
           rollingUpdate: {
             maxSurge: IntOrString.fromNumber(2),
           },
@@ -447,7 +448,7 @@ describe("TalisChart", () => {
       makeDeployment(chart, "my-deploy", {
         replicas: 3,
         strategy: {
-          type: "RollingUpdate",
+          type: IoK8SApiAppsV1DeploymentStrategyType.ROLLING_UPDATE,
           rollingUpdate: {
             maxSurge: IntOrString.fromString("90%"),
           },

@@ -6,6 +6,7 @@ import {
   IngressTls,
   IntOrString,
   IoK8SApiCoreV1ContainerImagePullPolicy,
+  IoK8SApiCoreV1ContainerPortProtocol,
   IoK8SApiCoreV1ServicePortProtocol,
   IoK8SApiCoreV1ServiceSpecType,
   KubeDeployment,
@@ -71,7 +72,12 @@ export class WebService extends Construct {
         command: props.command,
         args: props.args,
         resources: props.resources,
-        ports: [{ containerPort: applicationPort, protocol: "TCP" }],
+        ports: [
+          {
+            containerPort: applicationPort,
+            protocol: IoK8SApiCoreV1ContainerPortProtocol.TCP,
+          },
+        ],
         securityContext: props.securityContext,
         env: props.env,
         envFrom: props.envFrom,
@@ -455,7 +461,12 @@ export class WebService extends Construct {
           memory: Quantity.fromString("128Mi"),
         },
       },
-      ports: [{ containerPort: nginxPort, protocol: "TCP" }],
+      ports: [
+        {
+          containerPort: nginxPort,
+          protocol: IoK8SApiCoreV1ContainerPortProtocol.TCP,
+        },
+      ],
       startupProbe: nginx.startupProbe,
       livenessProbe: nginx.livenessProbe ?? {
         failureThreshold: 3,
