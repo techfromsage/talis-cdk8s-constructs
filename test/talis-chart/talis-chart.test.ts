@@ -1,17 +1,17 @@
 import { ApiObject, Testing } from "cdk8s";
 import {
-  KubeDeployment,
-  KubePod,
-  Quantity,
   DeploymentSpec,
-  KubeHorizontalPodAutoscalerV2Beta2,
   IntOrString,
-  ResourceRequirements,
-  PodSpec,
-  KubeDaemonSet,
-  KubeStatefulSet,
-  KubeJob,
   KubeCronJob,
+  KubeDaemonSet,
+  KubeDeployment,
+  KubeHorizontalPodAutoscalerV2,
+  KubeJob,
+  KubePod,
+  KubeStatefulSet,
+  PodSpec,
+  Quantity,
+  ResourceRequirements,
 } from "../../imports/k8s";
 import {
   TalisChart,
@@ -468,7 +468,7 @@ describe("TalisChart", () => {
       const app = Testing.app();
       const chart = new TalisChart(app, defaultProps);
       const deployment = makeDeployment(chart);
-      new KubeHorizontalPodAutoscalerV2Beta2(chart, "hpa", {
+      new KubeHorizontalPodAutoscalerV2(chart, "hpa", {
         spec: {
           scaleTargetRef: {
             apiVersion: deployment.apiVersion,

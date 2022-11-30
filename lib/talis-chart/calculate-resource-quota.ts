@@ -5,8 +5,8 @@ import {
   CronJobSpec,
   DaemonSetSpec,
   DeploymentSpec,
-  HorizontalPodAutoscalerSpecV2Beta2,
-  KubeHorizontalPodAutoscalerV2Beta2,
+  HorizontalPodAutoscalerSpecV2,
+  KubeHorizontalPodAutoscalerV2,
   ObjectMeta,
   PodSpec,
   Quantity,
@@ -34,7 +34,7 @@ interface KubeObject {
     DeploymentSpec &
     ReplicaSetSpec &
     StatefulSetSpec &
-    HorizontalPodAutoscalerSpecV2Beta2;
+    HorizontalPodAutoscalerSpecV2;
 }
 
 function cpuToMillicores(cpu: Quantity | string | number): number {
@@ -151,7 +151,7 @@ export function calculateResourceQuota(
     workloads.set(key, kubeObject);
   }
 
-  function addMaxReplicas(object: KubeHorizontalPodAutoscalerV2Beta2) {
+  function addMaxReplicas(object: KubeHorizontalPodAutoscalerV2) {
     const hpa = object.toJson() as KubeObject;
     const target = hpa.spec.scaleTargetRef;
     const key = target.kind + "/" + target.name;
