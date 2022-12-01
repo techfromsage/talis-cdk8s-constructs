@@ -69,6 +69,7 @@ exports[`Mongo example > Snapshot 1`] = `
         "instance": "redis-example",
         "role": "mongo",
       },
+      "type": "ClusterIP",
     },
   },
   {

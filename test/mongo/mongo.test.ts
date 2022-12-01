@@ -51,6 +51,7 @@ describe("Mongo", () => {
           },
         },
         priorityClassName: "test",
+        exposeService: true,
       };
       new Mongo(chart, "mongo-test", allProps);
       const results = Testing.synth(chart);
@@ -63,7 +64,23 @@ describe("Mongo", () => {
         "storageEngine",
         "storageSize",
         "resources",
+        "exposeService",
       ]);
+
+      const loadBalancer = results.find((obj) => obj.kind === "Service");
+      expect(loadBalancer).toHaveProperty("metadata.annotations");
+      expect(loadBalancer.metadata.annotations).toHaveProperty(
+        "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type",
+        "instance"
+      );
+      expect(loadBalancer.metadata.annotations).toHaveProperty(
+        "service.beta.kubernetes.io/load-balancer-source-ranges",
+        "0.0.0.0/0"
+      );
+      expect(loadBalancer.metadata.annotations).toHaveProperty(
+        "service.beta.kubernetes.io/aws-load-balancer-scheme",
+        "internal"
+      );
     });
 
     test("selectorLabels can override app", () => {
