@@ -3,6 +3,7 @@ import { Construct } from "constructs";
 import {
   IntOrString,
   IoK8SApiCoreV1ServicePortProtocol,
+  IoK8SApiCoreV1ServiceSpecType,
   KubeService,
   KubeStatefulSet,
   Quantity,
@@ -31,6 +32,7 @@ export class Mongo extends Construct {
         memory: Quantity.fromString("500Mi"),
       },
     };
+    const exposeService = props.exposeService ?? false;
 
     const selectorLabels: { [key: string]: string } = {
       app: app,
@@ -46,12 +48,27 @@ export class Mongo extends Construct {
 
     const args = this.getCommandArgs(props);
 
+    const serviceAnnotations: { [key: string]: string } = {};
+
+    if (exposeService) {
+      serviceAnnotations[
+        "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type"
+      ] = "instance";
+      serviceAnnotations[
+        "service.beta.kubernetes.io/load-balancer-source-ranges"
+      ] = "0.0.0.0/0";
+      serviceAnnotations[
+        "service.beta.kubernetes.io/aws-load-balancer-scheme"
+      ] = "internal";
+    }
+
     this.service = new KubeService(this, id, {
       metadata: {
         labels: instanceLabels,
+        annotations: serviceAnnotations,
       },
       spec: {
-        clusterIp: "None",
+        clusterIp: exposeService ? undefined : "None",
         ports: [
           {
             port: port,
@@ -59,6 +76,10 @@ export class Mongo extends Construct {
           },
         ],
         selector: selectorLabels,
+        type: exposeService
+          ? IoK8SApiCoreV1ServiceSpecType.LOAD_BALANCER
+          : IoK8SApiCoreV1ServiceSpecType.CLUSTER_IP,
+        loadBalancerClass: exposeService ? "service.k8s.aws/nlb" : undefined,
       },
     });
 

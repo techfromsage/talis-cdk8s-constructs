@@ -39,4 +39,10 @@ export interface MongoProps {
    * @default "database"
    */
   readonly priorityClassName?: string;
+
+  /**
+   * Create an internal NLB for the service.
+   * @default false
+   */
+  readonly exposeService?: boolean;
 }
