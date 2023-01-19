@@ -224,7 +224,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -339,7 +339,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -827,7 +827,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -1162,7 +1162,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -1650,7 +1650,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -1765,7 +1765,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -2253,7 +2253,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -2587,7 +2587,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -3075,7 +3075,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -3189,7 +3189,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 8000,
+          "targetPort": 80,
         },
       ],
       "selector": {

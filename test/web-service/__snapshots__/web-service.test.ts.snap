@@ -103,7 +103,7 @@ exports[`WebService > Props > All the props 1`] = `
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 3000,
+          "targetPort": 80,
         },
       ],
       "selector": {
@@ -535,7 +535,7 @@ exports[`WebService > Props > All the props 1`] = `
         {
           "port": 80,
           "protocol": "TCP",
-          "targetPort": 3000,
+          "targetPort": 80,
         },
       ],
       "selector": {

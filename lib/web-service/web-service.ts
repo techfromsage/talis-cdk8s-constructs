@@ -151,7 +151,7 @@ export class WebService extends Construct {
           ports: [
             {
               port: servicePort,
-              targetPort: IntOrString.fromNumber(applicationPort),
+              targetPort: IntOrString.fromNumber(servicePort),
               protocol: IoK8SApiCoreV1ServicePortProtocol.TCP,
             },
           ],

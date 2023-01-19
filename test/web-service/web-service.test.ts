@@ -995,12 +995,19 @@ describe("WebService", () => {
 
       const results = Testing.synth(chart);
       const deployment = results.find((obj) => obj.kind === "Deployment");
+      const service = results.find((obj) => obj.kind === "Service");
+      const ingress = results.find((obj) => obj.kind === "Ingress");
+      const ingressBackend = ingress.spec.defaultBackend;
       const containers = deployment.spec.template.spec.containers;
       expect(containers).toHaveLength(2);
       expect(containers[0].image).not.toContain("nginx");
       expect(containers[0].ports[0].containerPort).toBe(applicationPort);
       expect(containers[1].image).toContain("nginx");
       expect(containers[1].ports[0].containerPort).toBe(nginxPort);
+      expect(service.spec.ports[0].port).toBe(nginxPort);
+      expect(service.spec.ports[0].targetPort).toBe(nginxPort);
+      expect(ingressBackend.service.name).toBe(service.metadata.name);
+      expect(ingressBackend.service.port.number).toBe(nginxPort);
     });
 
     test("Validates that application port and nginx port are not the same", () => {
