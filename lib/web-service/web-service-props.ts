@@ -6,7 +6,7 @@ import {
 import { ContainerProps, WorkloadProps } from "../common";
 
 export const canaryStages = ["base", "canary", "post-canary", "full"] as const;
-export type CanaryStage = typeof canaryStages[number];
+export type CanaryStage = (typeof canaryStages)[number];
 
 export interface HorizontalPodAutoscalerProps {
   /** Minimum number of replicas. */
