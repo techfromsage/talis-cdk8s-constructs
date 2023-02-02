@@ -128,6 +128,14 @@ describe("Memcached", () => {
       );
     });
 
+    test("Builds a full DNS name if chart knows its namespace", () => {
+      const chart = makeChart({ namespace: "test-ns" });
+      const memcached = new Memcached(chart, "memcached-test", requiredProps);
+      expect(memcached.getDnsName()).toBe(
+        "memcached-test-sts-0.memcached-test.test-ns.svc.cluster.local"
+      );
+    });
+
     const tests: [number, string][] = [
       [0, "memcached-test-sts-0.memcached-test"],
       [1, "memcached-test-sts-1.memcached-test"],
