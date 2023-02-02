@@ -170,6 +170,14 @@ describe("Postgres", () => {
       expect(postgres.getDnsName()).toBe("postgres-test-sts-0.postgres-test");
     });
 
+    test("Builds a full DNS name if chart knows its namespace", () => {
+      const chart = makeChart({ namespace: "test-ns" });
+      const postgres = new Postgres(chart, "postgres-test", requiredProps);
+      expect(postgres.getDnsName()).toBe(
+        "postgres-test-sts-0.postgres-test.test-ns.svc.cluster.local"
+      );
+    });
+
     const tests: [number, string][] = [
       [0, "postgres-test-sts-0.postgres-test"],
       [1, "postgres-test-sts-1.postgres-test"],

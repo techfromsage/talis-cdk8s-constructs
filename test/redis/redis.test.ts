@@ -126,6 +126,14 @@ describe("Redis", () => {
       expect(redis.getDnsName()).toBe("redis-test-sts-0.redis-test");
     });
 
+    test("Builds a full DNS name if chart knows its namespace", () => {
+      const chart = makeChart({ namespace: "test-ns" });
+      const redis = new Redis(chart, "redis-test", requiredProps);
+      expect(redis.getDnsName()).toBe(
+        "redis-test-sts-0.redis-test.test-ns.svc.cluster.local"
+      );
+    });
+
     const tests: [number, string][] = [
       [0, "redis-test-sts-0.redis-test"],
       [1, "redis-test-sts-1.redis-test"],

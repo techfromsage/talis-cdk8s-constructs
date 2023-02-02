@@ -198,6 +198,14 @@ describe("Mongo", () => {
       expect(mongo.getDnsName()).toBe("mongo-test-sts-0.mongo-test");
     });
 
+    test("Builds a full DNS name if chart knows its namespace", () => {
+      const chart = makeChart({ namespace: "test-ns" });
+      const mongo = new Mongo(chart, "mongo-test", requiredProps);
+      expect(mongo.getDnsName()).toBe(
+        "mongo-test-sts-0.mongo-test.test-ns.svc.cluster.local"
+      );
+    });
+
     const tests: [number, string][] = [
       [0, "mongo-test-sts-0.mongo-test"],
       [1, "mongo-test-sts-1.mongo-test"],

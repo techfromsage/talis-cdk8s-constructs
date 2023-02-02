@@ -7,9 +7,10 @@ import {
   KubeStatefulSet,
   Quantity,
 } from "../../imports/k8s";
+import { DnsAwareStatefulSet, getDnsName } from "../common/statefulset-util";
 import { RedisProps } from "./redis-props";
 
-export class Redis extends Construct {
+export class Redis extends Construct implements DnsAwareStatefulSet {
   readonly service: KubeService;
   readonly statefulSet: KubeStatefulSet;
 
@@ -127,16 +128,8 @@ export class Redis extends Construct {
     });
   }
 
-  /**
-   * Get the DNS name of the instance.
-   * Each pod in a StatefulSet backed by a headless Service will have a stable
-   * DNS name. The template follows this format: <pod-name>.<service-name>.
-   * Since Pod replicas in StatefulSets are numbered, we can use the index
-   * of the Pod to get the DNS name.
-   *
-   * @param replica Number of the Pod replica to get address for
-   */
+  /** @inheritdoc */
   public getDnsName(replica = 0): string {
-    return `${this.statefulSet.name}-${replica}.${this.service.name}`;
+    return getDnsName(this, replica);
   }
 }
