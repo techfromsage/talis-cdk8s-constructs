@@ -58,19 +58,23 @@ export class TalisChart extends Chart {
       ...props.labels,
     };
 
-    if (ttl) {
-      labels["ttl"] = ttl.toString();
-    }
-
     super(scope, id, {
       namespace: namespace,
       labels: labels,
     });
 
+    const namespaceLabels = { ...labels };
+    if (ttl) {
+      namespaceLabels.ttl = ttl.toString();
+    }
+
     this.app = app;
     this.namespace = namespace;
     this.kubeNamespace = new KubeNamespace(this, "namespace", {
-      metadata: { name: this.namespace },
+      metadata: {
+        name: this.namespace,
+        labels: namespaceLabels,
+      },
     });
 
     if (props.includeResourceQuota ?? true) {

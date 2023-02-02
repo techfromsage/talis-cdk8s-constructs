@@ -329,7 +329,7 @@ describe("TalisChart", () => {
       const results = Testing.synth(chart);
       expect(results).toHaveLength(2);
       expect(results[0].metadata.labels).toHaveProperty("ttl", expected);
-      expect(results[1].metadata.labels).toHaveProperty("ttl", expected);
+      expect(results[1].metadata.labels).not.toHaveProperty("ttl", expected);
     });
   });
 
