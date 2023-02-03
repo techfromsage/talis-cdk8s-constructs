@@ -14,6 +14,7 @@ import {
   ResourceQuotaSpec,
   StatefulSetSpec,
 } from "../../imports/k8s";
+import { ScaledObject, ScaledObjectSpec } from "../../imports/keda.sh";
 import { WebService } from "../web-service";
 
 const workloadKinds = [
@@ -34,7 +35,8 @@ interface KubeObject {
     DeploymentSpec &
     ReplicaSetSpec &
     StatefulSetSpec &
-    HorizontalPodAutoscalerSpecV2;
+    HorizontalPodAutoscalerSpecV2 &
+    ScaledObjectSpec;
 }
 
 function cpuToMillicores(cpu: Quantity | string | number): number {
@@ -151,11 +153,18 @@ export function calculateResourceQuota(
     workloads.set(key, kubeObject);
   }
 
-  function addMaxReplicas(object: KubeHorizontalPodAutoscalerV2) {
+  function addHpaMaxReplicas(object: KubeHorizontalPodAutoscalerV2) {
     const hpa = object.toJson() as KubeObject;
     const target = hpa.spec.scaleTargetRef;
     const key = target.kind + "/" + target.name;
     maxReplicas[key] = hpa?.spec?.maxReplicas ?? 1;
+  }
+
+  function addScaledObjectMaxReplicas(object: ScaledObject) {
+    const obj = object.toJson() as KubeObject;
+    const target = obj.spec.scaleTargetRef;
+    const key = target.kind + "/" + target.name;
+    maxReplicas[key] = obj?.spec?.maxReplicaCount ?? 1;
   }
 
   for (const object of objects) {
@@ -164,7 +173,9 @@ export function calculateResourceQuota(
       if (workloadKinds.includes(object.kind)) {
         addWorkload(object);
       } else if (object.kind === "HorizontalPodAutoscaler") {
-        addMaxReplicas(object);
+        addHpaMaxReplicas(object);
+      } else if (object.kind === "ScaledObject") {
+        addScaledObjectMaxReplicas(object);
       }
     }
 
@@ -174,7 +185,7 @@ export function calculateResourceQuota(
     if (object instanceof WebService) {
       addWorkload(object.deployment);
       if (object.hpa) {
-        addMaxReplicas(object.hpa);
+        addHpaMaxReplicas(object.hpa);
       }
     }
   }

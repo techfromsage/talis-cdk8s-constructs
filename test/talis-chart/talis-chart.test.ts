@@ -14,6 +14,7 @@ import {
   Quantity,
   ResourceRequirements,
 } from "../../imports/k8s";
+import { ScaledObject } from "../../imports/keda.sh";
 import {
   TalisChart,
   TalisChartProps,
@@ -499,6 +500,33 @@ describe("TalisChart", () => {
           cpu: "700m",
           memory: "896Mi",
           pods: 7,
+        },
+      });
+    });
+
+    test("Calculates ResourceQuota for a Deployment with ScaledObject", () => {
+      const app = Testing.app();
+      const chart = new TalisChart(app, defaultProps);
+      const deployment = makeDeployment(chart);
+      new ScaledObject(chart, "scaled-object", {
+        spec: {
+          scaleTargetRef: {
+            apiVersion: deployment.apiVersion,
+            kind: deployment.kind,
+            name: deployment.name,
+          },
+          minReplicaCount: 2,
+          maxReplicaCount: 3,
+          triggers: [],
+        },
+      });
+      const results = Testing.synth(chart);
+      const quota = results.find((obj) => obj.kind === "ResourceQuota");
+      expect(quota.spec).toEqual({
+        hard: {
+          cpu: "400m",
+          memory: "512Mi",
+          pods: 4,
         },
       });
     });
