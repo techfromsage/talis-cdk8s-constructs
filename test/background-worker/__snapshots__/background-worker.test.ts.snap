@@ -1,5 +1,206 @@
 // Vitest Snapshot v1
 
+exports[`BackgroundWorker > Autoscaling > Autoscaling can be paused 1`] = `
+[
+  {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "labels": {
+        "instance": "worker-test",
+        "release": "v1",
+        "role": "worker",
+      },
+      "name": "test-worker-test-c860ab13",
+    },
+    "spec": {
+      "revisionHistoryLimit": 1,
+      "selector": {
+        "matchLabels": {
+          "instance": "worker-test",
+          "role": "worker",
+        },
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "instance": "worker-test",
+            "release": "v1",
+            "role": "worker",
+          },
+        },
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
+                        "instance": "worker-test",
+                        "role": "worker",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": [
+            {
+              "image": "talis/app:worker-v1",
+              "imagePullPolicy": "IfNotPresent",
+              "name": "app",
+              "resources": {
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+  {
+    "apiVersion": "keda.sh/v1alpha1",
+    "kind": "ScaledObject",
+    "metadata": {
+      "annotations": {
+        "autoscaling.keda.sh/paused-replicas": "0",
+      },
+      "labels": {
+        "instance": "worker-test",
+        "release": "v1",
+        "role": "worker",
+      },
+      "name": "test-worker-test-worker-test-scaledobject-c8e8d57d",
+    },
+    "spec": {
+      "maxReplicaCount": 10,
+      "minReplicaCount": 0,
+      "scaleTargetRef": {
+        "apiVersion": "apps/v1",
+        "envSourceContainerName": "app",
+        "kind": "Deployment",
+        "name": "test-worker-test-c860ab13",
+      },
+      "triggers": [],
+    },
+  },
+]
+`;
+
+exports[`BackgroundWorker > Autoscaling > Either replicas or autoscaling can be specified 1`] = `"replicas and autoscaling are mutually exclusive"`;
+
+exports[`BackgroundWorker > Autoscaling > It can autoscale based on Redis List length 1`] = `
+[
+  {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "labels": {
+        "instance": "worker-test",
+        "release": "v1",
+        "role": "worker",
+      },
+      "name": "test-worker-test-c860ab13",
+    },
+    "spec": {
+      "revisionHistoryLimit": 1,
+      "selector": {
+        "matchLabels": {
+          "instance": "worker-test",
+          "role": "worker",
+        },
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "instance": "worker-test",
+            "release": "v1",
+            "role": "worker",
+          },
+        },
+        "spec": {
+          "affinity": {
+            "podAntiAffinity": {
+              "preferredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "podAffinityTerm": {
+                    "labelSelector": {
+                      "matchLabels": {
+                        "instance": "worker-test",
+                        "role": "worker",
+                      },
+                    },
+                    "topologyKey": "topology.kubernetes.io/zone",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+          },
+          "automountServiceAccountToken": false,
+          "containers": [
+            {
+              "image": "talis/app:worker-v1",
+              "imagePullPolicy": "IfNotPresent",
+              "name": "app",
+              "resources": {
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "100Mi",
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+  {
+    "apiVersion": "keda.sh/v1alpha1",
+    "kind": "ScaledObject",
+    "metadata": {
+      "labels": {
+        "instance": "worker-test",
+        "release": "v1",
+        "role": "worker",
+      },
+      "name": "test-worker-test-worker-test-scaledobject-c8e8d57d",
+    },
+    "spec": {
+      "maxReplicaCount": 10,
+      "minReplicaCount": 0,
+      "scaleTargetRef": {
+        "apiVersion": "apps/v1",
+        "envSourceContainerName": "app",
+        "kind": "Deployment",
+        "name": "test-worker-test-c860ab13",
+      },
+      "triggers": [
+        {
+          "metadata": {
+            "databaseIndex": "0",
+            "host": "redis.example.com",
+            "listLength": "5",
+            "listName": "my-redis-queue",
+            "port": "6379",
+          },
+          "name": "worker-test-redis-my-redis-queue",
+          "type": "redis",
+        },
+      ],
+    },
+  },
+]
+`;
+
 exports[`BackgroundWorker > Custom stop signal > Either stopSignal or lifecycle.preStop can be specified 1`] = `"stopSignal and lifecycle.preStop are mutually exclusive"`;
 
 exports[`BackgroundWorker > Custom stop signal > Merge stopSignal and postStart hook 1`] = `

@@ -48,7 +48,10 @@ describe("BackgroundWorker", () => {
         instance: "test",
       };
       const allProps: Required<
-        Omit<BackgroundWorkerProps, "stopSignal" | "makeAffinity">
+        Omit<
+          BackgroundWorkerProps,
+          "stopSignal" | "makeAffinity" | "autoscaling"
+        >
       > = {
         ...requiredProps,
         selectorLabels,
@@ -332,6 +335,55 @@ describe("BackgroundWorker", () => {
       });
       const container = results[0].spec.template.spec.containers[0];
       expect(container.lifecycle).toMatchSnapshot();
+    });
+  });
+
+  describe("Autoscaling", () => {
+    test("Either replicas or autoscaling can be specified", () => {
+      expect(() => {
+        new BackgroundWorker(Testing.chart(), "worker-test", {
+          ...requiredProps,
+          replicas: 5,
+          autoscaling: {
+            minReplicas: 1,
+            maxReplicas: 10,
+          },
+        });
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    test("It can autoscale based on Redis List length", () => {
+      const results = synthBackgroundWorker({
+        ...requiredProps,
+        autoscaling: {
+          minReplicas: 0,
+          maxReplicas: 10,
+          redisListScalers: [
+            {
+              listName: "my-redis-queue",
+              listLength: 5,
+              redisConnectionDetails: {
+                host: "redis.example.com",
+                port: "6379",
+                database: "0",
+              },
+            },
+          ],
+        },
+      });
+      expect(results).toMatchSnapshot();
+    });
+
+    test("Autoscaling can be paused", () => {
+      const results = synthBackgroundWorker({
+        ...requiredProps,
+        autoscaling: {
+          paused: true,
+          minReplicas: 0,
+          maxReplicas: 10,
+        },
+      });
+      expect(results).toMatchSnapshot();
     });
   });
 });

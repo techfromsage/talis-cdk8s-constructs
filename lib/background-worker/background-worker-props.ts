@@ -1,5 +1,53 @@
 import { IoK8SApiCoreV1PodSpecRestartPolicy } from "../../imports/k8s";
 import { ContainerProps, WorkloadProps } from "../common";
+import { RedisConnectionDetails } from "../redis/redis-util";
+
+export interface RedisListScalerProps {
+  /** Name of the Redis List that you want to monitor. */
+  readonly listName: string;
+
+  /** Average target value to trigger scaling actions. */
+  readonly listLength: number;
+
+  /** Redis connection details. */
+  readonly redisConnectionDetails: RedisConnectionDetails;
+}
+
+export interface BackgroundWorkerAutoscalingProps {
+  /**
+   * Whether to pause autoscaling.
+   * When set to true, `minReplicas` will be used as the desired replica count.
+   * @see https://keda.sh/docs/2.9/concepts/scaling-deployments/#pause-autoscaling
+   */
+  readonly paused?: boolean;
+
+  /**
+   * Minimum number of replicas.
+   * @default 0
+   */
+  readonly minReplicas?: number;
+
+  /**
+   * Maximum number of replicas.
+   * @default 100
+   */
+  readonly maxReplicas: number;
+
+  /**
+   * Interval to check each scaler on.
+   * @default 30
+   */
+  readonly pollingInterval?: number;
+
+  /**
+   * The period to wait after the last trigger reported active before scaling the resource back to 0.
+   * @default 300
+   */
+  readonly cooldownPeriod?: number;
+
+  /** Scale applications based on Redis List(s). */
+  readonly redisListScalers?: RedisListScalerProps[];
+}
 
 export interface BackgroundWorkerProps
   extends Omit<ContainerProps, "readinessProbe">,
@@ -22,4 +70,9 @@ export interface BackgroundWorkerProps
    * @default IoK8SApiCoreV1PodSpecRestartPolicy.ALWAYS
    */
   readonly restartPolicy?: IoK8SApiCoreV1PodSpecRestartPolicy;
+
+  /**
+   * Autoscaling props. Cannot be specified with `replicas`.
+   */
+  readonly autoscaling?: BackgroundWorkerAutoscalingProps;
 }

@@ -5,6 +5,7 @@ import {
   KubeDeployment,
   Lifecycle,
 } from "../../imports/k8s";
+import { ScaledObject } from "../../imports/keda.sh";
 import { defaultAffinity } from "../common";
 import { BackgroundWorkerProps } from "./background-worker-props";
 
@@ -30,7 +31,8 @@ export class BackgroundWorker extends Construct {
       ...props.selectorLabels,
     };
 
-    new KubeDeployment(this, id, {
+    const containerName = props.containerName ?? app ?? "app";
+    const deployment = new KubeDeployment(this, id, {
       metadata: {
         labels: { ...labels, ...selectorLabels },
       },
@@ -62,7 +64,7 @@ export class BackgroundWorker extends Construct {
             initContainers: props.initContainers,
             containers: [
               {
-                name: props.containerName ?? app ?? "app",
+                name: containerName,
                 image: props.image,
                 imagePullPolicy:
                   props.imagePullPolicy ??
@@ -84,6 +86,48 @@ export class BackgroundWorker extends Construct {
         },
       },
     });
+
+    if (props.autoscaling) {
+      const { redisListScalers = [] } = props.autoscaling;
+      const scaledObjectAnnotations: Record<string, string> = {};
+      if (props.autoscaling.paused) {
+        scaledObjectAnnotations["autoscaling.keda.sh/paused-replicas"] = String(
+          props.autoscaling.minReplicas
+        );
+      }
+
+      new ScaledObject(this, `${id}-scaledobject`, {
+        metadata: {
+          annotations: { ...scaledObjectAnnotations },
+          labels: { ...labels, ...selectorLabels },
+        },
+        spec: {
+          minReplicaCount: props.autoscaling.minReplicas,
+          maxReplicaCount: props.autoscaling.maxReplicas,
+          pollingInterval: props.autoscaling.pollingInterval,
+          cooldownPeriod: props.autoscaling.cooldownPeriod,
+          scaleTargetRef: {
+            apiVersion: deployment.apiVersion,
+            kind: deployment.kind,
+            name: deployment.name,
+            envSourceContainerName: containerName,
+          },
+          triggers: [
+            ...redisListScalers.map((scaler) => ({
+              type: "redis",
+              name: `${id}-redis-${scaler.listName}`,
+              metadata: {
+                host: scaler.redisConnectionDetails.host,
+                port: scaler.redisConnectionDetails.port,
+                databaseIndex: scaler.redisConnectionDetails.database,
+                listName: scaler.listName,
+                listLength: String(scaler.listLength),
+              },
+            })),
+          ],
+        },
+      });
+    }
   }
 
   validateProps(props: BackgroundWorkerProps): void {
@@ -91,6 +135,10 @@ export class BackgroundWorker extends Construct {
       throw new Error(
         "stopSignal and lifecycle.preStop are mutually exclusive"
       );
+    }
+
+    if (props.replicas && props.autoscaling) {
+      throw new Error("replicas and autoscaling are mutually exclusive");
     }
   }
 
