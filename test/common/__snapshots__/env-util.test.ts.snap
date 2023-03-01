@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`env-util > getCanaryStage > Throws if env var is empty 1`] = `"Stage environment variable CANARY_STAGE is not set"`;
 
