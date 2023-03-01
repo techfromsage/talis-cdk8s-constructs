@@ -11,9 +11,9 @@ import { Quantity } from "../../imports/k8s";
 
 export class BackgroundWorkerChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "worker", ...props });
-
     const release = getDockerTag("RELEASE", props.environment, "v1.0");
+    super(scope, { app: "worker", release, ...props });
+
     const redisUrl = "redis.cache.svc.cluster.local:6379:1";
     const dockerHubSecret = createDockerHubSecretFromEnv(this);
 

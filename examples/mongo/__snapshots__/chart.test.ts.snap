@@ -11,6 +11,7 @@ exports[`Mongo example > Snapshot 1`] = `
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
+        "release": "test",
         "service": "example-mongo-app-development-local",
       },
       "name": "example-mongo-app-test",

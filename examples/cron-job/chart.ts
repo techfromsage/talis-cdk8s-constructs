@@ -13,9 +13,9 @@ import {
 
 export class CronJobChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "example-cron-app", ...props });
-
     const release = getDockerTag("RELEASE", props.environment, "v1.0");
+    super(scope, { app: "example-cron-app", release, ...props });
+
     const dockerHubSecret = createDockerHubSecretFromEnv(this);
 
     new CronJob(this, "cron-job-example", {

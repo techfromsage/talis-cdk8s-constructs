@@ -13,9 +13,9 @@ import {
 
 export class JobChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "example-job-app", ...props });
-
     const release = getDockerTag("RELEASE", props.environment, "v1.0");
+    super(scope, { app: "example-job-app", release, ...props });
+
     const dockerHubSecret = createDockerHubSecretFromEnv(this);
 
     new Job(this, "job-example", {
