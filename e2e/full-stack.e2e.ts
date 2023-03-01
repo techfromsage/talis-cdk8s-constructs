@@ -32,7 +32,7 @@ export interface FullStackChartProps extends TalisChartProps {
 
 export class FullStackChart extends TalisChart {
   constructor(scope: Construct, props: FullStackChartProps) {
-    super(scope, { app: "cdk8s-stack", ...props });
+    super(scope, { app: "cdk8s-stack", release: "test", ...props });
 
     const { domain, watermark } = props;
     const applicationPort = 9898;

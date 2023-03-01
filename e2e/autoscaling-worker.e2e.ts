@@ -21,7 +21,7 @@ import { getRedisConnectionDetails } from "../lib/redis/redis-util";
 
 export class AutoscalingWorkerChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "cdk8s-autoscale", ...props });
+    super(scope, { app: "cdk8s-autoscale", release: "test", ...props });
 
     const redisVersion = "5.0.7";
     const busyboxVersion = "1.35.0";

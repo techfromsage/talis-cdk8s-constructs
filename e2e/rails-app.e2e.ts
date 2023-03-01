@@ -21,7 +21,7 @@ import { getBuildWatermark, makeTtlTimestamp } from "./test-util";
 
 export class RubyOnRailsAppChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "cdk8s-rails", ...props });
+    super(scope, { app: "cdk8s-rails", release: "test", ...props });
 
     const applicationPort = 3000;
     const redmineVersion = "5.0.2";

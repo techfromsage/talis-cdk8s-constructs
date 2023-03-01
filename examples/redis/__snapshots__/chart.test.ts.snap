@@ -11,6 +11,7 @@ exports[`Redis example > Snapshot 1`] = `
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
+        "release": "test",
         "service": "example-redis-app-development-local",
       },
       "name": "example-redis-app-test",

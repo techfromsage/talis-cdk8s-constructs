@@ -9,6 +9,8 @@ import { calculateResourceQuota } from "./calculate-resource-quota";
 export interface TalisChartProps extends ChartProps {
   /** Name of the application this chart is for */
   readonly app?: string;
+  /** Release version of the application this chart is for */
+  readonly release?: string;
   /** Environment that this application is deployed in */
   readonly environment: TalisDeploymentEnvironment;
   /** Short region code */
@@ -27,6 +29,7 @@ export interface TalisChartProps extends ChartProps {
 /** @private */
 interface TalisChartConstructorProps extends TalisChartProps {
   readonly app: string;
+  readonly release: string;
 }
 
 export class TalisChart extends Chart {
@@ -38,7 +41,7 @@ export class TalisChart extends Chart {
   public readonly kubeNamespace: KubeNamespace;
 
   constructor(scope: Construct, props: TalisChartConstructorProps) {
-    const { app, environment, region, watermark, ttl } = props;
+    const { app, release, environment, region, watermark, ttl } = props;
     const maybeEnvironment =
       environment !== TalisDeploymentEnvironment.PRODUCTION ? environment : "";
     const maybeWatermark =
@@ -63,7 +66,7 @@ export class TalisChart extends Chart {
       labels: labels,
     });
 
-    const namespaceLabels = { ...labels };
+    const namespaceLabels: Record<string, string> = { ...labels, release };
     if (ttl) {
       namespaceLabels.ttl = ttl.toString();
     }

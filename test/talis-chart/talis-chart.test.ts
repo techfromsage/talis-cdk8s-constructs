@@ -24,6 +24,7 @@ import {
 
 const defaultProps = {
   app: "my-app",
+  release: "test",
   environment: TalisDeploymentEnvironment.TEST,
   region: TalisShortRegion.EU,
   watermark: "test",
@@ -87,6 +88,7 @@ describe("TalisChart", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
+      release: "test",
       environment: TalisDeploymentEnvironment.PRODUCTION,
       region: TalisShortRegion.EU,
       watermark: "test",
@@ -101,6 +103,7 @@ describe("TalisChart", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
+      release: "test",
       environment: TalisDeploymentEnvironment.PRODUCTION,
       region: TalisShortRegion.EU,
       watermark: "test",
@@ -114,21 +117,25 @@ describe("TalisChart", () => {
 
     const results = Testing.synth(chart);
     expect(results).toHaveLength(2);
-    const expected = {
+    const commonLabels = {
       app: "my-app",
       environment: TalisDeploymentEnvironment.PRODUCTION,
       "managed-by": "cdk8s",
       region: TalisShortRegion.EU,
       service: "my-app-eu",
     };
-    expect(results[0].metadata.labels).toEqual(expected);
-    expect(results[1].metadata.labels).toEqual(expected);
+    const namespaceLabels = { ...commonLabels, release: "test" };
+    expect(results[0].kind).toEqual("Namespace");
+    expect(results[0].metadata.labels).toEqual(namespaceLabels);
+    expect(results[1].kind).toEqual("Foo");
+    expect(results[1].metadata.labels).toEqual(commonLabels);
   });
 
   test("Allows to set custom labels on objects", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
+      release: "test",
       environment: TalisDeploymentEnvironment.STAGING,
       watermark: "test",
       region: TalisShortRegion.EU,
@@ -149,7 +156,7 @@ describe("TalisChart", () => {
 
     const results = Testing.synth(chart);
     expect(results).toHaveLength(4);
-    const expected = {
+    const commonLabels = {
       app: "my-app",
       environment: TalisDeploymentEnvironment.STAGING,
       foo: "bar",
@@ -157,16 +164,18 @@ describe("TalisChart", () => {
       region: TalisShortRegion.EU,
       service: "my-app-staging-eu",
     };
-    expect(results[0].metadata.labels).toEqual(expected);
-    expect(results[1].metadata.labels).toEqual(expected);
-    expect(results[2].metadata.labels).toEqual(expected);
-    expect(results[3].metadata.labels).toEqual(expected);
+    const namespaceLabels = { ...commonLabels, release: "test" };
+    expect(results[0].metadata.labels).toEqual(namespaceLabels);
+    expect(results[1].metadata.labels).toEqual(commonLabels);
+    expect(results[2].metadata.labels).toEqual(commonLabels);
+    expect(results[3].metadata.labels).toEqual(commonLabels);
   });
 
   test("Sets app label and property verbatim", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
+      release: "test",
       environment: TalisDeploymentEnvironment.ONDEMAND,
       region: TalisShortRegion.EU,
       watermark: "plat-123",
@@ -205,6 +214,7 @@ describe("TalisChart", () => {
       const app = Testing.app();
       const chart = new TalisChart(app, {
         app: "my-app",
+        release: "test",
         environment: environment,
         region: region,
         watermark: watermark,
@@ -226,6 +236,7 @@ describe("TalisChart", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
       app: "my-app",
+      release: "test",
       environment: TalisDeploymentEnvironment.DEVELOPMENT,
       region: TalisShortRegion.LOCAL,
       watermark: "my-watermark",
@@ -280,6 +291,7 @@ describe("TalisChart", () => {
       const app = Testing.app();
       const chart = new TalisChart(app, {
         app: "my-app",
+        release: "test",
         environment: environment,
         region: region,
         watermark: watermark,
@@ -315,6 +327,7 @@ describe("TalisChart", () => {
       const app = Testing.app();
       const chart = new TalisChart(app, {
         app: "my-app",
+        release: "test",
         environment,
         region,
         watermark,

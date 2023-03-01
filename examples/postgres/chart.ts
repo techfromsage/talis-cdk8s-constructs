@@ -3,7 +3,7 @@ import { ConfigMap, Postgres, TalisChart, TalisChartProps } from "../../lib";
 
 export class PostgresChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "example-postgres-app", ...props });
+    super(scope, { app: "example-postgres-app", release: "test", ...props });
 
     const initConfig = new ConfigMap(this, "postgres-init", {
       data: {

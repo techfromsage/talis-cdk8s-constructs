@@ -21,7 +21,7 @@ export interface WebServiceCanaryChartProps extends TalisChartProps {
 
 export class WebServiceCanaryChart extends TalisChart {
   constructor(scope: Construct, props: WebServiceCanaryChartProps) {
-    super(scope, { app: "cdk8s-e2e-canary", ...props });
+    super(scope, { app: "cdk8s-e2e-canary", release: "test", ...props });
 
     const { domain, environment, watermark } = props;
     const applicationPort = 9898;

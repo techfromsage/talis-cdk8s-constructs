@@ -11,6 +11,7 @@ exports[`Memcached example > Snapshot 1`] = `
         "environment": "development",
         "managed-by": "cdk8s",
         "region": "local",
+        "release": "test",
         "service": "example-memcached-app-development-local",
       },
       "name": "example-memcached-app-test",

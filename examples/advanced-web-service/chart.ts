@@ -13,10 +13,10 @@ import path from "path";
 
 export class AdvancedWebServiceChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
-    super(scope, { app: "advanced", ...props });
+    const release = getDockerTag("RELEASE", props.environment, "v0.2.1");
+    super(scope, { app: "advanced", release, ...props });
 
     const stage = getCanaryStage("CANARY_STAGE");
-    const release = getDockerTag("RELEASE", props.environment, "v0.2.1");
 
     const applicationPort = 8000;
     const appConfigMap = new ConfigMap(this, "config", {
