@@ -53,6 +53,7 @@
     "cdk8s": "^2.7.15",
     "cdk8s-cli": "^2.1.146",
     "constructs": "^10.1.264",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
     "husky": "^8.0.3",
