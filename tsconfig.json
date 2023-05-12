@@ -21,6 +21,6 @@
     "types": ["vitest/globals"],
     "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["examples/**/*.ts", "lib/**/*.ts", "test/**/*.ts"],
+  "include": ["examples/**/*.ts", "lib/**/*.ts"],
   "exclude": ["node_modules"]
 }
