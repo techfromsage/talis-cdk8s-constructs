@@ -12,8 +12,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "engines": {
-    "npm": ">=8.1.2",
-    "node": ">=16.13.2"
+    "npm": ">=9.5.1",
+    "node": ">=18.16.0"
   },
   "scripts": {
     "build": "tsc",
@@ -63,7 +63,7 @@
     "prettier": "^2.8.8",
     "semantic-release": "^19.0.5",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
+    "typescript": "~5.0.4",
     "vitest": "^0.31.0"
   }
 }

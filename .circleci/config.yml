@@ -33,6 +33,16 @@ jobs:
     steps:
       - run: echo "Building $CIRCLE_BRANCH"
 
+  printnodeversion:
+    executor: node/default
+    steps:
+      - checkout
+      - node_setup
+      - run:
+          name: Print the version of node we are using
+          command: |
+            node --version
+
   commitlint:
     executor: node/default
     steps:
@@ -76,6 +86,15 @@ workflows:
               ignore:
                 - main
                 - /^dependabot-.*$/
+      - printnodeversion:
+          filters:
+            branches:
+              ignore:
+                - main
+                - /^dependabot-.*$/
+          requires:
+            - fan_out
+            - be_kind_to_your_colleagues
       - commitlint:
           filters:
             branches:
