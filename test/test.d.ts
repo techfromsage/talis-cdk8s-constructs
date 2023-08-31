@@ -1,12 +1,10 @@
+import type { Assertion, AsymmetricMatchersContaining } from "vitest";
+
 interface CustomMatchers<R = unknown> {
-  toHaveAllProperties(props: object, omit: string[] = []): R;
+  toHaveAllProperties(props: object, omit: string[]): R;
 }
 
-declare global {
-  namespace Vi {
-    interface Assertion extends CustomMatchers {}
-    interface AsymmetricMatchersContaining extends CustomMatchers {}
-  }
+declare module "vitest" {
+  interface Assertion<T = any> extends CustomMatchers<T> {}
+  interface AsymmetricMatchersContaining extends CustomMatchers {}
 }
-
-export {};
