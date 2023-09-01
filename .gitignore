@@ -5,6 +5,8 @@ junit.xml
 .huskyrc
 
 # Built artifacts
+e2e/**/*.d.ts
+e2e/**/*.js
 examples/**/*.d.ts
 examples/**/*.js
 imports/**/*.d.ts
