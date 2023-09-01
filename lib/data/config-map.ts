@@ -214,11 +214,11 @@ export class ConfigMap extends Construct {
    */
   private verifyKeyAvailable(
     key: string,
-    where: "_data" | "_binaryData"
+    where: "_data" | "_binaryData",
   ): void {
     if (key in this[where]) {
       throw new Error(
-        `ConfigMap key "${key}" is already used in ${where.substring(1)}`
+        `ConfigMap key "${key}" is already used in ${where.substring(1)}`,
       );
     }
   }

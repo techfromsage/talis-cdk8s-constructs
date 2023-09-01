@@ -124,7 +124,7 @@ describe("annotation-util", () => {
 
     test("Map", () => {
       expect(convertToJsonContent({ a: "b", c: "d" })).toEqual(
-        '{"a":"b","c":"d"}'
+        '{"a":"b","c":"d"}',
       );
     });
   });

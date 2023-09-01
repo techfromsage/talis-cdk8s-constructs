@@ -18,7 +18,7 @@ export function getWatermark({
 
   if (!watermarkRegex.test(watermark)) {
     throw new Error(
-      "Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."
+      "Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character.",
     );
   }
 
@@ -44,7 +44,7 @@ export function getTtlTimestamp({ envVarName = "TTL" } = {}):
 export function getDockerTag(
   envVarName: string,
   environment: TalisDeploymentEnvironment,
-  defaultTag = "latest"
+  defaultTag = "latest",
 ): string {
   const tag = process.env[envVarName] ?? defaultTag;
 
@@ -60,7 +60,7 @@ export function getDockerTag(
     ["latest", "stable", "release"].includes(tag)
   ) {
     throw new Error(
-      `"${tag}" is not a valid Docker tag for ${environment}, please set ${envVarName} to a valid tag`
+      `"${tag}" is not a valid Docker tag for ${environment}, please set ${envVarName} to a valid tag`,
     );
   }
 
@@ -69,7 +69,7 @@ export function getDockerTag(
 
 export function getCanaryStage(
   envVarName = "CANARY_STAGE",
-  defaultStage?: CanaryStage
+  defaultStage?: CanaryStage,
 ): CanaryStage {
   const stage = (process.env[envVarName] as CanaryStage) || defaultStage;
 
@@ -80,8 +80,8 @@ export function getCanaryStage(
   if (!canaryStages.includes(stage)) {
     throw new Error(
       `Invalid canary stage: ${stage}. Allowed values are ${canaryStages.join(
-        ", "
-      )}`
+        ", ",
+      )}`,
     );
   }
 

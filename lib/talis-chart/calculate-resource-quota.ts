@@ -112,7 +112,7 @@ function getContainers(workload: KubeObject): Container[] {
 function getResourceRequest(
   workload: KubeObject,
   container: Container,
-  resource: string
+  resource: string,
 ) {
   if (container?.resources?.requests?.[resource]) {
     return container.resources.requests[resource];
@@ -122,7 +122,7 @@ function getResourceRequest(
   }
 
   throw new Error(
-    `No ${resource} requests found in ${makeIdentifier(workload)}`
+    `No ${resource} requests found in ${makeIdentifier(workload)}`,
   );
 }
 
@@ -142,7 +142,7 @@ function getPodMaxSurge(workload: KubeObject, replicas: number) {
 }
 
 export function calculateResourceQuota(
-  objects: IConstruct[]
+  objects: IConstruct[],
 ): ResourceQuotaSpec {
   const workloads = new Map<string, KubeObject>();
   const maxReplicas: Record<string, number> = {};

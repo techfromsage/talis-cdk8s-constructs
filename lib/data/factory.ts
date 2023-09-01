@@ -42,7 +42,7 @@ export function createImagePullSecret(
     registry = "https://index.docker.io/v1/",
     auth,
     encode = true,
-  }: ImagePullSecretFactoryProps
+  }: ImagePullSecretFactoryProps,
 ): KubeSecret {
   if (encode) {
     auth = base64Encode(auth);
@@ -52,7 +52,7 @@ export function createImagePullSecret(
     type: "kubernetes.io/dockerconfigjson",
     data: {
       ".dockerconfigjson": base64Encode(
-        JSON.stringify({ auths: { [registry]: { auth } } })
+        JSON.stringify({ auths: { [registry]: { auth } } }),
       ),
     },
   });
@@ -68,7 +68,7 @@ export function createDockerHubSecretFromEnv(scope: Construct) {
 
   if (!DOCKER_USERNAME || !DOCKER_PASSWORD) {
     throw new Error(
-      "DOCKER_USERNAME and DOCKER_PASSWORD must be set in the environment"
+      "DOCKER_USERNAME and DOCKER_PASSWORD must be set in the environment",
     );
   }
 

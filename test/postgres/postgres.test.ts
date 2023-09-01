@@ -117,7 +117,7 @@ describe("Postgres", () => {
       expect(sts).toHaveProperty("spec.selector.matchLabels.role", "database");
       expect(sts).toHaveProperty(
         "spec.template.metadata.labels.role",
-        "database"
+        "database",
       );
     });
   });
@@ -146,7 +146,7 @@ describe("Postgres", () => {
       const postgres = results.find((obj) => obj.kind === "StatefulSet");
       expect(postgres).toHaveProperty(
         "spec.template.spec.containers[0].image",
-        "postgres:v1"
+        "postgres:v1",
       );
     });
 
@@ -158,7 +158,7 @@ describe("Postgres", () => {
       const postgres = results.find((obj) => obj.kind === "StatefulSet");
       expect(postgres).toHaveProperty(
         "spec.template.spec.containers[0].image",
-        "postgres:12345"
+        "postgres:12345",
       );
     });
   });
@@ -174,7 +174,7 @@ describe("Postgres", () => {
       const chart = makeChart({ namespace: "test-ns" });
       const postgres = new Postgres(chart, "postgres-test", requiredProps);
       expect(postgres.getDnsName()).toBe(
-        "postgres-test-sts-0.postgres-test.test-ns.svc.cluster.local"
+        "postgres-test-sts-0.postgres-test.test-ns.svc.cluster.local",
       );
     });
 

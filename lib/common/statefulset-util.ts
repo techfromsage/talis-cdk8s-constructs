@@ -26,7 +26,7 @@ export interface DnsAwareStatefulSet extends IConstruct {
  */
 export function getDnsName(
   construct: DnsAwareStatefulSet,
-  replica = 0
+  replica = 0,
 ): string {
   const dnsName = `${construct.statefulSet.name}-${replica}.${construct.service.name}`;
   const chart = Chart.of(construct);

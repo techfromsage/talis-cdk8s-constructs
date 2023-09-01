@@ -154,7 +154,7 @@ describe("Secret", () => {
       const results = Testing.synth(chart);
       expect(results[0].metadata.name).toBe("test-mbk947c92t");
       expect(results[0].metadata.name).toBe(
-        results[1].spec.containers[0].envFrom[0].secretRef.name
+        results[1].spec.containers[0].envFrom[0].secretRef.name,
       );
     });
 
@@ -177,7 +177,7 @@ describe("Secret", () => {
       const results = Testing.synth(chart);
       expect(results[0].metadata.name).toBe("no-suffix");
       expect(results[0].metadata.name).toBe(
-        results[1].spec.containers[0].envFrom[0].secretRef.name
+        results[1].spec.containers[0].envFrom[0].secretRef.name,
       );
     });
   });

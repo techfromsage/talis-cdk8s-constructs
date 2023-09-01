@@ -12,7 +12,7 @@ export function joinNameParts(parts: (string | undefined)[]): string {
  * Abbreviate name of the environment.
  */
 function abbreviateEnvironment(
-  environment: TalisDeploymentEnvironment
+  environment: TalisDeploymentEnvironment,
 ): string {
   switch (environment) {
     case TalisDeploymentEnvironment.PRODUCTION:
@@ -58,12 +58,12 @@ export function makeLoadBalancerName(
     canary?: string;
     environment?: TalisDeploymentEnvironment;
     region?: TalisShortRegion;
-  }
+  },
 ): string {
   const { instance, canary, environment, region } = instanceLabels;
   const canarySuffix = canary && canary === "true" ? "c" : undefined;
   const envShort = abbreviateEnvironment(
-    environment ?? TalisDeploymentEnvironment.DEVELOPMENT
+    environment ?? TalisDeploymentEnvironment.DEVELOPMENT,
   );
   const regShort = abbreviateRegion(region ?? TalisShortRegion.LOCAL);
 

@@ -23,7 +23,7 @@ export interface RedisConnectionDetails extends RedisConnectionDetailsInput {
 }
 
 export function getRedisConnectionDetails(
-  connection: RedisConnectionDetailsInput
+  connection: RedisConnectionDetailsInput,
 ): RedisConnectionDetails {
   let { host, port, database } = connection;
 

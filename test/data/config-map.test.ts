@@ -163,7 +163,7 @@ describe("ConfigMap", () => {
       const results = Testing.synth(chart);
       expect(results[0].metadata.name).toBe("test-9g94h95f62");
       expect(results[0].metadata.name).toBe(
-        results[1].spec.containers[0].envFrom[0].configMapRef.name
+        results[1].spec.containers[0].envFrom[0].configMapRef.name,
       );
     });
 
@@ -186,7 +186,7 @@ describe("ConfigMap", () => {
       const results = Testing.synth(chart);
       expect(results[0].metadata.name).toBe("no-suffix");
       expect(results[0].metadata.name).toBe(
-        results[1].spec.containers[0].envFrom[0].configMapRef.name
+        results[1].spec.containers[0].envFrom[0].configMapRef.name,
       );
     });
   });

@@ -71,15 +71,15 @@ describe("Mongo", () => {
       expect(loadBalancer).toHaveProperty("metadata.annotations");
       expect(loadBalancer.metadata.annotations).toHaveProperty(
         "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type",
-        "instance"
+        "instance",
       );
       expect(loadBalancer.metadata.annotations).toHaveProperty(
         "service.beta.kubernetes.io/load-balancer-source-ranges",
-        "0.0.0.0/0"
+        "0.0.0.0/0",
       );
       expect(loadBalancer.metadata.annotations).toHaveProperty(
         "service.beta.kubernetes.io/aws-load-balancer-scheme",
-        "internal"
+        "internal",
       );
     });
 
@@ -104,7 +104,7 @@ describe("Mongo", () => {
       expect(sts).toHaveProperty("spec.selector.matchLabels.role", "database");
       expect(sts).toHaveProperty(
         "spec.template.metadata.labels.role",
-        "database"
+        "database",
       );
     });
   });
@@ -133,7 +133,7 @@ describe("Mongo", () => {
       const mongo = results.find((obj) => obj.kind === "StatefulSet");
       expect(mongo).toHaveProperty(
         "spec.template.spec.containers[0].image",
-        "mongo:v1"
+        "mongo:v1",
       );
     });
 
@@ -145,7 +145,7 @@ describe("Mongo", () => {
       const mongo = results.find((obj) => obj.kind === "StatefulSet");
       expect(mongo).toHaveProperty(
         "spec.template.spec.containers[0].image",
-        "mongo:12345"
+        "mongo:12345",
       );
     });
   });
@@ -202,7 +202,7 @@ describe("Mongo", () => {
       const chart = makeChart({ namespace: "test-ns" });
       const mongo = new Mongo(chart, "mongo-test", requiredProps);
       expect(mongo.getDnsName()).toBe(
-        "mongo-test-sts-0.mongo-test.test-ns.svc.cluster.local"
+        "mongo-test-sts-0.mongo-test.test-ns.svc.cluster.local",
       );
     });
 
