@@ -19,5 +19,6 @@
     "strict": true,
     "stripInternal": true,
     "types": ["vitest/globals"]
-  }
+  },
+  "exclude": ["vitest.config.ts"]
 }
