@@ -1,11 +1,9 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import {
-  IoK8SApiCoreV1ContainerImagePullPolicy,
-  KubeCronJob,
-} from "../../imports/k8s";
+import { KubeCronJob } from "../../imports/k8s";
 import { CronJobProps } from "./cron-job-props";
 import { parseExpression } from "cron-parser";
+import { ContainerImagePullPolicy } from "../k8s";
 
 export class CronJob extends Construct {
   constructor(scope: Construct, id: string, props: CronJobProps) {
@@ -57,7 +55,7 @@ export class CronJob extends Construct {
                     image: props.image,
                     imagePullPolicy:
                       props.imagePullPolicy ??
-                      IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT,
+                      ContainerImagePullPolicy.IF_NOT_PRESENT,
                     workingDir: props.workingDir,
                     command: props.command,
                     args: props.args,

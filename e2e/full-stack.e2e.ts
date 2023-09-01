@@ -5,7 +5,6 @@ import {
   Container,
   EnvFromSource,
   IntOrString,
-  IoK8SApiCoreV1PodSpecRestartPolicy,
   Quantity,
   ResourceRequirements,
 } from "../imports/k8s";
@@ -23,6 +22,7 @@ import {
   CronJob,
   Job,
   BackgroundWorker,
+  PodSpecRestartPolicy,
 } from "../lib";
 import { getBuildWatermark, makeTtlTimestamp } from "./test-util";
 
@@ -117,7 +117,7 @@ export class FullStackChart extends TalisChart {
       image: busyboxImage,
       release: busyboxVersion,
       command: ["sh", "-c", "echo 'hello world'"],
-      restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
+      restartPolicy: PodSpecRestartPolicy.NEVER,
       resources: commonResources,
     });
 
@@ -126,7 +126,7 @@ export class FullStackChart extends TalisChart {
       image: `docker.io/mongo:${mongoVersion}`,
       release: mongoVersion,
       command: ["mongo", `--host=${mongoHost}`, "--eval", "db.stats()"],
-      restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
+      restartPolicy: PodSpecRestartPolicy.NEVER,
       resources: commonResources,
     });
 

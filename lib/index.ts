@@ -3,6 +3,7 @@ export * from "./common";
 export * from "./cron-job";
 export * from "./data";
 export * from "./job";
+export * from "./k8s";
 export * from "./memcached";
 export * from "./mongo";
 export * from "./postgres";

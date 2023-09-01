@@ -2,14 +2,13 @@ import { Chart } from "cdk8s";
 import { Construct } from "constructs";
 import {
   IntOrString,
-  IoK8SApiCoreV1ServicePortProtocol,
-  IoK8SApiCoreV1ServiceSpecType,
   KubeService,
   KubeStatefulSet,
   Quantity,
 } from "../../imports/k8s";
 import { DnsAwareStatefulSet, getDnsName } from "../common/statefulset-util";
 import { MongoProps } from "./mongo-props";
+import { PortProtocol, ServiceSpecType } from "../k8s";
 
 export class Mongo extends Construct implements DnsAwareStatefulSet {
   readonly service: KubeService;
@@ -73,13 +72,13 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
         ports: [
           {
             port: port,
-            protocol: IoK8SApiCoreV1ServicePortProtocol.TCP,
+            protocol: PortProtocol.TCP,
           },
         ],
         selector: selectorLabels,
         type: exposeService
-          ? IoK8SApiCoreV1ServiceSpecType.LOAD_BALANCER
-          : IoK8SApiCoreV1ServiceSpecType.CLUSTER_IP,
+          ? ServiceSpecType.LOAD_BALANCER
+          : ServiceSpecType.CLUSTER_IP,
         loadBalancerClass: exposeService ? "service.k8s.aws/nlb" : undefined,
       },
     });

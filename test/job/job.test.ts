@@ -1,10 +1,11 @@
 import { Chart, Testing } from "cdk8s";
+import { Quantity } from "../../imports/k8s";
 import {
-  IoK8SApiCoreV1ContainerImagePullPolicy,
-  IoK8SApiCoreV1PodSpecRestartPolicy,
-  Quantity,
-} from "../../imports/k8s";
-import { Job, JobProps } from "../../lib";
+  ContainerImagePullPolicy,
+  Job,
+  JobProps,
+  PodSpecRestartPolicy,
+} from "../../lib";
 import { makeChart } from "../test-util";
 
 const requiredProps: JobProps = {
@@ -17,12 +18,12 @@ const requiredProps: JobProps = {
     },
   },
   backoffLimit: 0,
-  restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
+  restartPolicy: PodSpecRestartPolicy.NEVER,
 };
 
 function synthJob(
   props: JobProps = requiredProps,
-  chartLabels: { [key: string]: string } = {}
+  chartLabels: { [key: string]: string } = {},
 ) {
   const chart = makeChart({
     namespace: "test",
@@ -68,7 +69,7 @@ describe("Job", () => {
         ttlSecondsAfterFinished: 30,
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
-        imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
+        imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         resources: {
           requests: {
@@ -132,7 +133,7 @@ describe("Job", () => {
     test("Setting restartPolicy", () => {
       const results = synthJob({
         ...requiredProps,
-        restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
+        restartPolicy: PodSpecRestartPolicy.NEVER,
       });
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty("spec.template.spec.restartPolicy", "Never");
@@ -164,7 +165,7 @@ describe("Job", () => {
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "app"
+        "app",
       );
     });
 
@@ -180,7 +181,7 @@ describe("Job", () => {
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "from-chart"
+        "from-chart",
       );
     });
 
@@ -192,7 +193,7 @@ describe("Job", () => {
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "from-selector"
+        "from-selector",
       );
     });
 
@@ -204,7 +205,7 @@ describe("Job", () => {
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "explicit-name"
+        "explicit-name",
       );
     });
 
@@ -259,7 +260,7 @@ describe("Job", () => {
           app: "my-app",
           environment: "test",
           region: "dev",
-        }
+        },
       );
       const job = results.find((obj) => obj.kind === "Job");
 

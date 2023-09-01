@@ -2,13 +2,13 @@ import { Chart } from "cdk8s";
 import { Construct } from "constructs";
 import {
   IntOrString,
-  IoK8SApiCoreV1ServicePortProtocol,
   KubeService,
   KubeStatefulSet,
   Quantity,
 } from "../../imports/k8s";
 import { DnsAwareStatefulSet, getDnsName } from "../common/statefulset-util";
 import { RedisProps } from "./redis-props";
+import { PortProtocol } from "../k8s";
 
 export class Redis extends Construct implements DnsAwareStatefulSet {
   readonly service: KubeService;
@@ -47,7 +47,7 @@ export class Redis extends Construct implements DnsAwareStatefulSet {
         ports: [
           {
             port: port,
-            protocol: IoK8SApiCoreV1ServicePortProtocol.TCP,
+            protocol: PortProtocol.TCP,
           },
         ],
         selector: selectorLabels,

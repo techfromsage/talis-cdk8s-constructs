@@ -5,10 +5,6 @@ import {
   IngressRule,
   IngressTls,
   IntOrString,
-  IoK8SApiCoreV1ContainerImagePullPolicy,
-  IoK8SApiCoreV1ContainerPortProtocol,
-  IoK8SApiCoreV1ServicePortProtocol,
-  IoK8SApiCoreV1ServiceSpecType,
   KubeDeployment,
   KubeHorizontalPodAutoscalerV2,
   KubeIngress,
@@ -26,6 +22,11 @@ import {
 } from ".";
 import { defaultAffinity, makeLoadBalancerName, ensureArray } from "../common";
 import { supportsTls } from "./tls-util";
+import {
+  ContainerImagePullPolicy,
+  PortProtocol,
+  ServiceSpecType,
+} from "../k8s";
 
 export class WebService extends Construct {
   readonly service!: KubeService;
@@ -66,8 +67,7 @@ export class WebService extends Construct {
         name: props.containerName ?? app ?? "app",
         image: props.image,
         imagePullPolicy:
-          props.imagePullPolicy ??
-          IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT,
+          props.imagePullPolicy ?? ContainerImagePullPolicy.IF_NOT_PRESENT,
         workingDir: props.workingDir,
         command: props.command,
         args: props.args,
@@ -75,7 +75,7 @@ export class WebService extends Construct {
         ports: [
           {
             containerPort: applicationPort,
-            protocol: IoK8SApiCoreV1ContainerPortProtocol.TCP,
+            protocol: PortProtocol.TCP,
           },
         ],
         securityContext: props.securityContext,
@@ -146,13 +146,13 @@ export class WebService extends Construct {
         spec: {
           type:
             ingressTargetType === "instance"
-              ? IoK8SApiCoreV1ServiceSpecType.NODE_PORT
-              : IoK8SApiCoreV1ServiceSpecType.CLUSTER_IP,
+              ? ServiceSpecType.NODE_PORT
+              : ServiceSpecType.CLUSTER_IP,
           ports: [
             {
               port: servicePort,
               targetPort: IntOrString.fromNumber(servicePort),
-              protocol: IoK8SApiCoreV1ServicePortProtocol.TCP,
+              protocol: PortProtocol.TCP,
             },
           ],
           selector: serviceLabels,
@@ -217,7 +217,7 @@ export class WebService extends Construct {
         const ingressAnnotations = {
           "alb.ingress.kubernetes.io/load-balancer-name": loadBalancerNameFunc(
             namespace,
-            { ...instanceLabels, ...loadBalancerLabels }
+            { ...instanceLabels, ...loadBalancerLabels },
           ),
           "alb.ingress.kubernetes.io/load-balancer-attributes":
             convertToStringMap({
@@ -246,7 +246,7 @@ export class WebService extends Construct {
           ...externalDns,
         };
         this.validateLoadBalancerName(
-          ingressAnnotations["alb.ingress.kubernetes.io/load-balancer-name"]
+          ingressAnnotations["alb.ingress.kubernetes.io/load-balancer-name"],
         );
 
         ingressRules.push({
@@ -291,7 +291,7 @@ export class WebService extends Construct {
               },
               rules: ingressRules.length > 0 ? ingressRules : undefined,
             },
-          }
+          },
         );
 
         if (isCanaryInstance) {
@@ -355,7 +355,7 @@ export class WebService extends Construct {
         this.hpa = this.addHorizontalPodAutoscaler(
           deployment,
           props.horizontalPodAutoscaler,
-          selectorLabels
+          selectorLabels,
         );
         if (skipLiveDeployment) {
           this.node.tryRemoveChild(this.hpa.node.id);
@@ -367,19 +367,19 @@ export class WebService extends Construct {
   validateProps(props: WebServiceProps): void {
     if (!props.horizontalPodAutoscaler && !props.replicas) {
       throw new Error(
-        "Either horizontalPodAutoscaler or replicas must be specified"
+        "Either horizontalPodAutoscaler or replicas must be specified",
       );
     }
 
     if (props.horizontalPodAutoscaler && props.replicas) {
       throw new Error(
-        "Either horizontalPodAutoscaler or replicas can be specified, not both"
+        "Either horizontalPodAutoscaler or replicas can be specified, not both",
       );
     }
 
     if (props.canary && !props.stage) {
       throw new Error(
-        "Release stage must be specified when canary deployments are enabled"
+        "Release stage must be specified when canary deployments are enabled",
       );
     }
 
@@ -391,7 +391,7 @@ export class WebService extends Construct {
       )
     ) {
       throw new Error(
-        "Either cpuTargetUtilization or memoryTargetUtilization must be specified to use a horizontalPodAutoscaler"
+        "Either cpuTargetUtilization or memoryTargetUtilization must be specified to use a horizontalPodAutoscaler",
       );
     }
   }
@@ -429,14 +429,14 @@ export class WebService extends Construct {
     }
     if (name.length > 32) {
       throw new Error(
-        `Load balancer name must not exceed 32 characters. Given: ${name}`
+        `Load balancer name must not exceed 32 characters. Given: ${name}`,
       );
     }
   }
 
   createNginx(
     nginx: NginxContainerProps,
-    nginxPort: number
+    nginxPort: number,
   ): [Container, Volume] {
     const volume: Volume = {
       name: "nginx-config",
@@ -450,8 +450,7 @@ export class WebService extends Construct {
       name: "nginx",
       image: nginx.image ?? "public.ecr.aws/nginx/nginx:1.21.5",
       imagePullPolicy:
-        nginx.imagePullPolicy ??
-        IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT,
+        nginx.imagePullPolicy ?? ContainerImagePullPolicy.IF_NOT_PRESENT,
       resources: nginx.resources ?? {
         requests: {
           cpu: Quantity.fromString("50m"),
@@ -464,7 +463,7 @@ export class WebService extends Construct {
       ports: [
         {
           containerPort: nginxPort,
-          protocol: IoK8SApiCoreV1ContainerPortProtocol.TCP,
+          protocol: PortProtocol.TCP,
         },
       ],
       startupProbe: nginx.startupProbe,
@@ -505,7 +504,7 @@ export class WebService extends Construct {
   addHorizontalPodAutoscaler(
     deployment: KubeDeployment,
     props: HorizontalPodAutoscalerProps,
-    labels: { [key: string]: string }
+    labels: { [key: string]: string },
   ) {
     const metrics: Array<MetricSpecV2> = [];
 
@@ -552,7 +551,7 @@ export class WebService extends Construct {
           maxReplicas: props.maxReplicas,
           metrics: metrics,
         },
-      }
+      },
     );
   }
 }

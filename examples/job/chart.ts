@@ -5,11 +5,9 @@ import {
   getDockerTag,
   TalisChart,
   TalisChartProps,
+  PodSpecRestartPolicy,
 } from "../../lib";
-import {
-  IoK8SApiCoreV1PodSpecRestartPolicy,
-  Quantity,
-} from "../../imports/k8s";
+import { Quantity } from "../../imports/k8s";
 
 export class JobChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
@@ -19,7 +17,7 @@ export class JobChart extends TalisChart {
     const dockerHubSecret = createDockerHubSecretFromEnv(this);
 
     new Job(this, "job-example", {
-      restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.ON_FAILURE,
+      restartPolicy: PodSpecRestartPolicy.ON_FAILURE,
       ttlSecondsAfterFinished: 100,
       image: `docker.io/organization/my-app:job-${release}`,
       imagePullSecrets: [{ name: dockerHubSecret.name }],

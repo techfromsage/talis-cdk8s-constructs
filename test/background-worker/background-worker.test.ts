@@ -1,10 +1,11 @@
 import { Chart, Testing } from "cdk8s";
+import { Quantity } from "../../imports/k8s";
 import {
-  IoK8SApiCoreV1ContainerImagePullPolicy,
-  IoK8SApiCoreV1PodSpecRestartPolicy,
-  Quantity,
-} from "../../imports/k8s";
-import { BackgroundWorker, BackgroundWorkerProps } from "../../lib";
+  BackgroundWorker,
+  BackgroundWorkerProps,
+  ContainerImagePullPolicy,
+  PodSpecRestartPolicy,
+} from "../../lib";
 
 const requiredProps = {
   image: "talis/app:worker-v1",
@@ -62,11 +63,11 @@ describe("BackgroundWorker", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: true,
-        imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
+        imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
         revisionHistoryLimit: 5,
-        restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.ALWAYS,
+        restartPolicy: PodSpecRestartPolicy.ALWAYS,
         affinity: {
           podAntiAffinity: {
             preferredDuringSchedulingIgnoredDuringExecution: [
@@ -235,11 +236,11 @@ describe("BackgroundWorker", () => {
       expect(deployment).toHaveProperty("metadata.labels.app", "foobar");
       expect(deployment).toHaveProperty(
         "spec.selector.matchLabels.app",
-        "foobar"
+        "foobar",
       );
       expect(deployment).toHaveProperty(
         "spec.template.metadata.labels.app",
-        "foobar"
+        "foobar",
       );
     });
   });
@@ -250,7 +251,7 @@ describe("BackgroundWorker", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "app"
+        "app",
       );
     });
 
@@ -266,7 +267,7 @@ describe("BackgroundWorker", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "from-chart"
+        "from-chart",
       );
     });
 
@@ -278,7 +279,7 @@ describe("BackgroundWorker", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "from-selector"
+        "from-selector",
       );
     });
 
@@ -290,7 +291,7 @@ describe("BackgroundWorker", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "explicit-name"
+        "explicit-name",
       );
     });
   });

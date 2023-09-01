@@ -2,7 +2,6 @@ import { ApiObject, Testing } from "cdk8s";
 import {
   DeploymentSpec,
   IntOrString,
-  IoK8SApiAppsV1DeploymentStrategyType,
   KubeCronJob,
   KubeDaemonSet,
   KubeDeployment,
@@ -20,6 +19,7 @@ import {
   TalisChartProps,
   TalisShortRegion,
   TalisDeploymentEnvironment,
+  DeploymentStrategyType,
 } from "../../lib";
 
 const defaultProps = {
@@ -50,7 +50,7 @@ function makePodSpec(resources?: ResourceRequirements): PodSpec {
 function makePod(
   chart: TalisChart,
   id = "my-pod",
-  resources?: ResourceRequirements
+  resources?: ResourceRequirements,
 ) {
   return new KubePod(chart, id, {
     spec: makePodSpec(resources),
@@ -60,7 +60,7 @@ function makePod(
 function makeDeployment(
   chart: TalisChart,
   id = "my-deploy",
-  spec: Partial<DeploymentSpec> = {}
+  spec: Partial<DeploymentSpec> = {},
 ) {
   return new KubeDeployment(chart, id, {
     spec: {
@@ -439,7 +439,7 @@ describe("TalisChart", () => {
       makeDeployment(chart, "my-deploy", {
         replicas: 3,
         strategy: {
-          type: IoK8SApiAppsV1DeploymentStrategyType.ROLLING_UPDATE,
+          type: DeploymentStrategyType.ROLLING_UPDATE,
           rollingUpdate: {
             maxSurge: IntOrString.fromNumber(2),
           },
@@ -462,7 +462,7 @@ describe("TalisChart", () => {
       makeDeployment(chart, "my-deploy", {
         replicas: 3,
         strategy: {
-          type: IoK8SApiAppsV1DeploymentStrategyType.ROLLING_UPDATE,
+          type: DeploymentStrategyType.ROLLING_UPDATE,
           rollingUpdate: {
             maxSurge: IntOrString.fromString("90%"),
           },
@@ -669,7 +669,7 @@ describe("TalisChart", () => {
       const chart = new TalisChart(app, defaultProps);
       new KubePod(chart, "my-pod");
       expect(() => Testing.synth(chart)).toThrow(
-        "Could not find containers in Pod/my-pod"
+        "Could not find containers in Pod/my-pod",
       );
     });
 
@@ -682,7 +682,7 @@ describe("TalisChart", () => {
         },
       });
       expect(() => Testing.synth(chart)).toThrow(
-        "No cpu requests found in Pod/my-pod"
+        "No cpu requests found in Pod/my-pod",
       );
     });
 
@@ -695,7 +695,7 @@ describe("TalisChart", () => {
         },
       });
       expect(() => Testing.synth(chart)).toThrow(
-        "No memory requests found in Pod/my-pod"
+        "No memory requests found in Pod/my-pod",
       );
     });
   });

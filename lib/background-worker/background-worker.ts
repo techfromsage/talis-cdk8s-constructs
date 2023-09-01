@@ -1,13 +1,10 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import {
-  IoK8SApiCoreV1ContainerImagePullPolicy,
-  KubeDeployment,
-  Lifecycle,
-} from "../../imports/k8s";
+import { KubeDeployment, Lifecycle } from "../../imports/k8s";
 import { ScaledObject } from "../../imports/keda.sh";
 import { defaultAffinity } from "../common";
 import { BackgroundWorkerProps } from "./background-worker-props";
+import { ContainerImagePullPolicy } from "../k8s";
 
 export class BackgroundWorker extends Construct {
   constructor(scope: Construct, id: string, props: BackgroundWorkerProps) {
@@ -68,7 +65,7 @@ export class BackgroundWorker extends Construct {
                 image: props.image,
                 imagePullPolicy:
                   props.imagePullPolicy ??
-                  IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT,
+                  ContainerImagePullPolicy.IF_NOT_PRESENT,
                 workingDir: props.workingDir,
                 command: props.command,
                 args: props.args,
@@ -92,7 +89,7 @@ export class BackgroundWorker extends Construct {
       const scaledObjectAnnotations: Record<string, string> = {};
       if (props.autoscaling.paused) {
         scaledObjectAnnotations["autoscaling.keda.sh/paused-replicas"] = String(
-          props.autoscaling.minReplicas
+          props.autoscaling.minReplicas,
         );
       }
 
@@ -133,7 +130,7 @@ export class BackgroundWorker extends Construct {
   validateProps(props: BackgroundWorkerProps): void {
     if (props.stopSignal && props.lifecycle?.preStop) {
       throw new Error(
-        "stopSignal and lifecycle.preStop are mutually exclusive"
+        "stopSignal and lifecycle.preStop are mutually exclusive",
       );
     }
 

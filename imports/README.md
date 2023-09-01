@@ -4,7 +4,7 @@ In order to update Kubernetes imports to the specific cluster version, run the f
 
 ```sh
 nvm use
-npx cdk8s import -l typescript k8s@1.25.0
+npx cdk8s import -l typescript k8s@1.27.0
 ```
 
 # Updating KEDA imports
