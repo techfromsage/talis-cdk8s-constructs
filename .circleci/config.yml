@@ -1,9 +1,9 @@
 version: 2.1
 
 orbs:
-  aws-cli: circleci/aws-cli@3.1.3
+  aws-cli: circleci/aws-cli@4.1.0
   kubernetes: circleci/kubernetes@1.3.1
-  node: circleci/node@5.0.3
+  node: circleci/node@5.1.0
 
 parameters:
   cluster_name:
@@ -15,7 +15,7 @@ commands:
     steps:
       - aws-cli/setup
       - kubernetes/install-kubectl:
-          kubectl-version: v1.23.13
+          kubectl-version: v1.27.4
       - run:
           name: Set up cluster context
           command: aws eks update-kubeconfig --name << pipeline.parameters.cluster_name >> --alias << pipeline.parameters.cluster_name >>
