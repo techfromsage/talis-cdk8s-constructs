@@ -102,7 +102,7 @@ describe("Redis", () => {
       const sts = results.find((obj) => obj.kind === "StatefulSet");
       expect(sts).toHaveProperty(
         "spec.template.spec.containers[0].image",
-        "redis:v1"
+        "redis:v1",
       );
     });
 
@@ -114,7 +114,7 @@ describe("Redis", () => {
       const sts = results.find((obj) => obj.kind === "StatefulSet");
       expect(sts).toHaveProperty(
         "spec.template.spec.containers[0].image",
-        "redis:12345"
+        "redis:12345",
       );
     });
   });
@@ -130,7 +130,7 @@ describe("Redis", () => {
       const chart = makeChart({ namespace: "test-ns" });
       const redis = new Redis(chart, "redis-test", requiredProps);
       expect(redis.getDnsName()).toBe(
-        "redis-test-sts-0.redis-test.test-ns.svc.cluster.local"
+        "redis-test-sts-0.redis-test.test-ns.svc.cluster.local",
       );
     });
 

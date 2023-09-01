@@ -39,7 +39,7 @@ describe("env-util", () => {
         getWatermark({
           envVarName: "WATERMARKO",
           defaultValue: "defaulto",
-        })
+        }),
       ).toBe("defaulto");
     });
 
@@ -102,13 +102,13 @@ describe("env-util", () => {
     test("Gets a Docker tag from named env var", () => {
       process.env.APP_DOCKER_TAG = "v1";
       expect(
-        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.DEVELOPMENT)
+        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.DEVELOPMENT),
       ).toBe("v1");
     });
 
     test("Gets the default Docker tag if env var is not set", () => {
       expect(
-        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.DEVELOPMENT)
+        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.DEVELOPMENT),
       ).toBe("latest");
     });
 
@@ -117,22 +117,22 @@ describe("env-util", () => {
         getDockerTag(
           "APP_DOCKER_TAG",
           TalisDeploymentEnvironment.DEVELOPMENT,
-          "release"
-        )
+          "release",
+        ),
       ).toBe("release");
     });
 
     test("Throws if env var is empty", () => {
       process.env.APP_DOCKER_TAG = "";
       expect(() =>
-        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.DEVELOPMENT)
+        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.DEVELOPMENT),
       ).toThrowErrorMatchingSnapshot();
     });
 
     test("Throws if tag is not valid for the environment", () => {
       process.env.APP_DOCKER_TAG = "stable";
       expect(() =>
-        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.PRODUCTION)
+        getDockerTag("APP_DOCKER_TAG", TalisDeploymentEnvironment.PRODUCTION),
       ).toThrowErrorMatchingSnapshot();
     });
   });

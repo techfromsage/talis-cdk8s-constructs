@@ -28,7 +28,7 @@ export class WebServiceCanaryChart extends TalisChart {
     const podinfoVersion = getDockerTag(
       "PODINFO_VERSION",
       environment,
-      "6.1.3"
+      "6.1.3",
     );
     const stage = getCanaryStage("STAGE", "full");
 

@@ -102,7 +102,7 @@ describe("Memcached", () => {
       const sts = results.find((obj) => obj.kind === "StatefulSet");
       expect(sts).toHaveProperty(
         "spec.template.spec.containers[0].image",
-        "memcached:v1"
+        "memcached:v1",
       );
     });
 
@@ -114,7 +114,7 @@ describe("Memcached", () => {
       const sts = results.find((obj) => obj.kind === "StatefulSet");
       expect(sts).toHaveProperty(
         "spec.template.spec.containers[0].image",
-        "memcached:12345"
+        "memcached:12345",
       );
     });
   });
@@ -124,7 +124,7 @@ describe("Memcached", () => {
       const chart = makeChart();
       const memcached = new Memcached(chart, "memcached-test", requiredProps);
       expect(memcached.getDnsName()).toBe(
-        "memcached-test-sts-0.memcached-test"
+        "memcached-test-sts-0.memcached-test",
       );
     });
 
@@ -132,7 +132,7 @@ describe("Memcached", () => {
       const chart = makeChart({ namespace: "test-ns" });
       const memcached = new Memcached(chart, "memcached-test", requiredProps);
       expect(memcached.getDnsName()).toBe(
-        "memcached-test-sts-0.memcached-test.test-ns.svc.cluster.local"
+        "memcached-test-sts-0.memcached-test.test-ns.svc.cluster.local",
       );
     });
 

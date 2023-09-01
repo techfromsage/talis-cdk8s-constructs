@@ -73,7 +73,7 @@ describe("nginx-util", () => {
         {},
         {
           "custom.conf": "# custom config",
-        }
+        },
       );
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
@@ -90,7 +90,7 @@ describe("nginx-util", () => {
         },
         {
           "custom.conf": "# custom config",
-        }
+        },
       );
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();

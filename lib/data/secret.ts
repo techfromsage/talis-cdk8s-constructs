@@ -138,7 +138,7 @@ export class Secret extends Construct {
 
     if (key in this.stringData) {
       throw new Error(
-        `Secret data key "${key}" is already used in stringData, which takes precedence`
+        `Secret data key "${key}" is already used in stringData, which takes precedence`,
       );
     }
 

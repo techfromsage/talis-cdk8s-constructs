@@ -3,7 +3,7 @@ import { TalisDeploymentEnvironment } from "../talis-chart/talis-deployment-envi
 
 function resolveEnvironmentRegionUrlPart(
   environment: TalisDeploymentEnvironment,
-  region: TalisShortRegion
+  region: TalisShortRegion,
 ): string {
   if (environment === TalisDeploymentEnvironment.PRODUCTION) {
     if (region === TalisShortRegion.CANADA) {
@@ -17,7 +17,7 @@ function resolveEnvironmentRegionUrlPart(
 function getServiceUrl(
   service: string,
   environment: TalisDeploymentEnvironment,
-  region: TalisShortRegion
+  region: TalisShortRegion,
 ): string {
   const envRegionPart = resolveEnvironmentRegionUrlPart(environment, region);
   return `https://${service}-eks${envRegionPart}.talisaspire.com`;
@@ -29,7 +29,7 @@ function getServiceUrl(
 export function getEksDashboardUrl(
   environment: TalisDeploymentEnvironment,
   region: TalisShortRegion,
-  namespace: string
+  namespace: string,
 ): string {
   const dashboardUrl = getServiceUrl("dashboard", environment, region);
   return `${dashboardUrl}/#/overview?namespace=${namespace}`;
@@ -41,7 +41,7 @@ export function getEksDashboardUrl(
 export function getGraphsUrl(
   environment: TalisDeploymentEnvironment,
   region: TalisShortRegion,
-  namespace: string
+  namespace: string,
 ): string {
   const grafanaUrl = getServiceUrl("grafana", environment, region);
   // https://github.com/talis/infra/blob/d1e36a872691dcea052c28c27bd04e5273b2462f/kubernetes/monitoring/base-grafana/grafana/dashboards/k8s-resources-workloads-namespace.json#L1962
@@ -54,7 +54,7 @@ export function getGraphsUrl(
 export function getLogsUrl(
   environment: TalisDeploymentEnvironment,
   region: TalisShortRegion,
-  app: string
+  app: string,
 ): string {
   const grafanaUrl = getServiceUrl("grafana", environment, region);
   // https://github.com/talis/infra/blob/a09e3d9a29a333b987e612f41242f372929b668f/kubernetes/monitoring/base-grafana/grafana/dashboards/loki-logs.json#L187

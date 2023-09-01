@@ -37,7 +37,7 @@ interface NginxConfigMapProps {
 function createConfigMap(
   scope: Construct,
   props: NginxConfigMapProps,
-  data: { [key: string]: string } = {}
+  data: { [key: string]: string } = {},
 ): ConfigMap {
   if (props.includeDefaultConfig) {
     data["default.conf"] = getDefaultConfig(props);
@@ -60,7 +60,7 @@ function createConfigMap(
  * The output of this function is used with `createConfigMap` with `includeDefaultConfig` enabled.
  */
 function getDefaultConfig(
-  props: Pick<NginxConfigMapProps, "applicationPort" | "nginxPort">
+  props: Pick<NginxConfigMapProps, "applicationPort" | "nginxPort">,
 ): string {
   const { applicationPort, nginxPort } = props;
 

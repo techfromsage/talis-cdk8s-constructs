@@ -35,7 +35,7 @@ describe("statefulset-util", () => {
       const chart = makeChart({ namespace: "test-ns" });
       const statefulSet = new MyStatefulSet(chart, "sts-test");
       expect(getDnsName(statefulSet)).toBe(
-        "sts-test-sts-0.sts-test.test-ns.svc.cluster.local"
+        "sts-test-sts-0.sts-test.test-ns.svc.cluster.local",
       );
     });
 
