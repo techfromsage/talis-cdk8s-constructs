@@ -1,12 +1,7 @@
 import { Construct } from "constructs";
 import { App } from "cdk8s";
 
-import {
-  Container,
-  IoK8SApiCoreV1PodSpecRestartPolicy,
-  Quantity,
-  ResourceRequirements,
-} from "../imports/k8s";
+import { Container, Quantity, ResourceRequirements } from "../imports/k8s";
 import {
   TalisShortRegion,
   TalisDeploymentEnvironment,
@@ -15,6 +10,7 @@ import {
   Redis,
   BackgroundWorker,
   CronJob,
+  PodSpecRestartPolicy,
 } from "../lib";
 import { getBuildWatermark, makeTtlTimestamp } from "./test-util";
 import { getRedisConnectionDetails } from "../lib/redis/redis-util";
@@ -90,7 +86,7 @@ export class AutoscalingWorkerChart extends TalisChart {
           redisConnectionDetails.database,
           ...command,
         ],
-        restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
+        restartPolicy: PodSpecRestartPolicy.NEVER,
         resources: commonResources,
       });
     });

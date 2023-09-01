@@ -2,7 +2,6 @@ import {
   Container,
   EnvFromSource,
   EnvVar,
-  IoK8SApiCoreV1ContainerImagePullPolicy,
   Lifecycle,
   Probe,
   ResourceRequirements,
@@ -22,9 +21,9 @@ export interface ContainerProps {
 
   /**
    * Affects when the kubelet attempts to pull the specified image.
-   * @default IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT
+   * @default "IfNotPresent"
    */
-  readonly imagePullPolicy?: IoK8SApiCoreV1ContainerImagePullPolicy;
+  readonly imagePullPolicy?: string;
 
   /** Release version of the Docker image. */
   readonly release: string;

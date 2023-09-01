@@ -1,10 +1,8 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import {
-  IoK8SApiCoreV1ContainerImagePullPolicy,
-  KubeJob,
-} from "../../imports/k8s";
+import { KubeJob } from "../../imports/k8s";
 import { JobProps } from "./job-props";
+import { ContainerImagePullPolicy } from "../k8s";
 
 export class Job extends Construct {
   constructor(scope: Construct, id: string, props: JobProps) {
@@ -49,7 +47,7 @@ export class Job extends Construct {
                 image: props.image,
                 imagePullPolicy:
                   props.imagePullPolicy ??
-                  IoK8SApiCoreV1ContainerImagePullPolicy.IF_NOT_PRESENT,
+                  ContainerImagePullPolicy.IF_NOT_PRESENT,
                 workingDir: props.workingDir,
                 command: props.command,
                 args: props.args,

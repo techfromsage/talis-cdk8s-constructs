@@ -1,9 +1,5 @@
 import { ContainerProps } from "../common";
-import {
-  IoK8SApiCoreV1PodSpecRestartPolicy,
-  LocalObjectReference,
-  Volume,
-} from "../../imports/k8s";
+import { LocalObjectReference, Volume } from "../../imports/k8s";
 
 export interface JobProps
   extends Omit<
@@ -30,7 +26,7 @@ export interface JobProps
   /**
    * Restart policy for all containers within the pod.
    */
-  readonly restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy;
+  readonly restartPolicy: string;
 
   /**
    * Specifies the number of retries before marking this job failed.

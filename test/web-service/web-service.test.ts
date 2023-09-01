@@ -1,14 +1,17 @@
 import { Chart, Testing } from "cdk8s";
 import {
   IntOrString,
-  IoK8SApiCoreV1ContainerImagePullPolicy,
   KubeConfigMap,
   KubeDeployment,
   KubeIngress,
   KubeService,
   Quantity,
 } from "../../imports/k8s";
-import { WebService, WebServiceProps } from "../../lib";
+import {
+  ContainerImagePullPolicy,
+  WebService,
+  WebServiceProps,
+} from "../../lib";
 import * as _ from "lodash";
 import { makeChart } from "../test-util";
 
@@ -42,7 +45,7 @@ const defaultProps = { ...requiredProps, replicas: 1 };
 
 function synthWebService(
   props: WebServiceProps = defaultProps,
-  chartLabels: { [key: string]: string } = {}
+  chartLabels: { [key: string]: string } = {},
 ) {
   const chart = makeChart({
     namespace: "test",
@@ -105,7 +108,7 @@ describe("WebService", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: true,
-        imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
+        imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
         revisionHistoryLimit: 5,
@@ -156,7 +159,7 @@ describe("WebService", () => {
         port: 3000,
         nginx: {
           image: "ubuntu/nginx:1.18-21.10_edge",
-          imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
+          imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
           configMap: "nginx-config",
           port: 80,
         },
@@ -348,7 +351,7 @@ describe("WebService", () => {
     test("Creates load balancer names from components", () => {
       const results = synthWebService(
         { ...defaultProps, canary: true, stage: "base" },
-        { environment: "staging", region: "eu" }
+        { environment: "staging", region: "eu" },
       );
       const ingresses = results.filter((obj) => obj.kind === "Ingress");
       expect(ingresses).toHaveLength(2);
@@ -363,7 +366,7 @@ describe("WebService", () => {
           {
             environment: "non-abbreviable-env",
             region: "test",
-          }
+          },
         );
       }).toThrowErrorMatchingSnapshot();
     });
@@ -392,7 +395,7 @@ describe("WebService", () => {
           {
             environment: "production",
             region: "eu",
-          }
+          },
         );
       }).toThrowErrorMatchingSnapshot();
     });
@@ -413,7 +416,7 @@ describe("WebService", () => {
         {
           environment: "production",
           region: "eu",
-        }
+        },
       );
       const ingresses = results.filter((obj) => obj.kind === "Ingress");
       expect(ingresses).toHaveLength(1);
@@ -456,7 +459,7 @@ describe("WebService", () => {
       const results = synthWebService();
       const ingress = results.find((obj) => obj.kind === "Ingress");
       expect(ingress.spec.ingressClassName).toBe(
-        "aws-load-balancer-internet-facing"
+        "aws-load-balancer-internet-facing",
       );
     });
 
@@ -530,7 +533,7 @@ describe("WebService", () => {
       const ingress = results.find((obj) => obj.kind === "Ingress");
       expect(service.spec.type).toBe("NodePort");
       expect(
-        ingress.metadata.annotations["alb.ingress.kubernetes.io/target-type"]
+        ingress.metadata.annotations["alb.ingress.kubernetes.io/target-type"],
       ).toBe("instance");
     });
 
@@ -543,7 +546,7 @@ describe("WebService", () => {
       const ingress = results.find((obj) => obj.kind === "Ingress");
       expect(service.spec.type).toBe("ClusterIP");
       expect(
-        ingress.metadata.annotations["alb.ingress.kubernetes.io/target-type"]
+        ingress.metadata.annotations["alb.ingress.kubernetes.io/target-type"],
       ).toBe("ip");
     });
 
@@ -615,11 +618,11 @@ describe("WebService", () => {
       expect(deployment).toHaveProperty("metadata.labels.app", "foobar");
       expect(deployment).toHaveProperty(
         "spec.selector.matchLabels.app",
-        "foobar"
+        "foobar",
       );
       expect(deployment).toHaveProperty(
         "spec.template.metadata.labels.app",
-        "foobar"
+        "foobar",
       );
     });
   });
@@ -630,7 +633,7 @@ describe("WebService", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "app"
+        "app",
       );
     });
 
@@ -639,7 +642,7 @@ describe("WebService", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "from-chart"
+        "from-chart",
       );
     });
 
@@ -651,7 +654,7 @@ describe("WebService", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "from-selector"
+        "from-selector",
       );
     });
 
@@ -663,7 +666,7 @@ describe("WebService", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveProperty(
         "spec.template.spec.containers[0].name",
-        "explicit-name"
+        "explicit-name",
       );
     });
   });
@@ -729,7 +732,7 @@ describe("WebService", () => {
           app: "my-app",
           environment: "test",
           region: "dev",
-        }
+        },
       );
       expect(results).toHaveLength(3);
 

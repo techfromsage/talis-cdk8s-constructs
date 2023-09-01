@@ -1,4 +1,3 @@
-import { IoK8SApiCoreV1PodSpecRestartPolicy } from "../../imports/k8s";
 import { ContainerProps, WorkloadProps } from "../common";
 import { RedisConnectionDetails } from "../redis/redis-util";
 
@@ -67,9 +66,9 @@ export interface BackgroundWorkerProps
 
   /**
    * Restart policy for all containers within the pod.
-   * @default IoK8SApiCoreV1PodSpecRestartPolicy.ALWAYS
+   * @default "Always"
    */
-  readonly restartPolicy?: IoK8SApiCoreV1PodSpecRestartPolicy;
+  readonly restartPolicy?: string;
 
   /**
    * Autoscaling props. Cannot be specified with `replicas`.

@@ -1,10 +1,11 @@
 import { Chart, Testing } from "cdk8s";
+import { Quantity } from "../../imports/k8s";
 import {
-  IoK8SApiCoreV1ContainerImagePullPolicy,
-  IoK8SApiCoreV1PodSpecRestartPolicy,
-  Quantity,
-} from "../../imports/k8s";
-import { CronJob, CronJobProps } from "../../lib";
+  ContainerImagePullPolicy,
+  CronJob,
+  CronJobProps,
+  PodSpecRestartPolicy,
+} from "../../lib";
 import { makeChart } from "../test-util";
 
 const requiredProps: CronJobProps = {
@@ -18,12 +19,12 @@ const requiredProps: CronJobProps = {
     },
   },
   backoffLimit: 2,
-  restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.ON_FAILURE,
+  restartPolicy: PodSpecRestartPolicy.ON_FAILURE,
 };
 
 function synthCronJob(
   props: CronJobProps = requiredProps,
-  chartLabels: { [key: string]: string } = {}
+  chartLabels: { [key: string]: string } = {},
 ) {
   const chart = makeChart({
     namespace: "test",
@@ -69,7 +70,7 @@ describe("CronJob", () => {
         backoffLimit: 1,
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
-        imagePullPolicy: IoK8SApiCoreV1ContainerImagePullPolicy.ALWAYS,
+        imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         startingDeadlineSeconds: 200,
         successfulJobsHistoryLimit: 4,
@@ -136,12 +137,12 @@ describe("CronJob", () => {
     test("Setting restartPolicy", () => {
       const results = synthCronJob({
         ...requiredProps,
-        restartPolicy: IoK8SApiCoreV1PodSpecRestartPolicy.NEVER,
+        restartPolicy: PodSpecRestartPolicy.NEVER,
       });
       const cron = results.find((obj) => obj.kind === "CronJob");
       expect(cron).toHaveProperty(
         "spec.jobTemplate.spec.template.spec.restartPolicy",
-        "Never"
+        "Never",
       );
     });
 
@@ -186,7 +187,7 @@ describe("CronJob", () => {
               schedule: schedule,
             });
           }).toThrowError(errorMessage);
-        }
+        },
       );
     });
 
@@ -199,7 +200,7 @@ describe("CronJob", () => {
       expect(cron).toHaveProperty("metadata.labels.app", "foobar");
       expect(cron).toHaveProperty(
         "spec.jobTemplate.spec.template.metadata.labels.app",
-        "foobar"
+        "foobar",
       );
     });
   });
@@ -210,7 +211,7 @@ describe("CronJob", () => {
       const cron = results.find((obj) => obj.kind === "CronJob");
       expect(cron).toHaveProperty(
         "spec.jobTemplate.spec.template.spec.containers[0].name",
-        "app"
+        "app",
       );
     });
 
@@ -226,7 +227,7 @@ describe("CronJob", () => {
       const cron = results.find((obj) => obj.kind === "CronJob");
       expect(cron).toHaveProperty(
         "spec.jobTemplate.spec.template.spec.containers[0].name",
-        "from-chart"
+        "from-chart",
       );
     });
 
@@ -238,7 +239,7 @@ describe("CronJob", () => {
       const cron = results.find((obj) => obj.kind === "CronJob");
       expect(cron).toHaveProperty(
         "spec.jobTemplate.spec.template.spec.containers[0].name",
-        "from-selector"
+        "from-selector",
       );
     });
 
@@ -250,7 +251,7 @@ describe("CronJob", () => {
       const cron = results.find((obj) => obj.kind === "CronJob");
       expect(cron).toHaveProperty(
         "spec.jobTemplate.spec.template.spec.containers[0].name",
-        "explicit-name"
+        "explicit-name",
       );
     });
   });
@@ -296,7 +297,7 @@ describe("CronJob", () => {
           app: "my-app",
           environment: "test",
           region: "dev",
-        }
+        },
       );
       const cron = results.find((obj) => obj.kind === "CronJob");
 
