@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`value-util > getValueFromIntOrPercent > throws if string does not have % suffic 1`] = `"Invalid type: 42 is not a percentage"`;
+
+exports[`value-util > getValueFromIntOrPercent > throws if string is not a percentage number 1`] = `"Invalid value: foo% is not a number"`;

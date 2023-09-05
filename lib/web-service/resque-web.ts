@@ -15,8 +15,13 @@ export class ResqueWeb extends Construct {
   constructor(scope: Construct, id: string, props: ResqueWebProps) {
     super(scope, id);
 
+    const hasProp = (key: string) =>
+      Object.prototype.hasOwnProperty.call(props, key);
     const release = props.release ?? "stable";
     const applicationPort = props.port ?? 3000;
+    const podDisruptionBudget = hasProp("podDisruptionBudget")
+      ? props.podDisruptionBudget
+      : undefined;
 
     const ingressAnnotations: { [key: string]: string } = {
       "alb.ingress.kubernetes.io/healthcheck-path": "/status",
@@ -97,6 +102,7 @@ export class ResqueWeb extends Construct {
         ...ingressAnnotations,
         ...props.ingressAnnotations,
       },
+      podDisruptionBudget,
     });
   }
 }

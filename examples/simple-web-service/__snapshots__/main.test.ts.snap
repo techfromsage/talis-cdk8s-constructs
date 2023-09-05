@@ -173,5 +173,25 @@ exports[`Simple WebService example > Snapshot 1`] = `
       },
     },
   },
+  {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "instance": "web",
+        "role": "server",
+      },
+      "name": "test-web-web-pdb-c86ae522",
+    },
+    "spec": {
+      "minAvailable": 1,
+      "selector": {
+        "matchLabels": {
+          "instance": "web",
+          "role": "server",
+        },
+      },
+    },
+  },
 ]
 `;

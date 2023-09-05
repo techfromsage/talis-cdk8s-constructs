@@ -8,6 +8,7 @@ import {
   KubeDeployment,
   KubeHorizontalPodAutoscalerV2,
   KubeIngress,
+  KubePodDisruptionBudget,
   KubeService,
   MetricSpecV2,
   Quantity,
@@ -18,9 +19,15 @@ import {
   convertToStringMap,
   HorizontalPodAutoscalerProps,
   NginxContainerProps,
+  PodDisruptionBudgetProps,
   WebServiceProps,
 } from ".";
-import { defaultAffinity, makeLoadBalancerName, ensureArray } from "../common";
+import {
+  defaultAffinity,
+  makeLoadBalancerName,
+  ensureArray,
+  getValueFromIntOrPercent,
+} from "../common";
 import { supportsTls } from "./tls-util";
 import {
   ContainerImagePullPolicy,
@@ -58,6 +65,9 @@ export class WebService extends Construct {
       release: props.release,
     };
     const affinityFunc = props.makeAffinity ?? defaultAffinity;
+    const podDisruptionBudget = hasProp("podDisruptionBudget")
+      ? props.podDisruptionBudget
+      : { minAvailable: IntOrString.fromNumber(1) };
     const canaryReplicas = 1;
 
     const { applicationPort, servicePort, nginxPort } = this.findPorts(props);
@@ -361,10 +371,18 @@ export class WebService extends Construct {
           this.node.tryRemoveChild(this.hpa.node.id);
         }
       }
+
+      if (!isCanaryInstance && podDisruptionBudget) {
+        this.addPodDisruptionBudget(
+          deployment,
+          podDisruptionBudget,
+          selectorLabels,
+        );
+      }
     }
   }
 
-  validateProps(props: WebServiceProps): void {
+  private validateProps(props: WebServiceProps): void {
     if (!props.horizontalPodAutoscaler && !props.replicas) {
       throw new Error(
         "Either horizontalPodAutoscaler or replicas must be specified",
@@ -393,6 +411,64 @@ export class WebService extends Construct {
       throw new Error(
         "Either cpuTargetUtilization or memoryTargetUtilization must be specified to use a horizontalPodAutoscaler",
       );
+    }
+
+    if (props.podDisruptionBudget) {
+      this.validatePodDisruptionBudget(props);
+    }
+  }
+
+  private validatePodDisruptionBudget(props: WebServiceProps): void {
+    const { minAvailable, maxUnavailable } =
+      props.podDisruptionBudget as PodDisruptionBudgetProps;
+
+    if (!minAvailable && !maxUnavailable) {
+      throw new Error(
+        "Either minAvailable or maxUnavailable must be specified",
+      );
+    }
+
+    if (minAvailable && maxUnavailable) {
+      throw new Error(
+        "Either minAvailable or maxUnavailable can be specified, not both",
+      );
+    }
+
+    const minReplicas =
+      props.horizontalPodAutoscaler?.minReplicas ?? (props.replicas as number);
+
+    if (minReplicas < 2) {
+      throw new Error(
+        `Minimum number of replicas to use PodDisruptionBudget must be 2 or more. Given: ${minReplicas}`,
+      );
+    }
+
+    if (minAvailable) {
+      const min = getValueFromIntOrPercent(minAvailable, minReplicas);
+      if (min <= 0) {
+        throw new Error(
+          `podDisruptionBudget.minAvailable (${min}) must be greater than 0 to prevent downtime`,
+        );
+      }
+      if (min >= minReplicas) {
+        throw new Error(
+          `podDisruptionBudget.minAvailable (${min}) must be lower than minimum number of desired replicas (${minReplicas}) to allow voluntary evictions`,
+        );
+      }
+    }
+
+    if (maxUnavailable) {
+      const max = getValueFromIntOrPercent(maxUnavailable, minReplicas);
+      if (max <= 0) {
+        throw new Error(
+          `podDisruptionBudget.maxUnavailable (${max}) must be greater than 0 to allow voluntary evictions`,
+        );
+      }
+      if (max >= minReplicas) {
+        throw new Error(
+          `podDisruptionBudget.maxUnavailable (${max}) must be lower than minimum number of desired replicas (${minReplicas}) to prevent downtime`,
+        );
+      }
     }
   }
 
@@ -553,5 +629,24 @@ export class WebService extends Construct {
         },
       },
     );
+  }
+
+  addPodDisruptionBudget(
+    deployment: KubeDeployment,
+    props: PodDisruptionBudgetProps,
+    labels: { [key: string]: string },
+  ) {
+    new KubePodDisruptionBudget(this, `${deployment.node.id}-pdb`, {
+      metadata: {
+        labels,
+      },
+      spec: {
+        minAvailable: props.minAvailable,
+        maxUnavailable: props.maxUnavailable,
+        selector: {
+          matchLabels: labels,
+        },
+      },
+    });
   }
 }

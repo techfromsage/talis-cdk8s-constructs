@@ -1,5 +1,6 @@
 import { Testing } from "cdk8s";
 import { ResqueWeb } from "../../lib";
+import { IntOrString } from "../../imports/k8s";
 
 describe("ResqueWeb", () => {
   test("Creates resque web objects", () => {
@@ -60,5 +61,29 @@ describe("ResqueWeb", () => {
     });
     const results = Testing.synth(chart);
     expect(results).toMatchSnapshot();
+  });
+
+  test("It does not include podDisruptionBudget by default", () => {
+    const chart = Testing.chart();
+    new ResqueWeb(chart, "resque-web", {
+      externalUrl: "http://resque.example.com",
+    });
+    const results = Testing.synth(chart);
+    const pdbs = results.filter((obj) => obj.kind === "PodDisruptionBudget");
+    expect(pdbs).toHaveLength(0);
+  });
+
+  test("Allows specifying podDisruptionBudget", () => {
+    const chart = Testing.chart();
+    new ResqueWeb(chart, "resque-web", {
+      externalUrl: "http://resque.example.com",
+      replicas: 2,
+      podDisruptionBudget: {
+        maxUnavailable: IntOrString.fromNumber(1),
+      },
+    });
+    const results = Testing.synth(chart);
+    const pdbs = results.filter((obj) => obj.kind === "PodDisruptionBudget");
+    expect(pdbs).toHaveLength(1);
   });
 });
