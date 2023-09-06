@@ -16,6 +16,7 @@ import {
 } from "../../imports/k8s";
 import { ScaledObject, ScaledObjectSpec } from "../../imports/keda.sh";
 import { WebService } from "../web-service";
+import { getValueFromIntOrPercent } from "../common";
 
 const workloadKinds = [
   "Pod",
@@ -133,12 +134,7 @@ function getPodMaxSurge(workload: KubeObject, replicas: number) {
 
   const maxSurge = workload.spec?.strategy?.rollingUpdate?.maxSurge ?? "25%";
 
-  if (typeof maxSurge === "string" && maxSurge.endsWith("%")) {
-    const percentage = Number(maxSurge.slice(0, -1));
-    return Math.ceil((percentage / 100) * replicas);
-  }
-
-  return Number(maxSurge);
+  return getValueFromIntOrPercent(maxSurge, replicas);
 }
 
 export function calculateResourceQuota(

@@ -501,6 +501,35 @@ exports[`WebService > Props > All the props 1`] = `
     },
   },
   {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "app": "my-app",
+        "canary": "false",
+        "environment": "test",
+        "foo": "bar",
+        "instance": "my-app",
+        "region": "testing",
+        "role": "server",
+      },
+      "name": "test-web-web-pdb-c86ae522",
+      "namespace": "props-test",
+    },
+    "spec": {
+      "maxUnavailable": "25%",
+      "selector": {
+        "matchLabels": {
+          "app": "my-app",
+          "canary": "false",
+          "foo": "bar",
+          "instance": "my-app",
+          "role": "server",
+        },
+      },
+    },
+  },
+  {
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
@@ -906,6 +935,10 @@ exports[`WebService > Props > Either horizontalPodAutoscaler or replicas can be 
 
 exports[`WebService > Props > Either horizontalPodAutoscaler or replicas must be specified 1`] = `"Either horizontalPodAutoscaler or replicas must be specified"`;
 
+exports[`WebService > Props > Either minAvailable or maxUnavailable can be specified for podDisruptionBudget, not both 1`] = `"Either horizontalPodAutoscaler or replicas must be specified"`;
+
+exports[`WebService > Props > Either minAvailable or maxUnavailable must be specified for podDisruptionBudget 1`] = `"Either horizontalPodAutoscaler or replicas must be specified"`;
+
 exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
 [
   {
@@ -1103,6 +1136,27 @@ exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
         "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "web",
+      },
+    },
+  },
+  {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "instance": "web",
+        "role": "server",
+      },
+      "name": "web-pdb",
+      "namespace": "test",
+    },
+    "spec": {
+      "minAvailable": 1,
+      "selector": {
+        "matchLabels": {
+          "instance": "web",
+          "role": "server",
+        },
       },
     },
   },
@@ -1319,6 +1373,27 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for both memory and cpu 
       },
     },
   },
+  {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "instance": "web",
+        "role": "server",
+      },
+      "name": "web-pdb",
+      "namespace": "test",
+    },
+    "spec": {
+      "minAvailable": 1,
+      "selector": {
+        "matchLabels": {
+          "instance": "web",
+          "role": "server",
+        },
+      },
+    },
+  },
 ]
 `;
 
@@ -1519,6 +1594,27 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for memory 1`] = `
         "apiVersion": "apps/v1",
         "kind": "Deployment",
         "name": "web",
+      },
+    },
+  },
+  {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "instance": "web",
+        "role": "server",
+      },
+      "name": "web-pdb",
+      "namespace": "test",
+    },
+    "spec": {
+      "minAvailable": 1,
+      "selector": {
+        "matchLabels": {
+          "instance": "web",
+          "role": "server",
+        },
       },
     },
   },

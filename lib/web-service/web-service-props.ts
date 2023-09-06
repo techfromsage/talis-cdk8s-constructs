@@ -1,4 +1,4 @@
-import { Probe, ResourceRequirements } from "../../imports/k8s";
+import { IntOrString, Probe, ResourceRequirements } from "../../imports/k8s";
 import { ContainerProps, WorkloadProps } from "../common";
 
 export const canaryStages = ["base", "canary", "post-canary", "full"] as const;
@@ -16,6 +16,14 @@ export interface HorizontalPodAutoscalerProps {
 
   /** Target average memory utilization, as a percentage of the request. */
   readonly memoryTargetUtilization?: number;
+}
+
+export interface PodDisruptionBudgetProps {
+  /** An eviction is allowed if at most "maxUnavailable" pods are unavailable after the eviction. */
+  readonly maxUnavailable?: IntOrString;
+
+  /** An eviction is allowed if at least "minAvailable" pods will still be available after the eviction. */
+  readonly minAvailable?: IntOrString;
 }
 
 export interface NginxContainerProps {
@@ -192,4 +200,9 @@ export interface WebServiceProps
    * Additional external hostnames, they will be added as Ingress rules.
    */
   readonly additionalExternalHostnames?: string[];
+
+  /**
+   * Whether to include PodDisruptionBudget.
+   */
+  readonly podDisruptionBudget?: PodDisruptionBudgetProps;
 }

@@ -41,7 +41,11 @@ const requiredProps = {
   },
 };
 
-const defaultProps = { ...requiredProps, replicas: 1 };
+const defaultProps = {
+  ...requiredProps,
+  replicas: 1,
+  podDisruptionBudget: undefined,
+};
 
 function synthWebService(
   props: WebServiceProps = defaultProps,
@@ -173,6 +177,9 @@ describe("WebService", () => {
         tlsDomain: "*.example.com",
         ingressTargetType: "ip",
         terminationGracePeriodSeconds: 60,
+        podDisruptionBudget: {
+          maxUnavailable: IntOrString.fromString("25%"),
+        },
         lifecycle: {
           preStop: {
             exec: {
@@ -267,6 +274,7 @@ describe("WebService", () => {
         "selectorLabels",
         "stage",
         "tlsDomain",
+        "podDisruptionBudget",
       ]);
     });
 
@@ -625,6 +633,116 @@ describe("WebService", () => {
         "foobar",
       );
     });
+
+    test("It includes podDisruptionBudget by default", () => {
+      const results = synthWebService({ ...requiredProps, replicas: 1 });
+      const pdbs = results.filter((obj) => obj.kind === "PodDisruptionBudget");
+      expect(pdbs).toHaveLength(1);
+    });
+
+    test("Allows specifying podDisruptionBudget", () => {
+      const results = synthWebService({
+        ...requiredProps,
+        replicas: 2,
+        podDisruptionBudget: {
+          maxUnavailable: IntOrString.fromNumber(1),
+        },
+      });
+      const pdbs = results.filter((obj) => obj.kind === "PodDisruptionBudget");
+      expect(pdbs).toHaveLength(1);
+    });
+
+    test("Allows not including podDisruptionBudget", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        podDisruptionBudget: undefined,
+      });
+      const pdbs = results.filter((obj) => obj.kind === "PodDisruptionBudget");
+      expect(pdbs).toHaveLength(0);
+    });
+
+    test("Either minAvailable or maxUnavailable must be specified for podDisruptionBudget", () => {
+      expect(() => {
+        new WebService(Testing.chart(), "web", {
+          ...requiredProps,
+          podDisruptionBudget: {},
+        });
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    test("Either minAvailable or maxUnavailable can be specified for podDisruptionBudget, not both", () => {
+      expect(() => {
+        new WebService(Testing.chart(), "web", {
+          ...requiredProps,
+          podDisruptionBudget: {
+            minAvailable: IntOrString.fromNumber(1),
+            maxUnavailable: IntOrString.fromNumber(1),
+          },
+        });
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    test.each([
+      // Not enough replicas for PDB
+      [{ replicas: 1 }, { minAvailable: IntOrString.fromNumber(0) }],
+      [{ replicas: 1 }, { maxUnavailable: IntOrString.fromNumber(1) }],
+      [
+        { minReplicas: 1, maxReplicas: 100 },
+        { minAvailable: IntOrString.fromNumber(5) },
+      ],
+      [
+        { minReplicas: 1, maxReplicas: 100 },
+        { maxUnavailable: IntOrString.fromNumber(42) },
+      ],
+
+      // Would allow evicting all replicas
+      [{ replicas: 2 }, { minAvailable: IntOrString.fromNumber(0) }],
+      [{ replicas: 2 }, { maxUnavailable: IntOrString.fromNumber(2) }],
+      [{ replicas: 3 }, { maxUnavailable: IntOrString.fromString("70%") }],
+      [
+        { minReplicas: 2, maxReplicas: 10 },
+        { minAvailable: IntOrString.fromNumber(0) },
+      ],
+      [
+        { minReplicas: 21, maxReplicas: 100 },
+        { maxUnavailable: IntOrString.fromNumber(42) },
+      ],
+
+      // Would not allow evicting any replicas
+      [{ replicas: 2 }, { minAvailable: IntOrString.fromNumber(2) }],
+      [{ replicas: 2 }, { maxUnavailable: IntOrString.fromNumber(0) }],
+      [{ replicas: 3 }, { minAvailable: IntOrString.fromString("100%") }],
+      [{ replicas: 3 }, { maxUnavailable: IntOrString.fromString("0%") }],
+      [{ replicas: 10 }, { minAvailable: IntOrString.fromString("91%") }],
+      [{ replicas: 42 }, { maxUnavailable: IntOrString.fromString("0%") }],
+      [
+        { minReplicas: 5, maxReplicas: 10 },
+        { minAvailable: IntOrString.fromString("85%") },
+      ],
+    ])(
+      "Throw an error is podDisruptionBudget is not correct (%o, %o)",
+      (replicaProps, pdbProps) => {
+        expect(() => {
+          const replicas =
+            "replicas" in replicaProps
+              ? {
+                  replicas: replicaProps.replicas,
+                }
+              : {
+                  horizontalPodAutoscaler: {
+                    minReplicas: replicaProps.minReplicas,
+                    maxReplicas: replicaProps.maxReplicas,
+                    cpuTargetUtilization: 100,
+                  },
+                };
+          new WebService(Testing.chart(), "web", {
+            ...requiredProps,
+            ...replicas,
+            podDisruptionBudget: pdbProps,
+          });
+        }).toThrowError();
+      },
+    );
   });
 
   describe("Container name", () => {

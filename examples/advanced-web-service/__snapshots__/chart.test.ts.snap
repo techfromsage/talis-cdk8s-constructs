@@ -305,6 +305,35 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     },
   },
   {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "canary": "false",
+        "environment": "development",
+        "instance": "web",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "role": "server",
+        "service": "advanced-development-local",
+      },
+      "name": "web-pdb",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "minAvailable": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "advanced",
+          "canary": "false",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+    },
+  },
+  {
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
@@ -1129,6 +1158,35 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     },
   },
   {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "canary": "false",
+        "environment": "development",
+        "instance": "web",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "role": "server",
+        "service": "advanced-development-local",
+      },
+      "name": "web-pdb",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "minAvailable": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "advanced",
+          "canary": "false",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+    },
+  },
+  {
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
@@ -1730,6 +1788,35 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
           ],
         },
       ],
+    },
+  },
+  {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "canary": "false",
+        "environment": "development",
+        "instance": "web",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "role": "server",
+        "service": "advanced-development-local",
+      },
+      "name": "web-pdb",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "minAvailable": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "advanced",
+          "canary": "false",
+          "instance": "web",
+          "role": "server",
+        },
+      },
     },
   },
   {
@@ -2556,6 +2643,35 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
     },
   },
   {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "canary": "false",
+        "environment": "development",
+        "instance": "web",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "role": "server",
+        "service": "advanced-development-local",
+      },
+      "name": "web-pdb",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "minAvailable": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "advanced",
+          "canary": "false",
+          "instance": "web",
+          "role": "server",
+        },
+      },
+    },
+  },
+  {
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
@@ -3156,6 +3272,35 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
           ],
         },
       ],
+    },
+  },
+  {
+    "apiVersion": "policy/v1",
+    "kind": "PodDisruptionBudget",
+    "metadata": {
+      "labels": {
+        "app": "advanced",
+        "canary": "false",
+        "environment": "development",
+        "instance": "web",
+        "managed-by": "cdk8s",
+        "region": "local",
+        "role": "server",
+        "service": "advanced-development-local",
+      },
+      "name": "web-pdb",
+      "namespace": "advanced-test",
+    },
+    "spec": {
+      "minAvailable": 1,
+      "selector": {
+        "matchLabels": {
+          "app": "advanced",
+          "canary": "false",
+          "instance": "web",
+          "role": "server",
+        },
+      },
     },
   },
   {
