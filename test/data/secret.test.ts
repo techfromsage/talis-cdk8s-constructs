@@ -53,7 +53,7 @@ describe("Secret", () => {
           labels: { test: "true" },
         },
       });
-      expect(secret.metadata).toMatchSnapshot();
+      expect(secret.metadata.toJson()).toMatchSnapshot();
     });
 
     test("Setting data encodes the value", () => {
