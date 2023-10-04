@@ -56,7 +56,7 @@ describe("ConfigMap", () => {
           labels: { test: "true" },
         },
       });
-      expect(configMap.metadata).toMatchSnapshot();
+      expect(configMap.metadata.toJson()).toMatchSnapshot();
     });
 
     test("Data getter", () => {

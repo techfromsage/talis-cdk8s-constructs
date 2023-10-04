@@ -1,32 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`ConfigMap > Accessors > Metadata getter 1`] = `
-ApiObjectMetadataDefinition {
-  "_additionalAttributes": {
-    "labels": {
-      "prunable": "true",
-      "test": "true",
-    },
-    "name": Lazy {
-      "producer": {
-        "produce": [Function],
-      },
-    },
-    "namespace": undefined,
-  },
-  "annotations": {},
-  "finalizers": [],
+{
   "labels": {
     "prunable": "true",
     "test": "true",
   },
-  "name": Lazy {
-    "producer": {
-      "produce": [Function],
-    },
-  },
-  "namespace": undefined,
-  "ownerReferences": [],
+  "name": "test-c8eb60f8-hfh6t42gd2",
 }
 `;
 
