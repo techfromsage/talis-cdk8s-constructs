@@ -1,11 +1,13 @@
 import { ContainerProps } from "../common";
 import { LocalObjectReference, Volume } from "../../imports/k8s";
+import { PodProps } from "../common/pod-props";
 
 export interface JobProps
   extends Omit<
-    ContainerProps,
-    "startupProbe" | "readinessProbe" | "livenessProbe"
-  > {
+      ContainerProps,
+      "startupProbe" | "readinessProbe" | "livenessProbe"
+    >,
+    PodProps {
   /**
    * Custom selector labels, they will be merged with the default app, role, and instance.
    * They will be applied to the workload, the pod and the service.

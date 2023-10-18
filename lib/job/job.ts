@@ -3,6 +3,7 @@ import { Construct } from "constructs";
 import { KubeJob } from "../../imports/k8s";
 import { JobProps } from "./job-props";
 import { ContainerImagePullPolicy } from "../k8s";
+import { makeSafeToEvictAnnotations } from "../common";
 
 export class Job extends Construct {
   constructor(scope: Construct, id: string, props: JobProps) {
@@ -31,6 +32,7 @@ export class Job extends Construct {
         ttlSecondsAfterFinished: props.ttlSecondsAfterFinished,
         template: {
           metadata: {
+            annotations: makeSafeToEvictAnnotations(props),
             labels: {
               ...labels, // chart labels are not applied to the Pod so we need to add them here
               ...selectorLabels,

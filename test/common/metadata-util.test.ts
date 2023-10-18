@@ -1,6 +1,6 @@
 import { ApiObject, Testing } from "cdk8s";
 import { KubeDeployment } from "../../imports/k8s";
-import { addLabels } from "../../lib";
+import { addLabels, makeSafeToEvictAnnotations } from "../../lib";
 import { makeChart } from "../test-util";
 
 describe("metadata-util", () => {
@@ -196,53 +196,89 @@ describe("metadata-util", () => {
         "qux",
       );
     });
-  });
-
-  test("throws an error when a label is already set on a selector", () => {
-    const chart = makeChart();
-    expect(() => {
-      addLabels(
-        [
-          new KubeDeployment(chart, "deployment", {
-            spec: {
-              selector: { matchLabels: { app: "test-app" } },
-              template: {
-                metadata: {
-                  labels: { app: "test-app" },
-                },
-                spec: {
-                  containers: [{ name: "test" }],
-                },
-              },
-            },
-          }),
-        ],
-        { app: "different-app", foo: "bar" },
-      );
-    }).toThrowError("Setting app label would overwrite selector");
-  });
-
-  test("allows to set a label that is used in selector if values are the same", () => {
-    const chart = makeChart();
-    expect(() => {
-      addLabels(
-        [
-          new KubeDeployment(chart, "deployment", {
-            spec: {
-              selector: { matchLabels: { app: "test-app" } },
-              template: {
-                metadata: {
-                  labels: { app: "test-app" },
-                },
-                spec: {
-                  containers: [{ name: "test" }],
+    test("throws an error when a label is already set on a selector", () => {
+      const chart = makeChart();
+      expect(() => {
+        addLabels(
+          [
+            new KubeDeployment(chart, "deployment", {
+              spec: {
+                selector: { matchLabels: { app: "test-app" } },
+                template: {
+                  metadata: {
+                    labels: { app: "test-app" },
+                  },
+                  spec: {
+                    containers: [{ name: "test" }],
+                  },
                 },
               },
-            },
-          }),
-        ],
-        { app: "test-app", foo: "bar" },
-      );
-    }).not.toThrowError();
+            }),
+          ],
+          { app: "different-app", foo: "bar" },
+        );
+      }).toThrowError("Setting app label would overwrite selector");
+    });
+
+    test("allows to set a label that is used in selector if values are the same", () => {
+      const chart = makeChart();
+      expect(() => {
+        addLabels(
+          [
+            new KubeDeployment(chart, "deployment", {
+              spec: {
+                selector: { matchLabels: { app: "test-app" } },
+                template: {
+                  metadata: {
+                    labels: { app: "test-app" },
+                  },
+                  spec: {
+                    containers: [{ name: "test" }],
+                  },
+                },
+              },
+            }),
+          ],
+          { app: "test-app", foo: "bar" },
+        );
+      }).not.toThrowError();
+    });
+  });
+
+  describe("makeSafeToEvictAnnotations", () => {
+    test("empty", () => {
+      expect(makeSafeToEvictAnnotations({})).toEqual(undefined);
+    });
+
+    test("safe to evict", () => {
+      expect(makeSafeToEvictAnnotations({ safeToEvict: true })).toEqual({
+        "cluster-autoscaler.kubernetes.io/safe-to-evict": "true",
+      });
+    });
+
+    test("unsafe to evict", () => {
+      expect(makeSafeToEvictAnnotations({ safeToEvict: false })).toEqual({
+        "cluster-autoscaler.kubernetes.io/safe-to-evict": "false",
+      });
+    });
+
+    test("safe to evict local volume", () => {
+      expect(
+        makeSafeToEvictAnnotations({ safeToEvictLocalVolumes: ["tmp"] }),
+      ).toEqual({
+        "cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes": "tmp",
+      });
+    });
+
+    test("safe to evict local volumes", () => {
+      expect(
+        makeSafeToEvictAnnotations({
+          safeToEvictLocalVolumes: ["tmp", "host"],
+        }),
+      ).toEqual({
+        "cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes":
+          "tmp,host",
+      });
+    });
   });
 });

@@ -4,6 +4,7 @@ import { KubeCronJob } from "../../imports/k8s";
 import { CronJobProps } from "./cron-job-props";
 import { parseExpression } from "cron-parser";
 import { ContainerImagePullPolicy } from "../k8s";
+import { makeSafeToEvictAnnotations } from "../common";
 
 export class CronJob extends Construct {
   constructor(scope: Construct, id: string, props: CronJobProps) {
@@ -39,6 +40,7 @@ export class CronJob extends Construct {
             backoffLimit: props.backoffLimit ?? 6,
             template: {
               metadata: {
+                annotations: makeSafeToEvictAnnotations(props),
                 labels: {
                   ...labels, // chart labels are not applied to the Pod so we need to add them here
                   ...selectorLabels,

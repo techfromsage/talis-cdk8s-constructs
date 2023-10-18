@@ -67,6 +67,8 @@ describe("Job", () => {
         args: ["--foo", "bar"],
         backoffLimit: 1,
         ttlSecondsAfterFinished: 30,
+        safeToEvict: false,
+        safeToEvictLocalVolumes: ["tmp-dir"],
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
@@ -127,6 +129,8 @@ describe("Job", () => {
         "containerName",
         "release",
         "selectorLabels",
+        "safeToEvict",
+        "safeToEvictLocalVolumes",
       ]);
     });
 
