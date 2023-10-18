@@ -24,6 +24,10 @@ exports[`CronJob > Props > All the props 1`] = `
           "backoffLimit": 1,
           "template": {
             "metadata": {
+              "annotations": {
+                "cluster-autoscaler.kubernetes.io/safe-to-evict": "false",
+                "cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes": "tmp-dir",
+              },
               "labels": {
                 "app": "my-app",
                 "environment": "test",

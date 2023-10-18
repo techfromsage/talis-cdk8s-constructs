@@ -1,4 +1,5 @@
 import { ApiObject, JsonPatch } from "cdk8s";
+import { PodProps } from "./pod-props";
 
 const workloadsWithPodTemplateKinds = [
   "DaemonSet",
@@ -50,4 +51,35 @@ export function addLabels(
       });
     }
   });
+}
+
+/**
+ * Create an object with Cluster Autoscaler safe-to-evict annotations.
+ * @param props Pod properties
+ * @returns Annotations object or undefined if no annotations are needed
+ */
+export function makeSafeToEvictAnnotations(
+  props: PodProps,
+): Record<string, string> | undefined {
+  const annotations: Record<string, string> = {};
+
+  if ("safeToEvict" in props && props.safeToEvict !== undefined) {
+    annotations["cluster-autoscaler.kubernetes.io/safe-to-evict"] =
+      props.safeToEvict.toString();
+  }
+
+  if (
+    "safeToEvictLocalVolumes" in props &&
+    props.safeToEvictLocalVolumes !== undefined
+  ) {
+    annotations[
+      "cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes"
+    ] = props.safeToEvictLocalVolumes.join(",");
+  }
+
+  if (Object.keys(annotations).length === 0) {
+    return undefined;
+  }
+
+  return annotations;
 }

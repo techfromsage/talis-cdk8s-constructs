@@ -1,11 +1,13 @@
 import { ContainerProps } from "../common";
 import { LocalObjectReference, Volume } from "../../imports/k8s";
+import { PodProps } from "../common/pod-props";
 
 export interface CronJobProps
   extends Omit<
-    ContainerProps,
-    "startupProbe" | "readinessProbe" | "livenessProbe"
-  > {
+      ContainerProps,
+      "startupProbe" | "readinessProbe" | "livenessProbe"
+    >,
+    PodProps {
   /** The schedule in Cron format, see https://en.wikipedia.org/wiki/Cron */
   readonly schedule: string;
 

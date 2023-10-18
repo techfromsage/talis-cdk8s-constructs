@@ -68,6 +68,8 @@ describe("CronJob", () => {
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
         backoffLimit: 1,
+        safeToEvict: false,
+        safeToEvictLocalVolumes: ["tmp-dir"],
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
@@ -131,6 +133,8 @@ describe("CronJob", () => {
         "containerName",
         "release",
         "selectorLabels",
+        "safeToEvict",
+        "safeToEvictLocalVolumes",
       ]);
     });
 
