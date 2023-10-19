@@ -74,6 +74,7 @@ describe("CronJob", () => {
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
+        priorityClassName: "high-priority-nonpreempting",
         startingDeadlineSeconds: 200,
         successfulJobsHistoryLimit: 4,
         failedJobsHistoryLimit: 2,

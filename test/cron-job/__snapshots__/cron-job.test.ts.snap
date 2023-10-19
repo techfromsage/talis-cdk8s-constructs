@@ -125,6 +125,7 @@ exports[`CronJob > Props > All the props 1`] = `
                   "name": "init-container",
                 },
               ],
+              "priorityClassName": "high-priority-nonpreempting",
               "restartPolicy": "OnFailure",
               "volumes": [
                 {
@@ -185,6 +186,7 @@ exports[`CronJob > Props > Minimal required props 1`] = `
                   },
                 },
               ],
+              "priorityClassName": "job",
               "restartPolicy": "OnFailure",
             },
           },

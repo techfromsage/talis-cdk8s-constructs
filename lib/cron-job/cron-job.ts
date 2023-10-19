@@ -50,6 +50,7 @@ export class CronJob extends Construct {
                 volumes: props.volumes,
                 restartPolicy: props.restartPolicy,
                 imagePullSecrets: props.imagePullSecrets,
+                priorityClassName: props.priorityClassName ?? "job",
                 initContainers: props.initContainers,
                 containers: [
                   {
