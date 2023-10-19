@@ -21,6 +21,12 @@ export interface JobProps
   readonly imagePullSecrets?: LocalObjectReference[];
 
   /**
+   * Pod's priority class.
+   * @default "job"
+   */
+  readonly priorityClassName?: string;
+
+  /**
    * list of volumes that can be mounted by containers belonging to the pod.
    */
   readonly volumes?: Volume[];

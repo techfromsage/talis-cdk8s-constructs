@@ -73,6 +73,7 @@ describe("Job", () => {
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
+        priorityClassName: "high-priority-nonpreempting",
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),
