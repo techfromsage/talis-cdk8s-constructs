@@ -108,7 +108,7 @@ server {
     }
 }
 ",
-      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=Lax\` and \`Secure\`.
 #
 # See https://web.dev/samesite-cookies-explained/ for background.
 #
@@ -161,7 +161,7 @@ map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
 # $cookie_path_patches - either SameSite cookie flags, or an empty string
 map \\"$should_send_samesite_none\\" $cookie_path_patches {
     default \\"\\";
-    \\"true\\" \\"; Secure; SameSite=None\\";
+    \\"true\\" \\"; Secure; SameSite=Lax\\";
 }
 
 proxy_cookie_path / \\"/$cookie_path_patches\\";
@@ -185,7 +185,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-26ttk87672",
       "namespace": "advanced-test",
     },
   },
@@ -621,7 +621,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-26ttk87672",
               },
               "name": "nginx-config",
             },
@@ -741,7 +741,7 @@ server {
     }
 }
 ",
-      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=Lax\` and \`Secure\`.
 #
 # See https://web.dev/samesite-cookies-explained/ for background.
 #
@@ -794,7 +794,7 @@ map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
 # $cookie_path_patches - either SameSite cookie flags, or an empty string
 map \\"$should_send_samesite_none\\" $cookie_path_patches {
     default \\"\\";
-    \\"true\\" \\"; Secure; SameSite=None\\";
+    \\"true\\" \\"; Secure; SameSite=Lax\\";
 }
 
 proxy_cookie_path / \\"/$cookie_path_patches\\";
@@ -818,7 +818,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-26ttk87672",
       "namespace": "advanced-test",
     },
   },
@@ -1109,7 +1109,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-26ttk87672",
               },
               "name": "nginx-config",
             },
@@ -1474,7 +1474,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-26ttk87672",
               },
               "name": "nginx-config",
             },
@@ -1594,7 +1594,7 @@ server {
     }
 }
 ",
-      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=Lax\` and \`Secure\`.
 #
 # See https://web.dev/samesite-cookies-explained/ for background.
 #
@@ -1647,7 +1647,7 @@ map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
 # $cookie_path_patches - either SameSite cookie flags, or an empty string
 map \\"$should_send_samesite_none\\" $cookie_path_patches {
     default \\"\\";
-    \\"true\\" \\"; Secure; SameSite=None\\";
+    \\"true\\" \\"; Secure; SameSite=Lax\\";
 }
 
 proxy_cookie_path / \\"/$cookie_path_patches\\";
@@ -1671,7 +1671,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-26ttk87672",
       "namespace": "advanced-test",
     },
   },
@@ -2107,7 +2107,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-26ttk87672",
               },
               "name": "nginx-config",
             },
@@ -2227,7 +2227,7 @@ server {
     }
 }
 ",
-      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=Lax\` and \`Secure\`.
 #
 # See https://web.dev/samesite-cookies-explained/ for background.
 #
@@ -2280,7 +2280,7 @@ map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
 # $cookie_path_patches - either SameSite cookie flags, or an empty string
 map \\"$should_send_samesite_none\\" $cookie_path_patches {
     default \\"\\";
-    \\"true\\" \\"; Secure; SameSite=None\\";
+    \\"true\\" \\"; Secure; SameSite=Lax\\";
 }
 
 proxy_cookie_path / \\"/$cookie_path_patches\\";
@@ -2304,7 +2304,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-26ttk87672",
       "namespace": "advanced-test",
     },
   },
@@ -2594,7 +2594,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-26ttk87672",
               },
               "name": "nginx-config",
             },
@@ -2959,7 +2959,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-26ttk87672",
               },
               "name": "nginx-config",
             },
@@ -3079,7 +3079,7 @@ server {
     }
 }
 ",
-      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=Lax\` and \`Secure\`.
 #
 # See https://web.dev/samesite-cookies-explained/ for background.
 #
@@ -3132,7 +3132,7 @@ map \\"$is_same_site_none_incompatible\\" $should_send_samesite_none {
 # $cookie_path_patches - either SameSite cookie flags, or an empty string
 map \\"$should_send_samesite_none\\" $cookie_path_patches {
     default \\"\\";
-    \\"true\\" \\"; Secure; SameSite=None\\";
+    \\"true\\" \\"; Secure; SameSite=Lax\\";
 }
 
 proxy_cookie_path / \\"/$cookie_path_patches\\";
@@ -3156,7 +3156,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-26ttk87672",
       "namespace": "advanced-test",
     },
   },
@@ -3591,7 +3591,7 @@ proxy_cookie_path / \\"/$cookie_path_patches\\";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-26ttk87672",
               },
               "name": "nginx-config",
             },
