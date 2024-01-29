@@ -22,8 +22,7 @@ commands:
 
   node_setup:
     steps:
-      - node/install:
-          node-version: "" # use .nvmrc
+      - node/install
       - node/install-packages:
           include-branch-in-cache-key: false
 
@@ -32,16 +31,6 @@ jobs:
     executor: node/default
     steps:
       - run: echo "Building $CIRCLE_BRANCH"
-
-  printnodeversion:
-    executor: node/default
-    steps:
-      - checkout
-      - node_setup
-      - run:
-          name: Print the version of node we are using
-          command: |
-            node --version
 
   commitlint:
     executor: node/default
@@ -86,15 +75,6 @@ workflows:
               ignore:
                 - main
                 - /^dependabot-.*$/
-      - printnodeversion:
-          filters:
-            branches:
-              ignore:
-                - main
-                - /^dependabot-.*$/
-          requires:
-            - fan_out
-            - be_kind_to_your_colleagues
       - commitlint:
           filters:
             branches:
@@ -113,6 +93,7 @@ workflows:
       - node/run:
           name: lint
           npm-run: lint
+          version: 18.17.1
           requires:
             - fan_out
             - be_kind_to_your_colleagues
@@ -120,6 +101,7 @@ workflows:
           name: test
           run-command: test -- run --reporter default --reporter junit --outputFile.junit=junit.xml
           test-results-path: junit.xml
+          version: 18.17.1
           requires:
             - fan_out
             - be_kind_to_your_colleagues
@@ -135,5 +117,6 @@ workflows:
       - node/run:
           name: semantic-release
           npm-run: release
+          version: 18.17.1
           requires:
             - e2e
