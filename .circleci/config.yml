@@ -22,8 +22,7 @@ commands:
 
   node_setup:
     steps:
-      - node/install:
-          node-version: "" # use .nvmrc
+      - node/install
       - node/install-packages:
           include-branch-in-cache-key: false
 
