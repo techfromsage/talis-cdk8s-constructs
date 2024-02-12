@@ -4,6 +4,8 @@ import { Secret } from "../../lib";
 import { KubePod } from "../../imports/k8s";
 import { makeChart } from "../test-util";
 
+const encode = (value: string) => Buffer.from(value).toString("base64");
+
 describe("Secret", () => {
   describe("Props", () => {
     test("Empty Secret", () => {
@@ -217,19 +219,42 @@ describe("Secret", () => {
           "FOO=bar",
           "# a comment = ignore",
           "VAR_WITH_SPECIAL_CHARS=#%/!*;:@&=+$,#",
-          "SINGLE_QUOTED='yes it is'",
-          'DOUBLE_QUOTED="this too #and this"',
         ].join("\n"),
       });
-      const encode = (value: string) => Buffer.from(value).toString("base64");
       const chart = Testing.chart();
       const secret = new Secret(chart, "test");
       secret.setFromEnvFile("values.env");
       expect(secret.data).toEqual({
         FOO: encode("bar"),
         VAR_WITH_SPECIAL_CHARS: encode("#%/!*;:@&=+$,#"),
-        SINGLE_QUOTED: encode("yes it is"),
+      });
+    });
+
+    test("Special characters from .env file are left intact", () => {
+      mockFs({
+        "values.env": [
+          `AN_EMAIL=support@example.com`,
+          `COMMENT_VALUE=/* nothing here */`,
+          `DOUBLE_QUOTED="this too #and this"`,
+          `JSON=[{"foo":"bar","baz":"qux"}]`,
+          `LEADING_EQUALS==foo`,
+          `SINGLE_QUOTED='yes it is'`,
+          `TRAILING_EQUALS=bar=`,
+          `TWO_WORDS=one two`,
+        ].join("\n"),
+      });
+      const chart = Testing.chart();
+      const configMap = new Secret(chart, "test");
+      configMap.setFromEnvFile("values.env");
+      expect(configMap.data).toEqual({
+        AN_EMAIL: encode("support@example.com"),
+        COMMENT_VALUE: encode("/* nothing here */"),
         DOUBLE_QUOTED: encode("this too #and this"),
+        JSON: encode(`[{"foo":"bar","baz":"qux"}]`),
+        LEADING_EQUALS: encode("=foo"),
+        SINGLE_QUOTED: encode("yes it is"),
+        TRAILING_EQUALS: encode("bar="),
+        TWO_WORDS: encode("one two"),
       });
     });
 
