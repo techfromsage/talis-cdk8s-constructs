@@ -1,5 +1,28 @@
 import { createHash } from "crypto";
-import sortKeys from "sort-keys";
+
+/**
+ * Convert an object to a JSON string with sorted keys.
+ * @param object Object to convert
+ * @returns Sorted JSON string
+ */
+function toSortedJson(object: object): string {
+  return JSON.stringify(object, (_, value) => {
+    if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+      const keys = Object.keys(value).sort();
+      const clone: Record<string, unknown> = {};
+
+      for (let i = 0, l = keys.length; i < l; i++) {
+        const key = keys[i];
+
+        clone[key] = value[key];
+      }
+
+      return clone;
+    }
+
+    return value;
+  });
+}
 
 /**
  * Shorten a hash and prevent bad words from being formed.
@@ -35,9 +58,8 @@ function encodeHash(hex: string): string {
  * Copied from https://github.com/kubernetes/kubernetes/blob/v1.22.4/staging/src/k8s.io/kubectl/pkg/util/hash/hash.go#L55-L75
  * @param object Object to hash
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function hashObject(object: Record<string, any>): string {
-  const serialised = JSON.stringify(sortKeys(object, { deep: true }));
+export function hashObject(object: Record<string, unknown>): string {
+  const serialised = toSortedJson(object);
   const hash = createHash("sha256").update(serialised, "utf8").digest("hex");
 
   return encodeHash(hash);
