@@ -95,7 +95,7 @@ exports[`BackgroundWorker > Autoscaling > Autoscaling can be paused 1`] = `
 ]
 `;
 
-exports[`BackgroundWorker > Autoscaling > Either replicas or autoscaling can be specified 1`] = `"replicas and autoscaling are mutually exclusive"`;
+exports[`BackgroundWorker > Autoscaling > Either replicas or autoscaling can be specified 1`] = `[Error: replicas and autoscaling are mutually exclusive]`;
 
 exports[`BackgroundWorker > Autoscaling > It can autoscale based on Redis List length 1`] = `
 [
@@ -201,7 +201,7 @@ exports[`BackgroundWorker > Autoscaling > It can autoscale based on Redis List l
 ]
 `;
 
-exports[`BackgroundWorker > Custom stop signal > Either stopSignal or lifecycle.preStop can be specified 1`] = `"stopSignal and lifecycle.preStop are mutually exclusive"`;
+exports[`BackgroundWorker > Custom stop signal > Either stopSignal or lifecycle.preStop can be specified 1`] = `[Error: stopSignal and lifecycle.preStop are mutually exclusive]`;
 
 exports[`BackgroundWorker > Custom stop signal > Merge stopSignal and postStart hook 1`] = `
 {

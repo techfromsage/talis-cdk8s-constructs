@@ -1,35 +1,35 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`env-util > getCanaryStage > Throws if env var is empty 1`] = `"Stage environment variable CANARY_STAGE is not set"`;
+exports[`env-util > getCanaryStage > Throws if env var is empty 1`] = `[Error: Stage environment variable CANARY_STAGE is not set]`;
 
-exports[`env-util > getCanaryStage > Throws if env var is not set 1`] = `"Stage environment variable CANARY_STAGE is not set"`;
+exports[`env-util > getCanaryStage > Throws if env var is not set 1`] = `[Error: Stage environment variable CANARY_STAGE is not set]`;
 
-exports[`env-util > getCanaryStage > Throws if stage name is not valid 1`] = `"Invalid canary stage: blue. Allowed values are base, canary, post-canary, full"`;
+exports[`env-util > getCanaryStage > Throws if stage name is not valid 1`] = `[Error: Invalid canary stage: blue. Allowed values are base, canary, post-canary, full]`;
 
-exports[`env-util > getDockerTag > Throws if env var is empty 1`] = `"Docker tag variable APP_DOCKER_TAG is not set"`;
+exports[`env-util > getDockerTag > Throws if env var is empty 1`] = `[Error: Docker tag variable APP_DOCKER_TAG is not set]`;
 
-exports[`env-util > getDockerTag > Throws if tag is not valid for the environment 1`] = `"\\"stable\\" is not a valid Docker tag for production, please set APP_DOCKER_TAG to a valid tag"`;
+exports[`env-util > getDockerTag > Throws if tag is not valid for the environment 1`] = `[Error: "stable" is not a valid Docker tag for production, please set APP_DOCKER_TAG to a valid tag]`;
 
-exports[`env-util > getTtlTimestamp > Throws on invalid TTL 123456789 1`] = `"Invalid TTL: 123456789"`;
+exports[`env-util > getTtlTimestamp > Throws on invalid TTL 123456789 1`] = `[Error: Invalid TTL: 123456789]`;
 
-exports[`env-util > getTtlTimestamp > Throws on invalid TTL 123456789a 1`] = `"Invalid TTL: 123456789a"`;
+exports[`env-util > getTtlTimestamp > Throws on invalid TTL 123456789a 1`] = `[Error: Invalid TTL: 123456789a]`;
 
-exports[`env-util > getTtlTimestamp > Throws on invalid TTL 1234567890.12 1`] = `"Invalid TTL: 1234567890.12"`;
+exports[`env-util > getTtlTimestamp > Throws on invalid TTL 1234567890.12 1`] = `[Error: Invalid TTL: 1234567890.12]`;
 
-exports[`env-util > getTtlTimestamp > Throws on invalid TTL a123456789 1`] = `"Invalid TTL: a123456789"`;
+exports[`env-util > getTtlTimestamp > Throws on invalid TTL a123456789 1`] = `[Error: Invalid TTL: a123456789]`;
 
-exports[`env-util > getTtlTimestamp > Throws on invalid TTL foobar 1`] = `"Invalid TTL: foobar"`;
+exports[`env-util > getTtlTimestamp > Throws on invalid TTL foobar 1`] = `[Error: Invalid TTL: foobar]`;
 
-exports[`env-util > getWatermark > Throws if env var is empty 1`] = `"Watermark variable WATERMARK is not set"`;
+exports[`env-util > getWatermark > Throws if env var is empty 1`] = `[Error: Watermark variable WATERMARK is not set]`;
 
-exports[`env-util > getWatermark > Throws if env var is unset 1`] = `"Watermark variable WATERMARK is not set"`;
+exports[`env-util > getWatermark > Throws if env var is unset 1`] = `[Error: Watermark variable WATERMARK is not set]`;
 
-exports[`env-util > getWatermark > Throws if value is not valid 1`] = `"Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."`;
+exports[`env-util > getWatermark > Throws if value is not valid 1`] = `[Error: Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character.]`;
 
-exports[`env-util > getWatermark > Throws if value is not valid 2`] = `"Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."`;
+exports[`env-util > getWatermark > Throws if value is not valid 2`] = `[Error: Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character.]`;
 
-exports[`env-util > getWatermark > Throws if value is not valid 3`] = `"Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."`;
+exports[`env-util > getWatermark > Throws if value is not valid 3`] = `[Error: Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character.]`;
 
-exports[`env-util > getWatermark > Throws if value is not valid 4`] = `"Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character."`;
+exports[`env-util > getWatermark > Throws if value is not valid 4`] = `[Error: Watermark is not valid, must contain only lowercase alphanumeric characters or '-', and must start and end with an alphanumeric character.]`;
 
-exports[`env-util > getWatermark > Throws if value is too long 1`] = `"Watermark must not exceed 63 characters"`;
+exports[`env-util > getWatermark > Throws if value is too long 1`] = `[Error: Watermark must not exceed 63 characters]`;
