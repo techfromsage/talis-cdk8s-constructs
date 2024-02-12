@@ -48,9 +48,9 @@ exports[`ResqueWeb > Creates resque web objects 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/status",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "resque-web-develop",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
@@ -257,9 +257,9 @@ exports[`ResqueWeb > Customizations 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/status",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80},{"HTTPS":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "resque-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -495,9 +495,9 @@ exports[`ResqueWeb > ingressAnnotations are merged 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/status",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80},{"HTTPS":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "resque-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -716,9 +716,9 @@ exports[`ResqueWeb > selectorLabels are merged 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/status",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80},{"HTTPS":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "resque-web-develop",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",

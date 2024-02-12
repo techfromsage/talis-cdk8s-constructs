@@ -64,7 +64,7 @@ exports[`WebService > Nginx > Allows to create nginx container > volumes 1`] = `
 ]
 `;
 
-exports[`WebService > Nginx > Validates that application port and nginx port are not the same 1`] = `"Application and nginx ports must be different"`;
+exports[`WebService > Nginx > Validates that application port and nginx port are not the same 1`] = `[Error: Application and nginx ports must be different]`;
 
 exports[`WebService > Props > All the props 1`] = `
 [
@@ -120,10 +120,10 @@ exports[`WebService > Props > All the props 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/ping",
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80},{"HTTPS":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "props-test-api-test-testing",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -582,10 +582,10 @@ exports[`WebService > Props > All the props 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
         "alb.ingress.kubernetes.io/healthcheck-path": "/ping",
         "alb.ingress.kubernetes.io/ip-address-type": "dualstack",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80},{\\"HTTPS\\":443}]",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80},{"HTTPS":443}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "props-test-api-c-test-testing",
         "alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-TLS-1-2-2017-01",
@@ -931,13 +931,13 @@ exports[`WebService > Props > Allows specifying custom logic to make affinity 1`
 }
 `;
 
-exports[`WebService > Props > Either horizontalPodAutoscaler or replicas can be specified, not both 1`] = `"Either horizontalPodAutoscaler or replicas can be specified, not both"`;
+exports[`WebService > Props > Either horizontalPodAutoscaler or replicas can be specified, not both 1`] = `[Error: Either horizontalPodAutoscaler or replicas can be specified, not both]`;
 
-exports[`WebService > Props > Either horizontalPodAutoscaler or replicas must be specified 1`] = `"Either horizontalPodAutoscaler or replicas must be specified"`;
+exports[`WebService > Props > Either horizontalPodAutoscaler or replicas must be specified 1`] = `[Error: Either horizontalPodAutoscaler or replicas must be specified]`;
 
-exports[`WebService > Props > Either minAvailable or maxUnavailable can be specified for podDisruptionBudget, not both 1`] = `"Either horizontalPodAutoscaler or replicas must be specified"`;
+exports[`WebService > Props > Either minAvailable or maxUnavailable can be specified for podDisruptionBudget, not both 1`] = `[Error: Either horizontalPodAutoscaler or replicas must be specified]`;
 
-exports[`WebService > Props > Either minAvailable or maxUnavailable must be specified for podDisruptionBudget 1`] = `"Either horizontalPodAutoscaler or replicas must be specified"`;
+exports[`WebService > Props > Either minAvailable or maxUnavailable must be specified for podDisruptionBudget 1`] = `[Error: Either horizontalPodAutoscaler or replicas must be specified]`;
 
 exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
 [
@@ -986,8 +986,8 @@ exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
@@ -1210,8 +1210,8 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for both memory and cpu 
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
@@ -1444,8 +1444,8 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for memory 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
@@ -1621,9 +1621,9 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for memory 1`] = `
 ]
 `;
 
-exports[`WebService > Props > Load balancer name must not be empty 1`] = `"Load balancer name must not be empty"`;
+exports[`WebService > Props > Load balancer name must not be empty 1`] = `[Error: Load balancer name must not be empty]`;
 
-exports[`WebService > Props > Load balancer name must not exceed 32 characters 1`] = `"Load balancer name must not exceed 32 characters. Given: test-web-non-abbreviable-env-test"`;
+exports[`WebService > Props > Load balancer name must not exceed 32 characters 1`] = `[Error: Load balancer name must not exceed 32 characters. Given: test-web-non-abbreviable-env-test]`;
 
 exports[`WebService > Props > Minimal required props 1`] = `
 [
@@ -1672,8 +1672,8 @@ exports[`WebService > Props > Minimal required props 1`] = `
     "kind": "Ingress",
     "metadata": {
       "annotations": {
-        "alb.ingress.kubernetes.io/actions.server-status-rule": "{\\"type\\":\\"fixed-response\\",\\"fixedResponseConfig\\":{\\"statusCode\\":\\"404\\",\\"contentType\\":\\"text/plain\\",\\"messageBody\\":\\"404: Not Found\\"}}",
-        "alb.ingress.kubernetes.io/listen-ports": "[{\\"HTTP\\":80}]",
+        "alb.ingress.kubernetes.io/actions.server-status-rule": "{"type":"fixed-response","fixedResponseConfig":{"statusCode":"404","contentType":"text/plain","messageBody":"404: Not Found"}}",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80}]",
         "alb.ingress.kubernetes.io/load-balancer-attributes": "idle_timeout.timeout_seconds=60",
         "alb.ingress.kubernetes.io/load-balancer-name": "test-web-develop",
         "alb.ingress.kubernetes.io/success-codes": "200,303",
@@ -1796,8 +1796,8 @@ exports[`WebService > Props > Minimal required props 1`] = `
 ]
 `;
 
-exports[`WebService > Props > Release stage must be specified when canary deployments are enabled 1`] = `"Release stage must be specified when canary deployments are enabled"`;
+exports[`WebService > Props > Release stage must be specified when canary deployments are enabled 1`] = `[Error: Release stage must be specified when canary deployments are enabled]`;
 
-exports[`WebService > Props > Validates load balancer name even if overridden 1`] = `"Load balancer name must not exceed 32 characters. Given: a-load-balancer-name-exceeding-32"`;
+exports[`WebService > Props > Validates load balancer name even if overridden 1`] = `[Error: Load balancer name must not exceed 32 characters. Given: a-load-balancer-name-exceeding-32]`;
 
-exports[`WebService > Props > horizontalPodAutoscaler requires at least one of cpuTargetUtilization or memoryTargetUtilization 1`] = `"Either cpuTargetUtilization or memoryTargetUtilization must be specified to use a horizontalPodAutoscaler"`;
+exports[`WebService > Props > horizontalPodAutoscaler requires at least one of cpuTargetUtilization or memoryTargetUtilization 1`] = `[Error: Either cpuTargetUtilization or memoryTargetUtilization must be specified to use a horizontalPodAutoscaler]`;

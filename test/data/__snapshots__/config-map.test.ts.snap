@@ -10,9 +10,9 @@ exports[`ConfigMap > Accessors > Metadata getter 1`] = `
 }
 `;
 
-exports[`ConfigMap > Accessors > Throws when trying to set binaryData key on data 1`] = `"ConfigMap key \\"test\\" is already used in binaryData"`;
+exports[`ConfigMap > Accessors > Throws when trying to set binaryData key on data 1`] = `[Error: ConfigMap key "test" is already used in binaryData]`;
 
-exports[`ConfigMap > Accessors > Throws when trying to set data key on binaryData 1`] = `"ConfigMap key \\"test\\" is already used in data"`;
+exports[`ConfigMap > Accessors > Throws when trying to set data key on binaryData 1`] = `[Error: ConfigMap key "test" is already used in data]`;
 
 exports[`ConfigMap > Loading files > Setting value from binary file's contents 1`] = `
 [

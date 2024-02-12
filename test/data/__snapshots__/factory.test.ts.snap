@@ -16,7 +16,7 @@ exports[`factory > createDockerHubSecretFromEnv > Creates config with Docker Hub
 ]
 `;
 
-exports[`factory > createDockerHubSecretFromEnv > Throws if Docker credentials env vars are not set 1`] = `"DOCKER_USERNAME and DOCKER_PASSWORD must be set in the environment"`;
+exports[`factory > createDockerHubSecretFromEnv > Throws if Docker credentials env vars are not set 1`] = `[Error: DOCKER_USERNAME and DOCKER_PASSWORD must be set in the environment]`;
 
 exports[`factory > createImagePullSecret > Creates config with Docker Hub credentials by default 1`] = `
 [
