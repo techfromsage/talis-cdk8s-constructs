@@ -246,18 +246,42 @@ describe("ConfigMap", () => {
           "FOO=bar",
           "# a comment = ignore",
           "VAR_WITH_SPECIAL_CHARS=space slash/other@#1!=",
-          "SINGLE_QUOTED='yes it is'",
-          'DOUBLE_QUOTED="this too"',
         ].join("\n"),
       });
       const chart = Testing.chart();
       const configMap = new ConfigMap(chart, "test");
       configMap.setFromEnvFile("values.env");
       expect(configMap.data).toEqual({
-        DOUBLE_QUOTED: "this too",
         FOO: "bar",
-        SINGLE_QUOTED: "yes it is",
         VAR_WITH_SPECIAL_CHARS: "space slash/other@#1!=",
+      });
+    });
+
+    test("Special characters from .env file are left intact", () => {
+      mockFs({
+        "values.env": [
+          `AN_EMAIL=support@example.com`,
+          `COMMENT_VALUE=/* nothing here */`,
+          `DOUBLE_QUOTED="this too #and this"`,
+          `JSON=[{"foo":"bar","baz":"qux"}]`,
+          `LEADING_EQUALS==foo`,
+          `SINGLE_QUOTED='yes it is'`,
+          `TRAILING_EQUALS=bar=`,
+          `TWO_WORDS=one two`,
+        ].join("\n"),
+      });
+      const chart = Testing.chart();
+      const configMap = new ConfigMap(chart, "test");
+      configMap.setFromEnvFile("values.env");
+      expect(configMap.data).toEqual({
+        AN_EMAIL: "support@example.com",
+        COMMENT_VALUE: "/* nothing here */",
+        DOUBLE_QUOTED: "this too #and this",
+        JSON: `[{"foo":"bar","baz":"qux"}]`,
+        LEADING_EQUALS: "=foo",
+        SINGLE_QUOTED: "yes it is",
+        TRAILING_EQUALS: "bar=",
+        TWO_WORDS: "one two",
       });
     });
 
