@@ -61,7 +61,7 @@
     "lodash": "^4.17.21",
     "mock-fs": "^5.2.0",
     "prettier": "^3.2.5",
-    "semantic-release": "^22.0.5",
+    "semantic-release": "^22.0.12",
     "ts-node": "^10.9.2",
     "typescript": "~5.3.3",
     "vitest": "^1.2.2"
