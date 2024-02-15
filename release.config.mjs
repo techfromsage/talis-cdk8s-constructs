@@ -1,4 +1,4 @@
-const { execSync } = require("child_process");
+import { execSync } from "child_process";
 
 function isDryRun() {
   return process.argv.includes("--dry-run");
@@ -26,7 +26,7 @@ function getDryRunConfig() {
   };
 }
 
-module.exports = isDryRun()
+export default isDryRun()
   ? getDryRunConfig()
   : {
       branches: ["main"],
