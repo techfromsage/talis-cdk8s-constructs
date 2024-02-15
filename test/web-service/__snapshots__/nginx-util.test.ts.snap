@@ -169,7 +169,7 @@ exports[`nginx-util > createConfigMap > Same site cookies config 1`] = `
   {
     "apiVersion": "v1",
     "data": {
-      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=Lax\` and \`Secure\`.
+      "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
 #
 # See https://web.dev/samesite-cookies-explained/ for background.
 #
@@ -222,7 +222,7 @@ map "$is_same_site_none_incompatible" $should_send_samesite_none {
 # $cookie_path_patches - either SameSite cookie flags, or an empty string
 map "$should_send_samesite_none" $cookie_path_patches {
     default "";
-    "true" "; Secure; SameSite=Lax";
+    "true" "; Secure; SameSite=None";
 }
 
 proxy_cookie_path / "/$cookie_path_patches";
@@ -241,7 +241,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-9t8868td2h",
+      "name": "test-nginx-config-c88fe926-t27k9c9m8k",
     },
   },
 ]
