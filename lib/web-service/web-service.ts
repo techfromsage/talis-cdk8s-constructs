@@ -97,6 +97,7 @@ export class WebService extends Construct {
         readinessProbe: props.readinessProbe,
         volumeMounts: props.volumeMounts,
       },
+      ...(props.containers ?? []),
     ];
 
     const volumes: Volume[] = props.volumes ?? [];

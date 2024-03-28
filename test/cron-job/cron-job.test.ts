@@ -78,6 +78,7 @@ describe("CronJob", () => {
         startingDeadlineSeconds: 200,
         successfulJobsHistoryLimit: 4,
         failedJobsHistoryLimit: 2,
+        containers: [{ name: "secondary", image: "second-image" }],
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),
@@ -210,7 +211,7 @@ describe("CronJob", () => {
     });
   });
 
-  describe("Container name", () => {
+  describe("Containers", () => {
     test("Default container name", () => {
       const results = synthCronJob();
       const cron = results.find((obj) => obj.kind === "CronJob");
@@ -257,6 +258,31 @@ describe("CronJob", () => {
       expect(cron).toHaveProperty(
         "spec.jobTemplate.spec.template.spec.containers[0].name",
         "explicit-name",
+      );
+    });
+
+    test("Allows setting multiple containers", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        containers: [
+          {
+            name: "sideapp",
+            image: "side-image",
+          },
+        ],
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).toHaveProperty("spec.jobTemplate");
+      const jobTemplate = cron.spec.jobTemplate;
+      expect(jobTemplate).toHaveProperty("spec.template.spec.containers");
+      expect(jobTemplate.spec.template.spec.containers).toHaveLength(2);
+      expect(jobTemplate).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "app",
+      );
+      expect(jobTemplate).toHaveProperty(
+        "spec.template.spec.containers[1].name",
+        "sideapp",
       );
     });
   });

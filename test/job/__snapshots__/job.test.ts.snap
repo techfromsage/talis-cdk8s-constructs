@@ -105,6 +105,10 @@ exports[`Job > Props > All the props 1`] = `
               ],
               "workingDir": "/some/path",
             },
+            {
+              "image": "second-image",
+              "name": "secondary",
+            },
           ],
           "imagePullSecrets": [
             {

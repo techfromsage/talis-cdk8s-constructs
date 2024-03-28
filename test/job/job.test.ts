@@ -74,6 +74,7 @@ describe("Job", () => {
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority-nonpreempting",
+        containers: [{ name: "secondary", image: "second-image" }],
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),
@@ -164,7 +165,7 @@ describe("Job", () => {
     });
   });
 
-  describe("Container name", () => {
+  describe("Containers", () => {
     test("Default container name", () => {
       const results = synthJob();
       const job = results.find((obj) => obj.kind === "Job");
@@ -221,6 +222,29 @@ describe("Job", () => {
       });
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty("spec.ttlSecondsAfterFinished", 100);
+    });
+
+    test("Allows setting multiple containers", () => {
+      const results = synthJob({
+        ...requiredProps,
+        containers: [
+          {
+            name: "sideapp",
+            image: "side-image",
+          },
+        ],
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("spec.template.spec.containers");
+      expect(job.spec.template.spec.containers).toHaveLength(2);
+      expect(job).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "app",
+      );
+      expect(job).toHaveProperty(
+        "spec.template.spec.containers[1].name",
+        "sideapp",
+      );
     });
   });
 

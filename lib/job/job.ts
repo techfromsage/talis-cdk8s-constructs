@@ -61,6 +61,7 @@ export class Job extends Construct {
                 lifecycle: props.lifecycle,
                 volumeMounts: props.volumeMounts,
               },
+              ...(props.containers ?? []),
             ],
           },
         },
