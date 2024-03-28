@@ -1,68 +1,44 @@
-import {
-  Container,
-  EnvFromSource,
-  EnvVar,
-  Lifecycle,
-  Probe,
-  ResourceRequirements,
-  SecurityContext,
-  VolumeMount,
-} from "../../imports/k8s";
+import { Container } from "../../imports/k8s";
 
-export interface ContainerProps {
+export interface MainContainerProps
+  extends Pick<
+    Container,
+    | "imagePullPolicy"
+    | "workingDir"
+    | "command"
+    | "args"
+    | "resources"
+    | "securityContext"
+    | "env"
+    | "envFrom"
+    | "lifecycle"
+    | "startupProbe"
+    | "livenessProbe"
+    | "readinessProbe"
+    | "volumeMounts"
+  > {
   /**
-   * What name to give the application container
+   * What name to give the main application container
    * @default set from the "app" label
    */
   readonly containerName?: string;
 
-  /** The Docker image to use. */
-  readonly image: string;
-
   /**
-   * Affects when the kubelet attempts to pull the specified image.
-   * @default "IfNotPresent"
+   * Container image to use.
+   * More info: https://kubernetes.io/docs/concepts/containers/images
    */
-  readonly imagePullPolicy?: string;
+  readonly image: string;
+}
 
+export interface ContainerProps extends MainContainerProps {
   /** Release version of the Docker image. */
   readonly release: string;
 
-  /** Overrides container's working directory. */
-  readonly workingDir?: string;
-
-  /** Entrypoint array. Not executed within a shell. The Docker image's ENTRYPOINT is used if this is not provided. */
-  readonly command?: string[];
-
-  /** Arguments to the entrypoint. The Docker image's CMD is used if this is not provided. */
-  readonly args?: string[];
-
-  /** Resource requirements and limits for the container. */
-  readonly resources: ResourceRequirements;
-
-  /** SecurityContext defines the security options the container should be run with. */
-  readonly securityContext?: SecurityContext;
-
-  /** Literal environment variables. */
-  readonly env?: EnvVar[];
-
-  /** Environment variables from ConfigMaps/Secrets. */
-  readonly envFrom?: EnvFromSource[];
-
-  /** Lifecycle describes actions that the management system should take in response to container lifecycle events. */
-  readonly lifecycle?: Lifecycle;
-
-  /** Indicates that the Pod has successfully initialized. Container will be restarted if the probe fails. */
-  readonly startupProbe?: Probe;
-
-  /** Periodic probe of container liveness. Container will be restarted if the probe fails. */
-  readonly livenessProbe?: Probe;
-
-  /** Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. */
-  readonly readinessProbe?: Probe;
-
-  /** Pod volumes to mount into the container's filesystem. */
-  readonly volumeMounts?: VolumeMount[];
+  /**
+   * Additional containers for Pods with multiple containers.
+   * More info: https://kubernetes.io/docs/concepts/workloads/pods/#how-pods-manage-multiple-containers
+   */
+  readonly containers?: Container[];
 
   /**
    * List of initialization containers belonging to the pod.

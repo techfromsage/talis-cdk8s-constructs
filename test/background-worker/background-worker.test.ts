@@ -68,6 +68,7 @@ describe("BackgroundWorker", () => {
         priorityClassName: "high-priority",
         revisionHistoryLimit: 5,
         restartPolicy: PodSpecRestartPolicy.ALWAYS,
+        containers: [{ name: "secondary", image: "second-image" }],
         affinity: {
           podAntiAffinity: {
             preferredDuringSchedulingIgnoredDuringExecution: [
@@ -245,7 +246,7 @@ describe("BackgroundWorker", () => {
     });
   });
 
-  describe("Container name", () => {
+  describe("Containers", () => {
     test("Default container name", () => {
       const results = synthBackgroundWorker();
       const deployment = results.find((obj) => obj.kind === "Deployment");
@@ -292,6 +293,29 @@ describe("BackgroundWorker", () => {
       expect(deployment).toHaveProperty(
         "spec.template.spec.containers[0].name",
         "explicit-name",
+      );
+    });
+
+    test("Allows setting multiple containers", () => {
+      const results = synthBackgroundWorker({
+        ...requiredProps,
+        containers: [
+          {
+            name: "sideapp",
+            image: "side-image",
+          },
+        ],
+      });
+      const deployment = results.find((obj) => obj.kind === "Deployment");
+      expect(deployment).toHaveProperty("spec.template.spec.containers");
+      expect(deployment.spec.template.spec.containers).toHaveLength(2);
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[0].name",
+        "app",
+      );
+      expect(deployment).toHaveProperty(
+        "spec.template.spec.containers[1].name",
+        "sideapp",
       );
     });
   });

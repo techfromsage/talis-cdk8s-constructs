@@ -78,6 +78,7 @@ export class BackgroundWorker extends Construct {
                 livenessProbe: props.livenessProbe,
                 volumeMounts: props.volumeMounts,
               },
+              ...(props.containers ?? []),
             ],
           },
         },

@@ -69,6 +69,7 @@ export class CronJob extends Construct {
                     lifecycle: props.lifecycle,
                     volumeMounts: props.volumeMounts,
                   },
+                  ...(props.containers ?? []),
                 ],
               },
             },
