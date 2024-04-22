@@ -66,6 +66,15 @@ describe("nginx-util", () => {
       expect(results).toMatchSnapshot();
     });
 
+    test("Partitioned cookies config", () => {
+      const chart = Testing.chart();
+      nginxUtil.createConfigMap(chart, {
+        includePartionedCookiesConfig: true,
+      });
+      const results = Testing.synth(chart);
+      expect(results).toMatchSnapshot();
+    });
+
     test("Custom data", () => {
       const chart = Testing.chart();
       nginxUtil.createConfigMap(

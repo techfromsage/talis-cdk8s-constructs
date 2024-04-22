@@ -29,6 +29,15 @@ interface NginxConfigMapProps {
    * @default false
    */
   readonly includeSameSiteCookiesConfig?: boolean;
+
+  /**
+   * Whether to include a config that patches Set-Cookies header to include `Partitioned`
+   * For further details on partitioned cookies visit:
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/Privacy/Privacy_sandbox/Partitioned_cookies
+   * @default false
+   */
+  readonly includePartionedCookiesConfig?: boolean;
 }
 
 /**
@@ -45,6 +54,10 @@ function createConfigMap(
 
   if (props.includeSameSiteCookiesConfig) {
     data["samesite.conf"] = getSameSiteCookiesConfig();
+  }
+
+  if (props.includePartionedCookiesConfig) {
+    data["partitioned.conf"] = getPartitionedCookiesConfig();
   }
 
   const configMap = new ConfigMap(scope, "nginx-config", { data });
@@ -86,6 +99,16 @@ function getDefaultConfig(
  */
 function getSameSiteCookiesConfig(): string {
   return fs.readFileSync(resolvePath("nginx/samesite.conf"), "utf8");
+}
+
+/**
+ * Return the contents of an Nginx configuration file that patches
+ * `Set-Cookie` headers to use the `Partitioned` flag
+ *
+ * The output of this function is used with `createConfigMap` with `includePartionedCookesConfig` enabled.
+ */
+function getPartitionedCookiesConfig(): string {
+  return fs.readFileSync(resolvePath("nginx/partitioned.conf"), "utf8");
 }
 
 export const nginxUtil = {
