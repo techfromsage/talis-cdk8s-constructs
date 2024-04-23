@@ -35,9 +35,9 @@ interface NginxConfigMapProps {
    * For further details on partitioned cookies visit:
    *
    * https://developer.mozilla.org/en-US/docs/Web/Privacy/Privacy_sandbox/Partitioned_cookies
-   * @default false
+   * @default undefined
    */
-  readonly includePartionedCookiesConfig?: boolean;
+  readonly usePartionedCookiesLocations?: string[];
 }
 
 /**
@@ -56,8 +56,13 @@ function createConfigMap(
     data["samesite.conf"] = getSameSiteCookiesConfig();
   }
 
-  if (props.includePartionedCookiesConfig) {
-    data["partitioned.conf"] = getPartitionedCookiesConfig();
+  if (
+    props.usePartionedCookiesLocations &&
+    props.usePartionedCookiesLocations.length > 0
+  ) {
+    data["partitioned.conf"] = getPartitionedCookiesConfig(
+      props.usePartionedCookiesLocations,
+    );
   }
 
   const configMap = new ConfigMap(scope, "nginx-config", { data });
@@ -105,10 +110,18 @@ function getSameSiteCookiesConfig(): string {
  * Return the contents of an Nginx configuration file that patches
  * `Set-Cookie` headers to use the `Partitioned` flag
  *
- * The output of this function is used with `createConfigMap` with `includePartionedCookesConfig` enabled.
+ * The output of this function is used with `createConfigMap` with `usePartionedCookiesLocations` provided.
  */
-function getPartitionedCookiesConfig(): string {
-  return fs.readFileSync(resolvePath("nginx/partitioned.conf"), "utf8");
+function getPartitionedCookiesConfig(locations: string[]): string {
+  const configs = locations.map(
+    (location) => `location ${location} {
+      proxy_cookie_path / "/; Partitioned";
+    }`,
+  );
+
+  return `server {
+    ${configs}
+  }`;
 }
 
 export const nginxUtil = {

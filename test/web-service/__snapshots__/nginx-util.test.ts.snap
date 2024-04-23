@@ -169,15 +169,18 @@ exports[`nginx-util > createConfigMap > Partitioned cookies config 1`] = `
   {
     "apiVersion": "v1",
     "data": {
-      "partitioned.conf": "proxy_cookie_path / "/; Partitioned";
-",
+      "partitioned.conf": "server {
+    location /api/oidclogin {
+      proxy_cookie_path / "/; Partitioned";
+    }
+  }",
     },
     "kind": "ConfigMap",
     "metadata": {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-2ctcd744fb",
+      "name": "test-nginx-config-c88fe926-m8bk7f665d",
     },
   },
 ]

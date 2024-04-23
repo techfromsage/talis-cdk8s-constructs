@@ -69,7 +69,7 @@ describe("nginx-util", () => {
     test("Partitioned cookies config", () => {
       const chart = Testing.chart();
       nginxUtil.createConfigMap(chart, {
-        includePartionedCookiesConfig: true,
+        usePartionedCookiesLocations: ["/api/oidclogin"],
       });
       const results = Testing.synth(chart);
       expect(results).toMatchSnapshot();
