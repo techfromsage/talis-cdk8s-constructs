@@ -120,7 +120,7 @@ function getPartitionedCookiesConfig(locations: string[]): string {
   );
 
   return `server {
-    ${configs}
+    ${configs.join("\n")}
   }`;
 }
 

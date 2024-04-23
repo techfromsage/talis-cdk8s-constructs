@@ -75,6 +75,15 @@ describe("nginx-util", () => {
       expect(results).toMatchSnapshot();
     });
 
+    test("Partitioned cookies config with multiple locations", () => {
+      const chart = Testing.chart();
+      nginxUtil.createConfigMap(chart, {
+        usePartionedCookiesLocations: ["/api/oidclogin", "/api/auth/login"],
+      });
+      const results = Testing.synth(chart);
+      expect(results).toMatchSnapshot();
+    });
+
     test("Custom data", () => {
       const chart = Testing.chart();
       nginxUtil.createConfigMap(
