@@ -10,3 +10,4 @@ export * from "./postgres";
 export * from "./redis";
 export * from "./talis-chart";
 export * from "./web-service";
+export * from "./ingress";

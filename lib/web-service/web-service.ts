@@ -15,8 +15,6 @@ import {
   Volume,
 } from "../../imports/k8s";
 import {
-  convertToJsonContent,
-  convertToStringMap,
   HorizontalPodAutoscalerProps,
   NginxContainerProps,
   PodDisruptionBudgetProps,
@@ -27,6 +25,8 @@ import {
   makeLoadBalancerName,
   ensureArray,
   getValueFromIntOrPercent,
+  convertToJsonContent,
+  convertToStringMap,
 } from "../common";
 import { supportsTls } from "./tls-util";
 import {

@@ -1,0 +1,158 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Ingress > Props > All the props 1`] = `
+[
+  {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+      "labels": {
+        "app": "my-app",
+        "environment": "test",
+        "instance": "my-instance",
+        "my-key": "my-value",
+        "region": "local",
+        "role": "server",
+        "service": "my-app-test-local",
+      },
+      "name": "my-name-my-namespace",
+      "namespace": "test",
+    },
+    "spec": {
+      "externalName": "my-name.my-namespace.svc.cluster.local",
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 80,
+        },
+      ],
+      "type": "ExternalName",
+    },
+  },
+  {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": {
+      "annotations": {
+        "alb.ingress.kubernetes.io/actions.service-weighting": "{"type":"forward","forwardConfig":{"targetGroups":[{"serviceName":"my-name-my-namespace","servicePort":80,"weight":100}]}}",
+        "alb.ingress.kubernetes.io/certificate-arn": "my-certificate",
+        "alb.ingress.kubernetes.io/group.order": "1000",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80},{"HTTPS":443}]",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "service=my-app-test-local,instance=ingress-test,environment=test",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+        "external-dns.alpha.kubernetes.io/hostname": "my-external-hostname",
+        "my-key": "my-value",
+      },
+      "labels": {
+        "app": "my-app",
+        "environment": "test",
+        "instance": "my-instance",
+        "my-key": "my-value",
+        "region": "local",
+        "role": "server",
+        "service": "my-app-test-local",
+      },
+      "name": "test-ingress-test-c813de7d",
+      "namespace": "test",
+    },
+    "spec": {
+      "ingressClassName": "my-ingress-class",
+      "rules": [
+        {
+          "host": "my-hostname",
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "service-weighting",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`Ingress > Props > Minimal required props 1`] = `
+[
+  {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+      "labels": {
+        "app": "my-app",
+        "instance": "my-instance",
+        "role": "server",
+        "service": "my-app",
+      },
+      "name": "my-name-my-namespace",
+    },
+    "spec": {
+      "externalName": "my-name.my-namespace.svc.cluster.local",
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 80,
+        },
+      ],
+      "type": "ExternalName",
+    },
+  },
+  {
+    "apiVersion": "networking.k8s.io/v1",
+    "kind": "Ingress",
+    "metadata": {
+      "annotations": {
+        "alb.ingress.kubernetes.io/actions.service-weighting": "{"type":"forward","forwardConfig":{"targetGroups":[{"serviceName":"my-name-my-namespace","servicePort":80,"weight":100}]}}",
+        "alb.ingress.kubernetes.io/group.order": "0",
+        "alb.ingress.kubernetes.io/listen-ports": "[{"HTTP":80},{"HTTPS":443}]",
+        "alb.ingress.kubernetes.io/success-codes": "200,303",
+        "alb.ingress.kubernetes.io/tags": "service=my-app,instance=ingress-test",
+        "alb.ingress.kubernetes.io/target-type": "instance",
+      },
+      "labels": {
+        "app": "my-app",
+        "instance": "my-instance",
+        "role": "server",
+        "service": "my-app",
+      },
+      "name": "test-ingress-test-c813de7d",
+    },
+    "spec": {
+      "ingressClassName": "my-ingress-class",
+      "rules": [
+        {
+          "host": "my-hostname",
+          "http": {
+            "paths": [
+              {
+                "backend": {
+                  "service": {
+                    "name": "service-weighting",
+                    "port": {
+                      "name": "use-annotation",
+                    },
+                  },
+                },
+                "path": "/",
+                "pathType": "Prefix",
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+]
+`;
