@@ -5,3 +5,4 @@ export * from "./name-util";
 export * from "./statefulset-util";
 export * from "./value-util";
 export * from "./workload-props";
+export * from "./annotation-util";
