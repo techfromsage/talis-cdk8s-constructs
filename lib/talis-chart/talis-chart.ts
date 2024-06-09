@@ -93,7 +93,11 @@ export class TalisChart extends Chart {
     if (props.includeResourceQuota ?? true) {
       new KubeResourceQuota(this, "quota", {
         spec: Lazy.any({
-          produce: () => calculateResourceQuota(this.node.findAll()),
+          produce: () =>
+            calculateResourceQuota(
+              this.node.findAll(),
+              props.appMeshConfiguration?.enabled,
+            ),
         }),
       });
     }

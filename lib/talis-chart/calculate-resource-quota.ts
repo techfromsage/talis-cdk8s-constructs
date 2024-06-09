@@ -27,6 +27,9 @@ const workloadKinds = [
   "StatefulSet",
 ];
 
+const appMeshCpu = 10 + 10; // envoy and x-ray sidecars
+const appMeshMemory = (32 + 32) * 1024 * 1024; // envoy and x-ray sidecars
+
 interface KubeObject {
   kind: string;
   metadata: ObjectMeta;
@@ -139,6 +142,7 @@ function getPodMaxSurge(workload: KubeObject, replicas: number) {
 
 export function calculateResourceQuota(
   objects: IConstruct[],
+  appMeshEnabled?: boolean,
 ): ResourceQuotaSpec {
   const workloads = new Map<string, KubeObject>();
   const maxReplicas: Record<string, number> = {};
@@ -204,6 +208,10 @@ export function calculateResourceQuota(
       const memoryRequest = getResourceRequest(workload, container, "memory");
       workloadCpu += cpuToMillicores(cpuRequest);
       workloadMemory += memoryToBytes(memoryRequest);
+      if (appMeshEnabled) {
+        workloadCpu += appMeshCpu;
+        workloadMemory += appMeshMemory;
+      }
     }
 
     totalPods += workloadReplicas;

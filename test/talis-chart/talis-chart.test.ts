@@ -131,6 +131,98 @@ describe("TalisChart", () => {
     expect(results[1].metadata.labels).toEqual(commonLabels);
   });
 
+  test("Sets labels and annotations on objects when AppMesh enabled", () => {
+    const app = Testing.app();
+    const chart = new TalisChart(app, {
+      app: "my-app",
+      release: "test",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
+      region: TalisShortRegion.EU,
+      watermark: "test",
+      includeResourceQuota: false,
+      appMeshConfiguration: {
+        enabled: true,
+        meshName: "my-mesh",
+        injectSidecar: true,
+        addToDefaultServiceAccount: true,
+        serviceRoleArn: "arn:aws:iam::123456789012:role/my-role",
+      },
+    });
+
+    new ApiObject(chart, "foo", {
+      apiVersion: "v1",
+      kind: "Foo",
+    });
+
+    const results = Testing.synth(chart);
+    expect(results).toHaveLength(3);
+    const commonLabels = {
+      app: "my-app",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
+      "managed-by": "cdk8s",
+      region: TalisShortRegion.EU,
+      service: "my-app-eu",
+    };
+    const namespaceLabels = {
+      ...commonLabels,
+      release: "test",
+      "appmesh.k8s.aws/sidecarInjectorWebhook": "enabled",
+      "aws.tfs.engineering/appMesh": "my-mesh",
+    };
+    expect(results[0].kind).toEqual("Namespace");
+    expect(results[0].metadata.labels).toEqual(namespaceLabels);
+    expect(results[1].kind).toEqual("ServiceAccount");
+    expect(results[1].metadata.labels).toEqual(commonLabels);
+    expect(results[1].metadata.annotations).toEqual({
+      "eks.amazonaws.com/role-arn": "arn:aws:iam::123456789012:role/my-role",
+    });
+    expect(results[2].kind).toEqual("Foo");
+    expect(results[2].metadata.labels).toEqual(commonLabels);
+  });
+
+  test("Sets lables on objects when AppMesh enabled and no service role arn", () => {
+    const app = Testing.app();
+    const chart = new TalisChart(app, {
+      app: "my-app",
+      release: "test",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
+      region: TalisShortRegion.EU,
+      watermark: "test",
+      includeResourceQuota: false,
+      appMeshConfiguration: {
+        enabled: true,
+        meshName: "my-mesh",
+        injectSidecar: true,
+        addToDefaultServiceAccount: true,
+      },
+    });
+
+    new ApiObject(chart, "foo", {
+      apiVersion: "v1",
+      kind: "Foo",
+    });
+
+    const results = Testing.synth(chart);
+    expect(results).toHaveLength(2);
+    const commonLabels = {
+      app: "my-app",
+      environment: TalisDeploymentEnvironment.PRODUCTION,
+      "managed-by": "cdk8s",
+      region: TalisShortRegion.EU,
+      service: "my-app-eu",
+    };
+    const namespaceLabels = {
+      ...commonLabels,
+      release: "test",
+      "appmesh.k8s.aws/sidecarInjectorWebhook": "enabled",
+      "aws.tfs.engineering/appMesh": "my-mesh",
+    };
+    expect(results[0].kind).toEqual("Namespace");
+    expect(results[0].metadata.labels).toEqual(namespaceLabels);
+    expect(results[1].kind).toEqual("Foo");
+    expect(results[1].metadata.labels).toEqual(commonLabels);
+  });
+
   test("Allows to set custom labels on objects", () => {
     const app = Testing.app();
     const chart = new TalisChart(app, {
@@ -697,6 +789,51 @@ describe("TalisChart", () => {
       expect(() => Testing.synth(chart)).toThrow(
         "No memory requests found in Pod/my-pod",
       );
+    });
+
+    test("Calculates ResourceQuota for a Deployment with autoscaling and AppMesh enabled", () => {
+      const app = Testing.app();
+      const chart = new TalisChart(app, {
+        ...defaultProps,
+        appMeshConfiguration: {
+          enabled: true,
+          meshName: "my-mesh",
+          injectSidecar: true,
+        },
+      });
+      const deployment = makeDeployment(chart);
+      new KubeHorizontalPodAutoscalerV2(chart, "hpa", {
+        spec: {
+          scaleTargetRef: {
+            apiVersion: deployment.apiVersion,
+            kind: deployment.kind,
+            name: deployment.name,
+          },
+          minReplicas: 1,
+          maxReplicas: 5,
+          metrics: [
+            {
+              type: "Resource",
+              resource: {
+                name: "cpu",
+                target: {
+                  type: "Utilization",
+                  averageUtilization: 80,
+                },
+              },
+            },
+          ],
+        },
+      });
+      const results = Testing.synth(chart);
+      const quota = results.find((obj) => obj.kind === "ResourceQuota");
+      expect(quota.spec).toEqual({
+        hard: {
+          cpu: "840m",
+          memory: "1344Mi",
+          pods: 7,
+        },
+      });
     });
   });
 });
