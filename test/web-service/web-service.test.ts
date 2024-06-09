@@ -253,6 +253,17 @@ describe("WebService", () => {
         ],
         externalHostname: "api.example.com",
         additionalExternalHostnames: ["api2.example.com"],
+        createAppMeshVirtualNode: true,
+        appMeshUpstreamServices: [
+          {
+            name: "upstream-1",
+            namespace: "upstream-ns1",
+          },
+          {
+            name: "upstream-2",
+            namespace: "upstream-ns2",
+          },
+        ],
       };
       new WebService(chart, "web", allProps);
       const results = Testing.synth(chart);
@@ -276,6 +287,8 @@ describe("WebService", () => {
         "stage",
         "tlsDomain",
         "podDisruptionBudget",
+        "createAppMeshVirtualNode",
+        "appMeshUpstreamServices",
       ]);
     });
 

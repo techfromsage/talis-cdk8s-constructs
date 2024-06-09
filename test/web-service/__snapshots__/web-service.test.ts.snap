@@ -116,6 +116,61 @@ exports[`WebService > Props > All the props 1`] = `
     },
   },
   {
+    "apiVersion": "appmesh.k8s.aws/v1beta2",
+    "kind": "VirtualNode",
+    "metadata": {
+      "labels": {
+        "app": "my-app",
+        "environment": "test",
+        "region": "testing",
+      },
+      "name": "web-service",
+      "namespace": "props-test",
+    },
+    "spec": {
+      "backends": [
+        {
+          "virtualService": {
+            "virtualServiceRef": {
+              "name": "upstream-1",
+              "namespace": "upstream-ns1",
+            },
+          },
+        },
+        {
+          "virtualService": {
+            "virtualServiceRef": {
+              "name": "upstream-2",
+              "namespace": "upstream-ns2",
+            },
+          },
+        },
+      ],
+      "listeners": [
+        {
+          "portMapping": {
+            "port": 80,
+            "protocol": "http",
+          },
+        },
+      ],
+      "podSelector": {
+        "matchLabels": {
+          "app": "my-app",
+          "foo": "bar",
+          "instance": "my-app",
+          "role": "server",
+        },
+      },
+      "serviceDiscovery": {
+        "dns": {
+          "hostname": "web-service.props-test.svc.cluster.local",
+          "responseType": "LOADBALANCER",
+        },
+      },
+    },
+  },
+  {
     "apiVersion": "networking.k8s.io/v1",
     "kind": "Ingress",
     "metadata": {
@@ -579,6 +634,62 @@ exports[`WebService > Props > All the props 1`] = `
         "role": "server",
       },
       "type": "ClusterIP",
+    },
+  },
+  {
+    "apiVersion": "appmesh.k8s.aws/v1beta2",
+    "kind": "VirtualNode",
+    "metadata": {
+      "labels": {
+        "app": "my-app",
+        "environment": "test",
+        "region": "testing",
+      },
+      "name": "web-canary-service",
+      "namespace": "props-test",
+    },
+    "spec": {
+      "backends": [
+        {
+          "virtualService": {
+            "virtualServiceRef": {
+              "name": "upstream-1",
+              "namespace": "upstream-ns1",
+            },
+          },
+        },
+        {
+          "virtualService": {
+            "virtualServiceRef": {
+              "name": "upstream-2",
+              "namespace": "upstream-ns2",
+            },
+          },
+        },
+      ],
+      "listeners": [
+        {
+          "portMapping": {
+            "port": 80,
+            "protocol": "http",
+          },
+        },
+      ],
+      "podSelector": {
+        "matchLabels": {
+          "app": "my-app",
+          "canary": "true",
+          "foo": "bar",
+          "instance": "my-app",
+          "role": "server",
+        },
+      },
+      "serviceDiscovery": {
+        "dns": {
+          "hostname": "web-canary-service.props-test.svc.cluster.local",
+          "responseType": "LOADBALANCER",
+        },
+      },
     },
   },
   {
