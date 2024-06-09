@@ -27,6 +27,7 @@ import {
   getValueFromIntOrPercent,
   convertToJsonContent,
   convertToStringMap,
+  createVirtualNodeForService,
 } from "../common";
 import { supportsTls } from "./tls-util";
 import {
@@ -169,6 +170,16 @@ export class WebService extends Construct {
           selector: serviceLabels,
         },
       });
+
+      if (props.createAppMeshVirtualNode) {
+        createVirtualNodeForService(
+          this,
+          `${id}${instanceSuffix}-service`,
+          servicePort,
+          serviceLabels,
+          props.appMeshUpstreamServices || [],
+        );
+      }
 
       if (isCanaryInstance) {
         this.canaryService = service;

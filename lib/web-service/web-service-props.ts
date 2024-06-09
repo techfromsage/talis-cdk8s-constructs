@@ -205,4 +205,19 @@ export interface WebServiceProps
    * Whether to include PodDisruptionBudget.
    */
   readonly podDisruptionBudget?: PodDisruptionBudgetProps;
+
+  /**
+   * Whether to create the virtual node for App Mesh.
+   * @default false
+   */
+  readonly createAppMeshVirtualNode?: boolean;
+
+  /**
+   * Upstream services for the virtual node.
+   * @default []
+   */
+  readonly appMeshUpstreamServices?: Array<{
+    name: string;
+    namespace: string;
+  }>;
 }

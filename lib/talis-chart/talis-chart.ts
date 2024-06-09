@@ -1,10 +1,16 @@
 import { Construct } from "constructs";
 import { ApiObject, Chart, ChartProps, Lazy } from "cdk8s";
 import { KubeNamespace, KubeResourceQuota } from "../../imports/k8s";
-import { joinNameParts } from "../common";
+import {
+  addAppMeshIdentityLabels,
+  addAwsAppMeshInjectionLabels,
+  addAppMeshRoleToDefaultServiceAccount,
+  joinNameParts,
+} from "../common";
 import { TalisShortRegion } from "./talis-region";
 import { TalisDeploymentEnvironment } from "./talis-deployment-environment";
 import { calculateResourceQuota } from "./calculate-resource-quota";
+import { TalisAppMeshConfiguration } from "./talis-app-mesh-configuration";
 
 export interface TalisChartProps extends ChartProps {
   /** Name of the application this chart is for */
@@ -24,6 +30,7 @@ export interface TalisChartProps extends ChartProps {
    * @default true
    */
   readonly includeResourceQuota?: boolean;
+  readonly appMeshConfiguration?: TalisAppMeshConfiguration;
 }
 
 /** @private */
@@ -39,6 +46,8 @@ export class TalisChart extends Chart {
   public readonly namespace: string;
   /** The namespace API object */
   public readonly kubeNamespace: KubeNamespace;
+  /** The name of the App Mesh associated with this chart. */
+  public readonly appMeshConfiguration?: TalisAppMeshConfiguration;
 
   constructor(scope: Construct, props: TalisChartConstructorProps) {
     const { app, release, environment, region, watermark, ttl } = props;
@@ -79,6 +88,7 @@ export class TalisChart extends Chart {
         labels: namespaceLabels,
       },
     });
+    this.appMeshConfiguration = props.appMeshConfiguration;
 
     if (props.includeResourceQuota ?? true) {
       new KubeResourceQuota(this, "quota", {
@@ -87,9 +97,32 @@ export class TalisChart extends Chart {
         }),
       });
     }
+
+    if (props.appMeshConfiguration?.enabled) {
+      addAppMeshIdentityLabels(this, props.appMeshConfiguration.meshName);
+      if (props.appMeshConfiguration.injectSidecar) {
+        addAwsAppMeshInjectionLabels(this);
+      }
+      if (
+        props.appMeshConfiguration.addToDefaultServiceAccount &&
+        props.appMeshConfiguration.serviceRoleArn
+      ) {
+        addAppMeshRoleToDefaultServiceAccount(
+          this,
+          props.appMeshConfiguration.serviceRoleArn,
+        );
+      }
+    }
   }
 
   generateObjectName(apiObject: ApiObject): string {
     return apiObject.node.id;
+  }
+
+  appMeshEnabled(): boolean {
+    return (
+      this.appMeshConfiguration !== undefined &&
+      this.appMeshConfiguration.enabled
+    );
   }
 }
