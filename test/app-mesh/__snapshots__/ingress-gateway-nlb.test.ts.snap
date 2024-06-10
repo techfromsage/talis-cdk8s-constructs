@@ -158,6 +158,9 @@ exports[`IngressGatewayNlb > Props > Override Envoy Repository 1`] = `
     "kind": "Service",
     "metadata": {
       "annotations": {
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-enabled": "true",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name": "mybucket",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix": "mylogs/1234/nlb",
         "service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled": "true",
         "service.beta.kubernetes.io/aws-load-balancer-scheme": "internal",
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:us-west-2:123456789012:certificate/abcdef01-1234-5678-9012-abcdef0123456",
@@ -350,6 +353,9 @@ exports[`IngressGatewayNlb > Props > Override Envoy Version 1`] = `
     "kind": "Service",
     "metadata": {
       "annotations": {
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-enabled": "true",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name": "mybucket",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix": "mylogs/1234/nlb",
         "service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled": "true",
         "service.beta.kubernetes.io/aws-load-balancer-scheme": "internal",
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:us-west-2:123456789012:certificate/abcdef01-1234-5678-9012-abcdef0123456",
@@ -542,6 +548,9 @@ exports[`IngressGatewayNlb > Props > Override Gateway HPA Average CPU Utilizatio
     "kind": "Service",
     "metadata": {
       "annotations": {
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-enabled": "true",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name": "mybucket",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix": "mylogs/1234/nlb",
         "service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled": "true",
         "service.beta.kubernetes.io/aws-load-balancer-scheme": "internal",
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:us-west-2:123456789012:certificate/abcdef01-1234-5678-9012-abcdef0123456",
@@ -734,6 +743,9 @@ exports[`IngressGatewayNlb > Props > Override Gateway Max Replicas 1`] = `
     "kind": "Service",
     "metadata": {
       "annotations": {
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-enabled": "true",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name": "mybucket",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix": "mylogs/1234/nlb",
         "service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled": "true",
         "service.beta.kubernetes.io/aws-load-balancer-scheme": "internal",
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:us-west-2:123456789012:certificate/abcdef01-1234-5678-9012-abcdef0123456",
@@ -926,6 +938,9 @@ exports[`IngressGatewayNlb > Props > Override Gateway Min Replicas 1`] = `
     "kind": "Service",
     "metadata": {
       "annotations": {
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-enabled": "true",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name": "mybucket",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix": "mylogs/1234/nlb",
         "service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled": "true",
         "service.beta.kubernetes.io/aws-load-balancer-scheme": "internal",
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:us-west-2:123456789012:certificate/abcdef01-1234-5678-9012-abcdef0123456",
@@ -1118,6 +1133,9 @@ exports[`IngressGatewayNlb > Props > Public Gateway 1`] = `
     "kind": "Service",
     "metadata": {
       "annotations": {
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-enabled": "true",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name": "mybucket",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix": "mylogs/1234/nlb",
         "service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled": "true",
         "service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing",
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:us-west-2:123456789012:certificate/abcdef01-1234-5678-9012-abcdef0123456",
@@ -1310,6 +1328,9 @@ exports[`IngressGatewayNlb > Props > Required props 1`] = `
     "kind": "Service",
     "metadata": {
       "annotations": {
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-enabled": "true",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name": "mybucket",
+        "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix": "mylogs/1234/nlb",
         "service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled": "true",
         "service.beta.kubernetes.io/aws-load-balancer-scheme": "internal",
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:us-west-2:123456789012:certificate/abcdef01-1234-5678-9012-abcdef0123456",

@@ -6,6 +6,8 @@ const requiredProps: IngressGatewayNlbProps = {
   tlsCertificateArn:
     "arn:aws:acm:us-west-2:123456789012:certificate/abcdef01-1234-5678-9012-abcdef0123456",
   ingressRoleArn: "arn:aws:iam::123456789012:role/ingress-role",
+  nlbAccessLogBucket: "mybucket",
+  nlbAccessLogPrefix: "mylogs/1234/nlb",
 };
 
 function synthIngressGatewayNlb(

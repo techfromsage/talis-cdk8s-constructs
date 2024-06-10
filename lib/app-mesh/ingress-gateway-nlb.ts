@@ -15,6 +15,8 @@ export interface IngressGatewayNlbProps {
   readonly gatewayName: string;
   readonly tlsCertificateArn: string;
   readonly ingressRoleArn: string;
+  readonly nlbAccessLogBucket: string;
+  readonly nlbAccessLogPrefix: string;
   readonly public?: boolean;
   readonly gatewayMinReplicas?: number;
   readonly gatewayMaxReplicas?: number;
@@ -211,6 +213,12 @@ export class IngressGatewayNlb extends Construct {
           "service.beta.kubernetes.io/aws-load-balancer-ssl-cert":
             props.tlsCertificateArn,
           "service.beta.kubernetes.io/aws-load-balancer-ssl-ports": "https",
+          "service.beta.kubernetes.io/aws-load-balancer-access-log-enabled":
+            "true",
+          "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name":
+            props.nlbAccessLogBucket,
+          "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix":
+            props.nlbAccessLogPrefix,
         },
       },
       spec: {
