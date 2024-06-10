@@ -47,6 +47,8 @@ export class AppService extends Construct {
       instance: props.instance,
     };
 
+    this.validateProps(props);
+
     /*
      * Create a dummy service for the app service to route traffic to.
      * this is because AppMesh at present doesnot register a DNS entry for the virtual service.
@@ -168,5 +170,17 @@ export class AppService extends Construct {
         },
       },
     });
+  }
+
+  private validateProps(props: AppServiceProps): void {
+    const totalWeight = props.virtualNodeTargets.reduce(
+      (sum, serviceRoute) => sum + serviceRoute.weight,
+      0,
+    );
+    if (totalWeight <= 0 || totalWeight > 100) {
+      throw new Error(
+        "Total service routing weight must be between 1 and 100.",
+      );
+    }
   }
 }

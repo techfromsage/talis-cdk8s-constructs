@@ -11,7 +11,7 @@ import {
   KubeServiceAccount,
 } from "../../imports/k8s";
 
-export interface IngressGatewayProps {
+export interface IngressGatewayNlbProps {
   readonly gatewayName: string;
   readonly tlsCertificateArn: string;
   readonly ingressRoleArn: string;
@@ -26,10 +26,12 @@ export interface IngressGatewayProps {
 export class IngressGatewayNlb extends Construct {
   gatewayName: string;
 
-  constructor(scope: Construct, id: string, props: IngressGatewayProps) {
+  constructor(scope: Construct, id: string, props: IngressGatewayNlbProps) {
     super(scope, id);
 
     this.gatewayName = props.gatewayName;
+
+    this.validateProps(props);
 
     const envoyRepository =
       props.envoyRepository ?? "public.ecr.aws/appmesh/aws-appmesh-envoy";
@@ -243,5 +245,29 @@ export class IngressGatewayNlb extends Construct {
     return {
       "aws.tfs.engineering/appMeshGateway": this.gatewayName,
     };
+  }
+
+  private validateProps(props: IngressGatewayNlbProps) {
+    if (
+      props.gatewayMinReplicas !== undefined &&
+      props.gatewayMinReplicas < 2
+    ) {
+      throw new Error("gatewayMinReplicas must be at least 2");
+    }
+    if (
+      props.gatewayMaxReplicas !== undefined &&
+      props.gatewayMaxReplicas < 2
+    ) {
+      throw new Error("gatewayMaxReplicas must be at least 2");
+    }
+    if (
+      props.gatewayMinReplicas !== undefined &&
+      props.gatewayMaxReplicas !== undefined &&
+      props.gatewayMinReplicas > props.gatewayMaxReplicas
+    ) {
+      throw new Error(
+        "gatewayMinReplicas must be less than gatewayMaxReplicas",
+      );
+    }
   }
 }

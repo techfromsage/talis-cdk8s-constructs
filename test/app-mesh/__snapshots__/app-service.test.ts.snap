@@ -1,0 +1,118 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AppService > Props > Required props 1`] = `
+[
+  {
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+      "labels": {
+        "app": "myapp",
+        "instance": "server",
+      },
+      "name": "myapp",
+    },
+    "spec": {
+      "ports": [
+        {
+          "name": "http",
+          "port": 5000,
+        },
+      ],
+    },
+  },
+  {
+    "apiVersion": "appmesh.k8s.aws/v1beta2",
+    "kind": "VirtualRouter",
+    "metadata": {
+      "labels": {
+        "app": "myapp",
+        "instance": "server",
+      },
+      "name": "myapp-router",
+    },
+    "spec": {
+      "listeners": [
+        {
+          "portMapping": {
+            "port": 5000,
+            "protocol": "http",
+          },
+        },
+      ],
+      "routes": [
+        {
+          "httpRoute": {
+            "action": {
+              "weightedTargets": [
+                {
+                  "virtualNodeRef": {
+                    "name": "myapp",
+                    "namespace": "default",
+                  },
+                  "weight": 100,
+                },
+              ],
+            },
+            "match": {
+              "prefix": "/",
+            },
+          },
+          "name": "myapp-route",
+        },
+      ],
+    },
+  },
+  {
+    "apiVersion": "appmesh.k8s.aws/v1beta2",
+    "kind": "VirtualService",
+    "metadata": {
+      "labels": {
+        "app": "myapp",
+        "instance": "server",
+      },
+      "name": "myapp-virtual-service",
+    },
+    "spec": {
+      "awsName": "myapp.undefined.svc.cluster.local",
+      "provider": {
+        "virtualRouter": {
+          "virtualRouterRef": {
+            "name": "myapp-router",
+          },
+        },
+      },
+    },
+  },
+  {
+    "apiVersion": "appmesh.k8s.aws/v1beta2",
+    "kind": "GatewayRoute",
+    "metadata": {
+      "labels": {
+        "app": "myapp",
+        "aws.tfs.engineering/appMeshGateway": "12345",
+        "instance": "server",
+      },
+      "name": "myapp-gateway-route",
+    },
+    "spec": {
+      "httpRoute": {
+        "action": {
+          "target": {
+            "virtualService": {
+              "virtualServiceRef": {
+                "name": "myapp-virtual-service",
+              },
+            },
+          },
+        },
+        "match": {
+          "hostname": {
+            "exact": "myapp.example.com",
+          },
+        },
+      },
+    },
+  },
+]
+`;
