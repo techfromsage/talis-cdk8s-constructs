@@ -60,6 +60,11 @@ export class AppService extends Construct {
       },
     });
 
+    /*
+     * Create a VirtualRouter for the AppService.
+     * This describes how traffic should be routed to the VirtualNodeTargets.
+     * The VirtualRouter is the AppMesh representation of the Kubernetes Ingress routing.
+     */
     const virtualRouter = new VirtualRouter(this, "virtual-router", {
       metadata: {
         name: `${props.appName}-router`,
@@ -97,6 +102,11 @@ export class AppService extends Construct {
       },
     });
 
+    /*
+     * Create a VirtualService for the VirtualRouter.
+     * This is the service that the GatewayRoute will route traffic to.
+     * The VirtualService is the AppMesh representation of the Kubernetes Service.
+     */
     const virtualService = new VirtualService(this, "virtual-service", {
       metadata: {
         name: `${props.appName}-virtual-service`,
@@ -113,6 +123,11 @@ export class AppService extends Construct {
       },
     });
 
+    /*
+     * Create a GatewayRoute for the VirtualService.
+     * This routes traffic from the IngressGateway to the VirtualService based on the hostname.
+     * The GatewayRoute is the AppMesh representation of the Kubernetes Ingress routing.
+     */
     new GatewayRoute(this, "gateway-route", {
       metadata: {
         name: `${props.appName}-gateway-route`,
