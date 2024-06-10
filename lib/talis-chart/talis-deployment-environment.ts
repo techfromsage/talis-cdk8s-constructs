@@ -3,6 +3,7 @@ export enum TalisDeploymentEnvironment {
   TEST = "test",
   BUILD = "build",
   STAGING = "staging",
+  BETA = "beta",
   PRODUCTION = "production",
   ONDEMAND = "ondemand",
   PREVIEW = "preview",
