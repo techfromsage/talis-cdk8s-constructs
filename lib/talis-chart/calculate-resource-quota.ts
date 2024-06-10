@@ -203,15 +203,16 @@ export function calculateResourceQuota(
     let workloadCpu = 0;
     let workloadMemory = 0;
 
+    if (appMeshEnabled) {
+      workloadCpu += appMeshCpu;
+      workloadMemory += appMeshMemory;
+    }
+
     for (const container of containers) {
       const cpuRequest = getResourceRequest(workload, container, "cpu");
       const memoryRequest = getResourceRequest(workload, container, "memory");
       workloadCpu += cpuToMillicores(cpuRequest);
       workloadMemory += memoryToBytes(memoryRequest);
-      if (appMeshEnabled) {
-        workloadCpu += appMeshCpu;
-        workloadMemory += appMeshMemory;
-      }
     }
 
     totalPods += workloadReplicas;
