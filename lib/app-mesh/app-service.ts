@@ -27,8 +27,9 @@ export interface VirtualNodeTargets {
 }
 
 export interface AppServiceProps {
-  readonly appName: string;
-  readonly appPort: number;
+  readonly name: string;
+  readonly port: number;
+  readonly instance: string;
   readonly hostname: string;
   readonly virtualNodeTargets: Array<VirtualNodeTargets>;
   readonly gatewayRouteLabels: Record<string, string>;
@@ -41,6 +42,10 @@ export class AppService extends Construct {
     super(scope, id);
 
     const namespace = Chart.of(this).namespace;
+    const commonLabels = {
+      app: props.name,
+      instance: props.instance,
+    };
 
     /*
      * Create a dummy service for the app service to route traffic to.
@@ -48,12 +53,13 @@ export class AppService extends Construct {
      */
     const service = new KubeService(this, "service", {
       metadata: {
-        name: props.appName,
+        name: props.name,
+        labels: commonLabels,
       },
       spec: {
         ports: [
           {
-            port: props.appPort,
+            port: props.port,
             name: "http",
           },
         ],
@@ -65,73 +71,83 @@ export class AppService extends Construct {
      * This describes how traffic should be routed to the VirtualNodeTargets.
      * The VirtualRouter is the AppMesh representation of the Kubernetes Ingress routing.
      */
-    const virtualRouter = new VirtualRouter(this, "virtual-router", {
-      metadata: {
-        name: `${props.appName}-router`,
-      },
-      spec: {
-        listeners: [
-          {
-            portMapping: {
-              port: props.appPort,
-              protocol: VirtualRouterSpecListenersPortMappingProtocol.HTTP,
-            },
-          },
-        ],
-        routes: [
-          {
-            name: `${props.appName}-route`,
-            httpRoute: {
-              match: {
-                prefix: "/",
-              },
-              action: {
-                weightedTargets: props.virtualNodeTargets.map((service) => {
-                  return {
-                    virtualNodeRef: {
-                      name: service.name,
-                      namespace: service.namespace,
-                    },
-                    weight: service.weight,
-                  };
-                }),
+    const virtualRouter = new VirtualRouter(
+      this,
+      `${props.name}-virtual-router`,
+      {
+        metadata: {
+          name: `${props.name}-router`,
+          labels: commonLabels,
+        },
+        spec: {
+          listeners: [
+            {
+              portMapping: {
+                port: props.port,
+                protocol: VirtualRouterSpecListenersPortMappingProtocol.HTTP,
               },
             },
-          },
-        ],
+          ],
+          routes: [
+            {
+              name: `${props.name}-route`,
+              httpRoute: {
+                match: {
+                  prefix: "/",
+                },
+                action: {
+                  weightedTargets: props.virtualNodeTargets.map((service) => {
+                    return {
+                      virtualNodeRef: {
+                        name: service.name,
+                        namespace: service.namespace,
+                      },
+                      weight: service.weight,
+                    };
+                  }),
+                },
+              },
+            },
+          ],
+        },
       },
-    });
+    );
 
     /*
      * Create a VirtualService for the VirtualRouter.
      * This is the service that the GatewayRoute will route traffic to.
      * The VirtualService is the AppMesh representation of the Kubernetes Service.
      */
-    const virtualService = new VirtualService(this, "virtual-service", {
-      metadata: {
-        name: `${props.appName}-virtual-service`,
-      },
-      spec: {
-        awsName: `${service.name}.${namespace}.svc.cluster.local`,
-        provider: {
-          virtualRouter: {
-            virtualRouterRef: {
-              name: virtualRouter.name,
+    const virtualService = new VirtualService(
+      this,
+      `${props.name}-virtual-service`,
+      {
+        metadata: {
+          name: `${props.name}-virtual-service`,
+          labels: commonLabels,
+        },
+        spec: {
+          awsName: `${service.name}.${namespace}.svc.cluster.local`,
+          provider: {
+            virtualRouter: {
+              virtualRouterRef: {
+                name: virtualRouter.name,
+              },
             },
           },
         },
       },
-    });
+    );
 
     /*
      * Create a GatewayRoute for the VirtualService.
      * This routes traffic from the IngressGateway to the VirtualService based on the hostname.
      * The GatewayRoute is the AppMesh representation of the Kubernetes Ingress routing.
      */
-    new GatewayRoute(this, "gateway-route", {
+    new GatewayRoute(this, `${props.name}-gateway-route`, {
       metadata: {
-        name: `${props.appName}-gateway-route`,
-        labels: props.gatewayRouteLabels,
+        name: `${props.name}-gateway-route`,
+        labels: { ...commonLabels, ...props.gatewayRouteLabels },
       },
       spec: {
         httpRoute: {
