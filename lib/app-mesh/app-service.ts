@@ -27,7 +27,7 @@ export interface VirtualNodeTargets {
 }
 
 export interface AppServiceProps {
-  readonly name: string;
+  readonly app: string;
   readonly port: number;
   readonly instance: string;
   readonly hostname: string;
@@ -43,7 +43,7 @@ export class AppService extends Construct {
 
     const namespace = Chart.of(this).namespace;
     const commonLabels = {
-      app: props.name,
+      app: props.app,
       instance: props.instance,
     };
 
@@ -53,7 +53,7 @@ export class AppService extends Construct {
      */
     const service = new KubeService(this, "service", {
       metadata: {
-        name: props.name,
+        name: props.app,
         labels: commonLabels,
       },
       spec: {
@@ -73,10 +73,10 @@ export class AppService extends Construct {
      */
     const virtualRouter = new VirtualRouter(
       this,
-      `${props.name}-virtual-router`,
+      `${props.app}-virtual-router`,
       {
         metadata: {
-          name: `${props.name}-router`,
+          name: `${props.app}-router`,
           labels: commonLabels,
         },
         spec: {
@@ -90,7 +90,7 @@ export class AppService extends Construct {
           ],
           routes: [
             {
-              name: `${props.name}-route`,
+              name: `${props.app}-route`,
               httpRoute: {
                 match: {
                   prefix: "/",
@@ -120,10 +120,10 @@ export class AppService extends Construct {
      */
     const virtualService = new VirtualService(
       this,
-      `${props.name}-virtual-service`,
+      `${props.app}-virtual-service`,
       {
         metadata: {
-          name: `${props.name}-virtual-service`,
+          name: `${props.app}-virtual-service`,
           labels: commonLabels,
         },
         spec: {
@@ -144,9 +144,9 @@ export class AppService extends Construct {
      * This routes traffic from the IngressGateway to the VirtualService based on the hostname.
      * The GatewayRoute is the AppMesh representation of the Kubernetes Ingress routing.
      */
-    new GatewayRoute(this, `${props.name}-gateway-route`, {
+    new GatewayRoute(this, `${props.app}-gateway-route`, {
       metadata: {
-        name: `${props.name}-gateway-route`,
+        name: `${props.app}-gateway-route`,
         labels: { ...commonLabels, ...props.gatewayRouteLabels },
       },
       spec: {
