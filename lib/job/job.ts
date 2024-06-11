@@ -28,7 +28,9 @@ export class Job extends Construct {
         labels: { ...labels, ...selectorLabels },
       },
       spec: {
+        suspend: props.suspend,
         backoffLimit: props.backoffLimit ?? 6,
+        activeDeadlineSeconds: props.activeDeadlineSeconds,
         ttlSecondsAfterFinished: props.ttlSecondsAfterFinished,
         template: {
           metadata: {

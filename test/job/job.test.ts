@@ -61,10 +61,12 @@ describe("Job", () => {
       const allProps: Required<JobProps> = {
         ...requiredProps,
         selectorLabels,
+        suspend: false,
         containerName: "my-container",
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
+        activeDeadlineSeconds: 120,
         backoffLimit: 1,
         ttlSecondsAfterFinished: 30,
         safeToEvict: false,

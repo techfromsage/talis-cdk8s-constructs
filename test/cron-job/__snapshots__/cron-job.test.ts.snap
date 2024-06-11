@@ -21,7 +21,9 @@ exports[`CronJob > Props > All the props 1`] = `
       "failedJobsHistoryLimit": 2,
       "jobTemplate": {
         "spec": {
+          "activeDeadlineSeconds": 120,
           "backoffLimit": 1,
+          "suspend": true,
           "template": {
             "metadata": {
               "annotations": {
@@ -139,6 +141,7 @@ exports[`CronJob > Props > All the props 1`] = `
               ],
             },
           },
+          "ttlSecondsAfterFinished": 30,
         },
       },
       "schedule": "0 0 13 * 5",

@@ -63,11 +63,14 @@ describe("CronJob", () => {
         ...requiredProps,
         selectorLabels,
         suspend: false,
+        suspendJob: true,
         containerName: "my-container",
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
         backoffLimit: 1,
+        activeDeadlineSeconds: 120,
+        ttlSecondsAfterFinished: 30,
         safeToEvict: false,
         safeToEvictLocalVolumes: ["tmp-dir"],
         env: [{ name: "FOO", value: "bar" }],
@@ -137,6 +140,7 @@ describe("CronJob", () => {
         "selectorLabels",
         "safeToEvict",
         "safeToEvictLocalVolumes",
+        "suspendJob",
       ]);
     });
 

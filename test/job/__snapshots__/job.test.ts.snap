@@ -18,7 +18,9 @@ exports[`Job > Props > All the props 1`] = `
       "namespace": "test",
     },
     "spec": {
+      "activeDeadlineSeconds": 120,
       "backoffLimit": 1,
+      "suspend": false,
       "template": {
         "metadata": {
           "annotations": {

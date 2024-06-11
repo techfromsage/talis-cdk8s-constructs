@@ -37,7 +37,10 @@ export class CronJob extends Construct {
         failedJobsHistoryLimit: props.failedJobsHistoryLimit ?? 1,
         jobTemplate: {
           spec: {
+            suspend: props.suspendJob,
             backoffLimit: props.backoffLimit ?? 6,
+            activeDeadlineSeconds: props.activeDeadlineSeconds,
+            ttlSecondsAfterFinished: props.ttlSecondsAfterFinished,
             template: {
               metadata: {
                 annotations: makeSafeToEvictAnnotations(props),

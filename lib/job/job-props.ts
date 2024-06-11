@@ -37,10 +37,25 @@ export interface JobProps
   readonly restartPolicy: string;
 
   /**
+   * Specifies whether the Job controller should create Pods or not.
+   * @default false.
+   */
+  readonly suspend?: boolean;
+
+  /**
    * Specifies the number of retries before marking this job failed.
    * @default 6
    */
   readonly backoffLimit?: number;
+
+  /**
+   * Specifies the duration in seconds relative to the startTime that the job
+   * may be continuously active before the system tries to terminate it; value
+   * must be positive integer. If a Job is suspended (at creation or through
+   * an update), this timer will effectively be stopped and reset when the Job
+   * is resumed again.
+   */
+  readonly activeDeadlineSeconds?: number;
 
   /**
    * ttlSecondsAfterFinished limits the lifetime of a Job that has finished execution (either Complete
