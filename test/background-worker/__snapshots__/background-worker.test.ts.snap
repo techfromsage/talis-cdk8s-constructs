@@ -438,7 +438,6 @@ exports[`BackgroundWorker > Props > All the props 1`] = `
           ],
           "preemptionPolicy": "PreemptLowerPriority",
           "priorityClassName": "high-priority",
-          "restartPolicy": "Always",
           "securityContext": {
             "fsGroup": 1000,
           },

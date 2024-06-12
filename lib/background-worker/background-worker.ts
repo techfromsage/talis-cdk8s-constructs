@@ -67,7 +67,6 @@ export class BackgroundWorker extends Construct {
             tolerations: props.tolerations,
             volumes: props.volumes,
             securityContext: props.podSecurityContext,
-            restartPolicy: props.restartPolicy,
             initContainers: props.initContainers,
             containers: [
               {

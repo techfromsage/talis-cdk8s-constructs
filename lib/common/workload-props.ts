@@ -12,3 +12,5 @@ export interface WorkloadProps extends PodProps {
    */
   readonly revisionHistoryLimit?: number;
 }
+
+export type DeploymentProps = Omit<WorkloadProps, "restartPolicy">;

@@ -5,7 +5,6 @@ import {
   BackgroundWorkerProps,
   ContainerImagePullPolicy,
   DNSPolicy,
-  PodSpecRestartPolicy,
   PreemptionPolicy,
 } from "../../lib";
 
@@ -90,7 +89,6 @@ describe("BackgroundWorker", () => {
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
         revisionHistoryLimit: 5,
-        restartPolicy: PodSpecRestartPolicy.ALWAYS,
         containers: [{ name: "secondary", image: "second-image" }],
         affinity: {
           podAntiAffinity: {
