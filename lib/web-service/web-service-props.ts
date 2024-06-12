@@ -96,7 +96,7 @@ interface ServiceAnnotations {
 export interface WebServiceProps
   extends ServiceAnnotations,
     ContainerProps,
-    WorkloadProps {
+    Omit<WorkloadProps, "restartPolicy"> {
   /**
    * Static number of replicas. Cannot be specified with `horizontalPodAutoscaler`.
    */

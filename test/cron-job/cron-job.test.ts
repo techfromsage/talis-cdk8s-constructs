@@ -4,7 +4,9 @@ import {
   ContainerImagePullPolicy,
   CronJob,
   CronJobProps,
+  DNSPolicy,
   PodSpecRestartPolicy,
+  PreemptionPolicy,
 } from "../../lib";
 import { makeChart } from "../test-util";
 
@@ -77,6 +79,27 @@ describe("CronJob", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: false,
+        dnsConfig: {
+          options: [
+            {
+              name: "ndots",
+              value: "2",
+            },
+          ],
+        },
+        dnsPolicy: DNSPolicy.CLUSTER_FIRST,
+        enableServiceLinks: false,
+        preemptionPolicy: PreemptionPolicy.PREEMPT_LOWER_PRIORITY,
+        serviceAccountName: "service-account",
+        setHostnameAsFqdn: false,
+        shareProcessNamespace: false,
+        subdomain: "sub",
+        tolerations: [
+          {
+            effect: "NoSchedule",
+            operator: "Exists",
+          },
+        ],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority-nonpreempting",
@@ -111,6 +134,9 @@ describe("CronJob", () => {
             cpu: Quantity.fromNumber(1),
             memory: Quantity.fromString("1Gi"),
           },
+        },
+        podSecurityContext: {
+          fsGroup: 1000,
         },
         securityContext: {
           runAsUser: 1000,
@@ -162,12 +188,17 @@ describe("CronJob", () => {
       const cronJob = results.find((obj) => obj.kind === "CronJob");
       expect(cronJob).toHaveAllProperties(allProps, [
         "containerName",
+        "podSecurityContext",
         "release",
-        "selectorLabels",
         "safeToEvict",
         "safeToEvictLocalVolumes",
+        "selectorLabels",
+        "setHostnameAsFqdn",
         "suspendJob",
       ]);
+      expect(cronJob).toHaveProperty(
+        "spec.jobTemplate.spec.template.spec.setHostnameAsFQDN",
+      );
     });
 
     test("Setting restartPolicy", () => {

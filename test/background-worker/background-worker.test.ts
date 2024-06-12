@@ -4,7 +4,9 @@ import {
   BackgroundWorker,
   BackgroundWorkerProps,
   ContainerImagePullPolicy,
+  DNSPolicy,
   PodSpecRestartPolicy,
+  PreemptionPolicy,
 } from "../../lib";
 
 const requiredProps = {
@@ -63,6 +65,27 @@ describe("BackgroundWorker", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: true,
+        dnsConfig: {
+          options: [
+            {
+              name: "ndots",
+              value: "2",
+            },
+          ],
+        },
+        dnsPolicy: DNSPolicy.CLUSTER_FIRST,
+        enableServiceLinks: false,
+        preemptionPolicy: PreemptionPolicy.PREEMPT_LOWER_PRIORITY,
+        serviceAccountName: "service-account",
+        setHostnameAsFqdn: false,
+        shareProcessNamespace: false,
+        subdomain: "sub",
+        tolerations: [
+          {
+            effect: "NoSchedule",
+            operator: "Exists",
+          },
+        ],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
@@ -93,6 +116,9 @@ describe("BackgroundWorker", () => {
             cpu: Quantity.fromNumber(1),
             memory: Quantity.fromString("1Gi"),
           },
+        },
+        podSecurityContext: {
+          fsGroup: 1000,
         },
         securityContext: {
           runAsUser: 1000,
@@ -174,9 +200,12 @@ describe("BackgroundWorker", () => {
       const deployment = results.find((obj) => obj.kind === "Deployment");
       expect(deployment).toHaveAllProperties(allProps, [
         "containerName",
+        "podSecurityContext",
         "release",
         "selectorLabels",
+        "setHostnameAsFqdn",
       ]);
+      expect(deployment).toHaveProperty("spec.template.spec.setHostnameAsFQDN");
     });
 
     test("Allows specifying no affinity", () => {

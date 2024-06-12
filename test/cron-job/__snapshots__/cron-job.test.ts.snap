@@ -136,6 +136,16 @@ exports[`CronJob > Props > All the props 1`] = `
                   "name": "secondary",
                 },
               ],
+              "dnsConfig": {
+                "options": [
+                  {
+                    "name": "ndots",
+                    "value": "2",
+                  },
+                ],
+              },
+              "dnsPolicy": "ClusterFirst",
+              "enableServiceLinks": false,
               "hostAliases": [
                 {
                   "hostnames": [
@@ -160,9 +170,23 @@ exports[`CronJob > Props > All the props 1`] = `
                   "name": "init-container",
                 },
               ],
+              "preemptionPolicy": "PreemptLowerPriority",
               "priorityClassName": "high-priority-nonpreempting",
               "restartPolicy": "OnFailure",
+              "securityContext": {
+                "fsGroup": 1000,
+              },
+              "serviceAccountName": "service-account",
+              "setHostnameAsFQDN": false,
+              "shareProcessNamespace": false,
+              "subdomain": "sub",
               "terminationGracePeriodSeconds": 60,
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "operator": "Exists",
+                },
+              ],
               "volumes": [
                 {
                   "emptyDir": {},

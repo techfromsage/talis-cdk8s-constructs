@@ -2,9 +2,11 @@ import { Chart, Testing } from "cdk8s";
 import { Quantity } from "../../imports/k8s";
 import {
   ContainerImagePullPolicy,
+  DNSPolicy,
   Job,
   JobProps,
   PodSpecRestartPolicy,
+  PreemptionPolicy,
 } from "../../lib";
 import { makeChart } from "../test-util";
 
@@ -75,6 +77,27 @@ describe("Job", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: false,
+        dnsConfig: {
+          options: [
+            {
+              name: "ndots",
+              value: "2",
+            },
+          ],
+        },
+        dnsPolicy: DNSPolicy.CLUSTER_FIRST,
+        enableServiceLinks: false,
+        preemptionPolicy: PreemptionPolicy.PREEMPT_LOWER_PRIORITY,
+        serviceAccountName: "service-account",
+        setHostnameAsFqdn: false,
+        shareProcessNamespace: false,
+        subdomain: "sub",
+        tolerations: [
+          {
+            effect: "NoSchedule",
+            operator: "Exists",
+          },
+        ],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority-nonpreempting",
@@ -105,6 +128,9 @@ describe("Job", () => {
             cpu: Quantity.fromNumber(1),
             memory: Quantity.fromString("1Gi"),
           },
+        },
+        podSecurityContext: {
+          fsGroup: 1000,
         },
         securityContext: {
           runAsUser: 1000,
@@ -156,11 +182,14 @@ describe("Job", () => {
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveAllProperties(allProps, [
         "containerName",
+        "podSecurityContext",
         "release",
-        "selectorLabels",
         "safeToEvict",
         "safeToEvictLocalVolumes",
+        "selectorLabels",
+        "setHostnameAsFqdn",
       ]);
+      expect(job).toHaveProperty("spec.template.spec.setHostnameAsFQDN");
     });
 
     test("Setting restartPolicy", () => {

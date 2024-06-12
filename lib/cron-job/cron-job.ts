@@ -59,13 +59,23 @@ export class CronJob extends Construct {
                     : undefined,
                 automountServiceAccountToken:
                   props.automountServiceAccountToken ?? false,
-                volumes: props.volumes,
-                restartPolicy: props.restartPolicy,
+                dnsConfig: props.dnsConfig,
+                dnsPolicy: props.dnsPolicy,
+                enableServiceLinks: props.enableServiceLinks,
+                hostAliases: props.hostAliases,
                 imagePullSecrets: props.imagePullSecrets,
+                preemptionPolicy: props.preemptionPolicy,
                 priorityClassName: props.priorityClassName ?? "job",
+                restartPolicy: props.restartPolicy,
+                serviceAccountName: props.serviceAccountName,
+                setHostnameAsFqdn: props.setHostnameAsFqdn,
+                shareProcessNamespace: props.shareProcessNamespace,
+                subdomain: props.subdomain,
                 terminationGracePeriodSeconds:
                   props.terminationGracePeriodSeconds,
-                hostAliases: props.hostAliases,
+                tolerations: props.tolerations,
+                volumes: props.volumes,
+                securityContext: props.podSecurityContext,
                 initContainers: props.initContainers,
                 containers: [
                   {

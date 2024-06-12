@@ -1,9 +1,4 @@
-import {
-  Affinity,
-  HostAlias,
-  LocalObjectReference,
-  Volume,
-} from "../../imports/k8s";
+import { Affinity, PodSecurityContext, PodSpec } from "../../imports/k8s";
 
 export function defaultAffinity(matchLabels: {
   [key: string]: string;
@@ -23,7 +18,26 @@ export function defaultAffinity(matchLabels: {
   };
 }
 
-export interface PodProps {
+export interface PodProps
+  extends Pick<
+    PodSpec,
+    | "automountServiceAccountToken"
+    | "dnsConfig"
+    | "dnsPolicy"
+    | "enableServiceLinks"
+    | "hostAliases"
+    | "imagePullSecrets"
+    | "preemptionPolicy"
+    | "priorityClassName"
+    | "restartPolicy"
+    | "serviceAccountName"
+    | "setHostnameAsFqdn"
+    | "shareProcessNamespace"
+    | "subdomain"
+    | "terminationGracePeriodSeconds"
+    | "tolerations"
+    | "volumes"
+  > {
   /**
    * Pod's scheduling constraints. Defaults to a soft anti-affinity for the same service in the same AWS zone.
    * Will not include affinity if explicitly set to `undefined`.
@@ -45,30 +59,9 @@ export interface PodProps {
   readonly automountServiceAccountToken?: boolean;
 
   /**
-   * A list of references to secrets in the same namespace to use for pulling any of the images.
+   * Holds pod-level security attributes and common container settings.
    */
-  readonly imagePullSecrets?: LocalObjectReference[];
-
-  /**
-   * Pod's priority class.
-   */
-  readonly priorityClassName?: string;
-
-  /**
-   * Duration in seconds the pod needs to terminate gracefully.
-   * @default 30 seconds.
-   */
-  readonly terminationGracePeriodSeconds?: number;
-
-  /**
-   * List of volumes that can be mounted by containers belonging to the Pod.
-   */
-  readonly volumes?: Volume[];
-
-  /**
-   * An optional list of hosts and IPs that will be injected into the pod's hosts file.
-   */
-  readonly hostAliases?: HostAlias[];
+  readonly podSecurityContext?: PodSecurityContext;
 }
 
 export interface SafeToEvictPodProps {
