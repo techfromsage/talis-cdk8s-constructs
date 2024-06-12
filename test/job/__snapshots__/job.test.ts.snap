@@ -37,6 +37,26 @@ exports[`Job > Props > All the props 1`] = `
           },
         },
         "spec": {
+          "affinity": {
+            "nodeAffinity": {
+              "requiredDuringSchedulingIgnoredDuringExecution": {
+                "nodeSelectorTerms": [
+                  {
+                    "matchExpressions": [
+                      {
+                        "key": "kubernetes.io/arch",
+                        "operator": "In",
+                        "values": [
+                          "amd64",
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+          "automountServiceAccountToken": false,
           "containers": [
             {
               "args": [
@@ -112,6 +132,14 @@ exports[`Job > Props > All the props 1`] = `
               "name": "secondary",
             },
           ],
+          "hostAliases": [
+            {
+              "hostnames": [
+                "foo.local",
+              ],
+              "ip": "127.0.0.1",
+            },
+          ],
           "imagePullSecrets": [
             {
               "name": "foo-secret",
@@ -130,6 +158,7 @@ exports[`Job > Props > All the props 1`] = `
           ],
           "priorityClassName": "high-priority-nonpreempting",
           "restartPolicy": "Never",
+          "terminationGracePeriodSeconds": 60,
           "volumes": [
             {
               "emptyDir": {},
@@ -142,6 +171,29 @@ exports[`Job > Props > All the props 1`] = `
     },
   },
 ]
+`;
+
+exports[`Job > Props > Allows specifying custom logic to make affinity 1`] = `
+{
+  "podAffinity": {
+    "requiredDuringSchedulingIgnoredDuringExecution": [
+      {
+        "labelSelector": {
+          "matchExpressions": [
+            {
+              "key": "role",
+              "operator": "In",
+              "values": [
+                "job",
+              ],
+            },
+          ],
+        },
+        "topologyKey": "kubernetes.io/hostname",
+      },
+    ],
+  },
+}
 `;
 
 exports[`Job > Props > Minimal required props 1`] = `
@@ -168,6 +220,7 @@ exports[`Job > Props > Minimal required props 1`] = `
           },
         },
         "spec": {
+          "automountServiceAccountToken": false,
           "containers": [
             {
               "image": "talis/app:worker-v1",

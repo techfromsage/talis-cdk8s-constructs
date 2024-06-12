@@ -58,7 +58,7 @@ describe("Job", () => {
         role: "job",
         instance: "test",
       };
-      const allProps: Required<JobProps> = {
+      const allProps: Required<Omit<JobProps, "makeAffinity">> = {
         ...requiredProps,
         selectorLabels,
         suspend: false,
@@ -66,17 +66,36 @@ describe("Job", () => {
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
-        activeDeadlineSeconds: 120,
         backoffLimit: 1,
+        activeDeadlineSeconds: 120,
+        terminationGracePeriodSeconds: 60,
         ttlSecondsAfterFinished: 30,
         safeToEvict: false,
         safeToEvictLocalVolumes: ["tmp-dir"],
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
+        automountServiceAccountToken: false,
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority-nonpreempting",
         containers: [{ name: "secondary", image: "second-image" }],
+        affinity: {
+          nodeAffinity: {
+            requiredDuringSchedulingIgnoredDuringExecution: {
+              nodeSelectorTerms: [
+                {
+                  matchExpressions: [
+                    {
+                      key: "kubernetes.io/arch",
+                      operator: "In",
+                      values: ["amd64"],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),
@@ -109,6 +128,12 @@ describe("Job", () => {
             name: "init-container",
             image: "busybox:1.35.0",
             command: ["/bin/sh", "-c", "echo hello"],
+          },
+        ],
+        hostAliases: [
+          {
+            ip: "127.0.0.1",
+            hostnames: ["foo.local"],
           },
         ],
         volumes: [
@@ -154,6 +179,69 @@ describe("Job", () => {
       });
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty("spec.backoffLimit", 42);
+    });
+
+    test("Setting safeToEvict", () => {
+      const results = synthJob({
+        ...requiredProps,
+        safeToEvict: true,
+        safeToEvictLocalVolumes: ["foo", "bar"],
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("spec.template.metadata.annotations", {
+        "cluster-autoscaler.kubernetes.io/safe-to-evict": "true",
+        "cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes":
+          "foo,bar",
+      });
+    });
+
+    test("Allows specifying no affinity", () => {
+      const results = synthJob({
+        ...requiredProps,
+        affinity: undefined,
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).not.toHaveProperty("spec.template.spec.affinity");
+    });
+
+    test("Allows specifying custom logic to make affinity", () => {
+      const results = synthJob({
+        ...requiredProps,
+        makeAffinity(matchLabels) {
+          return {
+            podAffinity: {
+              requiredDuringSchedulingIgnoredDuringExecution: [
+                {
+                  labelSelector: {
+                    matchExpressions: [
+                      {
+                        key: "role",
+                        operator: "In",
+                        values: [matchLabels.role],
+                      },
+                    ],
+                  },
+                  topologyKey: "kubernetes.io/hostname",
+                },
+              ],
+            },
+          };
+        },
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("spec.template.spec.affinity");
+      expect(job.spec.template.spec.affinity).toMatchSnapshot();
+    });
+
+    test("Allows returning no affinity", () => {
+      const results = synthJob({
+        ...requiredProps,
+        makeAffinity() {
+          return undefined;
+        },
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).not.toHaveProperty("spec.template.spec.affinity");
     });
 
     test("selectorLabels can override app", () => {

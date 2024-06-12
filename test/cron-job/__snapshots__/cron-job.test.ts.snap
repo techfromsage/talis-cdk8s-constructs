@@ -40,6 +40,27 @@ exports[`CronJob > Props > All the props 1`] = `
               },
             },
             "spec": {
+              "affinity": {
+                "podAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": [
+                    {
+                      "labelSelector": {
+                        "matchExpressions": [
+                          {
+                            "key": "app.kubernetes.io/component",
+                            "operator": "In",
+                            "values": [
+                              "redis",
+                            ],
+                          },
+                        ],
+                      },
+                      "topologyKey": "kubernetes.io/hostname",
+                    },
+                  ],
+                },
+              },
+              "automountServiceAccountToken": false,
               "containers": [
                 {
                   "args": [
@@ -115,6 +136,14 @@ exports[`CronJob > Props > All the props 1`] = `
                   "name": "secondary",
                 },
               ],
+              "hostAliases": [
+                {
+                  "hostnames": [
+                    "foo.local",
+                  ],
+                  "ip": "127.0.0.1",
+                },
+              ],
               "imagePullSecrets": [
                 {
                   "name": "foo-secret",
@@ -133,6 +162,7 @@ exports[`CronJob > Props > All the props 1`] = `
               ],
               "priorityClassName": "high-priority-nonpreempting",
               "restartPolicy": "OnFailure",
+              "terminationGracePeriodSeconds": 60,
               "volumes": [
                 {
                   "emptyDir": {},
@@ -151,6 +181,29 @@ exports[`CronJob > Props > All the props 1`] = `
     },
   },
 ]
+`;
+
+exports[`CronJob > Props > Allows specifying custom logic to make affinity 1`] = `
+{
+  "podAffinity": {
+    "requiredDuringSchedulingIgnoredDuringExecution": [
+      {
+        "labelSelector": {
+          "matchExpressions": [
+            {
+              "key": "role",
+              "operator": "In",
+              "values": [
+                "cronjob",
+              ],
+            },
+          ],
+        },
+        "topologyKey": "kubernetes.io/hostname",
+      },
+    ],
+  },
+}
 `;
 
 exports[`CronJob > Props > Minimal required props 1`] = `
@@ -180,6 +233,7 @@ exports[`CronJob > Props > Minimal required props 1`] = `
               },
             },
             "spec": {
+              "automountServiceAccountToken": false,
               "containers": [
                 {
                   "image": "talis/app:worker-v1",

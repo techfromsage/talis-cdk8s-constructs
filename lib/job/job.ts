@@ -9,6 +9,8 @@ export class Job extends Construct {
   constructor(scope: Construct, id: string, props: JobProps) {
     super(scope, id);
 
+    const hasProp = (key: string) =>
+      Object.prototype.hasOwnProperty.call(props, key);
     const chart = Chart.of(this);
     const app = props.selectorLabels?.app ?? chart.labels.app;
     const labels = {
@@ -41,10 +43,19 @@ export class Job extends Construct {
             },
           },
           spec: {
+            affinity: hasProp("affinity")
+              ? props.affinity
+              : props.makeAffinity
+                ? props.makeAffinity(selectorLabels)
+                : undefined,
+            automountServiceAccountToken:
+              props.automountServiceAccountToken ?? false,
             volumes: props.volumes,
             restartPolicy: props.restartPolicy,
             imagePullSecrets: props.imagePullSecrets,
             priorityClassName: props.priorityClassName ?? "job",
+            terminationGracePeriodSeconds: props.terminationGracePeriodSeconds,
+            hostAliases: props.hostAliases,
             initContainers: props.initContainers,
             containers: [
               {

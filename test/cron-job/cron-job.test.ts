@@ -59,7 +59,7 @@ describe("CronJob", () => {
         role: "cronjob",
         instance: "test",
       };
-      const allProps: Required<CronJobProps> = {
+      const allProps: Required<Omit<CronJobProps, "makeAffinity">> = {
         ...requiredProps,
         selectorLabels,
         suspend: false,
@@ -71,10 +71,12 @@ describe("CronJob", () => {
         backoffLimit: 1,
         activeDeadlineSeconds: 120,
         ttlSecondsAfterFinished: 30,
+        terminationGracePeriodSeconds: 60,
         safeToEvict: false,
         safeToEvictLocalVolumes: ["tmp-dir"],
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
+        automountServiceAccountToken: false,
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority-nonpreempting",
@@ -82,6 +84,24 @@ describe("CronJob", () => {
         successfulJobsHistoryLimit: 4,
         failedJobsHistoryLimit: 2,
         containers: [{ name: "secondary", image: "second-image" }],
+        affinity: {
+          podAffinity: {
+            requiredDuringSchedulingIgnoredDuringExecution: [
+              {
+                labelSelector: {
+                  matchExpressions: [
+                    {
+                      key: "app.kubernetes.io/component",
+                      operator: "In",
+                      values: ["redis"],
+                    },
+                  ],
+                },
+                topologyKey: "kubernetes.io/hostname",
+              },
+            ],
+          },
+        },
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),
@@ -114,6 +134,12 @@ describe("CronJob", () => {
             name: "init-container",
             image: "busybox:1.35.0",
             command: ["/bin/sh", "-c", "echo hello"],
+          },
+        ],
+        hostAliases: [
+          {
+            ip: "127.0.0.1",
+            hostnames: ["foo.local"],
           },
         ],
         volumes: [
@@ -198,6 +224,80 @@ describe("CronJob", () => {
             });
           }).toThrowError(errorMessage);
         },
+      );
+    });
+
+    test("Setting safeToEvict", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        safeToEvict: true,
+        safeToEvictLocalVolumes: ["foo", "bar"],
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).toHaveProperty(
+        "spec.jobTemplate.spec.template.metadata.annotations",
+        {
+          "cluster-autoscaler.kubernetes.io/safe-to-evict": "true",
+          "cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes":
+            "foo,bar",
+        },
+      );
+    });
+
+    test("Allows specifying no affinity", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        affinity: undefined,
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).not.toHaveProperty(
+        "spec.jobTemplate.spec.template.spec.affinity",
+      );
+    });
+
+    test("Allows specifying custom logic to make affinity", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        makeAffinity(matchLabels) {
+          return {
+            podAffinity: {
+              requiredDuringSchedulingIgnoredDuringExecution: [
+                {
+                  labelSelector: {
+                    matchExpressions: [
+                      {
+                        key: "role",
+                        operator: "In",
+                        values: [matchLabels.role],
+                      },
+                    ],
+                  },
+                  topologyKey: "kubernetes.io/hostname",
+                },
+              ],
+            },
+          };
+        },
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).toHaveProperty(
+        "spec.jobTemplate.spec.template.spec.affinity",
+      );
+      expect(
+        cron.spec.jobTemplate.spec.template.spec.affinity,
+      ).toMatchSnapshot();
+    });
+
+    test("Allows returning no affinity", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        makeAffinity() {
+          return undefined;
+        },
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).not.toHaveProperty(
+        "spec.jobTemplate.spec.template.spec.affinity",
       );
     });
 

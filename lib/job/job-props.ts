@@ -1,13 +1,12 @@
-import { ContainerProps } from "../common";
-import { LocalObjectReference, Volume } from "../../imports/k8s";
-import { PodProps } from "../common/pod-props";
+import { ContainerProps, PodProps, SafeToEvictPodProps } from "../common";
 
 export interface JobProps
   extends Omit<
       ContainerProps,
       "startupProbe" | "readinessProbe" | "livenessProbe"
     >,
-    PodProps {
+    PodProps,
+    SafeToEvictPodProps {
   /**
    * Custom selector labels, they will be merged with the default app, role, and instance.
    * They will be applied to the workload, the pod and the service.
@@ -16,20 +15,10 @@ export interface JobProps
   readonly selectorLabels?: { [key: string]: string };
 
   /**
-   * A list of references to secrets in the same namespace to use for pulling any of the images.
-   */
-  readonly imagePullSecrets?: LocalObjectReference[];
-
-  /**
    * Pod's priority class.
    * @default "job"
    */
   readonly priorityClassName?: string;
-
-  /**
-   * list of volumes that can be mounted by containers belonging to the pod.
-   */
-  readonly volumes?: Volume[];
 
   /**
    * Restart policy for all containers within the pod.
