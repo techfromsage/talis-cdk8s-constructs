@@ -2,9 +2,11 @@ import { Chart, Testing } from "cdk8s";
 import { Quantity } from "../../imports/k8s";
 import {
   ContainerImagePullPolicy,
+  DNSPolicy,
   Job,
   JobProps,
   PodSpecRestartPolicy,
+  PreemptionPolicy,
 } from "../../lib";
 import { makeChart } from "../test-util";
 
@@ -58,23 +60,65 @@ describe("Job", () => {
         role: "job",
         instance: "test",
       };
-      const allProps: Required<JobProps> = {
+      const allProps: Required<Omit<JobProps, "makeAffinity">> = {
         ...requiredProps,
         selectorLabels,
+        suspend: false,
         containerName: "my-container",
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
         backoffLimit: 1,
+        activeDeadlineSeconds: 120,
+        terminationGracePeriodSeconds: 60,
         ttlSecondsAfterFinished: 30,
         safeToEvict: false,
         safeToEvictLocalVolumes: ["tmp-dir"],
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
+        automountServiceAccountToken: false,
+        dnsConfig: {
+          options: [
+            {
+              name: "ndots",
+              value: "2",
+            },
+          ],
+        },
+        dnsPolicy: DNSPolicy.CLUSTER_FIRST,
+        enableServiceLinks: false,
+        preemptionPolicy: PreemptionPolicy.PREEMPT_LOWER_PRIORITY,
+        serviceAccountName: "service-account",
+        setHostnameAsFqdn: false,
+        shareProcessNamespace: false,
+        subdomain: "sub",
+        tolerations: [
+          {
+            effect: "NoSchedule",
+            operator: "Exists",
+          },
+        ],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority-nonpreempting",
         containers: [{ name: "secondary", image: "second-image" }],
+        affinity: {
+          nodeAffinity: {
+            requiredDuringSchedulingIgnoredDuringExecution: {
+              nodeSelectorTerms: [
+                {
+                  matchExpressions: [
+                    {
+                      key: "kubernetes.io/arch",
+                      operator: "In",
+                      values: ["amd64"],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),
@@ -84,6 +128,9 @@ describe("Job", () => {
             cpu: Quantity.fromNumber(1),
             memory: Quantity.fromString("1Gi"),
           },
+        },
+        podSecurityContext: {
+          fsGroup: 1000,
         },
         securityContext: {
           runAsUser: 1000,
@@ -109,6 +156,12 @@ describe("Job", () => {
             command: ["/bin/sh", "-c", "echo hello"],
           },
         ],
+        hostAliases: [
+          {
+            ip: "127.0.0.1",
+            hostnames: ["foo.local"],
+          },
+        ],
         volumes: [
           {
             name: "tmp-dir",
@@ -129,11 +182,14 @@ describe("Job", () => {
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveAllProperties(allProps, [
         "containerName",
+        "podSecurityContext",
         "release",
-        "selectorLabels",
         "safeToEvict",
         "safeToEvictLocalVolumes",
+        "selectorLabels",
+        "setHostnameAsFqdn",
       ]);
+      expect(job).toHaveProperty("spec.template.spec.setHostnameAsFQDN");
     });
 
     test("Setting restartPolicy", () => {
@@ -152,6 +208,69 @@ describe("Job", () => {
       });
       const job = results.find((obj) => obj.kind === "Job");
       expect(job).toHaveProperty("spec.backoffLimit", 42);
+    });
+
+    test("Setting safeToEvict", () => {
+      const results = synthJob({
+        ...requiredProps,
+        safeToEvict: true,
+        safeToEvictLocalVolumes: ["foo", "bar"],
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("spec.template.metadata.annotations", {
+        "cluster-autoscaler.kubernetes.io/safe-to-evict": "true",
+        "cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes":
+          "foo,bar",
+      });
+    });
+
+    test("Allows specifying no affinity", () => {
+      const results = synthJob({
+        ...requiredProps,
+        affinity: undefined,
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).not.toHaveProperty("spec.template.spec.affinity");
+    });
+
+    test("Allows specifying custom logic to make affinity", () => {
+      const results = synthJob({
+        ...requiredProps,
+        makeAffinity(matchLabels) {
+          return {
+            podAffinity: {
+              requiredDuringSchedulingIgnoredDuringExecution: [
+                {
+                  labelSelector: {
+                    matchExpressions: [
+                      {
+                        key: "role",
+                        operator: "In",
+                        values: [matchLabels.role],
+                      },
+                    ],
+                  },
+                  topologyKey: "kubernetes.io/hostname",
+                },
+              ],
+            },
+          };
+        },
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("spec.template.spec.affinity");
+      expect(job.spec.template.spec.affinity).toMatchSnapshot();
+    });
+
+    test("Allows returning no affinity", () => {
+      const results = synthJob({
+        ...requiredProps,
+        makeAffinity() {
+          return undefined;
+        },
+      });
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).not.toHaveProperty("spec.template.spec.affinity");
     });
 
     test("selectorLabels can override app", () => {

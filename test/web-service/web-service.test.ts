@@ -9,6 +9,8 @@ import {
 } from "../../imports/k8s";
 import {
   ContainerImagePullPolicy,
+  DNSPolicy,
+  PreemptionPolicy,
   WebService,
   WebServiceProps,
 } from "../../lib";
@@ -112,6 +114,27 @@ describe("WebService", () => {
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
         automountServiceAccountToken: true,
+        dnsConfig: {
+          options: [
+            {
+              name: "ndots",
+              value: "2",
+            },
+          ],
+        },
+        dnsPolicy: DNSPolicy.CLUSTER_FIRST,
+        enableServiceLinks: false,
+        preemptionPolicy: PreemptionPolicy.PREEMPT_LOWER_PRIORITY,
+        serviceAccountName: "service-account",
+        setHostnameAsFqdn: false,
+        shareProcessNamespace: false,
+        subdomain: "sub",
+        tolerations: [
+          {
+            effect: "NoSchedule",
+            operator: "Exists",
+          },
+        ],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority",
@@ -145,6 +168,9 @@ describe("WebService", () => {
             cpu: Quantity.fromNumber(1),
             memory: Quantity.fromString("1Gi"),
           },
+        },
+        podSecurityContext: {
+          fsGroup: 1000,
         },
         securityContext: {
           runAsUser: 1000,
@@ -271,12 +297,15 @@ describe("WebService", () => {
         "internal",
         "loadBalancerLabels",
         "nginx",
+        "podDisruptionBudget",
+        "podSecurityContext",
         "release",
         "selectorLabels",
+        "setHostnameAsFqdn",
         "stage",
         "tlsDomain",
-        "podDisruptionBudget",
       ]);
+      expect(deployment).toHaveProperty("spec.template.spec.setHostnameAsFQDN");
     });
 
     test("Horizontal Pod Autoscaler", () => {

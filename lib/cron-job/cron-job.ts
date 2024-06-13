@@ -11,6 +11,8 @@ export class CronJob extends Construct {
     super(scope, id);
     this.validateProps(props);
 
+    const hasProp = (key: string) =>
+      Object.prototype.hasOwnProperty.call(props, key);
     const chart = Chart.of(this);
     const app = props.selectorLabels?.app ?? chart.labels.app;
     const labels = {
@@ -37,7 +39,10 @@ export class CronJob extends Construct {
         failedJobsHistoryLimit: props.failedJobsHistoryLimit ?? 1,
         jobTemplate: {
           spec: {
+            suspend: props.suspendJob,
             backoffLimit: props.backoffLimit ?? 6,
+            activeDeadlineSeconds: props.activeDeadlineSeconds,
+            ttlSecondsAfterFinished: props.ttlSecondsAfterFinished,
             template: {
               metadata: {
                 annotations: makeSafeToEvictAnnotations(props),
@@ -47,10 +52,30 @@ export class CronJob extends Construct {
                 },
               },
               spec: {
-                volumes: props.volumes,
-                restartPolicy: props.restartPolicy,
+                affinity: hasProp("affinity")
+                  ? props.affinity
+                  : props.makeAffinity
+                    ? props.makeAffinity(selectorLabels)
+                    : undefined,
+                automountServiceAccountToken:
+                  props.automountServiceAccountToken ?? false,
+                dnsConfig: props.dnsConfig,
+                dnsPolicy: props.dnsPolicy,
+                enableServiceLinks: props.enableServiceLinks,
+                hostAliases: props.hostAliases,
                 imagePullSecrets: props.imagePullSecrets,
+                preemptionPolicy: props.preemptionPolicy,
                 priorityClassName: props.priorityClassName ?? "job",
+                restartPolicy: props.restartPolicy,
+                serviceAccountName: props.serviceAccountName,
+                setHostnameAsFqdn: props.setHostnameAsFqdn,
+                shareProcessNamespace: props.shareProcessNamespace,
+                subdomain: props.subdomain,
+                terminationGracePeriodSeconds:
+                  props.terminationGracePeriodSeconds,
+                tolerations: props.tolerations,
+                volumes: props.volumes,
+                securityContext: props.podSecurityContext,
                 initContainers: props.initContainers,
                 containers: [
                   {

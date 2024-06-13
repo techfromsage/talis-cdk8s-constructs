@@ -18,7 +18,9 @@ exports[`Job > Props > All the props 1`] = `
       "namespace": "test",
     },
     "spec": {
+      "activeDeadlineSeconds": 120,
       "backoffLimit": 1,
+      "suspend": false,
       "template": {
         "metadata": {
           "annotations": {
@@ -35,6 +37,26 @@ exports[`Job > Props > All the props 1`] = `
           },
         },
         "spec": {
+          "affinity": {
+            "nodeAffinity": {
+              "requiredDuringSchedulingIgnoredDuringExecution": {
+                "nodeSelectorTerms": [
+                  {
+                    "matchExpressions": [
+                      {
+                        "key": "kubernetes.io/arch",
+                        "operator": "In",
+                        "values": [
+                          "amd64",
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+          "automountServiceAccountToken": false,
           "containers": [
             {
               "args": [
@@ -110,6 +132,24 @@ exports[`Job > Props > All the props 1`] = `
               "name": "secondary",
             },
           ],
+          "dnsConfig": {
+            "options": [
+              {
+                "name": "ndots",
+                "value": "2",
+              },
+            ],
+          },
+          "dnsPolicy": "ClusterFirst",
+          "enableServiceLinks": false,
+          "hostAliases": [
+            {
+              "hostnames": [
+                "foo.local",
+              ],
+              "ip": "127.0.0.1",
+            },
+          ],
           "imagePullSecrets": [
             {
               "name": "foo-secret",
@@ -126,8 +166,23 @@ exports[`Job > Props > All the props 1`] = `
               "name": "init-container",
             },
           ],
+          "preemptionPolicy": "PreemptLowerPriority",
           "priorityClassName": "high-priority-nonpreempting",
           "restartPolicy": "Never",
+          "securityContext": {
+            "fsGroup": 1000,
+          },
+          "serviceAccountName": "service-account",
+          "setHostnameAsFQDN": false,
+          "shareProcessNamespace": false,
+          "subdomain": "sub",
+          "terminationGracePeriodSeconds": 60,
+          "tolerations": [
+            {
+              "effect": "NoSchedule",
+              "operator": "Exists",
+            },
+          ],
           "volumes": [
             {
               "emptyDir": {},
@@ -140,6 +195,29 @@ exports[`Job > Props > All the props 1`] = `
     },
   },
 ]
+`;
+
+exports[`Job > Props > Allows specifying custom logic to make affinity 1`] = `
+{
+  "podAffinity": {
+    "requiredDuringSchedulingIgnoredDuringExecution": [
+      {
+        "labelSelector": {
+          "matchExpressions": [
+            {
+              "key": "role",
+              "operator": "In",
+              "values": [
+                "job",
+              ],
+            },
+          ],
+        },
+        "topologyKey": "kubernetes.io/hostname",
+      },
+    ],
+  },
+}
 `;
 
 exports[`Job > Props > Minimal required props 1`] = `
@@ -166,6 +244,7 @@ exports[`Job > Props > Minimal required props 1`] = `
           },
         },
         "spec": {
+          "automountServiceAccountToken": false,
           "containers": [
             {
               "image": "talis/app:worker-v1",

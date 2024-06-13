@@ -1,13 +1,12 @@
-import { ContainerProps } from "../common";
-import { LocalObjectReference, Volume } from "../../imports/k8s";
-import { PodProps } from "../common/pod-props";
+import { ContainerProps, PodProps, SafeToEvictPodProps } from "../common";
 
 export interface JobProps
   extends Omit<
       ContainerProps,
       "startupProbe" | "readinessProbe" | "livenessProbe"
     >,
-    PodProps {
+    PodProps,
+    SafeToEvictPodProps {
   /**
    * Custom selector labels, they will be merged with the default app, role, and instance.
    * They will be applied to the workload, the pod and the service.
@@ -16,20 +15,10 @@ export interface JobProps
   readonly selectorLabels?: { [key: string]: string };
 
   /**
-   * A list of references to secrets in the same namespace to use for pulling any of the images.
-   */
-  readonly imagePullSecrets?: LocalObjectReference[];
-
-  /**
    * Pod's priority class.
    * @default "job"
    */
   readonly priorityClassName?: string;
-
-  /**
-   * list of volumes that can be mounted by containers belonging to the pod.
-   */
-  readonly volumes?: Volume[];
 
   /**
    * Restart policy for all containers within the pod.
@@ -37,10 +26,25 @@ export interface JobProps
   readonly restartPolicy: string;
 
   /**
+   * Specifies whether the Job controller should create Pods or not.
+   * @default false.
+   */
+  readonly suspend?: boolean;
+
+  /**
    * Specifies the number of retries before marking this job failed.
    * @default 6
    */
   readonly backoffLimit?: number;
+
+  /**
+   * Specifies the duration in seconds relative to the startTime that the job
+   * may be continuously active before the system tries to terminate it; value
+   * must be positive integer. If a Job is suspended (at creation or through
+   * an update), this timer will effectively be stopped and reset when the Job
+   * is resumed again.
+   */
+  readonly activeDeadlineSeconds?: number;
 
   /**
    * ttlSecondsAfterFinished limits the lifetime of a Job that has finished execution (either Complete

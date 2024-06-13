@@ -1,5 +1,5 @@
 import { ApiObject, JsonPatch } from "cdk8s";
-import { PodProps } from "./pod-props";
+import { SafeToEvictPodProps } from "./pod-props";
 
 const workloadsWithPodTemplateKinds = [
   "DaemonSet",
@@ -59,7 +59,7 @@ export function addLabels(
  * @returns Annotations object or undefined if no annotations are needed
  */
 export function makeSafeToEvictAnnotations(
-  props: PodProps,
+  props: SafeToEvictPodProps,
 ): Record<string, string> | undefined {
   const annotations: Record<string, string> = {};
 

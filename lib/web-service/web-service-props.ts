@@ -1,5 +1,5 @@
 import { IntOrString, Probe, ResourceRequirements } from "../../imports/k8s";
-import { ContainerProps, WorkloadProps } from "../common";
+import { ContainerProps, DeploymentProps } from "../common";
 
 export const canaryStages = ["base", "canary", "post-canary", "full"] as const;
 export type CanaryStage = (typeof canaryStages)[number];
@@ -96,7 +96,7 @@ interface ServiceAnnotations {
 export interface WebServiceProps
   extends ServiceAnnotations,
     ContainerProps,
-    WorkloadProps {
+    DeploymentProps {
   /**
    * Static number of replicas. Cannot be specified with `horizontalPodAutoscaler`.
    */

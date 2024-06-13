@@ -4,7 +4,9 @@ import {
   ContainerImagePullPolicy,
   CronJob,
   CronJobProps,
+  DNSPolicy,
   PodSpecRestartPolicy,
+  PreemptionPolicy,
 } from "../../lib";
 import { makeChart } from "../test-util";
 
@@ -59,19 +61,45 @@ describe("CronJob", () => {
         role: "cronjob",
         instance: "test",
       };
-      const allProps: Required<CronJobProps> = {
+      const allProps: Required<Omit<CronJobProps, "makeAffinity">> = {
         ...requiredProps,
         selectorLabels,
         suspend: false,
+        suspendJob: true,
         containerName: "my-container",
         workingDir: "/some/path",
         command: ["/bin/sh", "-c", "echo hello"],
         args: ["--foo", "bar"],
         backoffLimit: 1,
+        activeDeadlineSeconds: 120,
+        ttlSecondsAfterFinished: 30,
+        terminationGracePeriodSeconds: 60,
         safeToEvict: false,
         safeToEvictLocalVolumes: ["tmp-dir"],
         env: [{ name: "FOO", value: "bar" }],
         envFrom: [{ configMapRef: { name: "foo-config" } }],
+        automountServiceAccountToken: false,
+        dnsConfig: {
+          options: [
+            {
+              name: "ndots",
+              value: "2",
+            },
+          ],
+        },
+        dnsPolicy: DNSPolicy.CLUSTER_FIRST,
+        enableServiceLinks: false,
+        preemptionPolicy: PreemptionPolicy.PREEMPT_LOWER_PRIORITY,
+        serviceAccountName: "service-account",
+        setHostnameAsFqdn: false,
+        shareProcessNamespace: false,
+        subdomain: "sub",
+        tolerations: [
+          {
+            effect: "NoSchedule",
+            operator: "Exists",
+          },
+        ],
         imagePullPolicy: ContainerImagePullPolicy.ALWAYS,
         imagePullSecrets: [{ name: "foo-secret" }],
         priorityClassName: "high-priority-nonpreempting",
@@ -79,6 +107,24 @@ describe("CronJob", () => {
         successfulJobsHistoryLimit: 4,
         failedJobsHistoryLimit: 2,
         containers: [{ name: "secondary", image: "second-image" }],
+        affinity: {
+          podAffinity: {
+            requiredDuringSchedulingIgnoredDuringExecution: [
+              {
+                labelSelector: {
+                  matchExpressions: [
+                    {
+                      key: "app.kubernetes.io/component",
+                      operator: "In",
+                      values: ["redis"],
+                    },
+                  ],
+                },
+                topologyKey: "kubernetes.io/hostname",
+              },
+            ],
+          },
+        },
         resources: {
           requests: {
             cpu: Quantity.fromNumber(0.1),
@@ -88,6 +134,9 @@ describe("CronJob", () => {
             cpu: Quantity.fromNumber(1),
             memory: Quantity.fromString("1Gi"),
           },
+        },
+        podSecurityContext: {
+          fsGroup: 1000,
         },
         securityContext: {
           runAsUser: 1000,
@@ -113,6 +162,12 @@ describe("CronJob", () => {
             command: ["/bin/sh", "-c", "echo hello"],
           },
         ],
+        hostAliases: [
+          {
+            ip: "127.0.0.1",
+            hostnames: ["foo.local"],
+          },
+        ],
         volumes: [
           {
             name: "tmp-dir",
@@ -133,11 +188,17 @@ describe("CronJob", () => {
       const cronJob = results.find((obj) => obj.kind === "CronJob");
       expect(cronJob).toHaveAllProperties(allProps, [
         "containerName",
+        "podSecurityContext",
         "release",
-        "selectorLabels",
         "safeToEvict",
         "safeToEvictLocalVolumes",
+        "selectorLabels",
+        "setHostnameAsFqdn",
+        "suspendJob",
       ]);
+      expect(cronJob).toHaveProperty(
+        "spec.jobTemplate.spec.template.spec.setHostnameAsFQDN",
+      );
     });
 
     test("Setting restartPolicy", () => {
@@ -194,6 +255,80 @@ describe("CronJob", () => {
             });
           }).toThrowError(errorMessage);
         },
+      );
+    });
+
+    test("Setting safeToEvict", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        safeToEvict: true,
+        safeToEvictLocalVolumes: ["foo", "bar"],
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).toHaveProperty(
+        "spec.jobTemplate.spec.template.metadata.annotations",
+        {
+          "cluster-autoscaler.kubernetes.io/safe-to-evict": "true",
+          "cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes":
+            "foo,bar",
+        },
+      );
+    });
+
+    test("Allows specifying no affinity", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        affinity: undefined,
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).not.toHaveProperty(
+        "spec.jobTemplate.spec.template.spec.affinity",
+      );
+    });
+
+    test("Allows specifying custom logic to make affinity", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        makeAffinity(matchLabels) {
+          return {
+            podAffinity: {
+              requiredDuringSchedulingIgnoredDuringExecution: [
+                {
+                  labelSelector: {
+                    matchExpressions: [
+                      {
+                        key: "role",
+                        operator: "In",
+                        values: [matchLabels.role],
+                      },
+                    ],
+                  },
+                  topologyKey: "kubernetes.io/hostname",
+                },
+              ],
+            },
+          };
+        },
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).toHaveProperty(
+        "spec.jobTemplate.spec.template.spec.affinity",
+      );
+      expect(
+        cron.spec.jobTemplate.spec.template.spec.affinity,
+      ).toMatchSnapshot();
+    });
+
+    test("Allows returning no affinity", () => {
+      const results = synthCronJob({
+        ...requiredProps,
+        makeAffinity() {
+          return undefined;
+        },
+      });
+      const cron = results.find((obj) => obj.kind === "CronJob");
+      expect(cron).not.toHaveProperty(
+        "spec.jobTemplate.spec.template.spec.affinity",
       );
     });
 

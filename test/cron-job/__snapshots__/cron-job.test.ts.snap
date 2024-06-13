@@ -21,7 +21,9 @@ exports[`CronJob > Props > All the props 1`] = `
       "failedJobsHistoryLimit": 2,
       "jobTemplate": {
         "spec": {
+          "activeDeadlineSeconds": 120,
           "backoffLimit": 1,
+          "suspend": true,
           "template": {
             "metadata": {
               "annotations": {
@@ -38,6 +40,27 @@ exports[`CronJob > Props > All the props 1`] = `
               },
             },
             "spec": {
+              "affinity": {
+                "podAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": [
+                    {
+                      "labelSelector": {
+                        "matchExpressions": [
+                          {
+                            "key": "app.kubernetes.io/component",
+                            "operator": "In",
+                            "values": [
+                              "redis",
+                            ],
+                          },
+                        ],
+                      },
+                      "topologyKey": "kubernetes.io/hostname",
+                    },
+                  ],
+                },
+              },
+              "automountServiceAccountToken": false,
               "containers": [
                 {
                   "args": [
@@ -113,6 +136,24 @@ exports[`CronJob > Props > All the props 1`] = `
                   "name": "secondary",
                 },
               ],
+              "dnsConfig": {
+                "options": [
+                  {
+                    "name": "ndots",
+                    "value": "2",
+                  },
+                ],
+              },
+              "dnsPolicy": "ClusterFirst",
+              "enableServiceLinks": false,
+              "hostAliases": [
+                {
+                  "hostnames": [
+                    "foo.local",
+                  ],
+                  "ip": "127.0.0.1",
+                },
+              ],
               "imagePullSecrets": [
                 {
                   "name": "foo-secret",
@@ -129,8 +170,23 @@ exports[`CronJob > Props > All the props 1`] = `
                   "name": "init-container",
                 },
               ],
+              "preemptionPolicy": "PreemptLowerPriority",
               "priorityClassName": "high-priority-nonpreempting",
               "restartPolicy": "OnFailure",
+              "securityContext": {
+                "fsGroup": 1000,
+              },
+              "serviceAccountName": "service-account",
+              "setHostnameAsFQDN": false,
+              "shareProcessNamespace": false,
+              "subdomain": "sub",
+              "terminationGracePeriodSeconds": 60,
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "operator": "Exists",
+                },
+              ],
               "volumes": [
                 {
                   "emptyDir": {},
@@ -139,6 +195,7 @@ exports[`CronJob > Props > All the props 1`] = `
               ],
             },
           },
+          "ttlSecondsAfterFinished": 30,
         },
       },
       "schedule": "0 0 13 * 5",
@@ -148,6 +205,29 @@ exports[`CronJob > Props > All the props 1`] = `
     },
   },
 ]
+`;
+
+exports[`CronJob > Props > Allows specifying custom logic to make affinity 1`] = `
+{
+  "podAffinity": {
+    "requiredDuringSchedulingIgnoredDuringExecution": [
+      {
+        "labelSelector": {
+          "matchExpressions": [
+            {
+              "key": "role",
+              "operator": "In",
+              "values": [
+                "cronjob",
+              ],
+            },
+          ],
+        },
+        "topologyKey": "kubernetes.io/hostname",
+      },
+    ],
+  },
+}
 `;
 
 exports[`CronJob > Props > Minimal required props 1`] = `
@@ -177,6 +257,7 @@ exports[`CronJob > Props > Minimal required props 1`] = `
               },
             },
             "spec": {
+              "automountServiceAccountToken": false,
               "containers": [
                 {
                   "image": "talis/app:worker-v1",

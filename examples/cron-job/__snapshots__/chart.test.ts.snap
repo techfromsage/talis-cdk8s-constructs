@@ -95,6 +95,7 @@ exports[`CronJob example > Change release version 1`] = `
               },
             },
             "spec": {
+              "automountServiceAccountToken": false,
               "containers": [
                 {
                   "command": [
@@ -227,6 +228,7 @@ exports[`CronJob example > Snapshot 1`] = `
               },
             },
             "spec": {
+              "automountServiceAccountToken": false,
               "containers": [
                 {
                   "command": [

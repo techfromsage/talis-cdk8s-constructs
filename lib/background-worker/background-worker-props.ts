@@ -1,4 +1,4 @@
-import { ContainerProps, WorkloadProps } from "../common";
+import { ContainerProps, DeploymentProps } from "../common";
 import { RedisConnectionDetails } from "../redis/redis-util";
 
 export interface RedisListScalerProps {
@@ -50,7 +50,7 @@ export interface BackgroundWorkerAutoscalingProps {
 
 export interface BackgroundWorkerProps
   extends Omit<ContainerProps, "readinessProbe">,
-    WorkloadProps {
+    DeploymentProps {
   /**
    * If specified, it will set up a preStop hook to terminate the container with given signal.
    * When passing a string, don't include the "SIG" prefix, just the name of the signal.
@@ -63,12 +63,6 @@ export interface BackgroundWorkerProps
    * @default { app: "<app label from chart>", role: "worker", instance: "<construct id>" }
    */
   readonly selectorLabels?: { [key: string]: string };
-
-  /**
-   * Restart policy for all containers within the pod.
-   * @default "Always"
-   */
-  readonly restartPolicy?: string;
 
   /**
    * Autoscaling props. Cannot be specified with `replicas`.

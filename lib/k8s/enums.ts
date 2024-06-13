@@ -23,6 +23,55 @@ export enum ContainerImagePullPolicy {
 }
 
 /**
+ * DNS policy for the pod.
+ * @default "ClusterFirst".
+ */
+export enum DNSPolicy {
+  /**
+   * Any DNS query that does not match the configured cluster domain suffix,
+   * such as "www.kubernetes.io", is forwarded to an upstream nameserver by
+   * the DNS server. Cluster administrators may have extra stub-domain and
+   * upstream DNS servers configured.
+   */
+  CLUSTER_FIRST = "ClusterFirst",
+  /**
+   * For Pods running with hostNetwork, you should explicitly set its DNS
+   * policy to "ClusterFirstWithHostNet". Otherwise, Pods running with
+   * hostNetwork and "ClusterFirst" will fallback to the behavior of
+   * the "Default" policy.
+   */
+  CLUSTER_FIRST_WITH_HOST_NET = "ClusterFirstWithHostNet",
+  /**
+   * The Pod inherits the name resolution configuration from the node that
+   * the Pods run on.
+   */
+  Default = "Default",
+  /**
+   * It allows a Pod to ignore DNS settings from the Kubernetes environment.
+   * All DNS settings are supposed to be provided using the dnsConfig field
+   * in the Pod Spec.
+   */
+  None = "None",
+}
+
+/**
+ * Policy for preempting pods with lower priority.
+ * @default "PreemptLowerPriority"
+ */
+export enum PreemptionPolicy {
+  /**
+   * Pods will be placed in the scheduling queue ahead of lower-priority pods,
+   * but they cannot preempt other pods. Non-preempting pods may still be
+   * preempted by other, high-priority pods.
+   */
+  NEVER = "Never",
+  /**
+   * Allow pods to preempt lower-priority pods (default behavior).
+   */
+  PREEMPT_LOWER_PRIORITY = "PreemptLowerPriority",
+}
+
+/**
  * Restart policy for all containers within the pod.
  *
  * @see https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy
