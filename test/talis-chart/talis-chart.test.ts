@@ -699,4 +699,42 @@ describe("TalisChart", () => {
       );
     });
   });
+
+  describe("httpRoutesAllowedNamespaces", () => {
+    test("Single namespace", () => {
+      const app = Testing.app();
+      const chart = new TalisChart(app, {
+        app: "my-app",
+        release: "test",
+        environment: TalisDeploymentEnvironment.PRODUCTION,
+        region: TalisShortRegion.EU,
+        watermark: "test",
+        includeResourceQuota: false,
+        httpRoutesAllowedNamespaces: ["allowed-namespace"],
+      });
+      const results = Testing.synth(chart);
+      expect(results).toHaveLength(2);
+      expect(results[1].kind).toEqual("ReferenceGrant");
+      expect(results[1].spec.from).toHaveLength(1);
+      expect(results[1].spec.from[0].namespace).toEqual("allowed-namespace");
+    });
+    test("Multiple namespaces", () => {
+      const app = Testing.app();
+      const chart = new TalisChart(app, {
+        app: "my-app",
+        release: "test",
+        environment: TalisDeploymentEnvironment.PRODUCTION,
+        region: TalisShortRegion.EU,
+        watermark: "test",
+        includeResourceQuota: false,
+        httpRoutesAllowedNamespaces: ["allowed-namespace", "another-namespace"],
+      });
+      const results = Testing.synth(chart);
+      expect(results).toHaveLength(2);
+      expect(results[1].kind).toEqual("ReferenceGrant");
+      expect(results[1].spec.from).toHaveLength(2);
+      expect(results[1].spec.from[0].namespace).toEqual("allowed-namespace");
+      expect(results[1].spec.from[1].namespace).toEqual("another-namespace");
+    });
+  });
 });

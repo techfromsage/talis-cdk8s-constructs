@@ -5,6 +5,7 @@ import { joinNameParts } from "../common";
 import { TalisShortRegion } from "./talis-region";
 import { TalisDeploymentEnvironment } from "./talis-deployment-environment";
 import { calculateResourceQuota } from "./calculate-resource-quota";
+import { ReferenceGrant } from "../../imports/gateway.networking.k8s.io";
 
 export interface TalisChartProps extends ChartProps {
   /** Name of the application this chart is for */
@@ -24,6 +25,8 @@ export interface TalisChartProps extends ChartProps {
    * @default true
    */
   readonly includeResourceQuota?: boolean;
+  /** Namespaces allowed to create HttpRoute objects pointing to services in this chart */
+  readonly httpRoutesAllowedNamespaces?: string[];
 }
 
 /** @private */
@@ -85,6 +88,28 @@ export class TalisChart extends Chart {
         spec: Lazy.any({
           produce: () => calculateResourceQuota(this.node.findAll()),
         }),
+      });
+    }
+
+    if (props.httpRoutesAllowedNamespaces) {
+      new ReferenceGrant(this, `http-route-grant`, {
+        metadata: {
+          name: `http-route-grant`,
+          labels: labels,
+        },
+        spec: {
+          from: props.httpRoutesAllowedNamespaces.map((namespace) => ({
+            group: "gateway.networking.k8s.io",
+            kind: "HTTPRoute",
+            namespace: namespace,
+          })),
+          to: [
+            {
+              group: "",
+              kind: "Service",
+            },
+          ],
+        },
       });
     }
   }
