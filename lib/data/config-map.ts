@@ -5,10 +5,10 @@ import {
   Lazy,
 } from "cdk8s";
 import { Construct } from "constructs";
-import { parse } from "dotenv";
-import { readFileSync } from "fs";
-import { basename } from "path";
+import { readFileSync } from "node:fs";
+import { basename } from "node:path";
 import { KubeConfigMap } from "../../imports/k8s";
+import { parseEnv } from "./env-util";
 import { hashObject } from "./hash-util";
 
 export interface ConfigMapProps {
@@ -193,7 +193,7 @@ export class ConfigMap extends Construct {
    * @param localFile The path to the .env file.
    */
   public setFromEnvFile(localFile: string): void {
-    const parsed = parse(readFileSync(localFile, "utf-8"));
+    const parsed = parseEnv(readFileSync(localFile, "utf-8"));
 
     for (const [key, value] of Object.entries(parsed)) {
       this.setData(key, value);
