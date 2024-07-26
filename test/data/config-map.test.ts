@@ -1,12 +1,14 @@
-import mockFs from "mock-fs";
 import { Lazy, Testing } from "cdk8s";
-import { ConfigMap } from "../../lib";
+import { vol } from "memfs";
 import { KubePod } from "../../imports/k8s";
+import { ConfigMap } from "../../lib";
 import { makeChart } from "../test-util";
 
+vi.mock("fs");
+
 describe("ConfigMap", () => {
-  afterEach(() => {
-    mockFs.restore();
+  beforeEach(() => {
+    vol.reset();
   });
 
   describe("Props", () => {
@@ -100,7 +102,7 @@ describe("ConfigMap", () => {
         },
       });
       configMap.setData("OVERRIDDEN", "once");
-      mockFs({
+      vol.fromJSON({
         ".env": "OVERRIDDEN=from file",
       });
       configMap.setFromEnvFile(".env");
@@ -193,55 +195,51 @@ describe("ConfigMap", () => {
 
   describe("Loading files", () => {
     test("Setting value from file's contents", () => {
-      mockFs({
+      vol.fromJSON({
         "path/to/file.txt": "hello world!",
       });
       const chart = Testing.chart();
       const configMap = new ConfigMap(chart, "test");
       configMap.setFile("path/to/file.txt");
       const results = Testing.synth(chart);
-      mockFs.restore();
       expect(results).toMatchSnapshot();
     });
 
     test("Setting value from file's contents with custom key", () => {
-      mockFs({
+      vol.fromJSON({
         "path/to/file.txt": "hello world!",
       });
       const chart = Testing.chart();
       const configMap = new ConfigMap(chart, "test");
       configMap.setFile("path/to/file.txt", "greeting.txt");
       const results = Testing.synth(chart);
-      mockFs.restore();
       expect(results).toMatchSnapshot();
     });
 
     test("Setting value from binary file's contents", () => {
-      mockFs({
+      vol.fromJSON({
         "path/to/file.bin": "0101010",
       });
       const chart = Testing.chart();
       const configMap = new ConfigMap(chart, "test");
       configMap.setBinaryFile("path/to/file.bin");
       const results = Testing.synth(chart);
-      mockFs.restore();
       expect(results).toMatchSnapshot();
     });
 
     test("Setting value from binary file's contents with custom key", () => {
-      mockFs({
+      vol.fromJSON({
         "path/to/file.bin": "0101010",
       });
       const chart = Testing.chart();
       const configMap = new ConfigMap(chart, "test");
       configMap.setBinaryFile("path/to/file.bin", "greeting.bin");
       const results = Testing.synth(chart);
-      mockFs.restore();
       expect(results).toMatchSnapshot();
     });
 
     test("Loading data key/values from .env file", () => {
-      mockFs({
+      vol.fromJSON({
         "values.env": [
           "FOO=bar",
           "# a comment = ignore",
@@ -258,7 +256,7 @@ describe("ConfigMap", () => {
     });
 
     test("Special characters from .env file are left intact", () => {
-      mockFs({
+      vol.fromJSON({
         "values.env": [
           `AN_EMAIL=support@example.com`,
           `COMMENT_VALUE=/* nothing here */`,
@@ -286,7 +284,7 @@ describe("ConfigMap", () => {
     });
 
     test("Loading empty .env file", () => {
-      mockFs({
+      vol.fromJSON({
         "values.env": ["# a comment = ignore"].join("\n"),
       });
       const chart = Testing.chart();
@@ -296,7 +294,7 @@ describe("ConfigMap", () => {
     });
 
     test("Loading .env files from props", () => {
-      mockFs({
+      vol.fromJSON({
         "bar.env": "BAR=bar",
         "foo.env": "FOO=foo",
       });
