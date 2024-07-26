@@ -1,6 +1,6 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import * as path from "path";
+import * as path from "node:path";
 import {
   IntOrString,
   KubeService,
@@ -9,9 +9,9 @@ import {
 } from "../../imports/k8s";
 import { DnsAwareStatefulSet, getDnsName } from "../common/statefulset-util";
 import { ConfigMap } from "../data";
+import { Job } from "../job";
 import { PodSpecRestartPolicy, PortProtocol, ServiceSpecType } from "../k8s";
 import { MongoProps } from "./mongo-props";
-import { Job } from "../job";
 
 function resolvePath(filePath: string): string {
   return path.resolve(__dirname, filePath);

@@ -1,4 +1,6 @@
 import { Construct } from "constructs";
+import path from "node:path";
+import { IntOrString, Quantity } from "../../imports/k8s";
 import {
   ConfigMap,
   getCanaryStage,
@@ -8,8 +10,6 @@ import {
   TalisChartProps,
   WebService,
 } from "../../lib";
-import { IntOrString, Quantity } from "../../imports/k8s";
-import path from "path";
 
 export class AdvancedWebServiceChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
