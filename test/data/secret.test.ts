@@ -1,12 +1,18 @@
-import mockFs from "mock-fs";
 import { Lazy, Testing } from "cdk8s";
-import { Secret } from "../../lib";
+import { vol } from "memfs";
 import { KubePod } from "../../imports/k8s";
+import { Secret } from "../../lib";
 import { makeChart } from "../test-util";
+
+vi.mock("fs");
 
 const encode = (value: string) => Buffer.from(value).toString("base64");
 
 describe("Secret", () => {
+  beforeEach(() => {
+    vol.reset();
+  });
+
   describe("Props", () => {
     test("Empty Secret", () => {
       const chart = Testing.chart();
@@ -185,36 +191,30 @@ describe("Secret", () => {
   });
 
   describe("Loading files", () => {
-    afterEach(() => {
-      mockFs.restore();
-    });
-
     test("Encoding data value from file's contents", () => {
-      mockFs({
+      vol.fromJSON({
         "path/to/file.enc": "secret#!23",
       });
       const chart = Testing.chart();
       const secret = new Secret(chart, "test");
       secret.setFile("path/to/file.enc");
       const results = Testing.synth(chart);
-      mockFs.restore();
       expect(results).toMatchSnapshot();
     });
 
     test("Encoding data value from file's contents with custom key", () => {
-      mockFs({
+      vol.fromJSON({
         "path/to/file.enc": "secret#!23",
       });
       const chart = Testing.chart();
       const secret = new Secret(chart, "test");
       secret.setFile("path/to/file.enc", "greeting.enc");
       const results = Testing.synth(chart);
-      mockFs.restore();
       expect(results).toMatchSnapshot();
     });
 
     test("Encoding data from .env file", () => {
-      mockFs({
+      vol.fromJSON({
         "values.env": [
           "FOO=bar",
           "# a comment = ignore",
@@ -231,7 +231,7 @@ describe("Secret", () => {
     });
 
     test("Special characters from .env file are left intact", () => {
-      mockFs({
+      vol.fromJSON({
         "values.env": [
           `AN_EMAIL=support@example.com`,
           `COMMENT_VALUE=/* nothing here */`,
@@ -259,7 +259,7 @@ describe("Secret", () => {
     });
 
     test("Loading empty .env file", () => {
-      mockFs({
+      vol.fromJSON({
         "values.env": ["# a comment = ignore"].join("\n"),
       });
       const chart = Testing.chart();
@@ -269,7 +269,7 @@ describe("Secret", () => {
     });
 
     test("Loading .env files from props", () => {
-      mockFs({
+      vol.fromJSON({
         "bar.env": "BAR=bar",
         "foo.env": "FOO=foo",
       });
