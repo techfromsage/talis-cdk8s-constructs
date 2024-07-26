@@ -47,14 +47,14 @@ exports[`Mongo example > Snapshot 1`] = `
       "labels": {
         "app": "example-mongo-app",
         "environment": "development",
-        "instance": "redis-example",
+        "instance": "mongo-example",
         "managed-by": "cdk8s",
         "region": "local",
-        "release": "3.2.8",
+        "release": "4.4.29",
         "role": "mongo",
         "service": "example-mongo-app-development-local",
       },
-      "name": "redis-example",
+      "name": "mongo-example",
       "namespace": "example-mongo-app-test",
     },
     "spec": {
@@ -67,7 +67,7 @@ exports[`Mongo example > Snapshot 1`] = `
       ],
       "selector": {
         "app": "example-mongo-app",
-        "instance": "redis-example",
+        "instance": "mongo-example",
         "role": "mongo",
       },
       "type": "ClusterIP",
@@ -80,14 +80,14 @@ exports[`Mongo example > Snapshot 1`] = `
       "labels": {
         "app": "example-mongo-app",
         "environment": "development",
-        "instance": "redis-example",
+        "instance": "mongo-example",
         "managed-by": "cdk8s",
         "region": "local",
-        "release": "3.2.8",
+        "release": "4.4.29",
         "role": "mongo",
         "service": "example-mongo-app-development-local",
       },
-      "name": "redis-example-sts",
+      "name": "mongo-example-sts",
       "namespace": "example-mongo-app-test",
     },
     "spec": {
@@ -95,20 +95,20 @@ exports[`Mongo example > Snapshot 1`] = `
       "selector": {
         "matchLabels": {
           "app": "example-mongo-app",
-          "instance": "redis-example",
+          "instance": "mongo-example",
           "role": "mongo",
         },
       },
-      "serviceName": "redis-example",
+      "serviceName": "mongo-example",
       "template": {
         "metadata": {
           "labels": {
             "app": "example-mongo-app",
             "environment": "development",
-            "instance": "redis-example",
+            "instance": "mongo-example",
             "managed-by": "cdk8s",
             "region": "local",
-            "release": "3.2.8",
+            "release": "4.4.29",
             "role": "mongo",
             "service": "example-mongo-app-development-local",
           },
@@ -118,10 +118,9 @@ exports[`Mongo example > Snapshot 1`] = `
             {
               "args": [
                 "--storageEngine",
-                "mmapv1",
-                "--smallfiles",
+                "wiredTiger",
               ],
-              "image": "mongo:3.2.8",
+              "image": "mongo:4.4.29",
               "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
@@ -176,7 +175,7 @@ exports[`Mongo example > Snapshot 1`] = `
             ],
             "resources": {
               "requests": {
-                "storage": "20Gi",
+                "storage": "2Gi",
               },
             },
             "storageClassName": "general-purpose-delete",

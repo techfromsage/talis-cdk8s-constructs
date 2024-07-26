@@ -1,5 +1,6 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
+import * as path from "path";
 import {
   IntOrString,
   KubeService,
@@ -7,8 +8,14 @@ import {
   Quantity,
 } from "../../imports/k8s";
 import { DnsAwareStatefulSet, getDnsName } from "../common/statefulset-util";
+import { ConfigMap } from "../data";
+import { PodSpecRestartPolicy, PortProtocol, ServiceSpecType } from "../k8s";
 import { MongoProps } from "./mongo-props";
-import { PortProtocol, ServiceSpecType } from "../k8s";
+import { Job } from "../job";
+
+function resolvePath(filePath: string): string {
+  return path.resolve(__dirname, filePath);
+}
 
 export class Mongo extends Construct implements DnsAwareStatefulSet {
   readonly service: KubeService;
@@ -19,12 +26,14 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
 
     const chart = Chart.of(this);
     const app = props.selectorLabels?.app ?? chart.labels.app;
-    const release = props.release ?? "3.2.8";
+    const release = props.release ?? "3.6.23";
     const port = 27017;
     const labels = {
       ...chart.labels,
       release: release,
     };
+    const replicas = props.replicas ?? 1;
+    const storageClassName = props.storageClassName ?? "general-purpose-delete";
     const storageSize = props.storageSize ?? Quantity.fromString("20Gi");
     const resources = props.resources ?? {
       limits: {
@@ -89,7 +98,7 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
       },
       spec: {
         serviceName: this.service.name,
-        replicas: 1,
+        replicas: replicas,
         selector: {
           matchLabels: selectorLabels,
         },
@@ -100,7 +109,7 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
             },
             spec: {
               accessModes: ["ReadWriteOnce"],
-              storageClassName: "general-purpose-delete",
+              storageClassName: storageClassName,
               resources: {
                 requests: {
                   storage: storageSize,
@@ -154,6 +163,48 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
         },
       },
     });
+
+    if (props.replicaSetName) {
+      const setupConfig = new ConfigMap(this, "setup-replset-conf", {
+        metadata: {
+          name: "setup-replset",
+        },
+        disableNameSuffixHash: true,
+      });
+      setupConfig.setFile(resolvePath("init/setup-replset.sh"));
+
+      const members = Array.from({ length: replicas }, (_, index) =>
+        this.getDnsName(index),
+      );
+
+      new Job(this, "setup-replset", {
+        image: `mongo:${release}`,
+        restartPolicy: PodSpecRestartPolicy.NEVER,
+        backoffLimit: 0,
+        release: release,
+        command: ["/bin/bash"],
+        args: ["/setup-replset.sh", props.replicaSetName, members.join(",")],
+        resources: {
+          requests: {
+            cpu: Quantity.fromString("10m"),
+            memory: Quantity.fromString("10Mi"),
+          },
+        },
+        volumes: [
+          {
+            name: "setup-replset",
+            configMap: { name: setupConfig.name },
+          },
+        ],
+        volumeMounts: [
+          {
+            name: "setup-replset",
+            mountPath: "/setup-replset.sh",
+            subPath: "setup-replset.sh",
+          },
+        ],
+      });
+    }
   }
 
   /** @inheritdoc */
@@ -171,6 +222,10 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
 
     if (storageEngine === "mmapv1") {
       args.push("--smallfiles");
+    }
+
+    if (props.replicaSetName) {
+      args.push(`--replSet=${props.replicaSetName}`);
     }
 
     return args;

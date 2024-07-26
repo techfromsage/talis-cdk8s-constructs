@@ -8,6 +8,17 @@ export interface MongoProps {
    */
   readonly selectorLabels?: { [key: string]: string };
 
+  /**
+   * Number of Pod replicas.
+   * @default 1
+   */
+  readonly replicas?: number;
+
+  /**
+   * Name of the replica set. If set then a replica set is set up.
+   */
+  readonly replicaSetName?: string;
+
   /** Release version of the Docker image. */
   readonly release: string;
 
@@ -21,6 +32,12 @@ export interface MongoProps {
    * Override the default arguments (storageEngine) to the container.
    */
   readonly customArgs?: string[];
+
+  /**
+   * Name of the StorageClass to use for the volume claim.
+   * @default "general-purpose-delete"
+   */
+  readonly storageClassName?: string;
 
   /**
    * Storage for the mongo pod

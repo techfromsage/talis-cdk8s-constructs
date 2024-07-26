@@ -139,7 +139,7 @@ exports[`Mongo > Props > All the props 1`] = `
                 "storage": "20Gi",
               },
             },
-            "storageClassName": "general-purpose-delete",
+            "storageClassName": "special-storage-class",
           },
         },
       ],
