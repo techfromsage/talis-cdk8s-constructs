@@ -39,11 +39,15 @@ describe("Mongo", () => {
         instance: "test",
       };
 
-      const allProps: Required<Omit<MongoProps, "customArgs">> = {
+      const allProps: Required<
+        Omit<MongoProps, "customArgs" | "replicaSetName">
+      > = {
         ...requiredProps,
         selectorLabels,
         storageEngine: "wiredTiger",
+        storageClassName: "special-storage-class",
         storageSize: Quantity.fromString("20Gi"),
+        replicas: 1,
         resources: {
           limits: {
             cpu: Quantity.fromString("100m"),
@@ -59,11 +63,10 @@ describe("Mongo", () => {
 
       const statefulSet = results.find((obj) => obj.kind === "StatefulSet");
       expect(statefulSet).toHaveAllProperties(allProps, [
-        "release",
         "selectorLabels",
         "storageEngine",
         "storageSize",
-        "resources",
+        "replicaSetName",
         "exposeService",
       ]);
 
@@ -217,6 +220,41 @@ describe("Mongo", () => {
         const mongo = new Mongo(chart, "mongo-test", requiredProps);
         expect(mongo.getDnsName(replica)).toBe(expected);
       });
+    });
+  });
+
+  describe("replicaSet", () => {
+    test("Sets replSet option", () => {
+      const results = synthMongo({
+        ...requiredProps,
+        replicaSetName: "test-rs",
+        storageEngine: "wiredTiger",
+      });
+      const mongo = results.find((obj) => obj.kind === "StatefulSet");
+      expect(mongo).toHaveProperty("spec.template.spec.containers[0].args", [
+        "--storageEngine",
+        "wiredTiger",
+        "--replSet=test-rs",
+      ]);
+    });
+
+    test("Creates a Job to initiate a replica set", () => {
+      const chart = makeChart();
+      new Mongo(chart, "mongo-rs", {
+        ...requiredProps,
+        replicas: 3,
+        replicaSetName: "test-rs",
+      });
+      const results = Testing.synth(chart);
+      const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("spec.template.spec.containers[0].command", [
+        "/bin/bash",
+      ]);
+      expect(job).toHaveProperty("spec.template.spec.containers[0].args", [
+        "/setup-replset.sh",
+        "test-rs",
+        "mongo-rs-sts-0.mongo-rs,mongo-rs-sts-1.mongo-rs,mongo-rs-sts-2.mongo-rs",
+      ]);
     });
   });
 });
