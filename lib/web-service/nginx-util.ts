@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { ConfigMap } from "..";
 
 function resolvePath(filePath: string): string {
