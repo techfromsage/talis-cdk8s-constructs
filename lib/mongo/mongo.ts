@@ -20,10 +20,14 @@ function resolvePath(filePath: string): string {
 export class Mongo extends Construct implements DnsAwareStatefulSet {
   readonly service: KubeService;
   readonly statefulSet: KubeStatefulSet;
+  private readonly replicas: number;
+  private readonly replicaSetName?: string;
 
   constructor(scope: Construct, id: string, props: MongoProps) {
     super(scope, id);
 
+    this.replicas = props.replicas ?? 1;
+    this.replicaSetName = props.replicaSetName;
     const chart = Chart.of(this);
     const app = props.selectorLabels?.app ?? chart.labels.app;
     const release = props.release ?? "3.6.23";
@@ -32,7 +36,6 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
       ...chart.labels,
       release: release,
     };
-    const replicas = props.replicas ?? 1;
     const storageClassName = props.storageClassName ?? "general-purpose-delete";
     const storageSize = props.storageSize ?? Quantity.fromString("20Gi");
     const resources = props.resources ?? {
@@ -98,7 +101,7 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
       },
       spec: {
         serviceName: this.service.name,
-        replicas: replicas,
+        replicas: this.replicas,
         selector: {
           matchLabels: selectorLabels,
         },
@@ -164,52 +167,26 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
       },
     });
 
-    if (props.replicaSetName) {
-      const setupConfig = new ConfigMap(this, "setup-replset-conf", {
-        metadata: {
-          name: "setup-replset",
-        },
-        disableNameSuffixHash: true,
-      });
-      setupConfig.setFile(resolvePath("init/setup-replset.sh"));
-
-      const members = Array.from({ length: replicas }, (_, index) =>
-        this.getDnsName(index),
-      );
-
-      new Job(this, "setup-replset", {
-        image: `mongo:${release}`,
-        restartPolicy: PodSpecRestartPolicy.NEVER,
-        backoffLimit: 0,
-        release: release,
-        command: ["/bin/bash"],
-        args: ["/setup-replset.sh", props.replicaSetName, members.join(",")],
-        resources: {
-          requests: {
-            cpu: Quantity.fromString("10m"),
-            memory: Quantity.fromString("10Mi"),
-          },
-        },
-        volumes: [
-          {
-            name: "setup-replset",
-            configMap: { name: setupConfig.name },
-          },
-        ],
-        volumeMounts: [
-          {
-            name: "setup-replset",
-            mountPath: "/setup-replset.sh",
-            subPath: "setup-replset.sh",
-          },
-        ],
-      });
+    if (this.replicaSetName) {
+      this.addSetupReplicaSetJob();
     }
   }
 
   /** @inheritdoc */
   public getDnsName(replica = 0): string {
     return getDnsName(this, replica);
+  }
+
+  /**
+   * Get the DNS names of all replicas.
+   * Note: this assumes number of replicas is as given in the props, i.e. there
+   * is no external scaling involved.
+   * @returns Array of pods' DNS names
+   */
+  public getHosts(): string[] {
+    return Array.from({ length: this.replicas }, (_, index) =>
+      this.getDnsName(index),
+    );
   }
 
   private getCommandArgs(props: MongoProps): string[] {
@@ -224,10 +201,56 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
       args.push("--smallfiles");
     }
 
-    if (props.replicaSetName) {
-      args.push(`--replSet=${props.replicaSetName}`);
+    if (this.replicaSetName) {
+      args.push(`--replSet=${this.replicaSetName}`);
     }
 
     return args;
+  }
+
+  private addSetupReplicaSetJob(): void {
+    if (!this.replicaSetName) {
+      return;
+    }
+
+    const setupConfig = new ConfigMap(this, `${this.node.id}-setup-rs-conf`, {
+      metadata: {
+        name: `${this.node.id}-setup-rs-conf`,
+      },
+      disableNameSuffixHash: true,
+    });
+    setupConfig.setFile(resolvePath("init/setup-replset.sh"));
+
+    new Job(this, `${this.node.id}-setup-rs`, {
+      image: `mongo:${this.release}`,
+      restartPolicy: PodSpecRestartPolicy.NEVER,
+      backoffLimit: 0,
+      release: this.release,
+      command: ["/bin/bash"],
+      args: [
+        "/setup-replset.sh",
+        this.replicaSetName,
+        this.getHosts().join(","),
+      ],
+      resources: {
+        requests: {
+          cpu: Quantity.fromString("10m"),
+          memory: Quantity.fromString("10Mi"),
+        },
+      },
+      volumes: [
+        {
+          name: "setup-replset",
+          configMap: { name: setupConfig.name },
+        },
+      ],
+      volumeMounts: [
+        {
+          name: "setup-replset",
+          mountPath: "/setup-replset.sh",
+          subPath: "setup-replset.sh",
+        },
+      ],
+    });
   }
 }
