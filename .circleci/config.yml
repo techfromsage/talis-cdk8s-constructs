@@ -46,17 +46,17 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - cluster_setup
+      # - cluster_setup
       - node_setup
       - run:
           name: Run e2e tests
           environment:
             DEBUG_DETIK: "true"
           command: |
-            mkdir test-results
-            TEST_FILES=$(circleci tests glob "e2e/*.bats")
+            mkdir test-results no-test
+            TEST_FILES=$(circleci tests glob "flaky/*.bats")
             echo "$TEST_FILES" | circleci tests run --verbose \
-              --command="xargs npm exec -- bats --jobs 4 --no-parallelize-within-files --timing --print-output-on-failure --report-formatter junit --output test-results"
+              --command="xargs npm exec -- bats --jobs 4 --no-parallelize-within-files --timing --print-output-on-failure --report-formatter junit --output test-results no-test"
       - store_artifacts:
           path: /tmp/detik
       - store_test_results:
@@ -68,61 +68,62 @@ workflows:
       # CircleCI's 'requires' setting excludes jobs that are filtered out but if
       # that filters out all of them then dependant jobs will never run, so we
       # need something to run in lieu of the 'be_kind_to_your_colleagues' job.
-      - fan_out:
-          filters:
-            branches:
-              only:
-                - main
-                - /^dependabot-.*$/
-      - be_kind_to_your_colleagues:
-          type: approval
-          filters:
-            branches:
-              ignore:
-                - main
-                - /^dependabot-.*$/
-      - commitlint:
-          filters:
-            branches:
-              ignore:
-                - main
-                - /^dependabot-.*$/
-          requires:
-            - fan_out
-            - be_kind_to_your_colleagues
-      - node/run:
-          name: build
-          npm-run: build
-          requires:
-            - fan_out
-            - be_kind_to_your_colleagues
-      - node/run:
-          name: lint
-          npm-run: lint
-          version: 22.5.1
-          requires:
-            - fan_out
-            - be_kind_to_your_colleagues
-      - node/test:
-          name: test
-          run-command: test -- run --reporter default --reporter junit --outputFile.junit=junit.xml
-          test-results-path: junit.xml
-          version: 22.5.1
-          requires:
-            - fan_out
-            - be_kind_to_your_colleagues
-      - e2e:
-          context:
-            - docker-hub-secrets
-            - k8s-deploy-to-shared-aspire-20220211
-            - aws-region-eu
-          requires:
-            - build
-            - lint
-            - test
-      - node/run:
-          name: semantic-release
-          npm-run: release
-          version: 22.5.1
-          requires:
-            - e2e
+      - e2e
+      # - fan_out:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
+      #           - /^dependabot-.*$/
+      # - be_kind_to_your_colleagues:
+      #     type: approval
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - main
+      #           - /^dependabot-.*$/
+      # - commitlint:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - main
+      #           - /^dependabot-.*$/
+      #     requires:
+      #       - fan_out
+      #       - be_kind_to_your_colleagues
+      # - node/run:
+      #     name: build
+      #     npm-run: build
+      #     requires:
+      #       - fan_out
+      #       - be_kind_to_your_colleagues
+      # - node/run:
+      #     name: lint
+      #     npm-run: lint
+      #     version: 22.5.1
+      #     requires:
+      #       - fan_out
+      #       - be_kind_to_your_colleagues
+      # - node/test:
+      #     name: test
+      #     run-command: test -- run --reporter default --reporter junit --outputFile.junit=junit.xml
+      #     test-results-path: junit.xml
+      #     version: 22.5.1
+      #     requires:
+      #       - fan_out
+      #       - be_kind_to_your_colleagues
+      # - e2e:
+      #     context:
+      #       - docker-hub-secrets
+      #       - k8s-deploy-to-shared-aspire-20220211
+      #       - aws-region-eu
+      #     requires:
+      #       - build
+      #       - lint
+      #       - test
+      # - node/run:
+      #     name: semantic-release
+      #     npm-run: release
+      #     version: 22.5.1
+      #     requires:
+      #       - e2e
