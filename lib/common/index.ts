@@ -1,5 +1,6 @@
 export * from "./annotation-util";
 export * from "./container-props";
+export * from "./container-util";
 export * from "./env-util";
 export * from "./metadata-util";
 export * from "./name-util";

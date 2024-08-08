@@ -16,7 +16,7 @@ exports[`Mongo > Props > All the props 1`] = `
         "environment": "test",
         "instance": "test",
         "region": "local",
-        "release": "v1",
+        "release": "4.4.29",
         "role": "mongo",
       },
       "name": "test-mongo-test-c844268f",
@@ -47,7 +47,7 @@ exports[`Mongo > Props > All the props 1`] = `
         "environment": "test",
         "instance": "test",
         "region": "local",
-        "release": "v1",
+        "release": "4.4.29",
         "role": "mongo",
       },
       "name": "test-mongo-test-mongo-test-sts-c8cbd639",
@@ -70,7 +70,7 @@ exports[`Mongo > Props > All the props 1`] = `
             "environment": "test",
             "instance": "test",
             "region": "local",
-            "release": "v1",
+            "release": "4.4.29",
             "role": "mongo",
           },
         },
@@ -81,7 +81,7 @@ exports[`Mongo > Props > All the props 1`] = `
                 "--storageEngine",
                 "wiredTiger",
               ],
-              "image": "mongo:v1",
+              "image": "mongo:4.4.29",
               "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
@@ -156,7 +156,7 @@ exports[`Mongo > Props > Minimal required props 1`] = `
     "metadata": {
       "labels": {
         "instance": "mongo-test",
-        "release": "v1",
+        "release": "4.4.29",
         "role": "mongo",
       },
       "name": "test-mongo-test-c844268f",
@@ -182,7 +182,7 @@ exports[`Mongo > Props > Minimal required props 1`] = `
     "metadata": {
       "labels": {
         "instance": "mongo-test",
-        "release": "v1",
+        "release": "4.4.29",
         "role": "mongo",
       },
       "name": "test-mongo-test-mongo-test-sts-c8cbd639",
@@ -200,7 +200,7 @@ exports[`Mongo > Props > Minimal required props 1`] = `
         "metadata": {
           "labels": {
             "instance": "mongo-test",
-            "release": "v1",
+            "release": "4.4.29",
             "role": "mongo",
           },
         },
@@ -212,7 +212,7 @@ exports[`Mongo > Props > Minimal required props 1`] = `
                 "mmapv1",
                 "--smallfiles",
               ],
-              "image": "mongo:v1",
+              "image": "mongo:4.4.29",
               "livenessProbe": {
                 "failureThreshold": 5,
                 "initialDelaySeconds": 5,
