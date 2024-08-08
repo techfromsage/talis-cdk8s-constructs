@@ -36,7 +36,7 @@ export class FullStackChart extends TalisChart {
     const { domain, watermark } = props;
     const applicationPort = 9898;
     const podinfoVersion = "6.1.3";
-    const mongoVersion = "5.0.7";
+    const mongoVersion = "4.4.29";
     const redisVersion = "5.0.7";
     const busyboxVersion = "1.35.0";
     const busyboxImage = `docker.io/busybox:${busyboxVersion}`;
