@@ -52,9 +52,15 @@ jobs:
           name: Run e2e tests
           environment:
             DEBUG_DETIK: "true"
-          command: npm run e2e
+          command: |
+            mkdir test-results
+            TEST_FILES=$(circleci tests glob "e2e/*.bats")
+            echo "$TEST_FILES" | circleci tests run --verbose \
+              --command="xargs npm exec -- bats --jobs 4 --no-parallelize-within-files --timing --print-output-on-failure --report-formatter junit --output test-results"
       - store_artifacts:
           path: /tmp/detik
+      - store_test_results:
+          path: test-results
 
 workflows:
   build:
