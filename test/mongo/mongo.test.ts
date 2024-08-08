@@ -4,7 +4,7 @@ import { Mongo, MongoProps } from "../../lib";
 import { makeChart } from "../test-util";
 
 const requiredProps = {
-  release: "v1",
+  release: "4.4.29",
 };
 
 function synthMongo(props: MongoProps = requiredProps) {
@@ -131,25 +131,34 @@ describe("Mongo", () => {
   });
 
   describe("Container release", () => {
-    test("Default container release", () => {
-      const results = synthMongo();
-      const mongo = results.find((obj) => obj.kind === "StatefulSet");
-      expect(mongo).toHaveProperty(
-        "spec.template.spec.containers[0].image",
-        "mongo:v1",
-      );
+    const tests: [string, string, string][] = [
+      ["patch", "4.4.29", "mongo"],
+      ["minor", "5.0", "mongo"],
+      ["major", "6", "mongosh"],
+    ];
+    tests.forEach(([name, release, shell]) => {
+      test(`Accepts ${name} version`, () => {
+        const results = synthMongo({ ...requiredProps, release: release });
+        const mongo = results.find((obj) => obj.kind === "StatefulSet");
+        expect(mongo).toHaveProperty(
+          "spec.template.spec.containers[0].image",
+          `mongo:${release}`,
+        );
+        expect(mongo).toHaveProperty(
+          "spec.template.metadata.labels.release",
+          release,
+        );
+        expect(mongo).toHaveProperty(
+          "spec.template.spec.containers[0].readinessProbe.exec.command",
+          [shell, "--eval", "db.adminCommand('ping')"],
+        );
+      });
     });
 
-    test("Container release set explicitly", () => {
-      const results = synthMongo({
-        ...requiredProps,
-        release: "12345",
-      });
-      const mongo = results.find((obj) => obj.kind === "StatefulSet");
-      expect(mongo).toHaveProperty(
-        "spec.template.spec.containers[0].image",
-        "mongo:12345",
-      );
+    test("Throws if release version is invalid", () => {
+      expect(() => {
+        synthMongo({ ...requiredProps, release: "v8" });
+      }).toThrowError();
     });
   });
 
@@ -277,6 +286,82 @@ describe("Mongo", () => {
         "mongo-rs-sts-0.mongo-rs",
         "mongo-rs-sts-1.mongo-rs",
         "mongo-rs-sts-2.mongo-rs",
+      ]);
+    });
+  });
+
+  describe("getWaitForPortContainer", () => {
+    test("Gets a wait container for a single host", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo", requiredProps);
+      expect(mongo.getWaitForPortContainer()).toMatchInlineSnapshot(`
+        {
+          "command": [
+            "/bin/sh",
+            "-c",
+            "echo 'waiting for mongo'; until nc -vz -w1 mongo-sts-0.mongo 27017; do sleep 1; done",
+          ],
+          "image": "busybox:1.36.1",
+          "name": "wait-for-mongo",
+          "resources": {
+            "limits": {
+              "memory": Quantity {
+                "value": "50Mi",
+              },
+            },
+            "requests": {
+              "cpu": Quantity {
+                "value": "10m",
+              },
+              "memory": Quantity {
+                "value": "50Mi",
+              },
+            },
+          },
+        }
+      `);
+    });
+
+    test("Gets a wait container for all replicas", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo", {
+        ...requiredProps,
+        replicas: 2,
+      });
+      expect(mongo.getWaitForPortContainer()).toHaveProperty("command", [
+        "/bin/sh",
+        "-c",
+        "echo 'waiting for mongo'; until nc -vz -w1 mongo-sts-0.mongo 27017; do sleep 1; done && until nc -vz -w1 mongo-sts-1.mongo 27017; do sleep 1; done",
+      ]);
+    });
+  });
+
+  describe("getWaitForReplicaSetContainer", () => {
+    test("Gets a noop container for standalone", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo1", requiredProps);
+      const container = mongo.getWaitForReplicaSetContainer();
+      expect(container).toHaveProperty("name", "wait-for-mongo1-rs");
+      expect(container).toHaveProperty("command", [
+        "/bin/bash",
+        "-c",
+        "exit 0",
+      ]);
+    });
+
+    test("Gets a wait container for a replica set", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo2", {
+        ...requiredProps,
+        replicas: 3,
+        replicaSetName: "test-rs",
+      });
+      const container = mongo.getWaitForReplicaSetContainer();
+      expect(container).toHaveProperty("name", "wait-for-mongo2-rs");
+      expect(container).toHaveProperty("command", [
+        "/bin/bash",
+        "-c",
+        "mongo --quiet --host mongo2-sts-0.mongo2 <<<'while (true) { if ( rs.status().members.some(({ state }) => state === 1) && rs.status().members.every(({ state }) => state === 1 || state === 2) ) { break; } sleep(1000); }'",
       ]);
     });
   });

@@ -2,6 +2,7 @@ import { Chart } from "cdk8s";
 import { Construct } from "constructs";
 import * as path from "node:path";
 import {
+  Container,
   IntOrString,
   KubeService,
   KubeStatefulSet,
@@ -12,6 +13,7 @@ import { ConfigMap } from "../data";
 import { Job } from "../job";
 import { PodSpecRestartPolicy, PortProtocol, ServiceSpecType } from "../k8s";
 import { MongoProps } from "./mongo-props";
+import { makeWaitForPortContainer } from "../common";
 
 function resolvePath(filePath: string): string {
   return path.resolve(__dirname, filePath);
@@ -22,19 +24,21 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
   readonly statefulSet: KubeStatefulSet;
   private readonly replicas: number;
   private readonly replicaSetName?: string;
+  private readonly release: string;
 
   constructor(scope: Construct, id: string, props: MongoProps) {
     super(scope, id);
 
     this.replicas = props.replicas ?? 1;
     this.replicaSetName = props.replicaSetName;
+    this.release = props.release;
+
     const chart = Chart.of(this);
     const app = props.selectorLabels?.app ?? chart.labels.app;
-    const release = props.release ?? "3.6.23";
     const port = 27017;
     const labels = {
       ...chart.labels,
-      release: release,
+      release: this.release,
     };
     const storageClassName = props.storageClassName ?? "general-purpose-delete";
     const storageSize = props.storageSize ?? Quantity.fromString("20Gi");
@@ -130,7 +134,7 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
             containers: [
               {
                 name: "mongo",
-                image: `mongo:${release}`,
+                image: `mongo:${this.release}`,
                 args: args,
                 ports: [
                   {
@@ -148,7 +152,11 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
                 },
                 readinessProbe: {
                   exec: {
-                    command: ["mongo", "--eval", "db.adminCommand('ping')"],
+                    command: [
+                      this.getMongoShell(),
+                      "--eval",
+                      "db.adminCommand('ping')",
+                    ],
                   },
                   initialDelaySeconds: 5,
                   timeoutSeconds: 5,
@@ -187,6 +195,55 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
     return Array.from({ length: this.replicas }, (_, index) =>
       this.getDnsName(index),
     );
+  }
+
+  public getWaitForPortContainer(): Container {
+    return makeWaitForPortContainer(this.node.id, this.getHosts(), 27017);
+  }
+
+  public getWaitForReplicaSetContainer(): Container {
+    return {
+      name: `wait-for-${this.node.id}-rs`,
+      image: `mongo:${this.release}`,
+      command: ["/bin/bash", "-c", this.getWaitForReplicaSetCommand()],
+      resources: {
+        requests: {
+          cpu: Quantity.fromString("10m"),
+          memory: Quantity.fromString("50Mi"),
+        },
+        limits: {
+          memory: Quantity.fromString("50Mi"),
+        },
+      },
+    };
+  }
+
+  private getWaitForReplicaSetCommand(): string {
+    // If replica set not enable, return success exit code immediately
+    if (!this.replicaSetName) {
+      return "exit 0";
+    }
+
+    // script to run on the database
+    const js = `while (true) {
+      if (
+        rs.status().members.some(({ state }) => state === 1) &&
+        rs.status().members.every(({ state }) => state === 1 || state === 2)
+      ) {
+        break;
+      }
+      sleep(1000);
+    }`.replace(/\n\s+/g, " ");
+    // note we don't use --eval flag because `mongosh` will error if replica set is not yet ready
+    return `${this.getMongoShell()} --quiet --host ${this.getDnsName()} <<<'${js}'`;
+  }
+
+  private getMongoShell(): string {
+    const match = this.release.match(/^(\d+)/);
+    if (!match) {
+      throw new Error("mongo release version must begin with a number");
+    }
+    return Number(match.at(0)) >= 6.0 ? "mongosh" : "mongo";
   }
 
   private getCommandArgs(props: MongoProps): string[] {
