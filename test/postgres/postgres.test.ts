@@ -123,6 +123,12 @@ describe("Postgres", () => {
   });
 
   describe("Object instances", () => {
+    test("Exposes service port through property", () => {
+      const chart = makeChart();
+      const postgres = new Postgres(chart, "postgres-test", requiredProps);
+      expect(postgres.port).toBe(5432);
+    });
+
     test("Exposes service object through property", () => {
       const chart = makeChart();
       const postgres = new Postgres(chart, "postgres-test", requiredProps);
@@ -189,6 +195,39 @@ describe("Postgres", () => {
         const postgres = new Postgres(chart, "postgres-test", requiredProps);
         expect(postgres.getDnsName(replica)).toBe(expected);
       });
+    });
+  });
+
+  describe("getWaitForPortContainer", () => {
+    test("Gets a wait container for a single host", () => {
+      const chart = makeChart();
+      const postgres = new Postgres(chart, "postgres-test", requiredProps);
+      expect(postgres.getWaitForPortContainer()).toMatchInlineSnapshot(`
+        {
+          "command": [
+            "/bin/sh",
+            "-c",
+            "echo 'waiting for postgres-test'; until nc -vz -w1 postgres-test-sts-0.postgres-test 5432; do sleep 1; done",
+          ],
+          "image": "busybox:1.36.1",
+          "name": "wait-for-postgres-test",
+          "resources": {
+            "limits": {
+              "memory": Quantity {
+                "value": "50Mi",
+              },
+            },
+            "requests": {
+              "cpu": Quantity {
+                "value": "10m",
+              },
+              "memory": Quantity {
+                "value": "50Mi",
+              },
+            },
+          },
+        }
+      `);
     });
   });
 });

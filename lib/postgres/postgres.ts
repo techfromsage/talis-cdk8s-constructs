@@ -1,21 +1,29 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
-import { KubeService, KubeStatefulSet, Quantity } from "../../imports/k8s";
+import {
+  Container,
+  KubeService,
+  KubeStatefulSet,
+  Quantity,
+} from "../../imports/k8s";
+import { makeWaitForPortContainer } from "../common";
 import { DnsAwareStatefulSet, getDnsName } from "../common/statefulset-util";
-import { PostgresProps } from "./postgres-props";
 import { PortProtocol } from "../k8s";
+import { PostgresProps } from "./postgres-props";
 
 export class Postgres extends Construct implements DnsAwareStatefulSet {
+  readonly port: number;
   readonly service: KubeService;
   readonly statefulSet: KubeStatefulSet;
 
   constructor(scope: Construct, id: string, props: PostgresProps) {
     super(scope, id);
 
+    this.port = 5432;
+
     const chart = Chart.of(this);
     const app = props.selectorLabels?.app ?? chart.labels.app;
     const release = props.release ?? "14.4";
-    const port = 5432;
     const labels = {
       ...chart.labels,
       release: release,
@@ -48,7 +56,7 @@ export class Postgres extends Construct implements DnsAwareStatefulSet {
         clusterIp: "None",
         ports: [
           {
-            port: port,
+            port: this.port,
             protocol: PortProtocol.TCP,
           },
         ],
@@ -98,7 +106,7 @@ export class Postgres extends Construct implements DnsAwareStatefulSet {
                 envFrom: props.envFrom,
                 ports: [
                   {
-                    containerPort: port,
+                    containerPort: this.port,
                   },
                 ],
                 resources: resources,
@@ -141,5 +149,9 @@ export class Postgres extends Construct implements DnsAwareStatefulSet {
   /** @inheritdoc */
   public getDnsName(replica = 0): string {
     return getDnsName(this, replica);
+  }
+
+  public getWaitForPortContainer(): Container {
+    return makeWaitForPortContainer(this.node.id, this.getDnsName(), this.port);
   }
 }

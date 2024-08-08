@@ -79,6 +79,12 @@ describe("Memcached", () => {
   });
 
   describe("Object instances", () => {
+    test("Exposes service port through property", () => {
+      const chart = makeChart();
+      const memcached = new Memcached(chart, "memcached-test", requiredProps);
+      expect(memcached.port).toBe(11211);
+    });
+
     test("Exposes service object through property", () => {
       const chart = makeChart();
       const memcached = new Memcached(chart, "memcached-test", requiredProps);
@@ -147,6 +153,39 @@ describe("Memcached", () => {
         const memcached = new Memcached(chart, "memcached-test", requiredProps);
         expect(memcached.getDnsName(replica)).toBe(expected);
       });
+    });
+  });
+
+  describe("getWaitForPortContainer", () => {
+    test("Gets a wait container for a single host", () => {
+      const chart = makeChart({ namespace: "test-ns" });
+      const memcached = new Memcached(chart, "memcached-test", requiredProps);
+      expect(memcached.getWaitForPortContainer()).toMatchInlineSnapshot(`
+        {
+          "command": [
+            "/bin/sh",
+            "-c",
+            "echo 'waiting for memcached-test'; until nc -vz -w1 memcached-test-sts-0.memcached-test.test-ns.svc.cluster.local 11211; do sleep 1; done",
+          ],
+          "image": "busybox:1.36.1",
+          "name": "wait-for-memcached-test",
+          "resources": {
+            "limits": {
+              "memory": Quantity {
+                "value": "50Mi",
+              },
+            },
+            "requests": {
+              "cpu": Quantity {
+                "value": "10m",
+              },
+              "memory": Quantity {
+                "value": "50Mi",
+              },
+            },
+          },
+        }
+      `);
     });
   });
 });

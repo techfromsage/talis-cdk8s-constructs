@@ -27,7 +27,6 @@ export class RubyOnRailsAppChart extends TalisChart {
     const redmineVersion = "5.0.2";
     const postgresVersion = "14.4";
     const memcachedVersion = "1.6.15";
-    const busyboxVersion = "1.35.0";
 
     const commonResources: ResourceRequirements = {
       requests: {
@@ -98,26 +97,8 @@ export class RubyOnRailsAppChart extends TalisChart {
       port: applicationPort,
       resources: commonResources,
       initContainers: [
-        {
-          name: "init-postgres",
-          image: `docker.io/busybox:${busyboxVersion}`,
-          command: [
-            "sh",
-            "-c",
-            `until nc -vz -w1 ${postgresHost} 5432; do echo waiting for postgres; sleep 1; done`,
-          ],
-          resources: commonResources,
-        },
-        {
-          name: "init-memcached",
-          image: `docker.io/busybox:${busyboxVersion}`,
-          command: [
-            "sh",
-            "-c",
-            `until nc -vz -w1 ${memcachedHost} 11211; do echo waiting for memcached; sleep 1; done`,
-          ],
-          resources: commonResources,
-        },
+        postgres.getWaitForPortContainer(),
+        memcached.getWaitForPortContainer(),
       ],
       env: [
         {
@@ -157,7 +138,7 @@ export class RubyOnRailsAppChart extends TalisChart {
         },
         {
           name: "MEMCACHED_PORT",
-          value: "11211",
+          value: memcached.port.toString(),
         },
       ],
       startupProbe: {

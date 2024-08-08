@@ -1,26 +1,30 @@
 import { Chart } from "cdk8s";
 import { Construct } from "constructs";
 import {
+  Container,
   IntOrString,
   KubeService,
   KubeStatefulSet,
   Quantity,
 } from "../../imports/k8s";
+import { makeWaitForPortContainer } from "../common";
 import { DnsAwareStatefulSet, getDnsName } from "../common/statefulset-util";
-import { RedisProps } from "./redis-props";
 import { PortProtocol } from "../k8s";
+import { RedisProps } from "./redis-props";
 
 export class Redis extends Construct implements DnsAwareStatefulSet {
+  readonly port: number;
   readonly service: KubeService;
   readonly statefulSet: KubeStatefulSet;
 
   constructor(scope: Construct, id: string, props: RedisProps) {
     super(scope, id);
 
+    this.port = 6379;
+
     const chart = Chart.of(this);
     const app = props.selectorLabels?.app ?? chart.labels.app;
     const release = props.release ?? "5.0.7";
-    const port = 6379;
     const labels = {
       ...chart.labels,
       release: release,
@@ -46,7 +50,7 @@ export class Redis extends Construct implements DnsAwareStatefulSet {
         clusterIp: "None",
         ports: [
           {
-            port: port,
+            port: this.port,
             protocol: PortProtocol.TCP,
           },
         ],
@@ -89,7 +93,7 @@ export class Redis extends Construct implements DnsAwareStatefulSet {
                 ],
                 ports: [
                   {
-                    containerPort: port,
+                    containerPort: this.port,
                   },
                 ],
                 resources: {
@@ -100,7 +104,7 @@ export class Redis extends Construct implements DnsAwareStatefulSet {
                 },
                 livenessProbe: {
                   tcpSocket: {
-                    port: IntOrString.fromNumber(port),
+                    port: IntOrString.fromNumber(this.port),
                   },
                   initialDelaySeconds: 5,
                   timeoutSeconds: 5,
@@ -131,5 +135,9 @@ export class Redis extends Construct implements DnsAwareStatefulSet {
   /** @inheritdoc */
   public getDnsName(replica = 0): string {
     return getDnsName(this, replica);
+  }
+
+  public getWaitForPortContainer(): Container {
+    return makeWaitForPortContainer(this.node.id, this.getDnsName(), this.port);
   }
 }

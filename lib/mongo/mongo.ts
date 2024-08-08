@@ -20,6 +20,7 @@ function resolvePath(filePath: string): string {
 }
 
 export class Mongo extends Construct implements DnsAwareStatefulSet {
+  readonly port: number;
   readonly service: KubeService;
   readonly statefulSet: KubeStatefulSet;
   private readonly replicas: number;
@@ -29,13 +30,13 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
   constructor(scope: Construct, id: string, props: MongoProps) {
     super(scope, id);
 
+    this.port = 27017;
     this.replicas = props.replicas ?? 1;
     this.replicaSetName = props.replicaSetName;
     this.release = props.release;
 
     const chart = Chart.of(this);
     const app = props.selectorLabels?.app ?? chart.labels.app;
-    const port = 27017;
     const labels = {
       ...chart.labels,
       release: this.release,
@@ -87,7 +88,7 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
         clusterIp: exposeService ? undefined : "None",
         ports: [
           {
-            port: port,
+            port: this.port,
             protocol: PortProtocol.TCP,
           },
         ],
@@ -138,13 +139,13 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
                 args: args,
                 ports: [
                   {
-                    containerPort: port,
+                    containerPort: this.port,
                   },
                 ],
                 resources: resources,
                 livenessProbe: {
                   tcpSocket: {
-                    port: IntOrString.fromNumber(port),
+                    port: IntOrString.fromNumber(this.port),
                   },
                   initialDelaySeconds: 5,
                   timeoutSeconds: 5,
@@ -198,7 +199,7 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
   }
 
   public getWaitForPortContainer(): Container {
-    return makeWaitForPortContainer(this.node.id, this.getHosts(), 27017);
+    return makeWaitForPortContainer(this.node.id, this.getHosts(), this.port);
   }
 
   public getWaitForReplicaSetContainer(): Container {
