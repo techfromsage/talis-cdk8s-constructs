@@ -113,6 +113,12 @@ describe("Mongo", () => {
   });
 
   describe("Object instances", () => {
+    test("Exposes service port through property", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo-test", requiredProps);
+      expect(mongo.port).toBe(27017);
+    });
+
     test("Exposes service object through property", () => {
       const chart = makeChart();
       const mongo = new Mongo(chart, "mongo-test", requiredProps);

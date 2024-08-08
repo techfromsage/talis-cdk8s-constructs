@@ -79,6 +79,12 @@ describe("Redis", () => {
   });
 
   describe("Object instances", () => {
+    test("Exposes service port through property", () => {
+      const chart = makeChart();
+      const redis = new Redis(chart, "redis-test", requiredProps);
+      expect(redis.port).toBe(6379);
+    });
+
     test("Exposes service object through property", () => {
       const chart = makeChart();
       const redis = new Redis(chart, "redis-test", requiredProps);
@@ -145,6 +151,39 @@ describe("Redis", () => {
         const redis = new Redis(chart, "redis-test", requiredProps);
         expect(redis.getDnsName(replica)).toBe(expected);
       });
+    });
+  });
+
+  describe("getWaitForPortContainer", () => {
+    test("Gets a wait container for a single host", () => {
+      const chart = makeChart();
+      const redis = new Redis(chart, "redis-test", requiredProps);
+      expect(redis.getWaitForPortContainer()).toMatchInlineSnapshot(`
+        {
+          "command": [
+            "/bin/sh",
+            "-c",
+            "echo 'waiting for redis-test'; until nc -vz -w1 redis-test-sts-0.redis-test 6379; do sleep 1; done",
+          ],
+          "image": "busybox:1.36.1",
+          "name": "wait-for-redis-test",
+          "resources": {
+            "limits": {
+              "memory": Quantity {
+                "value": "50Mi",
+              },
+            },
+            "requests": {
+              "cpu": Quantity {
+                "value": "10m",
+              },
+              "memory": Quantity {
+                "value": "50Mi",
+              },
+            },
+          },
+        }
+      `);
     });
   });
 });

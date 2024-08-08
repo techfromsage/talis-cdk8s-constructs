@@ -1,28 +1,27 @@
-import { Construct } from "constructs";
 import { App } from "cdk8s";
+import { Construct } from "constructs";
 
 import {
-  Container,
   EnvFromSource,
   IntOrString,
   Quantity,
   ResourceRequirements,
 } from "../imports/k8s";
 import {
-  WebService,
-  TalisShortRegion,
-  TalisDeploymentEnvironment,
-  TalisChart,
-  TalisChartProps,
-  ResqueWeb,
-  Mongo,
-  Redis,
+  BackgroundWorker,
   ConfigMap,
-  Secret,
   CronJob,
   Job,
-  BackgroundWorker,
+  Mongo,
   PodSpecRestartPolicy,
+  Redis,
+  ResqueWeb,
+  Secret,
+  TalisChart,
+  TalisChartProps,
+  TalisDeploymentEnvironment,
+  TalisShortRegion,
+  WebService,
 } from "../lib";
 import { getBuildWatermark, makeTtlTimestamp } from "./test-util";
 
@@ -82,27 +81,9 @@ export class FullStackChart extends TalisChart {
       { secretRef: { name: envSecret.name } },
     ];
 
-    const initMongoContainer: Container = {
-      name: "init-mongo",
-      image: busyboxImage,
-      command: [
-        "sh",
-        "-c",
-        `until nc -vz -w1 ${mongoHost} 27017; do echo waiting for mongo; sleep 1; done`,
-      ],
-      resources: commonResources,
-    };
+    const initMongoContainer = mongo.getWaitForPortContainer();
 
-    const initRedisContainer: Container = {
-      name: "init-redis",
-      image: busyboxImage,
-      command: [
-        "sh",
-        "-c",
-        `until nc -vz -w1 ${redisHost} 6379; do echo waiting for redis; sleep 1; done`,
-      ],
-      resources: commonResources,
-    };
+    const initRedisContainer = redis.getWaitForPortContainer();
 
     new BackgroundWorker(this, "bg-worker", {
       image: busyboxImage,
@@ -158,7 +139,7 @@ export class FullStackChart extends TalisChart {
       command: [
         "./podinfo",
         `--port=${applicationPort}`,
-        `--cache-server=tcp://${redisHost}:6379`,
+        `--cache-server=tcp://${redisHost}:${redis.port}`,
       ],
       replicas: 2,
       tlsDomain: `*.${domain}`,

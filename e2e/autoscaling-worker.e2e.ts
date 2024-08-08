@@ -1,19 +1,19 @@
-import { Construct } from "constructs";
 import { App } from "cdk8s";
+import { Construct } from "constructs";
 
-import { Container, Quantity, ResourceRequirements } from "../imports/k8s";
+import { Quantity, ResourceRequirements } from "../imports/k8s";
 import {
-  TalisShortRegion,
-  TalisDeploymentEnvironment,
-  TalisChart,
-  TalisChartProps,
-  Redis,
   BackgroundWorker,
   CronJob,
   PodSpecRestartPolicy,
+  Redis,
+  TalisChart,
+  TalisChartProps,
+  TalisDeploymentEnvironment,
+  TalisShortRegion,
 } from "../lib";
-import { getBuildWatermark, makeTtlTimestamp } from "./test-util";
 import { getRedisConnectionDetails } from "../lib/redis/redis-util";
+import { getBuildWatermark, makeTtlTimestamp } from "./test-util";
 
 export class AutoscalingWorkerChart extends TalisChart {
   constructor(scope: Construct, props: TalisChartProps) {
@@ -43,16 +43,7 @@ export class AutoscalingWorkerChart extends TalisChart {
       host: redisHost,
     });
 
-    const initRedisContainer: Container = {
-      name: "init-redis",
-      image: busyboxImage,
-      command: [
-        "sh",
-        "-c",
-        `until nc -vz -w1 ${redisConnectionDetails.host} ${redisConnectionDetails.port}; do echo waiting for redis; sleep 1; done`,
-      ],
-      resources: commonResources,
-    };
+    const initRedisContainer = redis.getWaitForPortContainer();
 
     const jobs = [
       {
