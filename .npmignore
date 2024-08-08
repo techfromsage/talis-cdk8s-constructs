@@ -6,3 +6,4 @@ imports/**/*.ts
 lib/**/*.ts
 !lib/**/*.d.ts
 test
+test-results
