@@ -240,20 +240,43 @@ describe("Mongo", () => {
 
     test("Creates a Job to initiate a replica set", () => {
       const chart = makeChart();
-      new Mongo(chart, "mongo-rs", {
+      new Mongo(chart, "mongo", {
         ...requiredProps,
         replicas: 3,
         replicaSetName: "test-rs",
       });
       const results = Testing.synth(chart);
       const job = results.find((obj) => obj.kind === "Job");
+      expect(job).toHaveProperty("metadata.name", "mongo-setup-rs");
       expect(job).toHaveProperty("spec.template.spec.containers[0].command", [
         "/bin/bash",
       ]);
       expect(job).toHaveProperty("spec.template.spec.containers[0].args", [
         "/setup-replset.sh",
         "test-rs",
-        "mongo-rs-sts-0.mongo-rs,mongo-rs-sts-1.mongo-rs,mongo-rs-sts-2.mongo-rs",
+        "mongo-sts-0.mongo,mongo-sts-1.mongo,mongo-sts-2.mongo",
+      ]);
+    });
+  });
+
+  describe("getHosts", () => {
+    test("Gets a host name for a single replica", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo-test", requiredProps);
+      expect(mongo.getHosts()).toEqual(["mongo-test-sts-0.mongo-test"]);
+    });
+
+    test("Gets host names for all Pods", () => {
+      const chart = makeChart();
+      const mongo = new Mongo(chart, "mongo-rs", {
+        ...requiredProps,
+        replicas: 3,
+        replicaSetName: "test-rs",
+      });
+      expect(mongo.getHosts()).toEqual([
+        "mongo-rs-sts-0.mongo-rs",
+        "mongo-rs-sts-1.mongo-rs",
+        "mongo-rs-sts-2.mongo-rs",
       ]);
     });
   });
