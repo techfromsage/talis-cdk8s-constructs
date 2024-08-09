@@ -20,71 +20,43 @@ commands:
           name: Set up cluster context
           command: aws eks update-kubeconfig --name << pipeline.parameters.cluster_name >> --alias << pipeline.parameters.cluster_name >>
 
-  node_setup:
-    steps:
-      - node/install
-      - node/install-packages:
-          include-branch-in-cache-key: false
-
 jobs:
   fan_out:
     executor: node/default
     steps:
       - run: echo "Building $CIRCLE_BRANCH"
 
-  commitlint:
+  node_run:
     executor: node/default
+    parameters:
+      steps:
+        type: steps
+        default: []
     steps:
       - checkout
-      - node_setup
-      - run:
-          name: Lint all commits on the branch
-          command: |
-            npx commitlint --from $(git merge-base main $CIRCLE_BRANCH) --to HEAD --verbose
-
-  e2e:
-    executor: node/default
-    steps:
-      - checkout
-      - cluster_setup
-      - node_setup
-      - run:
-          name: Run e2e tests
-          environment:
-            DEBUG_DETIK: "true"
-          command: |
-            mkdir test-results
-            # dummy directory passed to bats as first to force absolute paths
-            # in JUnit, see https://github.com/bats-core/bats-core/issues/913
-            mkdir dummy
-            TEST_FILES=$(circleci tests glob "e2e/*.bats")
-            echo "$TEST_FILES" | circleci tests run --verbose \
-              --command="xargs npm exec -- bats --jobs 4 --no-parallelize-within-files --timing --print-output-on-failure --report-formatter junit --output test-results dummy"
-      - store_artifacts:
-          path: /tmp/detik
-      - store_test_results:
-          path: test-results
+      - node/install # install Node.js from .nvmrc
+      - node/install-packages:
+          include-branch-in-cache-key: false
+      - steps: << parameters.steps >>
 
 workflows:
   build:
     jobs:
-      # CircleCI's 'requires' setting excludes jobs that are filtered out but if
-      # that filters out all of them then dependant jobs will never run, so we
-      # need something to run in lieu of the 'be_kind_to_your_colleagues' job.
       - fan_out:
           filters:
             branches:
               only:
                 - main
-                - /^dependabot-.*$/
+
       - be_kind_to_your_colleagues:
           type: approval
           filters:
             branches:
               ignore:
                 - main
-                - /^dependabot-.*$/
-      - commitlint:
+
+      - node_run:
+          name: commitlint
           filters:
             branches:
               ignore:
@@ -93,28 +65,37 @@ workflows:
           requires:
             - fan_out
             - be_kind_to_your_colleagues
-      - node/run:
+          steps:
+            - run: npx commitlint --from $(git merge-base main $CIRCLE_BRANCH) --to HEAD --verbose
+
+      - node_run:
           name: build
-          npm-run: build
           requires:
             - fan_out
             - be_kind_to_your_colleagues
-      - node/run:
+          steps:
+            - run: npm run build
+
+      - node_run:
           name: lint
-          npm-run: lint
-          version: 22.5.1
           requires:
             - fan_out
             - be_kind_to_your_colleagues
-      - node/test:
+          steps:
+            - run: npm run lint
+
+      - node_run:
           name: test
-          run-command: test -- run --reporter default --reporter junit --outputFile.junit=junit.xml
-          test-results-path: junit.xml
-          version: 22.5.1
           requires:
             - fan_out
             - be_kind_to_your_colleagues
-      - e2e:
+          steps:
+            - run: npm test -- run --reporter default --reporter junit --outputFile.junit=junit.xml
+            - store_test_results:
+                path: junit.xml
+
+      - node_run:
+          name: e2e
           context:
             - docker-hub-secrets
             - k8s-deploy-to-shared-aspire-20220211
@@ -123,9 +104,27 @@ workflows:
             - build
             - lint
             - test
-      - node/run:
+          steps:
+            - cluster_setup
+            - run:
+                name: Run e2e tests
+                environment:
+                  DEBUG_DETIK: "true"
+                command: |
+                  mkdir test-results
+                  # dummy directory passed to bats as first to force absolute paths
+                  # in JUnit, see https://github.com/bats-core/bats-core/issues/913
+                  mkdir dummy
+                  circleci tests glob "e2e/*.bats" | circleci tests run --verbose \
+                    --command="xargs npm exec -- bats --jobs 4 --no-parallelize-within-files --timing --print-output-on-failure --report-formatter junit --output test-results dummy"
+            - store_artifacts:
+                path: /tmp/detik
+            - store_test_results:
+                path: test-results
+
+      - node_run:
           name: semantic-release
-          npm-run: release
-          version: 22.5.1
           requires:
             - e2e
+          steps:
+            - run: npm run release
