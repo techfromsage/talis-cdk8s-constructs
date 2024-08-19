@@ -282,7 +282,7 @@ export class Mongo extends Construct implements DnsAwareStatefulSet {
     new Job(this, `${this.node.id}-setup-rs`, {
       image: `mongo:${this.release}`,
       restartPolicy: PodSpecRestartPolicy.NEVER,
-      backoffLimit: 0,
+      backoffLimit: 6,
       release: this.release,
       command: ["/bin/bash"],
       args: [
