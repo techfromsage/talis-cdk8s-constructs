@@ -196,9 +196,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
@@ -340,9 +338,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
@@ -829,9 +825,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
@@ -1193,9 +1187,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
@@ -1682,9 +1674,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
@@ -1826,9 +1816,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
@@ -2315,9 +2303,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
@@ -2678,9 +2664,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
@@ -3167,9 +3151,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",
@@ -3310,9 +3292,7 @@ proxy_cookie_path / "/$cookie_path_patches";
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Advanced web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",

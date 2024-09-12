@@ -9,9 +9,7 @@ exports[`Simple WebService example > Snapshot 1`] = `
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Simple web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://github.com/talis/talis-cdk8s-constructs/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://github.com/talis/talis-cdk8s-constructs",

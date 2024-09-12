@@ -142,9 +142,7 @@ export class WebService extends Construct {
           annotations: {
             "talis.io/chat": props.chatUrl,
             "talis.io/description": props.description,
-            "talis.io/eks-dashboard": props.eksDashboardUrl,
             "talis.io/graphs": props.graphsUrl,
-            "talis.io/incidents": props.incidentsUrl,
             "talis.io/issues": props.issuesUrl,
             "talis.io/logs": props.logsUrl,
             "talis.io/repository": props.repositoryUrl,

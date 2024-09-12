@@ -9,9 +9,7 @@ exports[`ResqueWeb > Creates resque web objects 1`] = `
       "annotations": {
         "talis.io/chat": "https://talis.slack.com/archives/C04P9DPCX",
         "talis.io/description": "Frontend to the Resque job queue system",
-        "talis.io/eks-dashboard": "None",
         "talis.io/graphs": "None",
-        "talis.io/incidents": "None",
         "talis.io/issues": "https://github.com/talis/platform/issues",
         "talis.io/logs": "None",
         "talis.io/repository": "https://github.com/talis/resque-web-container",
@@ -218,9 +216,7 @@ exports[`ResqueWeb > Customizations 1`] = `
       "annotations": {
         "talis.io/chat": "https://talis.slack.com/archives/C04P9DPCX",
         "talis.io/description": "Frontend to the Resque job queue system",
-        "talis.io/eks-dashboard": "None",
         "talis.io/graphs": "None",
-        "talis.io/incidents": "None",
         "talis.io/issues": "https://github.com/talis/platform/issues",
         "talis.io/logs": "None",
         "talis.io/repository": "https://github.com/talis/resque-web-container",
@@ -456,9 +452,7 @@ exports[`ResqueWeb > ingressAnnotations are merged 1`] = `
       "annotations": {
         "talis.io/chat": "https://talis.slack.com/archives/C04P9DPCX",
         "talis.io/description": "Frontend to the Resque job queue system",
-        "talis.io/eks-dashboard": "None",
         "talis.io/graphs": "None",
-        "talis.io/incidents": "None",
         "talis.io/issues": "https://github.com/talis/platform/issues",
         "talis.io/logs": "None",
         "talis.io/repository": "https://github.com/talis/resque-web-container",
@@ -675,9 +669,7 @@ exports[`ResqueWeb > selectorLabels are merged 1`] = `
       "annotations": {
         "talis.io/chat": "https://talis.slack.com/archives/C04P9DPCX",
         "talis.io/description": "Frontend to the Resque job queue system",
-        "talis.io/eks-dashboard": "None",
         "talis.io/graphs": "None",
-        "talis.io/incidents": "None",
         "talis.io/issues": "https://github.com/talis/platform/issues",
         "talis.io/logs": "None",
         "talis.io/repository": "https://github.com/talis/resque-web-container",

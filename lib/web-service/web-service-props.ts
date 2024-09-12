@@ -74,9 +74,6 @@ interface ServiceAnnotations {
   /** Link to Slack channel of the project/team that owns the project for `talis.io/chat` annotation. */
   readonly chatUrl: string;
 
-  /** Link to incident dashboard for `talis.io/incidents` annotation. */
-  readonly incidentsUrl: string;
-
   /** Link to project runbook for `talis.io/runbook` annotation. */
   readonly runbookUrl: string;
 
@@ -85,9 +82,6 @@ interface ServiceAnnotations {
 
   /** Link to the graphs in Grafana for `talis.io/graphs` annotation. */
   readonly graphsUrl: string;
-
-  /** Link to the Kubernetes dashboard for `talis.io/eks-dashboard` annotation. */
-  readonly eksDashboardUrl: string;
 
   /** Link to the uptime dashboard for `talis.io/uptime` annotation. */
   readonly uptimeUrl: string;

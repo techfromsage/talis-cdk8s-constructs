@@ -20,10 +20,8 @@ import { makeChart } from "../test-util";
 const annotations = {
   description: "Test web service",
   chatUrl: "https://example.slack.com/archives/ABCDEF123",
-  eksDashboardUrl: "https://example.io/dashboard",
   externalUrl: "https://api.example.com/",
   graphsUrl: "https://example.io/grafana",
-  incidentsUrl: "https://example.io/incidents",
   issuesUrl: "https://example.io/repo/issues",
   logsUrl: "https://example.io/loki",
   repositoryUrl: "https://example.io/repo",
@@ -958,12 +956,10 @@ describe("WebService", () => {
         "talis.io/repository": requiredProps.repositoryUrl,
         "talis.io/issues": requiredProps.issuesUrl,
         "talis.io/chat": requiredProps.chatUrl,
-        "talis.io/incidents": requiredProps.incidentsUrl,
         "talis.io/runbook": requiredProps.runbookUrl,
         "talis.io/url": requiredProps.externalUrl,
         "talis.io/logs": requiredProps.logsUrl,
         "talis.io/graphs": requiredProps.graphsUrl,
-        "talis.io/eks-dashboard": requiredProps.eksDashboardUrl,
         "talis.io/uptime": requiredProps.uptimeUrl,
       });
     });
