@@ -75,9 +75,7 @@ exports[`WebService > Props > All the props 1`] = `
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://example.io/repo/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://example.io/repo",
@@ -564,9 +562,7 @@ exports[`WebService > Props > All the props 1`] = `
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://example.io/repo/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://example.io/repo",
@@ -1004,9 +1000,7 @@ exports[`WebService > Props > Horizontal Pod Autoscaler 1`] = `
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://example.io/repo/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://example.io/repo",
@@ -1228,9 +1222,7 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for both memory and cpu 
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://example.io/repo/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://example.io/repo",
@@ -1462,9 +1454,7 @@ exports[`WebService > Props > Horizontal Pod Autoscaler for memory 1`] = `
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://example.io/repo/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://example.io/repo",
@@ -1690,9 +1680,7 @@ exports[`WebService > Props > Minimal required props 1`] = `
       "annotations": {
         "talis.io/chat": "https://example.slack.com/archives/ABCDEF123",
         "talis.io/description": "Test web service",
-        "talis.io/eks-dashboard": "https://example.io/dashboard",
         "talis.io/graphs": "https://example.io/grafana",
-        "talis.io/incidents": "https://example.io/incidents",
         "talis.io/issues": "https://example.io/repo/issues",
         "talis.io/logs": "https://example.io/loki",
         "talis.io/repository": "https://example.io/repo",

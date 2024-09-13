@@ -35,10 +35,8 @@ export class AdvancedWebServiceChart extends TalisChart {
       // Service annotations
       description: "Advanced web service",
       chatUrl: "https://example.slack.com/archives/ABCDEF123",
-      eksDashboardUrl: "https://example.io/dashboard",
       externalUrl: "https://api.example.com/",
       graphsUrl: "https://example.io/grafana",
-      incidentsUrl: "https://example.io/incidents",
       issuesUrl: "https://github.com/talis/talis-cdk8s-constructs/issues",
       logsUrl: "https://example.io/loki",
       repositoryUrl: "https://github.com/talis/talis-cdk8s-constructs",

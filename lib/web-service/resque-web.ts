@@ -36,11 +36,9 @@ export class ResqueWeb extends Construct {
       repositoryUrl: "https://github.com/talis/resque-web-container",
       issuesUrl: "https://github.com/talis/platform/issues",
       chatUrl: "https://talis.slack.com/archives/C04P9DPCX",
-      incidentsUrl: "None",
       runbookUrl: "None",
       logsUrl: "None",
       graphsUrl: "None",
-      eksDashboardUrl: "None",
       uptimeUrl: "None",
 
       // Container options
