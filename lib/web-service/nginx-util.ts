@@ -106,7 +106,6 @@ function getSameSiteCookiesConfig(): string {
   return fs.readFileSync(resolvePath("nginx/samesite.conf"), "utf8");
 }
 
-
 /**
  * Return the contents of an Nginx configuration file that patches
  * `Set-Cookie` headers to use the `Partitioned` flag
