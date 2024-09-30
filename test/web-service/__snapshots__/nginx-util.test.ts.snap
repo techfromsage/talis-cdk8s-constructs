@@ -164,6 +164,53 @@ exports[`nginx-util > createConfigMap > Empty 1`] = `
 ]
 `;
 
+exports[`nginx-util > createConfigMap > Partitioned cookies config 1`] = `
+[
+  {
+    "apiVersion": "v1",
+    "data": {
+      "partitioned.conf": "server {
+    location /api/oidclogin {
+      proxy_cookie_path / "/; Partitioned";
+    }
+  }",
+    },
+    "kind": "ConfigMap",
+    "metadata": {
+      "labels": {
+        "prunable": "true",
+      },
+      "name": "test-nginx-config-c88fe926-m8bk7f665d",
+    },
+  },
+]
+`;
+
+exports[`nginx-util > createConfigMap > Partitioned cookies config with multiple locations 1`] = `
+[
+  {
+    "apiVersion": "v1",
+    "data": {
+      "partitioned.conf": "server {
+    location /api/oidclogin {
+      proxy_cookie_path / "/; Partitioned";
+    }
+location /api/auth/login {
+      proxy_cookie_path / "/; Partitioned";
+    }
+  }",
+    },
+    "kind": "ConfigMap",
+    "metadata": {
+      "labels": {
+        "prunable": "true",
+      },
+      "name": "test-nginx-config-c88fe926-5gf9f48485",
+    },
+  },
+]
+`;
+
 exports[`nginx-util > createConfigMap > Same site cookies config 1`] = `
 [
   {
