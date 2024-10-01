@@ -45,15 +45,17 @@ server {
     gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        proxy_pass http://application;
-        proxy_http_version 1.1;
+    proxy_pass http://application;
+    proxy_http_version 1.1;
 
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    
+  }
 
     location /livez {
         access_log off;
@@ -79,7 +81,7 @@ server {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-87f26867h7",
+      "name": "test-nginx-config-c88fe926-9d5ctddt9h",
     },
   },
 ]
@@ -109,15 +111,17 @@ server {
     gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        proxy_pass http://application;
-        proxy_http_version 1.1;
+    proxy_pass http://application;
+    proxy_http_version 1.1;
 
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    
+  }
 
     location /livez {
         access_log off;
@@ -143,7 +147,7 @@ server {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-2f7gh67c7b",
+      "name": "test-nginx-config-c88fe926-7b7f6cfmf4",
     },
   },
 ]
@@ -192,15 +196,17 @@ server {
     gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        proxy_pass http://application;
-        proxy_http_version 1.1;
+    proxy_pass http://application;
+    proxy_http_version 1.1;
 
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    
+  }
 
     location /livez {
         access_log off;
@@ -218,8 +224,17 @@ server {
     }
 
     location /api/oidclogin {
-      proxy_cookie_path / "/; Partitioned";
-    }
+    proxy_pass http://application/api/oidclogin;
+    proxy_http_version 1.1;
+
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    proxy_cookie_path / "/; Partitioned";
+  }
 }
 ",
     },
@@ -228,7 +243,7 @@ server {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-b655fb47gd",
+      "name": "test-nginx-config-c88fe926-bbgfb2m6cd",
     },
   },
 ]
@@ -258,15 +273,17 @@ server {
     gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        proxy_pass http://application;
-        proxy_http_version 1.1;
+    proxy_pass http://application;
+    proxy_http_version 1.1;
 
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    
+  }
 
     location /livez {
         access_log off;
@@ -284,12 +301,30 @@ server {
     }
 
     location /api/oidclogin {
-      proxy_cookie_path / "/; Partitioned";
-    }
+    proxy_pass http://application/api/oidclogin;
+    proxy_http_version 1.1;
+
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    proxy_cookie_path / "/; Partitioned";
+  }
 
 location /api/auth/login {
-      proxy_cookie_path / "/; Partitioned";
-    }
+    proxy_pass http://application/api/auth/login;
+    proxy_http_version 1.1;
+
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    proxy_cookie_path / "/; Partitioned";
+  }
 }
 ",
     },
@@ -298,7 +333,7 @@ location /api/auth/login {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-b666mkh25k",
+      "name": "test-nginx-config-c88fe926-8cbfhkhkg5",
     },
   },
 ]
