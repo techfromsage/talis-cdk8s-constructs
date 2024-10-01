@@ -98,7 +98,7 @@ function getDefaultConfig(
     );
 }
 
-/**W
+/**
  * Return the contents of an Nginx configuration file that patches
  * `Set-Cookie` headers to use the `SameSite` attribute.
  *
