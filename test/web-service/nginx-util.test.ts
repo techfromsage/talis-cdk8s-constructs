@@ -99,6 +99,8 @@ describe("nginx-util", () => {
     test("Partitioned cookies config", () => {
       const chart = Testing.chart();
       nginxUtil.createConfigMap(chart, {
+        applicationPort: 8080,
+        nginxPort: 80,
         usePartionedCookiesLocations: ["/api/oidclogin"],
       });
       const results = Testing.synth(chart);
@@ -108,6 +110,8 @@ describe("nginx-util", () => {
     test("Partitioned cookies config with multiple locations", () => {
       const chart = Testing.chart();
       nginxUtil.createConfigMap(chart, {
+        applicationPort: 8080,
+        nginxPort: 80,
         usePartionedCookiesLocations: ["/api/oidclogin", "/api/auth/login"],
       });
       const results = Testing.synth(chart);

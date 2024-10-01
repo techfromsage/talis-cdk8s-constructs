@@ -48,21 +48,16 @@ function createConfigMap(
   props: NginxConfigMapProps,
   data: { [key: string]: string } = {},
 ): ConfigMap {
-  if (props.includeDefaultConfig) {
+  const usePartitionedCookies =
+    props.usePartionedCookiesLocations &&
+    props.usePartionedCookiesLocations.length > 0;
+
+  if (props.includeDefaultConfig || usePartitionedCookies) {
     data["default.conf"] = getDefaultConfig(props);
   }
 
   if (props.includeSameSiteCookiesConfig) {
     data["samesite.conf"] = getSameSiteCookiesConfig();
-  }
-
-  if (
-    props.usePartionedCookiesLocations &&
-    props.usePartionedCookiesLocations.length > 0
-  ) {
-    data["partitioned.conf"] = getPartitionedCookiesConfig(
-      props.usePartionedCookiesLocations,
-    );
   }
 
   const configMap = new ConfigMap(scope, "nginx-config", { data });
@@ -78,7 +73,10 @@ function createConfigMap(
  * The output of this function is used with `createConfigMap` with `includeDefaultConfig` enabled.
  */
 function getDefaultConfig(
-  props: Pick<NginxConfigMapProps, "applicationPort" | "nginxPort">,
+  props: Pick<
+    NginxConfigMapProps,
+    "applicationPort" | "nginxPort" | "usePartionedCookiesLocations"
+  >,
 ): string {
   const { applicationPort, nginxPort } = props;
 
@@ -93,10 +91,14 @@ function getDefaultConfig(
   return fs
     .readFileSync(resolvePath("nginx/default.conf"), "utf8")
     .replaceAll("{{applicationPort}}", applicationPort.toString())
-    .replaceAll("{{nginxPort}}", nginxPort.toString());
+    .replaceAll("{{nginxPort}}", nginxPort.toString())
+    .replaceAll(
+      "{{partitionedCookieConfig}}",
+      getPartitionedCookiesConfig(props.usePartionedCookiesLocations),
+    );
 }
 
-/**
+/**W
  * Return the contents of an Nginx configuration file that patches
  * `Set-Cookie` headers to use the `SameSite` attribute.
  *
@@ -112,16 +114,18 @@ function getSameSiteCookiesConfig(): string {
  *
  * The output of this function is used with `createConfigMap` with `usePartionedCookiesLocations` provided.
  */
-function getPartitionedCookiesConfig(locations: string[]): string {
-  const configs = locations.map(
-    (location) => `location ${location} {
+function getPartitionedCookiesConfig(locations?: string[]): string {
+  if (!locations) {
+    return "";
+  }
+
+  return locations
+    .map(
+      (location) => `location ${location} {
       proxy_cookie_path / "/; Partitioned";
     }`,
-  );
-
-  return `server {
-    ${configs.join("\n")}
-  }`;
+    )
+    .join("\n\n");
 }
 
 export const nginxUtil = {
