@@ -224,7 +224,7 @@ server {
     }
 
     location /api/oidclogin {
-    proxy_pass http://application/api/oidclogin;
+    proxy_pass http://application;
     proxy_http_version 1.1;
 
     proxy_set_header Connection $connection_upgrade;
@@ -243,7 +243,7 @@ server {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-bbgfb2m6cd",
+      "name": "test-nginx-config-c88fe926-99528m62bg",
     },
   },
 ]
@@ -301,7 +301,7 @@ server {
     }
 
     location /api/oidclogin {
-    proxy_pass http://application/api/oidclogin;
+    proxy_pass http://application;
     proxy_http_version 1.1;
 
     proxy_set_header Connection $connection_upgrade;
@@ -314,7 +314,7 @@ server {
   }
 
 location /api/auth/login {
-    proxy_pass http://application/api/auth/login;
+    proxy_pass http://application;
     proxy_http_version 1.1;
 
     proxy_set_header Connection $connection_upgrade;
@@ -333,7 +333,7 @@ location /api/auth/login {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-8cbfhkhkg5",
+      "name": "test-nginx-config-c88fe926-mdm92m6fhh",
     },
   },
 ]
