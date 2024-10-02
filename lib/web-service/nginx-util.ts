@@ -122,7 +122,7 @@ function getPartitionedCookiesConfig(locations?: string[]): string {
 
   return locations
     .map((location) =>
-      createProxyRouteConfig(location, `http://application${location}`, [
+      createProxyRouteConfig(location, "http://application", [
         `proxy_cookie_path / "/; Partitioned";`,
       ]),
     )
