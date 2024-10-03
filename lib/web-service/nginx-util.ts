@@ -29,6 +29,15 @@ interface NginxConfigMapProps {
    * @default false
    */
   readonly includeSameSiteCookiesConfig?: boolean;
+
+  /**
+   * Whether to include a config that patches Set-Cookies header to include `Partitioned`
+   * For further details on partitioned cookies visit:
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/Privacy/Privacy_sandbox/Partitioned_cookies
+   * @default undefined
+   */
+  readonly usePartionedCookiesLocations?: string[];
 }
 
 /**
@@ -39,7 +48,11 @@ function createConfigMap(
   props: NginxConfigMapProps,
   data: { [key: string]: string } = {},
 ): ConfigMap {
-  if (props.includeDefaultConfig) {
+  const usePartitionedCookies =
+    props.usePartionedCookiesLocations &&
+    props.usePartionedCookiesLocations.length > 0;
+
+  if (props.includeDefaultConfig || usePartitionedCookies) {
     data["default.conf"] = getDefaultConfig(props);
   }
 
@@ -60,7 +73,10 @@ function createConfigMap(
  * The output of this function is used with `createConfigMap` with `includeDefaultConfig` enabled.
  */
 function getDefaultConfig(
-  props: Pick<NginxConfigMapProps, "applicationPort" | "nginxPort">,
+  props: Pick<
+    NginxConfigMapProps,
+    "applicationPort" | "nginxPort" | "usePartionedCookiesLocations"
+  >,
 ): string {
   const { applicationPort, nginxPort } = props;
 
@@ -72,10 +88,21 @@ function getDefaultConfig(
     throw new Error("Application and nginx ports must be different");
   }
 
+  const defaultRouteLocation = createProxyRouteConfig(
+    "/",
+    "http://application",
+  );
+
+  const partitionedCookieLocations = getPartitionedCookiesConfig(
+    props.usePartionedCookiesLocations,
+  );
+
   return fs
     .readFileSync(resolvePath("nginx/default.conf"), "utf8")
     .replaceAll("{{applicationPort}}", applicationPort.toString())
-    .replaceAll("{{nginxPort}}", nginxPort.toString());
+    .replaceAll("{{nginxPort}}", nginxPort.toString())
+    .replaceAll("{{defaultRouteLocation}}", defaultRouteLocation)
+    .replaceAll("{{partitionedCookieLocations}}", partitionedCookieLocations);
 }
 
 /**
@@ -86,6 +113,41 @@ function getDefaultConfig(
  */
 function getSameSiteCookiesConfig(): string {
   return fs.readFileSync(resolvePath("nginx/samesite.conf"), "utf8");
+}
+
+function getPartitionedCookiesConfig(locations?: string[]): string {
+  if (!locations) {
+    return "";
+  }
+
+  return locations
+    .map((location) =>
+      createProxyRouteConfig(location, "http://application", [
+        `proxy_cookie_path / "/; Partitioned";`,
+      ]),
+    )
+    .join("\n\n");
+}
+
+function createProxyRouteConfig(
+  location: string,
+  proxyPath: string,
+  additionalSettings?: string[],
+): string {
+  const additional = additionalSettings ? additionalSettings.join("\n") : "";
+
+  return `location ${location} {
+    proxy_pass ${proxyPath};
+    proxy_http_version 1.1;
+
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    ${additional}
+  }`;
 }
 
 export const nginxUtil = {

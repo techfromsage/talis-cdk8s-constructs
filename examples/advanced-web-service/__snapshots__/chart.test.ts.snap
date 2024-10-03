@@ -82,15 +82,17 @@ server {
     gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        proxy_pass http://application;
-        proxy_http_version 1.1;
+    proxy_pass http://application;
+    proxy_http_version 1.1;
 
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    
+  }
 
     location /livez {
         access_log off;
@@ -106,6 +108,8 @@ server {
         allow 172.16.0.0/12;
         deny all;
     }
+
+    
 }
 ",
       "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
@@ -185,7 +189,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-g87b2gc9mg",
       "namespace": "advanced-test",
     },
   },
@@ -617,7 +621,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-g87b2gc9mg",
               },
               "name": "nginx-config",
             },
@@ -711,15 +715,17 @@ server {
     gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        proxy_pass http://application;
-        proxy_http_version 1.1;
+    proxy_pass http://application;
+    proxy_http_version 1.1;
 
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    
+  }
 
     location /livez {
         access_log off;
@@ -735,6 +741,8 @@ server {
         allow 172.16.0.0/12;
         deny all;
     }
+
+    
 }
 ",
       "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
@@ -814,7 +822,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-g87b2gc9mg",
       "namespace": "advanced-test",
     },
   },
@@ -1103,7 +1111,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-g87b2gc9mg",
               },
               "name": "nginx-config",
             },
@@ -1466,7 +1474,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-g87b2gc9mg",
               },
               "name": "nginx-config",
             },
@@ -1560,15 +1568,17 @@ server {
     gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        proxy_pass http://application;
-        proxy_http_version 1.1;
+    proxy_pass http://application;
+    proxy_http_version 1.1;
 
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    
+  }
 
     location /livez {
         access_log off;
@@ -1584,6 +1594,8 @@ server {
         allow 172.16.0.0/12;
         deny all;
     }
+
+    
 }
 ",
       "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
@@ -1663,7 +1675,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-g87b2gc9mg",
       "namespace": "advanced-test",
     },
   },
@@ -2095,7 +2107,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-g87b2gc9mg",
               },
               "name": "nginx-config",
             },
@@ -2189,15 +2201,17 @@ server {
     gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        proxy_pass http://application;
-        proxy_http_version 1.1;
+    proxy_pass http://application;
+    proxy_http_version 1.1;
 
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    
+  }
 
     location /livez {
         access_log off;
@@ -2213,6 +2227,8 @@ server {
         allow 172.16.0.0/12;
         deny all;
     }
+
+    
 }
 ",
       "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
@@ -2292,7 +2308,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-g87b2gc9mg",
       "namespace": "advanced-test",
     },
   },
@@ -2580,7 +2596,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-g87b2gc9mg",
               },
               "name": "nginx-config",
             },
@@ -2943,7 +2959,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-g87b2gc9mg",
               },
               "name": "nginx-config",
             },
@@ -3037,15 +3053,17 @@ server {
     gzip_types text/html text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     location / {
-        proxy_pass http://application;
-        proxy_http_version 1.1;
+    proxy_pass http://application;
+    proxy_http_version 1.1;
 
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    
+  }
 
     location /livez {
         access_log off;
@@ -3061,6 +3079,8 @@ server {
         allow 172.16.0.0/12;
         deny all;
     }
+
+    
 }
 ",
       "samesite.conf": "# Implements SameSite cookie flags to ensure that our Login Server cookies are flagged as \`SameSite=None\` and \`Secure\`.
@@ -3140,7 +3160,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-82htd5f6t7",
+      "name": "nginx-config-g87b2gc9mg",
       "namespace": "advanced-test",
     },
   },
@@ -3571,7 +3591,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-82htd5f6t7",
+                "name": "nginx-config-g87b2gc9mg",
               },
               "name": "nginx-config",
             },
