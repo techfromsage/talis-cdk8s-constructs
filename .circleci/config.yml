@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@4.1.3
-  kubernetes: circleci/kubernetes@1.3.1
   node: circleci/node@5.2.0
 
 parameters:
@@ -14,8 +13,17 @@ commands:
   cluster_setup:
     steps:
       - aws-cli/setup
-      - kubernetes/install-kubectl:
-          kubectl-version: v1.30.3
+      - run:
+          name: Install kubectl
+          command: |
+            KUBECTL_VERSION=1.31.2 
+            curl --fail -sLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+            curl --fail -sLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl.sha256"
+            echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check --status -
+            rm kubectl.sha256
+            chmod +x kubectl
+            sudo mv kubectl /usr/local/bin
+            kubectl version --client
       - run:
           name: Set up cluster context
           command: aws eks update-kubeconfig --name << pipeline.parameters.cluster_name >> --alias << pipeline.parameters.cluster_name >>
