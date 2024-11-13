@@ -93,7 +93,7 @@ export class AdvancedWebServiceChart extends TalisChart {
 
       // Auto-scaling
       horizontalPodAutoscaler: {
-        minReplicas: 1,
+        minReplicas: 2,
         maxReplicas: 5,
         cpuTargetUtilization: 50,
       },

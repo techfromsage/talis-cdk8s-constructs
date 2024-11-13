@@ -663,7 +663,7 @@ describe("WebService", () => {
     });
 
     test("It includes podDisruptionBudget by default", () => {
-      const results = synthWebService({ ...requiredProps, replicas: 1 });
+      const results = synthWebService({ ...requiredProps, replicas: 2 });
       const pdbs = results.filter((obj) => obj.kind === "PodDisruptionBudget");
       expect(pdbs).toHaveLength(1);
     });

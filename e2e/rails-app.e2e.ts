@@ -90,7 +90,7 @@ export class RubyOnRailsAppChart extends TalisChart {
       uptimeUrl: "None",
       includeIngress: false,
       image: `docker.io/redmine:${redmineVersion}`,
-      replicas: 1,
+      replicas: 2,
       release: redmineVersion,
       port: applicationPort,
       resources: commonResources,

@@ -28,7 +28,7 @@ export class SimpleWebServiceChart extends Chart {
       // Pod details
       image: "docker.io/bitnami/node-example:0.0.1",
       release: "0.0.1",
-      replicas: 1,
+      replicas: 2,
       resources: {
         requests: {
           cpu: Quantity.fromString("50m"),
