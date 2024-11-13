@@ -111,7 +111,7 @@ exports[`Simple WebService example > Snapshot 1`] = `
       "name": "test-web-c883b2c8",
     },
     "spec": {
-      "replicas": 1,
+      "replicas": 2,
       "revisionHistoryLimit": 1,
       "selector": {
         "matchLabels": {

@@ -50,6 +50,12 @@ export class WebService extends Construct {
 
     const hasProp = (key: string) =>
       Object.prototype.hasOwnProperty.call(props, key);
+    const podDisruptionBudget = hasProp("podDisruptionBudget")
+      ? props.podDisruptionBudget
+      : { minAvailable: IntOrString.fromNumber(1) };
+    if (podDisruptionBudget) {
+      this.validatePodDisruptionBudget(podDisruptionBudget, props);
+    }
     const chart = Chart.of(this);
     const namespace = chart.namespace;
     const internal = props.internal ?? false;
@@ -65,9 +71,7 @@ export class WebService extends Construct {
       release: props.release,
     };
     const affinityFunc = props.makeAffinity ?? defaultAffinity;
-    const podDisruptionBudget = hasProp("podDisruptionBudget")
-      ? props.podDisruptionBudget
-      : { minAvailable: IntOrString.fromNumber(1) };
+
     const canaryReplicas = 1;
 
     const { applicationPort, servicePort, nginxPort } = this.findPorts(props);
@@ -421,15 +425,13 @@ export class WebService extends Construct {
         "Either cpuTargetUtilization or memoryTargetUtilization must be specified to use a horizontalPodAutoscaler",
       );
     }
-
-    if (props.podDisruptionBudget) {
-      this.validatePodDisruptionBudget(props);
-    }
   }
 
-  private validatePodDisruptionBudget(props: WebServiceProps): void {
-    const { minAvailable, maxUnavailable } =
-      props.podDisruptionBudget as PodDisruptionBudgetProps;
+  private validatePodDisruptionBudget(
+    podDisruptionBudget: PodDisruptionBudgetProps,
+    props: WebServiceProps,
+  ): void {
+    const { minAvailable, maxUnavailable } = podDisruptionBudget;
 
     if (!minAvailable && !maxUnavailable) {
       throw new Error(

@@ -1151,7 +1151,7 @@ proxy_cookie_path / "/$cookie_path_patches";
           "type": "Resource",
         },
       ],
-      "minReplicas": 1,
+      "minReplicas": 2,
       "scaleTargetRef": {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
@@ -2636,7 +2636,7 @@ proxy_cookie_path / "/$cookie_path_patches";
           "type": "Resource",
         },
       ],
-      "minReplicas": 1,
+      "minReplicas": 2,
       "scaleTargetRef": {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
