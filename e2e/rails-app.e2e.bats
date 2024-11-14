@@ -32,5 +32,5 @@ teardown_file() {
 @test "rails-app: verify Redmine deployment" {
   verify "there is 1 deployment named 'redmine'"
   verify "there is 1 service named 'redmine-service'"
-  try "at most 30 times every 10s to find 1 pod named 'redmine' with 'status' being 'running'"
+  try "at most 30 times every 10s to find 2 pods named 'redmine' with 'status' being 'running'"
 }
