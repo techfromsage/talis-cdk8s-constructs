@@ -102,6 +102,8 @@ describe("WebService", () => {
           | "makeAffinity"
           | "makeLoadBalancerName"
           | "replicas"
+          | "includeHttpRoute"
+          | "httpGateway"
         >
       > = {
         ...requiredProps,
