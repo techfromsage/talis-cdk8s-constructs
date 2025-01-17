@@ -149,6 +149,21 @@ export interface WebServiceProps
   readonly includeIngress?: boolean;
 
   /**
+   * Whether to include a HttpRoute pointing to this service.
+   * @default false
+   */
+  readonly includeHttpRoute?: boolean;
+
+  /**
+   * Name of the Gateway to use for the HttpRoute.
+   */
+  readonly httpGateway?: {
+    readonly name: string;
+    readonly namespace: string;
+    readonly sectionName?: string;
+  };
+
+  /**
    * Overrides for Ingress annotations.
    * @see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.3/guide/ingress/annotations/
    */

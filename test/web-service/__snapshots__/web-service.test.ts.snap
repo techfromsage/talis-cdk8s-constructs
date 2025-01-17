@@ -983,6 +983,59 @@ exports[`WebService > Props > Allows specifying custom logic to make affinity 1`
 }
 `;
 
+exports[`WebService > Props > Allows specifying the httpRoute and httpGateway 1`] = `
+{
+  "apiVersion": "gateway.networking.k8s.io/v1",
+  "kind": "HTTPRoute",
+  "metadata": {
+    "labels": {
+      "instance": "web",
+      "release": "test-123",
+      "role": "server",
+    },
+    "name": "http-route-web-http",
+    "namespace": "test",
+  },
+  "spec": {
+    "hostnames": [
+      "api.example.com",
+    ],
+    "parentRefs": [
+      {
+        "name": "gateway",
+        "namespace": "envoy-gateway",
+        "sectionName": "custom-section",
+      },
+    ],
+    "rules": [
+      {
+        "backendRefs": [
+          {
+            "group": "",
+            "kind": "Service",
+            "name": "web-service",
+            "namespace": "test",
+            "port": 3000,
+            "weight": 1,
+          },
+        ],
+        "matches": [
+          {
+            "path": {
+              "type": "PathPrefix",
+              "value": "/",
+            },
+          },
+        ],
+        "timeouts": {
+          "request": "30s",
+        },
+      },
+    ],
+  },
+}
+`;
+
 exports[`WebService > Props > Either horizontalPodAutoscaler or replicas can be specified, not both 1`] = `[Error: Either horizontalPodAutoscaler or replicas can be specified, not both]`;
 
 exports[`WebService > Props > Either horizontalPodAutoscaler or replicas must be specified 1`] = `[Error: Either horizontalPodAutoscaler or replicas must be specified]`;
@@ -1841,6 +1894,63 @@ exports[`WebService > Props > Minimal required props 1`] = `
 `;
 
 exports[`WebService > Props > Release stage must be specified when canary deployments are enabled 1`] = `[Error: Release stage must be specified when canary deployments are enabled]`;
+
+exports[`WebService > Props > Specifies the correct httpRoute when multiple domains are specified 1`] = `
+{
+  "apiVersion": "gateway.networking.k8s.io/v1",
+  "kind": "HTTPRoute",
+  "metadata": {
+    "labels": {
+      "instance": "web",
+      "release": "test-123",
+      "role": "server",
+    },
+    "name": "http-route-web-http",
+    "namespace": "test",
+  },
+  "spec": {
+    "hostnames": [
+      "api.example.com",
+      "api2.example.com",
+      "api3.example.com",
+    ],
+    "parentRefs": [
+      {
+        "name": "gateway",
+        "namespace": "envoy-gateway",
+        "sectionName": "custom-section",
+      },
+    ],
+    "rules": [
+      {
+        "backendRefs": [
+          {
+            "group": "",
+            "kind": "Service",
+            "name": "web-service",
+            "namespace": "test",
+            "port": 3000,
+            "weight": 1,
+          },
+        ],
+        "matches": [
+          {
+            "path": {
+              "type": "PathPrefix",
+              "value": "/",
+            },
+          },
+        ],
+        "timeouts": {
+          "request": "30s",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`WebService > Props > Throws error if includeHttpRoute is specified and no httpGateway is defined 1`] = `[Error: Http Gateway must be specified when includeHttpRoute is enabled]`;
 
 exports[`WebService > Props > Validates load balancer name even if overridden 1`] = `[Error: Load balancer name must not exceed 32 characters. Given: a-load-balancer-name-exceeding-32]`;
 

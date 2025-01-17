@@ -15,6 +15,11 @@ import {
   Volume,
 } from "../../imports/k8s";
 import {
+  HttpRoute,
+  HttpRouteSpecRules,
+  HttpRouteSpecRulesMatchesPathType,
+} from "../../imports/gateway.networking.k8s.io";
+import {
   HorizontalPodAutoscalerProps,
   NginxContainerProps,
   PodDisruptionBudgetProps,
@@ -43,6 +48,7 @@ export class WebService extends Construct {
   readonly deployment!: KubeDeployment;
   readonly canaryDeployment?: KubeDeployment;
   readonly hpa?: KubeHorizontalPodAutoscalerV2;
+  readonly httpRoute?: HttpRoute;
 
   constructor(scope: Construct, id: string, props: WebServiceProps) {
     super(scope, id);
@@ -75,6 +81,13 @@ export class WebService extends Construct {
     const canaryReplicas = 1;
 
     const { applicationPort, servicePort, nginxPort } = this.findPorts(props);
+
+    const includeHttpRoute = props.includeHttpRoute ?? false;
+    const httpGateway = props.httpGateway ?? {
+      name: "default-http-gateway",
+      namespace: "app-ingress",
+      sectionName: "http",
+    };
 
     const containers: Container[] = [
       {
@@ -314,6 +327,65 @@ export class WebService extends Construct {
         }
       }
 
+      if (includeHttpRoute) {
+        let hostnames: Array<string> = [];
+
+        if (props.externalHostname) {
+          hostnames.push(props.externalHostname);
+        }
+
+        if (props.additionalExternalHostnames) {
+          hostnames = hostnames.concat(props.additionalExternalHostnames);
+        }
+
+        const defaultServiceBackend = {
+          group: "", // Empty string means the core kubernetes API group
+          kind: "Service", // Service is only supported backend kind
+          name: service.name,
+          namespace: namespace,
+          port: servicePort,
+          // weight is a percentage of traffic to send to the backend service
+          // this is calculated by adding up all the weights and dividing by the individual weight
+          weight: 1,
+        };
+
+        const defaultTrafficRule: HttpRouteSpecRules = {
+          backendRefs: [defaultServiceBackend],
+          matches: [
+            {
+              // Match all paths and redirect to the backend services
+              path: {
+                type: HttpRouteSpecRulesMatchesPathType.PATH_PREFIX,
+                value: "/",
+              },
+            },
+          ],
+          timeouts: {
+            request: "30s",
+          },
+        };
+
+        const rules: HttpRouteSpecRules[] = [defaultTrafficRule];
+
+        this.httpRoute = new HttpRoute(this, `http-route-${id}-http`, {
+          metadata: {
+            name: `http-route-${id}-http`,
+            labels: instanceLabels,
+          },
+          spec: {
+            parentRefs: [
+              {
+                name: httpGateway.name,
+                namespace: httpGateway.namespace,
+                sectionName: httpGateway.sectionName ?? "http",
+              },
+            ],
+            hostnames: hostnames,
+            rules: rules,
+          },
+        });
+      }
+
       const deployment = new KubeDeployment(this, `${id}${instanceSuffix}`, {
         metadata: {
           labels: instanceLabels,
@@ -423,6 +495,12 @@ export class WebService extends Construct {
     ) {
       throw new Error(
         "Either cpuTargetUtilization or memoryTargetUtilization must be specified to use a horizontalPodAutoscaler",
+      );
+    }
+
+    if (props.includeHttpRoute && !props.httpGateway) {
+      throw new Error(
+        "Http Gateway must be specified when includeHttpRoute is enabled",
       );
     }
   }

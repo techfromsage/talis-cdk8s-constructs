@@ -4,6 +4,772 @@ import { Construct } from 'constructs';
 
 
 /**
+ * BackendLBPolicy provides a way to define load balancing rules
+for a backend.
+ *
+ * @schema BackendLBPolicy
+ */
+export class BackendLbPolicy extends ApiObject {
+  /**
+   * Returns the apiVersion and kind for "BackendLBPolicy"
+   */
+  public static readonly GVK: GroupVersionKind = {
+    apiVersion: 'gateway.networking.k8s.io/v1alpha2',
+    kind: 'BackendLBPolicy',
+  }
+
+  /**
+   * Renders a Kubernetes manifest for "BackendLBPolicy".
+   *
+   * This can be used to inline resource manifests inside other objects (e.g. as templates).
+   *
+   * @param props initialization props
+   */
+  public static manifest(props: BackendLbPolicyProps): any {
+    return {
+      ...BackendLbPolicy.GVK,
+      ...toJson_BackendLbPolicyProps(props),
+    };
+  }
+
+  /**
+   * Defines a "BackendLBPolicy" API object
+   * @param scope the scope in which to define this object
+   * @param id a scope-local name for the object
+   * @param props initialization props
+   */
+  public constructor(scope: Construct, id: string, props: BackendLbPolicyProps) {
+    super(scope, id, {
+      ...BackendLbPolicy.GVK,
+      ...props,
+    });
+  }
+
+  /**
+   * Renders the object to Kubernetes JSON.
+   */
+  public toJson(): any {
+    const resolved = super.toJson();
+
+    return {
+      ...BackendLbPolicy.GVK,
+      ...toJson_BackendLbPolicyProps(resolved),
+    };
+  }
+}
+
+/**
+ * BackendLBPolicy provides a way to define load balancing rules
+ * for a backend.
+ *
+ * @schema BackendLBPolicy
+ */
+export interface BackendLbPolicyProps {
+  /**
+   * @schema BackendLBPolicy#metadata
+   */
+  readonly metadata?: ApiObjectMetadata;
+
+  /**
+   * Spec defines the desired state of BackendLBPolicy.
+   *
+   * @schema BackendLBPolicy#spec
+   */
+  readonly spec: BackendLbPolicySpec;
+
+}
+
+/**
+ * Converts an object of type 'BackendLbPolicyProps' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendLbPolicyProps(obj: BackendLbPolicyProps | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'metadata': obj.metadata,
+    'spec': toJson_BackendLbPolicySpec(obj.spec),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Spec defines the desired state of BackendLBPolicy.
+ *
+ * @schema BackendLbPolicySpec
+ */
+export interface BackendLbPolicySpec {
+  /**
+   * SessionPersistence defines and configures session persistence
+   * for the backend.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema BackendLbPolicySpec#sessionPersistence
+   */
+  readonly sessionPersistence?: BackendLbPolicySpecSessionPersistence;
+
+  /**
+   * TargetRef identifies an API object to apply policy to.
+   * Currently, Backends (i.e. Service, ServiceImport, or any
+   * implementation-specific backendRef) are the only valid API
+   * target references.
+   *
+   * @schema BackendLbPolicySpec#targetRefs
+   */
+  readonly targetRefs: BackendLbPolicySpecTargetRefs[];
+
+}
+
+/**
+ * Converts an object of type 'BackendLbPolicySpec' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendLbPolicySpec(obj: BackendLbPolicySpec | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'sessionPersistence': toJson_BackendLbPolicySpecSessionPersistence(obj.sessionPersistence),
+    'targetRefs': obj.targetRefs?.map(y => toJson_BackendLbPolicySpecTargetRefs(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * SessionPersistence defines and configures session persistence
+ * for the backend.
+ *
+ *
+ * Support: Extended
+ *
+ * @schema BackendLbPolicySpecSessionPersistence
+ */
+export interface BackendLbPolicySpecSessionPersistence {
+  /**
+   * AbsoluteTimeout defines the absolute timeout of the persistent
+   * session. Once the AbsoluteTimeout duration has elapsed, the
+   * session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema BackendLbPolicySpecSessionPersistence#absoluteTimeout
+   */
+  readonly absoluteTimeout?: string;
+
+  /**
+   * CookieConfig provides configuration settings that are specific
+   * to cookie-based session persistence.
+   *
+   *
+   * Support: Core
+   *
+   * @schema BackendLbPolicySpecSessionPersistence#cookieConfig
+   */
+  readonly cookieConfig?: BackendLbPolicySpecSessionPersistenceCookieConfig;
+
+  /**
+   * IdleTimeout defines the idle timeout of the persistent session.
+   * Once the session has been idle for more than the specified
+   * IdleTimeout duration, the session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema BackendLbPolicySpecSessionPersistence#idleTimeout
+   */
+  readonly idleTimeout?: string;
+
+  /**
+   * SessionName defines the name of the persistent session token
+   * which may be reflected in the cookie or the header. Users
+   * should avoid reusing session names to prevent unintended
+   * consequences, such as rejection or unpredictable behavior.
+   *
+   *
+   * Support: Implementation-specific
+   *
+   * @schema BackendLbPolicySpecSessionPersistence#sessionName
+   */
+  readonly sessionName?: string;
+
+  /**
+   * Type defines the type of session persistence such as through
+   * the use a header or cookie. Defaults to cookie based session
+   * persistence.
+   *
+   *
+   * Support: Core for "Cookie" type
+   *
+   *
+   * Support: Extended for "Header" type
+   *
+   * @default cookie based session
+   * @schema BackendLbPolicySpecSessionPersistence#type
+   */
+  readonly type?: BackendLbPolicySpecSessionPersistenceType;
+
+}
+
+/**
+ * Converts an object of type 'BackendLbPolicySpecSessionPersistence' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendLbPolicySpecSessionPersistence(obj: BackendLbPolicySpecSessionPersistence | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'absoluteTimeout': obj.absoluteTimeout,
+    'cookieConfig': toJson_BackendLbPolicySpecSessionPersistenceCookieConfig(obj.cookieConfig),
+    'idleTimeout': obj.idleTimeout,
+    'sessionName': obj.sessionName,
+    'type': obj.type,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * LocalPolicyTargetReference identifies an API object to apply a direct or
+ * inherited policy to. This should be used as part of Policy resources
+ * that can target Gateway API resources. For more information on how this
+ * policy attachment model works, and a sample Policy resource, refer to
+ * the policy attachment documentation for Gateway API.
+ *
+ * @schema BackendLbPolicySpecTargetRefs
+ */
+export interface BackendLbPolicySpecTargetRefs {
+  /**
+   * Group is the group of the target resource.
+   *
+   * @schema BackendLbPolicySpecTargetRefs#group
+   */
+  readonly group: string;
+
+  /**
+   * Kind is kind of the target resource.
+   *
+   * @schema BackendLbPolicySpecTargetRefs#kind
+   */
+  readonly kind: string;
+
+  /**
+   * Name is the name of the target resource.
+   *
+   * @schema BackendLbPolicySpecTargetRefs#name
+   */
+  readonly name: string;
+
+}
+
+/**
+ * Converts an object of type 'BackendLbPolicySpecTargetRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendLbPolicySpecTargetRefs(obj: BackendLbPolicySpecTargetRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * CookieConfig provides configuration settings that are specific
+ * to cookie-based session persistence.
+ *
+ *
+ * Support: Core
+ *
+ * @schema BackendLbPolicySpecSessionPersistenceCookieConfig
+ */
+export interface BackendLbPolicySpecSessionPersistenceCookieConfig {
+  /**
+   * LifetimeType specifies whether the cookie has a permanent or
+   * session-based lifetime. A permanent cookie persists until its
+   * specified expiry time, defined by the Expires or Max-Age cookie
+   * attributes, while a session cookie is deleted when the current
+   * session ends.
+   *
+   *
+   * When set to "Permanent", AbsoluteTimeout indicates the
+   * cookie's lifetime via the Expires or Max-Age cookie attributes
+   * and is required.
+   *
+   *
+   * When set to "Session", AbsoluteTimeout indicates the
+   * absolute lifetime of the cookie tracked by the gateway and
+   * is optional.
+   *
+   *
+   * Support: Core for "Session" type
+   *
+   *
+   * Support: Extended for "Permanent" type
+   *
+   * @schema BackendLbPolicySpecSessionPersistenceCookieConfig#lifetimeType
+   */
+  readonly lifetimeType?: BackendLbPolicySpecSessionPersistenceCookieConfigLifetimeType;
+
+}
+
+/**
+ * Converts an object of type 'BackendLbPolicySpecSessionPersistenceCookieConfig' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendLbPolicySpecSessionPersistenceCookieConfig(obj: BackendLbPolicySpecSessionPersistenceCookieConfig | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'lifetimeType': obj.lifetimeType,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Type defines the type of session persistence such as through
+ * the use a header or cookie. Defaults to cookie based session
+ * persistence.
+ *
+ *
+ * Support: Core for "Cookie" type
+ *
+ *
+ * Support: Extended for "Header" type
+ *
+ * @default cookie based session
+ * @schema BackendLbPolicySpecSessionPersistenceType
+ */
+export enum BackendLbPolicySpecSessionPersistenceType {
+  /** Cookie */
+  COOKIE = "Cookie",
+  /** Header */
+  HEADER = "Header",
+}
+
+/**
+ * LifetimeType specifies whether the cookie has a permanent or
+ * session-based lifetime. A permanent cookie persists until its
+ * specified expiry time, defined by the Expires or Max-Age cookie
+ * attributes, while a session cookie is deleted when the current
+ * session ends.
+ *
+ *
+ * When set to "Permanent", AbsoluteTimeout indicates the
+ * cookie's lifetime via the Expires or Max-Age cookie attributes
+ * and is required.
+ *
+ *
+ * When set to "Session", AbsoluteTimeout indicates the
+ * absolute lifetime of the cookie tracked by the gateway and
+ * is optional.
+ *
+ *
+ * Support: Core for "Session" type
+ *
+ *
+ * Support: Extended for "Permanent" type
+ *
+ * @schema BackendLbPolicySpecSessionPersistenceCookieConfigLifetimeType
+ */
+export enum BackendLbPolicySpecSessionPersistenceCookieConfigLifetimeType {
+  /** Permanent */
+  PERMANENT = "Permanent",
+  /** Session */
+  SESSION = "Session",
+}
+
+
+/**
+ * BackendTLSPolicy provides a way to configure how a Gateway
+connects to a Backend via TLS.
+ *
+ * @schema BackendTLSPolicy
+ */
+export class BackendTlsPolicy extends ApiObject {
+  /**
+   * Returns the apiVersion and kind for "BackendTLSPolicy"
+   */
+  public static readonly GVK: GroupVersionKind = {
+    apiVersion: 'gateway.networking.k8s.io/v1alpha3',
+    kind: 'BackendTLSPolicy',
+  }
+
+  /**
+   * Renders a Kubernetes manifest for "BackendTLSPolicy".
+   *
+   * This can be used to inline resource manifests inside other objects (e.g. as templates).
+   *
+   * @param props initialization props
+   */
+  public static manifest(props: BackendTlsPolicyProps): any {
+    return {
+      ...BackendTlsPolicy.GVK,
+      ...toJson_BackendTlsPolicyProps(props),
+    };
+  }
+
+  /**
+   * Defines a "BackendTLSPolicy" API object
+   * @param scope the scope in which to define this object
+   * @param id a scope-local name for the object
+   * @param props initialization props
+   */
+  public constructor(scope: Construct, id: string, props: BackendTlsPolicyProps) {
+    super(scope, id, {
+      ...BackendTlsPolicy.GVK,
+      ...props,
+    });
+  }
+
+  /**
+   * Renders the object to Kubernetes JSON.
+   */
+  public toJson(): any {
+    const resolved = super.toJson();
+
+    return {
+      ...BackendTlsPolicy.GVK,
+      ...toJson_BackendTlsPolicyProps(resolved),
+    };
+  }
+}
+
+/**
+ * BackendTLSPolicy provides a way to configure how a Gateway
+ * connects to a Backend via TLS.
+ *
+ * @schema BackendTLSPolicy
+ */
+export interface BackendTlsPolicyProps {
+  /**
+   * @schema BackendTLSPolicy#metadata
+   */
+  readonly metadata?: ApiObjectMetadata;
+
+  /**
+   * Spec defines the desired state of BackendTLSPolicy.
+   *
+   * @schema BackendTLSPolicy#spec
+   */
+  readonly spec: BackendTlsPolicySpec;
+
+}
+
+/**
+ * Converts an object of type 'BackendTlsPolicyProps' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendTlsPolicyProps(obj: BackendTlsPolicyProps | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'metadata': obj.metadata,
+    'spec': toJson_BackendTlsPolicySpec(obj.spec),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Spec defines the desired state of BackendTLSPolicy.
+ *
+ * @schema BackendTlsPolicySpec
+ */
+export interface BackendTlsPolicySpec {
+  /**
+   * TargetRefs identifies an API object to apply the policy to.
+   * Only Services have Extended support. Implementations MAY support
+   * additional objects, with Implementation Specific support.
+   * Note that this config applies to the entire referenced resource
+   * by default, but this default may change in the future to provide
+   * a more granular application of the policy.
+   *
+   *
+   * Support: Extended for Kubernetes Service
+   *
+   *
+   * Support: Implementation-specific for any other resource
+   *
+   * @schema BackendTlsPolicySpec#targetRefs
+   */
+  readonly targetRefs: BackendTlsPolicySpecTargetRefs[];
+
+  /**
+   * Validation contains backend TLS validation configuration.
+   *
+   * @schema BackendTlsPolicySpec#validation
+   */
+  readonly validation: BackendTlsPolicySpecValidation;
+
+}
+
+/**
+ * Converts an object of type 'BackendTlsPolicySpec' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendTlsPolicySpec(obj: BackendTlsPolicySpec | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'targetRefs': obj.targetRefs?.map(y => toJson_BackendTlsPolicySpecTargetRefs(y)),
+    'validation': toJson_BackendTlsPolicySpecValidation(obj.validation),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * LocalPolicyTargetReferenceWithSectionName identifies an API object to apply a
+ * direct policy to. This should be used as part of Policy resources that can
+ * target single resources. For more information on how this policy attachment
+ * mode works, and a sample Policy resource, refer to the policy attachment
+ * documentation for Gateway API.
+ *
+ *
+ * Note: This should only be used for direct policy attachment when references
+ * to SectionName are actually needed. In all other cases,
+ * LocalPolicyTargetReference should be used.
+ *
+ * @schema BackendTlsPolicySpecTargetRefs
+ */
+export interface BackendTlsPolicySpecTargetRefs {
+  /**
+   * Group is the group of the target resource.
+   *
+   * @schema BackendTlsPolicySpecTargetRefs#group
+   */
+  readonly group: string;
+
+  /**
+   * Kind is kind of the target resource.
+   *
+   * @schema BackendTlsPolicySpecTargetRefs#kind
+   */
+  readonly kind: string;
+
+  /**
+   * Name is the name of the target resource.
+   *
+   * @schema BackendTlsPolicySpecTargetRefs#name
+   */
+  readonly name: string;
+
+  /**
+   * SectionName is the name of a section within the target resource. When
+   * unspecified, this targetRef targets the entire resource. In the following
+   * resources, SectionName is interpreted as the following:
+   *
+   *
+   * * Gateway: Listener name
+   * * HTTPRoute: HTTPRouteRule name
+   * * Service: Port name
+   *
+   *
+   * If a SectionName is specified, but does not exist on the targeted object,
+   * the Policy must fail to attach, and the policy implementation should record
+   * a `ResolvedRefs` or similar Condition in the Policy's status.
+   *
+   * @schema BackendTlsPolicySpecTargetRefs#sectionName
+   */
+  readonly sectionName?: string;
+
+}
+
+/**
+ * Converts an object of type 'BackendTlsPolicySpecTargetRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendTlsPolicySpecTargetRefs(obj: BackendTlsPolicySpecTargetRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'sectionName': obj.sectionName,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Validation contains backend TLS validation configuration.
+ *
+ * @schema BackendTlsPolicySpecValidation
+ */
+export interface BackendTlsPolicySpecValidation {
+  /**
+   * CACertificateRefs contains one or more references to Kubernetes objects that
+   * contain a PEM-encoded TLS CA certificate bundle, which is used to
+   * validate a TLS handshake between the Gateway and backend Pod.
+   *
+   *
+   * If CACertificateRefs is empty or unspecified, then WellKnownCACertificates must be
+   * specified. Only one of CACertificateRefs or WellKnownCACertificates may be specified,
+   * not both. If CACertifcateRefs is empty or unspecified, the configuration for
+   * WellKnownCACertificates MUST be honored instead if supported by the implementation.
+   *
+   *
+   * References to a resource in a different namespace are invalid for the
+   * moment, although we will revisit this in the future.
+   *
+   *
+   * A single CACertificateRef to a Kubernetes ConfigMap kind has "Core" support.
+   * Implementations MAY choose to support attaching multiple certificates to
+   * a backend, but this behavior is implementation-specific.
+   *
+   *
+   * Support: Core - An optional single reference to a Kubernetes ConfigMap,
+   * with the CA certificate in a key named `ca.crt`.
+   *
+   *
+   * Support: Implementation-specific (More than one reference, or other kinds
+   * of resources).
+   *
+   * @schema BackendTlsPolicySpecValidation#caCertificateRefs
+   */
+  readonly caCertificateRefs?: BackendTlsPolicySpecValidationCaCertificateRefs[];
+
+  /**
+   * Hostname is used for two purposes in the connection between Gateways and
+   * backends:
+   *
+   *
+   * 1. Hostname MUST be used as the SNI to connect to the backend (RFC 6066).
+   * 2. Hostname MUST be used for authentication and MUST match the certificate
+   * served by the matching backend.
+   *
+   *
+   * Support: Core
+   *
+   * @schema BackendTlsPolicySpecValidation#hostname
+   */
+  readonly hostname: string;
+
+  /**
+   * WellKnownCACertificates specifies whether system CA certificates may be used in
+   * the TLS handshake between the gateway and backend pod.
+   *
+   *
+   * If WellKnownCACertificates is unspecified or empty (""), then CACertificateRefs
+   * must be specified with at least one entry for a valid configuration. Only one of
+   * CACertificateRefs or WellKnownCACertificates may be specified, not both. If an
+   * implementation does not support the WellKnownCACertificates field or the value
+   * supplied is not supported, the Status Conditions on the Policy MUST be
+   * updated to include an Accepted: False Condition with Reason: Invalid.
+   *
+   *
+   * Support: Implementation-specific
+   *
+   * @schema BackendTlsPolicySpecValidation#wellKnownCACertificates
+   */
+  readonly wellKnownCaCertificates?: BackendTlsPolicySpecValidationWellKnownCaCertificates;
+
+}
+
+/**
+ * Converts an object of type 'BackendTlsPolicySpecValidation' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendTlsPolicySpecValidation(obj: BackendTlsPolicySpecValidation | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'caCertificateRefs': obj.caCertificateRefs?.map(y => toJson_BackendTlsPolicySpecValidationCaCertificateRefs(y)),
+    'hostname': obj.hostname,
+    'wellKnownCACertificates': obj.wellKnownCaCertificates,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * LocalObjectReference identifies an API object within the namespace of the
+ * referrer.
+ * The API object must be valid in the cluster; the Group and Kind must
+ * be registered in the cluster for this reference to be valid.
+ *
+ *
+ * References to objects with invalid Group and Kind are not valid, and must
+ * be rejected by the implementation, with appropriate Conditions set
+ * on the containing object.
+ *
+ * @schema BackendTlsPolicySpecValidationCaCertificateRefs
+ */
+export interface BackendTlsPolicySpecValidationCaCertificateRefs {
+  /**
+   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
+   * When unspecified or empty string, core API group is inferred.
+   *
+   * @schema BackendTlsPolicySpecValidationCaCertificateRefs#group
+   */
+  readonly group: string;
+
+  /**
+   * Kind is kind of the referent. For example "HTTPRoute" or "Service".
+   *
+   * @schema BackendTlsPolicySpecValidationCaCertificateRefs#kind
+   */
+  readonly kind: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema BackendTlsPolicySpecValidationCaCertificateRefs#name
+   */
+  readonly name: string;
+
+}
+
+/**
+ * Converts an object of type 'BackendTlsPolicySpecValidationCaCertificateRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendTlsPolicySpecValidationCaCertificateRefs(obj: BackendTlsPolicySpecValidationCaCertificateRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * WellKnownCACertificates specifies whether system CA certificates may be used in
+ * the TLS handshake between the gateway and backend pod.
+ *
+ *
+ * If WellKnownCACertificates is unspecified or empty (""), then CACertificateRefs
+ * must be specified with at least one entry for a valid configuration. Only one of
+ * CACertificateRefs or WellKnownCACertificates may be specified, not both. If an
+ * implementation does not support the WellKnownCACertificates field or the value
+ * supplied is not supported, the Status Conditions on the Policy MUST be
+ * updated to include an Accepted: False Condition with Reason: Invalid.
+ *
+ *
+ * Support: Implementation-specific
+ *
+ * @schema BackendTlsPolicySpecValidationWellKnownCaCertificates
+ */
+export enum BackendTlsPolicySpecValidationWellKnownCaCertificates {
+  /** System */
+  SYSTEM = "System",
+}
+
+
+/**
  * Gateway represents an instance of a service-traffic handling infrastructure
 by binding Listeners to a set of IP addresses.
  *
@@ -140,6 +906,19 @@ export interface GatewaySpec {
    * @schema GatewaySpec#gatewayClassName
    */
   readonly gatewayClassName: string;
+
+  /**
+   * Infrastructure defines infrastructure level attributes about this Gateway instance.
+   *
+   *
+   * Support: Core
+   *
+   *
+   *
+   *
+   * @schema GatewaySpec#infrastructure
+   */
+  readonly infrastructure?: GatewaySpecInfrastructure;
 
   /**
    * Listeners associated with this Gateway. Listeners define
@@ -302,6 +1081,7 @@ export function toJson_GatewaySpec(obj: GatewaySpec | undefined): Record<string,
   const result = {
     'addresses': obj.addresses?.map(y => toJson_GatewaySpecAddresses(y)),
     'gatewayClassName': obj.gatewayClassName,
+    'infrastructure': toJson_GatewaySpecInfrastructure(obj.infrastructure),
     'listeners': obj.listeners?.map(y => toJson_GatewaySpecListeners(y)),
   };
   // filter undefined values
@@ -344,6 +1124,90 @@ export function toJson_GatewaySpecAddresses(obj: GatewaySpecAddresses | undefine
   const result = {
     'type': obj.type,
     'value': obj.value,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Infrastructure defines infrastructure level attributes about this Gateway instance.
+ *
+ *
+ * Support: Core
+ *
+ *
+ *
+ *
+ * @schema GatewaySpecInfrastructure
+ */
+export interface GatewaySpecInfrastructure {
+  /**
+   * Annotations that SHOULD be applied to any resources created in response to this Gateway.
+   *
+   *
+   * For implementations creating other Kubernetes objects, this should be the `metadata.annotations` field on resources.
+   * For other implementations, this refers to any relevant (implementation specific) "annotations" concepts.
+   *
+   *
+   * An implementation may chose to add additional implementation-specific annotations as they see fit.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema GatewaySpecInfrastructure#annotations
+   */
+  readonly annotations?: { [key: string]: string };
+
+  /**
+   * Labels that SHOULD be applied to any resources created in response to this Gateway.
+   *
+   *
+   * For implementations creating other Kubernetes objects, this should be the `metadata.labels` field on resources.
+   * For other implementations, this refers to any relevant (implementation specific) "labels" concepts.
+   *
+   *
+   * An implementation may chose to add additional implementation-specific labels as they see fit.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema GatewaySpecInfrastructure#labels
+   */
+  readonly labels?: { [key: string]: string };
+
+  /**
+   * ParametersRef is a reference to a resource that contains the configuration
+   * parameters corresponding to the Gateway. This is optional if the
+   * controller does not require any additional configuration.
+   *
+   *
+   * This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
+   *
+   *
+   * The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
+   * the merging behavior is implementation specific.
+   * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
+   *
+   *
+   * Support: Implementation-specific
+   *
+   * @schema GatewaySpecInfrastructure#parametersRef
+   */
+  readonly parametersRef?: GatewaySpecInfrastructureParametersRef;
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecInfrastructure' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecInfrastructure(obj: GatewaySpecInfrastructure | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'annotations': ((obj.annotations) === undefined) ? undefined : (Object.entries(obj.annotations).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
+    'labels': ((obj.labels) === undefined) ? undefined : (Object.entries(obj.labels).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
+    'parametersRef': toJson_GatewaySpecInfrastructureParametersRef(obj.parametersRef),
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -502,6 +1366,64 @@ export function toJson_GatewaySpecListeners(obj: GatewaySpecListeners | undefine
 /* eslint-enable max-len, quote-props */
 
 /**
+ * ParametersRef is a reference to a resource that contains the configuration
+ * parameters corresponding to the Gateway. This is optional if the
+ * controller does not require any additional configuration.
+ *
+ *
+ * This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
+ *
+ *
+ * The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
+ * the merging behavior is implementation specific.
+ * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
+ *
+ *
+ * Support: Implementation-specific
+ *
+ * @schema GatewaySpecInfrastructureParametersRef
+ */
+export interface GatewaySpecInfrastructureParametersRef {
+  /**
+   * Group is the group of the referent.
+   *
+   * @schema GatewaySpecInfrastructureParametersRef#group
+   */
+  readonly group: string;
+
+  /**
+   * Kind is kind of the referent.
+   *
+   * @schema GatewaySpecInfrastructureParametersRef#kind
+   */
+  readonly kind: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema GatewaySpecInfrastructureParametersRef#name
+   */
+  readonly name: string;
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecInfrastructureParametersRef' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecInfrastructureParametersRef(obj: GatewaySpecInfrastructureParametersRef | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * AllowedRoutes defines the types of routes that MAY be attached to a
  * Listener and the trusted namespaces where those Route resources MAY be
  * present.
@@ -637,6 +1559,23 @@ export interface GatewaySpecListenersTls {
   readonly certificateRefs?: GatewaySpecListenersTlsCertificateRefs[];
 
   /**
+   * FrontendValidation holds configuration information for validating the frontend (client).
+   * Setting this field will require clients to send a client certificate
+   * required for validation during the TLS handshake. In browsers this may result in a dialog appearing
+   * that requests a user to specify the client certificate.
+   * The maximum depth of a certificate chain accepted in verification is Implementation specific.
+   *
+   *
+   * Support: Extended
+   *
+   *
+   *
+   *
+   * @schema GatewaySpecListenersTls#frontendValidation
+   */
+  readonly frontendValidation?: GatewaySpecListenersTlsFrontendValidation;
+
+  /**
    * Mode defines the TLS behavior for the TLS session initiated by the client.
    * There are two possible modes:
    *
@@ -685,6 +1624,7 @@ export function toJson_GatewaySpecListenersTls(obj: GatewaySpecListenersTls | un
   if (obj === undefined) { return undefined; }
   const result = {
     'certificateRefs': obj.certificateRefs?.map(y => toJson_GatewaySpecListenersTlsCertificateRefs(y)),
+    'frontendValidation': toJson_GatewaySpecListenersTlsFrontendValidation(obj.frontendValidation),
     'mode': obj.mode,
     'options': ((obj.options) === undefined) ? undefined : (Object.entries(obj.options).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
   };
@@ -861,6 +1801,69 @@ export function toJson_GatewaySpecListenersTlsCertificateRefs(obj: GatewaySpecLi
 /* eslint-enable max-len, quote-props */
 
 /**
+ * FrontendValidation holds configuration information for validating the frontend (client).
+ * Setting this field will require clients to send a client certificate
+ * required for validation during the TLS handshake. In browsers this may result in a dialog appearing
+ * that requests a user to specify the client certificate.
+ * The maximum depth of a certificate chain accepted in verification is Implementation specific.
+ *
+ *
+ * Support: Extended
+ *
+ *
+ *
+ *
+ * @schema GatewaySpecListenersTlsFrontendValidation
+ */
+export interface GatewaySpecListenersTlsFrontendValidation {
+  /**
+   * CACertificateRefs contains one or more references to
+   * Kubernetes objects that contain TLS certificates of
+   * the Certificate Authorities that can be used
+   * as a trust anchor to validate the certificates presented by the client.
+   *
+   *
+   * A single CA certificate reference to a Kubernetes ConfigMap
+   * has "Core" support.
+   * Implementations MAY choose to support attaching multiple CA certificates to
+   * a Listener, but this behavior is implementation-specific.
+   *
+   *
+   * Support: Core - A single reference to a Kubernetes ConfigMap
+   * with the CA certificate in a key named `ca.crt`.
+   *
+   *
+   * Support: Implementation-specific (More than one reference, or other kinds
+   * of resources).
+   *
+   *
+   * References to a resource in a different namespace are invalid UNLESS there
+   * is a ReferenceGrant in the target namespace that allows the certificate
+   * to be attached. If a ReferenceGrant does not allow this reference, the
+   * "ResolvedRefs" condition MUST be set to False for this listener with the
+   * "RefNotPermitted" reason.
+   *
+   * @schema GatewaySpecListenersTlsFrontendValidation#caCertificateRefs
+   */
+  readonly caCertificateRefs?: GatewaySpecListenersTlsFrontendValidationCaCertificateRefs[];
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecListenersTlsFrontendValidation' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecListenersTlsFrontendValidation(obj: GatewaySpecListenersTlsFrontendValidation | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'caCertificateRefs': obj.caCertificateRefs?.map(y => toJson_GatewaySpecListenersTlsFrontendValidationCaCertificateRefs(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * Mode defines the TLS behavior for the TLS session initiated by the client.
  * There are two possible modes:
  *
@@ -948,6 +1951,79 @@ export function toJson_GatewaySpecListenersAllowedRoutesNamespacesSelector(obj: 
   const result = {
     'matchExpressions': obj.matchExpressions?.map(y => toJson_GatewaySpecListenersAllowedRoutesNamespacesSelectorMatchExpressions(y)),
     'matchLabels': ((obj.matchLabels) === undefined) ? undefined : (Object.entries(obj.matchLabels).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * ObjectReference identifies an API object including its namespace.
+ *
+ *
+ * The API object must be valid in the cluster; the Group and Kind must
+ * be registered in the cluster for this reference to be valid.
+ *
+ *
+ * References to objects with invalid Group and Kind are not valid, and must
+ * be rejected by the implementation, with appropriate Conditions set
+ * on the containing object.
+ *
+ * @schema GatewaySpecListenersTlsFrontendValidationCaCertificateRefs
+ */
+export interface GatewaySpecListenersTlsFrontendValidationCaCertificateRefs {
+  /**
+   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
+   * When unspecified or empty string, core API group is inferred.
+   *
+   * @schema GatewaySpecListenersTlsFrontendValidationCaCertificateRefs#group
+   */
+  readonly group: string;
+
+  /**
+   * Kind is kind of the referent. For example "ConfigMap" or "Service".
+   *
+   * @schema GatewaySpecListenersTlsFrontendValidationCaCertificateRefs#kind
+   */
+  readonly kind: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema GatewaySpecListenersTlsFrontendValidationCaCertificateRefs#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the referenced object. When unspecified, the local
+   * namespace is inferred.
+   *
+   *
+   * Note that when a namespace different than the local namespace is specified,
+   * a ReferenceGrant object is required in the referent namespace to allow that
+   * namespace's owner to accept the reference. See the ReferenceGrant
+   * documentation for details.
+   *
+   *
+   * Support: Core
+   *
+   * @schema GatewaySpecListenersTlsFrontendValidationCaCertificateRefs#namespace
+   */
+  readonly namespace?: string;
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecListenersTlsFrontendValidationCaCertificateRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecListenersTlsFrontendValidationCaCertificateRefs(obj: GatewaySpecListenersTlsFrontendValidationCaCertificateRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -1144,6 +2220,19 @@ export interface GatewayV1Beta1Spec {
   readonly gatewayClassName: string;
 
   /**
+   * Infrastructure defines infrastructure level attributes about this Gateway instance.
+   *
+   *
+   * Support: Core
+   *
+   *
+   *
+   *
+   * @schema GatewayV1Beta1Spec#infrastructure
+   */
+  readonly infrastructure?: GatewayV1Beta1SpecInfrastructure;
+
+  /**
    * Listeners associated with this Gateway. Listeners define
    * logical endpoints that are bound on this Gateway's addresses.
    * At least one Listener MUST be specified.
@@ -1304,6 +2393,7 @@ export function toJson_GatewayV1Beta1Spec(obj: GatewayV1Beta1Spec | undefined): 
   const result = {
     'addresses': obj.addresses?.map(y => toJson_GatewayV1Beta1SpecAddresses(y)),
     'gatewayClassName': obj.gatewayClassName,
+    'infrastructure': toJson_GatewayV1Beta1SpecInfrastructure(obj.infrastructure),
     'listeners': obj.listeners?.map(y => toJson_GatewayV1Beta1SpecListeners(y)),
   };
   // filter undefined values
@@ -1346,6 +2436,90 @@ export function toJson_GatewayV1Beta1SpecAddresses(obj: GatewayV1Beta1SpecAddres
   const result = {
     'type': obj.type,
     'value': obj.value,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Infrastructure defines infrastructure level attributes about this Gateway instance.
+ *
+ *
+ * Support: Core
+ *
+ *
+ *
+ *
+ * @schema GatewayV1Beta1SpecInfrastructure
+ */
+export interface GatewayV1Beta1SpecInfrastructure {
+  /**
+   * Annotations that SHOULD be applied to any resources created in response to this Gateway.
+   *
+   *
+   * For implementations creating other Kubernetes objects, this should be the `metadata.annotations` field on resources.
+   * For other implementations, this refers to any relevant (implementation specific) "annotations" concepts.
+   *
+   *
+   * An implementation may chose to add additional implementation-specific annotations as they see fit.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema GatewayV1Beta1SpecInfrastructure#annotations
+   */
+  readonly annotations?: { [key: string]: string };
+
+  /**
+   * Labels that SHOULD be applied to any resources created in response to this Gateway.
+   *
+   *
+   * For implementations creating other Kubernetes objects, this should be the `metadata.labels` field on resources.
+   * For other implementations, this refers to any relevant (implementation specific) "labels" concepts.
+   *
+   *
+   * An implementation may chose to add additional implementation-specific labels as they see fit.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema GatewayV1Beta1SpecInfrastructure#labels
+   */
+  readonly labels?: { [key: string]: string };
+
+  /**
+   * ParametersRef is a reference to a resource that contains the configuration
+   * parameters corresponding to the Gateway. This is optional if the
+   * controller does not require any additional configuration.
+   *
+   *
+   * This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
+   *
+   *
+   * The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
+   * the merging behavior is implementation specific.
+   * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
+   *
+   *
+   * Support: Implementation-specific
+   *
+   * @schema GatewayV1Beta1SpecInfrastructure#parametersRef
+   */
+  readonly parametersRef?: GatewayV1Beta1SpecInfrastructureParametersRef;
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecInfrastructure' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecInfrastructure(obj: GatewayV1Beta1SpecInfrastructure | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'annotations': ((obj.annotations) === undefined) ? undefined : (Object.entries(obj.annotations).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
+    'labels': ((obj.labels) === undefined) ? undefined : (Object.entries(obj.labels).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
+    'parametersRef': toJson_GatewayV1Beta1SpecInfrastructureParametersRef(obj.parametersRef),
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -1504,6 +2678,64 @@ export function toJson_GatewayV1Beta1SpecListeners(obj: GatewayV1Beta1SpecListen
 /* eslint-enable max-len, quote-props */
 
 /**
+ * ParametersRef is a reference to a resource that contains the configuration
+ * parameters corresponding to the Gateway. This is optional if the
+ * controller does not require any additional configuration.
+ *
+ *
+ * This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
+ *
+ *
+ * The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
+ * the merging behavior is implementation specific.
+ * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
+ *
+ *
+ * Support: Implementation-specific
+ *
+ * @schema GatewayV1Beta1SpecInfrastructureParametersRef
+ */
+export interface GatewayV1Beta1SpecInfrastructureParametersRef {
+  /**
+   * Group is the group of the referent.
+   *
+   * @schema GatewayV1Beta1SpecInfrastructureParametersRef#group
+   */
+  readonly group: string;
+
+  /**
+   * Kind is kind of the referent.
+   *
+   * @schema GatewayV1Beta1SpecInfrastructureParametersRef#kind
+   */
+  readonly kind: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema GatewayV1Beta1SpecInfrastructureParametersRef#name
+   */
+  readonly name: string;
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecInfrastructureParametersRef' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecInfrastructureParametersRef(obj: GatewayV1Beta1SpecInfrastructureParametersRef | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * AllowedRoutes defines the types of routes that MAY be attached to a
  * Listener and the trusted namespaces where those Route resources MAY be
  * present.
@@ -1639,6 +2871,23 @@ export interface GatewayV1Beta1SpecListenersTls {
   readonly certificateRefs?: GatewayV1Beta1SpecListenersTlsCertificateRefs[];
 
   /**
+   * FrontendValidation holds configuration information for validating the frontend (client).
+   * Setting this field will require clients to send a client certificate
+   * required for validation during the TLS handshake. In browsers this may result in a dialog appearing
+   * that requests a user to specify the client certificate.
+   * The maximum depth of a certificate chain accepted in verification is Implementation specific.
+   *
+   *
+   * Support: Extended
+   *
+   *
+   *
+   *
+   * @schema GatewayV1Beta1SpecListenersTls#frontendValidation
+   */
+  readonly frontendValidation?: GatewayV1Beta1SpecListenersTlsFrontendValidation;
+
+  /**
    * Mode defines the TLS behavior for the TLS session initiated by the client.
    * There are two possible modes:
    *
@@ -1687,6 +2936,7 @@ export function toJson_GatewayV1Beta1SpecListenersTls(obj: GatewayV1Beta1SpecLis
   if (obj === undefined) { return undefined; }
   const result = {
     'certificateRefs': obj.certificateRefs?.map(y => toJson_GatewayV1Beta1SpecListenersTlsCertificateRefs(y)),
+    'frontendValidation': toJson_GatewayV1Beta1SpecListenersTlsFrontendValidation(obj.frontendValidation),
     'mode': obj.mode,
     'options': ((obj.options) === undefined) ? undefined : (Object.entries(obj.options).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
   };
@@ -1863,6 +3113,69 @@ export function toJson_GatewayV1Beta1SpecListenersTlsCertificateRefs(obj: Gatewa
 /* eslint-enable max-len, quote-props */
 
 /**
+ * FrontendValidation holds configuration information for validating the frontend (client).
+ * Setting this field will require clients to send a client certificate
+ * required for validation during the TLS handshake. In browsers this may result in a dialog appearing
+ * that requests a user to specify the client certificate.
+ * The maximum depth of a certificate chain accepted in verification is Implementation specific.
+ *
+ *
+ * Support: Extended
+ *
+ *
+ *
+ *
+ * @schema GatewayV1Beta1SpecListenersTlsFrontendValidation
+ */
+export interface GatewayV1Beta1SpecListenersTlsFrontendValidation {
+  /**
+   * CACertificateRefs contains one or more references to
+   * Kubernetes objects that contain TLS certificates of
+   * the Certificate Authorities that can be used
+   * as a trust anchor to validate the certificates presented by the client.
+   *
+   *
+   * A single CA certificate reference to a Kubernetes ConfigMap
+   * has "Core" support.
+   * Implementations MAY choose to support attaching multiple CA certificates to
+   * a Listener, but this behavior is implementation-specific.
+   *
+   *
+   * Support: Core - A single reference to a Kubernetes ConfigMap
+   * with the CA certificate in a key named `ca.crt`.
+   *
+   *
+   * Support: Implementation-specific (More than one reference, or other kinds
+   * of resources).
+   *
+   *
+   * References to a resource in a different namespace are invalid UNLESS there
+   * is a ReferenceGrant in the target namespace that allows the certificate
+   * to be attached. If a ReferenceGrant does not allow this reference, the
+   * "ResolvedRefs" condition MUST be set to False for this listener with the
+   * "RefNotPermitted" reason.
+   *
+   * @schema GatewayV1Beta1SpecListenersTlsFrontendValidation#caCertificateRefs
+   */
+  readonly caCertificateRefs?: GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs[];
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecListenersTlsFrontendValidation' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecListenersTlsFrontendValidation(obj: GatewayV1Beta1SpecListenersTlsFrontendValidation | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'caCertificateRefs': obj.caCertificateRefs?.map(y => toJson_GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * Mode defines the TLS behavior for the TLS session initiated by the client.
  * There are two possible modes:
  *
@@ -1950,6 +3263,79 @@ export function toJson_GatewayV1Beta1SpecListenersAllowedRoutesNamespacesSelecto
   const result = {
     'matchExpressions': obj.matchExpressions?.map(y => toJson_GatewayV1Beta1SpecListenersAllowedRoutesNamespacesSelectorMatchExpressions(y)),
     'matchLabels': ((obj.matchLabels) === undefined) ? undefined : (Object.entries(obj.matchLabels).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * ObjectReference identifies an API object including its namespace.
+ *
+ *
+ * The API object must be valid in the cluster; the Group and Kind must
+ * be registered in the cluster for this reference to be valid.
+ *
+ *
+ * References to objects with invalid Group and Kind are not valid, and must
+ * be rejected by the implementation, with appropriate Conditions set
+ * on the containing object.
+ *
+ * @schema GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs
+ */
+export interface GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs {
+  /**
+   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
+   * When unspecified or empty string, core API group is inferred.
+   *
+   * @schema GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs#group
+   */
+  readonly group: string;
+
+  /**
+   * Kind is kind of the referent. For example "ConfigMap" or "Service".
+   *
+   * @schema GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs#kind
+   */
+  readonly kind: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the referenced object. When unspecified, the local
+   * namespace is inferred.
+   *
+   *
+   * Note that when a namespace different than the local namespace is specified,
+   * a ReferenceGrant object is required in the referent namespace to allow that
+   * namespace's owner to accept the reference. See the ReferenceGrant
+   * documentation for details.
+   *
+   *
+   * Support: Core
+   *
+   * @schema GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs#namespace
+   */
+  readonly namespace?: string;
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs(obj: GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -2841,6 +4227,17 @@ export interface GrpcRouteSpec {
    *
    *
    *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
    *
    *
    *
@@ -2950,6 +4347,17 @@ export interface GrpcRouteSpecParentRefs {
    *
    *
    *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
    *
    *
    * Support: Core
@@ -2972,6 +4380,10 @@ export interface GrpcRouteSpecParentRefs {
    * must match both specified values.
    *
    *
+   *
+   * When the parent resource is a Service, this targets a specific port in the
+   * Service spec. When both Port (experimental) and SectionName are specified,
+   * the name and port of the selected port must match both specified values.
    *
    *
    *
@@ -3202,6 +4614,20 @@ export interface GrpcRouteSpecRules {
    */
   readonly matches?: GrpcRouteSpecRulesMatches[];
 
+  /**
+   * SessionPersistence defines and configures session persistence
+   * for the route rule.
+   *
+   *
+   * Support: Extended
+   *
+   *
+   *
+   *
+   * @schema GrpcRouteSpecRules#sessionPersistence
+   */
+  readonly sessionPersistence?: GrpcRouteSpecRulesSessionPersistence;
+
 }
 
 /**
@@ -3214,6 +4640,7 @@ export function toJson_GrpcRouteSpecRules(obj: GrpcRouteSpecRules | undefined): 
     'backendRefs': obj.backendRefs?.map(y => toJson_GrpcRouteSpecRulesBackendRefs(y)),
     'filters': obj.filters?.map(y => toJson_GrpcRouteSpecRulesFilters(y)),
     'matches': obj.matches?.map(y => toJson_GrpcRouteSpecRulesMatches(y)),
+    'sessionPersistence': toJson_GrpcRouteSpecRulesSessionPersistence(obj.sessionPersistence),
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -3556,6 +4983,103 @@ export function toJson_GrpcRouteSpecRulesMatches(obj: GrpcRouteSpecRulesMatches 
   const result = {
     'headers': obj.headers?.map(y => toJson_GrpcRouteSpecRulesMatchesHeaders(y)),
     'method': toJson_GrpcRouteSpecRulesMatchesMethod(obj.method),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * SessionPersistence defines and configures session persistence
+ * for the route rule.
+ *
+ *
+ * Support: Extended
+ *
+ *
+ *
+ *
+ * @schema GrpcRouteSpecRulesSessionPersistence
+ */
+export interface GrpcRouteSpecRulesSessionPersistence {
+  /**
+   * AbsoluteTimeout defines the absolute timeout of the persistent
+   * session. Once the AbsoluteTimeout duration has elapsed, the
+   * session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema GrpcRouteSpecRulesSessionPersistence#absoluteTimeout
+   */
+  readonly absoluteTimeout?: string;
+
+  /**
+   * CookieConfig provides configuration settings that are specific
+   * to cookie-based session persistence.
+   *
+   *
+   * Support: Core
+   *
+   * @schema GrpcRouteSpecRulesSessionPersistence#cookieConfig
+   */
+  readonly cookieConfig?: GrpcRouteSpecRulesSessionPersistenceCookieConfig;
+
+  /**
+   * IdleTimeout defines the idle timeout of the persistent session.
+   * Once the session has been idle for more than the specified
+   * IdleTimeout duration, the session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema GrpcRouteSpecRulesSessionPersistence#idleTimeout
+   */
+  readonly idleTimeout?: string;
+
+  /**
+   * SessionName defines the name of the persistent session token
+   * which may be reflected in the cookie or the header. Users
+   * should avoid reusing session names to prevent unintended
+   * consequences, such as rejection or unpredictable behavior.
+   *
+   *
+   * Support: Implementation-specific
+   *
+   * @schema GrpcRouteSpecRulesSessionPersistence#sessionName
+   */
+  readonly sessionName?: string;
+
+  /**
+   * Type defines the type of session persistence such as through
+   * the use a header or cookie. Defaults to cookie based session
+   * persistence.
+   *
+   *
+   * Support: Core for "Cookie" type
+   *
+   *
+   * Support: Extended for "Header" type
+   *
+   * @default cookie based session
+   * @schema GrpcRouteSpecRulesSessionPersistence#type
+   */
+  readonly type?: GrpcRouteSpecRulesSessionPersistenceType;
+
+}
+
+/**
+ * Converts an object of type 'GrpcRouteSpecRulesSessionPersistence' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GrpcRouteSpecRulesSessionPersistence(obj: GrpcRouteSpecRulesSessionPersistence | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'absoluteTimeout': obj.absoluteTimeout,
+    'cookieConfig': toJson_GrpcRouteSpecRulesSessionPersistenceCookieConfig(obj.cookieConfig),
+    'idleTimeout': obj.idleTimeout,
+    'sessionName': obj.sessionName,
+    'type': obj.type,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -4174,6 +5698,80 @@ export function toJson_GrpcRouteSpecRulesMatchesMethod(obj: GrpcRouteSpecRulesMa
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
 }
 /* eslint-enable max-len, quote-props */
+
+/**
+ * CookieConfig provides configuration settings that are specific
+ * to cookie-based session persistence.
+ *
+ *
+ * Support: Core
+ *
+ * @schema GrpcRouteSpecRulesSessionPersistenceCookieConfig
+ */
+export interface GrpcRouteSpecRulesSessionPersistenceCookieConfig {
+  /**
+   * LifetimeType specifies whether the cookie has a permanent or
+   * session-based lifetime. A permanent cookie persists until its
+   * specified expiry time, defined by the Expires or Max-Age cookie
+   * attributes, while a session cookie is deleted when the current
+   * session ends.
+   *
+   *
+   * When set to "Permanent", AbsoluteTimeout indicates the
+   * cookie's lifetime via the Expires or Max-Age cookie attributes
+   * and is required.
+   *
+   *
+   * When set to "Session", AbsoluteTimeout indicates the
+   * absolute lifetime of the cookie tracked by the gateway and
+   * is optional.
+   *
+   *
+   * Support: Core for "Session" type
+   *
+   *
+   * Support: Extended for "Permanent" type
+   *
+   * @schema GrpcRouteSpecRulesSessionPersistenceCookieConfig#lifetimeType
+   */
+  readonly lifetimeType?: GrpcRouteSpecRulesSessionPersistenceCookieConfigLifetimeType;
+
+}
+
+/**
+ * Converts an object of type 'GrpcRouteSpecRulesSessionPersistenceCookieConfig' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GrpcRouteSpecRulesSessionPersistenceCookieConfig(obj: GrpcRouteSpecRulesSessionPersistenceCookieConfig | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'lifetimeType': obj.lifetimeType,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Type defines the type of session persistence such as through
+ * the use a header or cookie. Defaults to cookie based session
+ * persistence.
+ *
+ *
+ * Support: Core for "Cookie" type
+ *
+ *
+ * Support: Extended for "Header" type
+ *
+ * @default cookie based session
+ * @schema GrpcRouteSpecRulesSessionPersistenceType
+ */
+export enum GrpcRouteSpecRulesSessionPersistenceType {
+  /** Cookie */
+  COOKIE = "Cookie",
+  /** Header */
+  HEADER = "Header",
+}
 
 /**
  * ExtensionRef is an optional, implementation-specific extension to the
@@ -4884,6 +6482,38 @@ export enum GrpcRouteSpecRulesMatchesMethodType {
 }
 
 /**
+ * LifetimeType specifies whether the cookie has a permanent or
+ * session-based lifetime. A permanent cookie persists until its
+ * specified expiry time, defined by the Expires or Max-Age cookie
+ * attributes, while a session cookie is deleted when the current
+ * session ends.
+ *
+ *
+ * When set to "Permanent", AbsoluteTimeout indicates the
+ * cookie's lifetime via the Expires or Max-Age cookie attributes
+ * and is required.
+ *
+ *
+ * When set to "Session", AbsoluteTimeout indicates the
+ * absolute lifetime of the cookie tracked by the gateway and
+ * is optional.
+ *
+ *
+ * Support: Core for "Session" type
+ *
+ *
+ * Support: Extended for "Permanent" type
+ *
+ * @schema GrpcRouteSpecRulesSessionPersistenceCookieConfigLifetimeType
+ */
+export enum GrpcRouteSpecRulesSessionPersistenceCookieConfigLifetimeType {
+  /** Permanent */
+  PERMANENT = "Permanent",
+  /** Session */
+  SESSION = "Session",
+}
+
+/**
  * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
  *
  * @schema GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifierAdd
@@ -5468,6 +7098,17 @@ export interface GrpcRouteV1Alpha2Spec {
    *
    *
    *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
    *
    *
    *
@@ -5577,6 +7218,17 @@ export interface GrpcRouteV1Alpha2SpecParentRefs {
    *
    *
    *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
    *
    *
    * Support: Core
@@ -5599,6 +7251,10 @@ export interface GrpcRouteV1Alpha2SpecParentRefs {
    * must match both specified values.
    *
    *
+   *
+   * When the parent resource is a Service, this targets a specific port in the
+   * Service spec. When both Port (experimental) and SectionName are specified,
+   * the name and port of the selected port must match both specified values.
    *
    *
    *
@@ -5829,6 +7485,20 @@ export interface GrpcRouteV1Alpha2SpecRules {
    */
   readonly matches?: GrpcRouteV1Alpha2SpecRulesMatches[];
 
+  /**
+   * SessionPersistence defines and configures session persistence
+   * for the route rule.
+   *
+   *
+   * Support: Extended
+   *
+   *
+   *
+   *
+   * @schema GrpcRouteV1Alpha2SpecRules#sessionPersistence
+   */
+  readonly sessionPersistence?: GrpcRouteV1Alpha2SpecRulesSessionPersistence;
+
 }
 
 /**
@@ -5841,6 +7511,7 @@ export function toJson_GrpcRouteV1Alpha2SpecRules(obj: GrpcRouteV1Alpha2SpecRule
     'backendRefs': obj.backendRefs?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesBackendRefs(y)),
     'filters': obj.filters?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesFilters(y)),
     'matches': obj.matches?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesMatches(y)),
+    'sessionPersistence': toJson_GrpcRouteV1Alpha2SpecRulesSessionPersistence(obj.sessionPersistence),
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -6183,6 +7854,103 @@ export function toJson_GrpcRouteV1Alpha2SpecRulesMatches(obj: GrpcRouteV1Alpha2S
   const result = {
     'headers': obj.headers?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesMatchesHeaders(y)),
     'method': toJson_GrpcRouteV1Alpha2SpecRulesMatchesMethod(obj.method),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * SessionPersistence defines and configures session persistence
+ * for the route rule.
+ *
+ *
+ * Support: Extended
+ *
+ *
+ *
+ *
+ * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence
+ */
+export interface GrpcRouteV1Alpha2SpecRulesSessionPersistence {
+  /**
+   * AbsoluteTimeout defines the absolute timeout of the persistent
+   * session. Once the AbsoluteTimeout duration has elapsed, the
+   * session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#absoluteTimeout
+   */
+  readonly absoluteTimeout?: string;
+
+  /**
+   * CookieConfig provides configuration settings that are specific
+   * to cookie-based session persistence.
+   *
+   *
+   * Support: Core
+   *
+   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#cookieConfig
+   */
+  readonly cookieConfig?: GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig;
+
+  /**
+   * IdleTimeout defines the idle timeout of the persistent session.
+   * Once the session has been idle for more than the specified
+   * IdleTimeout duration, the session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#idleTimeout
+   */
+  readonly idleTimeout?: string;
+
+  /**
+   * SessionName defines the name of the persistent session token
+   * which may be reflected in the cookie or the header. Users
+   * should avoid reusing session names to prevent unintended
+   * consequences, such as rejection or unpredictable behavior.
+   *
+   *
+   * Support: Implementation-specific
+   *
+   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#sessionName
+   */
+  readonly sessionName?: string;
+
+  /**
+   * Type defines the type of session persistence such as through
+   * the use a header or cookie. Defaults to cookie based session
+   * persistence.
+   *
+   *
+   * Support: Core for "Cookie" type
+   *
+   *
+   * Support: Extended for "Header" type
+   *
+   * @default cookie based session
+   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#type
+   */
+  readonly type?: GrpcRouteV1Alpha2SpecRulesSessionPersistenceType;
+
+}
+
+/**
+ * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesSessionPersistence' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GrpcRouteV1Alpha2SpecRulesSessionPersistence(obj: GrpcRouteV1Alpha2SpecRulesSessionPersistence | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'absoluteTimeout': obj.absoluteTimeout,
+    'cookieConfig': toJson_GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig(obj.cookieConfig),
+    'idleTimeout': obj.idleTimeout,
+    'sessionName': obj.sessionName,
+    'type': obj.type,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -6801,6 +8569,80 @@ export function toJson_GrpcRouteV1Alpha2SpecRulesMatchesMethod(obj: GrpcRouteV1A
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
 }
 /* eslint-enable max-len, quote-props */
+
+/**
+ * CookieConfig provides configuration settings that are specific
+ * to cookie-based session persistence.
+ *
+ *
+ * Support: Core
+ *
+ * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig
+ */
+export interface GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig {
+  /**
+   * LifetimeType specifies whether the cookie has a permanent or
+   * session-based lifetime. A permanent cookie persists until its
+   * specified expiry time, defined by the Expires or Max-Age cookie
+   * attributes, while a session cookie is deleted when the current
+   * session ends.
+   *
+   *
+   * When set to "Permanent", AbsoluteTimeout indicates the
+   * cookie's lifetime via the Expires or Max-Age cookie attributes
+   * and is required.
+   *
+   *
+   * When set to "Session", AbsoluteTimeout indicates the
+   * absolute lifetime of the cookie tracked by the gateway and
+   * is optional.
+   *
+   *
+   * Support: Core for "Session" type
+   *
+   *
+   * Support: Extended for "Permanent" type
+   *
+   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig#lifetimeType
+   */
+  readonly lifetimeType?: GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfigLifetimeType;
+
+}
+
+/**
+ * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig(obj: GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'lifetimeType': obj.lifetimeType,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Type defines the type of session persistence such as through
+ * the use a header or cookie. Defaults to cookie based session
+ * persistence.
+ *
+ *
+ * Support: Core for "Cookie" type
+ *
+ *
+ * Support: Extended for "Header" type
+ *
+ * @default cookie based session
+ * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistenceType
+ */
+export enum GrpcRouteV1Alpha2SpecRulesSessionPersistenceType {
+  /** Cookie */
+  COOKIE = "Cookie",
+  /** Header */
+  HEADER = "Header",
+}
 
 /**
  * ExtensionRef is an optional, implementation-specific extension to the
@@ -7511,6 +9353,38 @@ export enum GrpcRouteV1Alpha2SpecRulesMatchesMethodType {
 }
 
 /**
+ * LifetimeType specifies whether the cookie has a permanent or
+ * session-based lifetime. A permanent cookie persists until its
+ * specified expiry time, defined by the Expires or Max-Age cookie
+ * attributes, while a session cookie is deleted when the current
+ * session ends.
+ *
+ *
+ * When set to "Permanent", AbsoluteTimeout indicates the
+ * cookie's lifetime via the Expires or Max-Age cookie attributes
+ * and is required.
+ *
+ *
+ * When set to "Session", AbsoluteTimeout indicates the
+ * absolute lifetime of the cookie tracked by the gateway and
+ * is optional.
+ *
+ *
+ * Support: Core for "Session" type
+ *
+ *
+ * Support: Extended for "Permanent" type
+ *
+ * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfigLifetimeType
+ */
+export enum GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfigLifetimeType {
+  /** Permanent */
+  PERMANENT = "Permanent",
+  /** Session */
+  SESSION = "Session",
+}
+
+/**
  * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
  *
  * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd
@@ -8047,6 +9921,17 @@ export interface HttpRouteSpec {
    *
    *
    *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
    *
    *
    *
@@ -8156,6 +10041,17 @@ export interface HttpRouteSpecParentRefs {
    *
    *
    *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
    *
    *
    * Support: Core
@@ -8178,6 +10074,10 @@ export interface HttpRouteSpecParentRefs {
    * must match both specified values.
    *
    *
+   *
+   * When the parent resource is a Service, this targets a specific port in the
+   * Service spec. When both Port (experimental) and SectionName are specified,
+   * the name and port of the selected port must match both specified values.
    *
    *
    *
@@ -8434,6 +10334,33 @@ export interface HttpRouteSpecRules {
    */
   readonly matches?: HttpRouteSpecRulesMatches[];
 
+  /**
+   * SessionPersistence defines and configures session persistence
+   * for the route rule.
+   *
+   *
+   * Support: Extended
+   *
+   *
+   *
+   *
+   * @schema HttpRouteSpecRules#sessionPersistence
+   */
+  readonly sessionPersistence?: HttpRouteSpecRulesSessionPersistence;
+
+  /**
+   * Timeouts defines the timeouts that can be configured for an HTTP request.
+   *
+   *
+   * Support: Extended
+   *
+   *
+   *
+   *
+   * @schema HttpRouteSpecRules#timeouts
+   */
+  readonly timeouts?: HttpRouteSpecRulesTimeouts;
+
 }
 
 /**
@@ -8446,6 +10373,8 @@ export function toJson_HttpRouteSpecRules(obj: HttpRouteSpecRules | undefined): 
     'backendRefs': obj.backendRefs?.map(y => toJson_HttpRouteSpecRulesBackendRefs(y)),
     'filters': obj.filters?.map(y => toJson_HttpRouteSpecRulesFilters(y)),
     'matches': obj.matches?.map(y => toJson_HttpRouteSpecRulesMatches(y)),
+    'sessionPersistence': toJson_HttpRouteSpecRulesSessionPersistence(obj.sessionPersistence),
+    'timeouts': toJson_HttpRouteSpecRulesTimeouts(obj.timeouts),
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -8845,6 +10774,191 @@ export function toJson_HttpRouteSpecRulesMatches(obj: HttpRouteSpecRulesMatches 
     'method': obj.method,
     'path': toJson_HttpRouteSpecRulesMatchesPath(obj.path),
     'queryParams': obj.queryParams?.map(y => toJson_HttpRouteSpecRulesMatchesQueryParams(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * SessionPersistence defines and configures session persistence
+ * for the route rule.
+ *
+ *
+ * Support: Extended
+ *
+ *
+ *
+ *
+ * @schema HttpRouteSpecRulesSessionPersistence
+ */
+export interface HttpRouteSpecRulesSessionPersistence {
+  /**
+   * AbsoluteTimeout defines the absolute timeout of the persistent
+   * session. Once the AbsoluteTimeout duration has elapsed, the
+   * session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesSessionPersistence#absoluteTimeout
+   */
+  readonly absoluteTimeout?: string;
+
+  /**
+   * CookieConfig provides configuration settings that are specific
+   * to cookie-based session persistence.
+   *
+   *
+   * Support: Core
+   *
+   * @schema HttpRouteSpecRulesSessionPersistence#cookieConfig
+   */
+  readonly cookieConfig?: HttpRouteSpecRulesSessionPersistenceCookieConfig;
+
+  /**
+   * IdleTimeout defines the idle timeout of the persistent session.
+   * Once the session has been idle for more than the specified
+   * IdleTimeout duration, the session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesSessionPersistence#idleTimeout
+   */
+  readonly idleTimeout?: string;
+
+  /**
+   * SessionName defines the name of the persistent session token
+   * which may be reflected in the cookie or the header. Users
+   * should avoid reusing session names to prevent unintended
+   * consequences, such as rejection or unpredictable behavior.
+   *
+   *
+   * Support: Implementation-specific
+   *
+   * @schema HttpRouteSpecRulesSessionPersistence#sessionName
+   */
+  readonly sessionName?: string;
+
+  /**
+   * Type defines the type of session persistence such as through
+   * the use a header or cookie. Defaults to cookie based session
+   * persistence.
+   *
+   *
+   * Support: Core for "Cookie" type
+   *
+   *
+   * Support: Extended for "Header" type
+   *
+   * @default cookie based session
+   * @schema HttpRouteSpecRulesSessionPersistence#type
+   */
+  readonly type?: HttpRouteSpecRulesSessionPersistenceType;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteSpecRulesSessionPersistence' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteSpecRulesSessionPersistence(obj: HttpRouteSpecRulesSessionPersistence | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'absoluteTimeout': obj.absoluteTimeout,
+    'cookieConfig': toJson_HttpRouteSpecRulesSessionPersistenceCookieConfig(obj.cookieConfig),
+    'idleTimeout': obj.idleTimeout,
+    'sessionName': obj.sessionName,
+    'type': obj.type,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Timeouts defines the timeouts that can be configured for an HTTP request.
+ *
+ *
+ * Support: Extended
+ *
+ *
+ *
+ *
+ * @schema HttpRouteSpecRulesTimeouts
+ */
+export interface HttpRouteSpecRulesTimeouts {
+  /**
+   * BackendRequest specifies a timeout for an individual request from the gateway
+   * to a backend. This covers the time from when the request first starts being
+   * sent from the gateway to when the full response has been received from the backend.
+   *
+   *
+   * Setting a timeout to the zero duration (e.g. "0s") SHOULD disable the timeout
+   * completely. Implementations that cannot completely disable the timeout MUST
+   * instead interpret the zero duration as the longest possible value to which
+   * the timeout can be set.
+   *
+   *
+   * An entire client HTTP transaction with a gateway, covered by the Request timeout,
+   * may result in more than one call from the gateway to the destination backend,
+   * for example, if automatic retries are supported.
+   *
+   *
+   * Because the Request timeout encompasses the BackendRequest timeout, the value of
+   * BackendRequest must be <= the value of Request timeout.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesTimeouts#backendRequest
+   */
+  readonly backendRequest?: string;
+
+  /**
+   * Request specifies the maximum duration for a gateway to respond to an HTTP request.
+   * If the gateway has not been able to respond before this deadline is met, the gateway
+   * MUST return a timeout error.
+   *
+   *
+   * For example, setting the `rules.timeouts.request` field to the value `10s` in an
+   * `HTTPRoute` will cause a timeout if a client request is taking longer than 10 seconds
+   * to complete.
+   *
+   *
+   * Setting a timeout to the zero duration (e.g. "0s") SHOULD disable the timeout
+   * completely. Implementations that cannot completely disable the timeout MUST
+   * instead interpret the zero duration as the longest possible value to which
+   * the timeout can be set.
+   *
+   *
+   * This timeout is intended to cover as close to the whole request-response transaction
+   * as possible although an implementation MAY choose to start the timeout after the entire
+   * request stream has been received instead of immediately after the transaction is
+   * initiated by the client.
+   *
+   *
+   * When this field is unspecified, request timeout behavior is implementation-specific.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesTimeouts#request
+   */
+  readonly request?: string;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteSpecRulesTimeouts' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteSpecRulesTimeouts(obj: HttpRouteSpecRulesTimeouts | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'backendRequest': obj.backendRequest,
+    'request': obj.request,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -9792,6 +11906,80 @@ export function toJson_HttpRouteSpecRulesMatchesQueryParams(obj: HttpRouteSpecRu
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
 }
 /* eslint-enable max-len, quote-props */
+
+/**
+ * CookieConfig provides configuration settings that are specific
+ * to cookie-based session persistence.
+ *
+ *
+ * Support: Core
+ *
+ * @schema HttpRouteSpecRulesSessionPersistenceCookieConfig
+ */
+export interface HttpRouteSpecRulesSessionPersistenceCookieConfig {
+  /**
+   * LifetimeType specifies whether the cookie has a permanent or
+   * session-based lifetime. A permanent cookie persists until its
+   * specified expiry time, defined by the Expires or Max-Age cookie
+   * attributes, while a session cookie is deleted when the current
+   * session ends.
+   *
+   *
+   * When set to "Permanent", AbsoluteTimeout indicates the
+   * cookie's lifetime via the Expires or Max-Age cookie attributes
+   * and is required.
+   *
+   *
+   * When set to "Session", AbsoluteTimeout indicates the
+   * absolute lifetime of the cookie tracked by the gateway and
+   * is optional.
+   *
+   *
+   * Support: Core for "Session" type
+   *
+   *
+   * Support: Extended for "Permanent" type
+   *
+   * @schema HttpRouteSpecRulesSessionPersistenceCookieConfig#lifetimeType
+   */
+  readonly lifetimeType?: HttpRouteSpecRulesSessionPersistenceCookieConfigLifetimeType;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteSpecRulesSessionPersistenceCookieConfig' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteSpecRulesSessionPersistenceCookieConfig(obj: HttpRouteSpecRulesSessionPersistenceCookieConfig | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'lifetimeType': obj.lifetimeType,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Type defines the type of session persistence such as through
+ * the use a header or cookie. Defaults to cookie based session
+ * persistence.
+ *
+ *
+ * Support: Core for "Cookie" type
+ *
+ *
+ * Support: Extended for "Header" type
+ *
+ * @default cookie based session
+ * @schema HttpRouteSpecRulesSessionPersistenceType
+ */
+export enum HttpRouteSpecRulesSessionPersistenceType {
+  /** Cookie */
+  COOKIE = "Cookie",
+  /** Header */
+  HEADER = "Header",
+}
 
 /**
  * ExtensionRef is an optional, implementation-specific extension to the
@@ -10960,6 +13148,38 @@ export enum HttpRouteSpecRulesMatchesQueryParamsType {
 }
 
 /**
+ * LifetimeType specifies whether the cookie has a permanent or
+ * session-based lifetime. A permanent cookie persists until its
+ * specified expiry time, defined by the Expires or Max-Age cookie
+ * attributes, while a session cookie is deleted when the current
+ * session ends.
+ *
+ *
+ * When set to "Permanent", AbsoluteTimeout indicates the
+ * cookie's lifetime via the Expires or Max-Age cookie attributes
+ * and is required.
+ *
+ *
+ * When set to "Session", AbsoluteTimeout indicates the
+ * absolute lifetime of the cookie tracked by the gateway and
+ * is optional.
+ *
+ *
+ * Support: Core for "Session" type
+ *
+ *
+ * Support: Extended for "Permanent" type
+ *
+ * @schema HttpRouteSpecRulesSessionPersistenceCookieConfigLifetimeType
+ */
+export enum HttpRouteSpecRulesSessionPersistenceCookieConfigLifetimeType {
+  /** Permanent */
+  PERMANENT = "Permanent",
+  /** Session */
+  SESSION = "Session",
+}
+
+/**
  * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
  *
  * @schema HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifierAdd
@@ -11817,6 +14037,17 @@ export interface HttpRouteV1Beta1Spec {
    *
    *
    *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
    *
    *
    *
@@ -11926,6 +14157,17 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    *
    *
    *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
    *
    *
    * Support: Core
@@ -11948,6 +14190,10 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * must match both specified values.
    *
    *
+   *
+   * When the parent resource is a Service, this targets a specific port in the
+   * Service spec. When both Port (experimental) and SectionName are specified,
+   * the name and port of the selected port must match both specified values.
    *
    *
    *
@@ -12204,6 +14450,33 @@ export interface HttpRouteV1Beta1SpecRules {
    */
   readonly matches?: HttpRouteV1Beta1SpecRulesMatches[];
 
+  /**
+   * SessionPersistence defines and configures session persistence
+   * for the route rule.
+   *
+   *
+   * Support: Extended
+   *
+   *
+   *
+   *
+   * @schema HttpRouteV1Beta1SpecRules#sessionPersistence
+   */
+  readonly sessionPersistence?: HttpRouteV1Beta1SpecRulesSessionPersistence;
+
+  /**
+   * Timeouts defines the timeouts that can be configured for an HTTP request.
+   *
+   *
+   * Support: Extended
+   *
+   *
+   *
+   *
+   * @schema HttpRouteV1Beta1SpecRules#timeouts
+   */
+  readonly timeouts?: HttpRouteV1Beta1SpecRulesTimeouts;
+
 }
 
 /**
@@ -12216,6 +14489,8 @@ export function toJson_HttpRouteV1Beta1SpecRules(obj: HttpRouteV1Beta1SpecRules 
     'backendRefs': obj.backendRefs?.map(y => toJson_HttpRouteV1Beta1SpecRulesBackendRefs(y)),
     'filters': obj.filters?.map(y => toJson_HttpRouteV1Beta1SpecRulesFilters(y)),
     'matches': obj.matches?.map(y => toJson_HttpRouteV1Beta1SpecRulesMatches(y)),
+    'sessionPersistence': toJson_HttpRouteV1Beta1SpecRulesSessionPersistence(obj.sessionPersistence),
+    'timeouts': toJson_HttpRouteV1Beta1SpecRulesTimeouts(obj.timeouts),
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -12615,6 +14890,191 @@ export function toJson_HttpRouteV1Beta1SpecRulesMatches(obj: HttpRouteV1Beta1Spe
     'method': obj.method,
     'path': toJson_HttpRouteV1Beta1SpecRulesMatchesPath(obj.path),
     'queryParams': obj.queryParams?.map(y => toJson_HttpRouteV1Beta1SpecRulesMatchesQueryParams(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * SessionPersistence defines and configures session persistence
+ * for the route rule.
+ *
+ *
+ * Support: Extended
+ *
+ *
+ *
+ *
+ * @schema HttpRouteV1Beta1SpecRulesSessionPersistence
+ */
+export interface HttpRouteV1Beta1SpecRulesSessionPersistence {
+  /**
+   * AbsoluteTimeout defines the absolute timeout of the persistent
+   * session. Once the AbsoluteTimeout duration has elapsed, the
+   * session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesSessionPersistence#absoluteTimeout
+   */
+  readonly absoluteTimeout?: string;
+
+  /**
+   * CookieConfig provides configuration settings that are specific
+   * to cookie-based session persistence.
+   *
+   *
+   * Support: Core
+   *
+   * @schema HttpRouteV1Beta1SpecRulesSessionPersistence#cookieConfig
+   */
+  readonly cookieConfig?: HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig;
+
+  /**
+   * IdleTimeout defines the idle timeout of the persistent session.
+   * Once the session has been idle for more than the specified
+   * IdleTimeout duration, the session becomes invalid.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesSessionPersistence#idleTimeout
+   */
+  readonly idleTimeout?: string;
+
+  /**
+   * SessionName defines the name of the persistent session token
+   * which may be reflected in the cookie or the header. Users
+   * should avoid reusing session names to prevent unintended
+   * consequences, such as rejection or unpredictable behavior.
+   *
+   *
+   * Support: Implementation-specific
+   *
+   * @schema HttpRouteV1Beta1SpecRulesSessionPersistence#sessionName
+   */
+  readonly sessionName?: string;
+
+  /**
+   * Type defines the type of session persistence such as through
+   * the use a header or cookie. Defaults to cookie based session
+   * persistence.
+   *
+   *
+   * Support: Core for "Cookie" type
+   *
+   *
+   * Support: Extended for "Header" type
+   *
+   * @default cookie based session
+   * @schema HttpRouteV1Beta1SpecRulesSessionPersistence#type
+   */
+  readonly type?: HttpRouteV1Beta1SpecRulesSessionPersistenceType;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteV1Beta1SpecRulesSessionPersistence' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteV1Beta1SpecRulesSessionPersistence(obj: HttpRouteV1Beta1SpecRulesSessionPersistence | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'absoluteTimeout': obj.absoluteTimeout,
+    'cookieConfig': toJson_HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig(obj.cookieConfig),
+    'idleTimeout': obj.idleTimeout,
+    'sessionName': obj.sessionName,
+    'type': obj.type,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Timeouts defines the timeouts that can be configured for an HTTP request.
+ *
+ *
+ * Support: Extended
+ *
+ *
+ *
+ *
+ * @schema HttpRouteV1Beta1SpecRulesTimeouts
+ */
+export interface HttpRouteV1Beta1SpecRulesTimeouts {
+  /**
+   * BackendRequest specifies a timeout for an individual request from the gateway
+   * to a backend. This covers the time from when the request first starts being
+   * sent from the gateway to when the full response has been received from the backend.
+   *
+   *
+   * Setting a timeout to the zero duration (e.g. "0s") SHOULD disable the timeout
+   * completely. Implementations that cannot completely disable the timeout MUST
+   * instead interpret the zero duration as the longest possible value to which
+   * the timeout can be set.
+   *
+   *
+   * An entire client HTTP transaction with a gateway, covered by the Request timeout,
+   * may result in more than one call from the gateway to the destination backend,
+   * for example, if automatic retries are supported.
+   *
+   *
+   * Because the Request timeout encompasses the BackendRequest timeout, the value of
+   * BackendRequest must be <= the value of Request timeout.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesTimeouts#backendRequest
+   */
+  readonly backendRequest?: string;
+
+  /**
+   * Request specifies the maximum duration for a gateway to respond to an HTTP request.
+   * If the gateway has not been able to respond before this deadline is met, the gateway
+   * MUST return a timeout error.
+   *
+   *
+   * For example, setting the `rules.timeouts.request` field to the value `10s` in an
+   * `HTTPRoute` will cause a timeout if a client request is taking longer than 10 seconds
+   * to complete.
+   *
+   *
+   * Setting a timeout to the zero duration (e.g. "0s") SHOULD disable the timeout
+   * completely. Implementations that cannot completely disable the timeout MUST
+   * instead interpret the zero duration as the longest possible value to which
+   * the timeout can be set.
+   *
+   *
+   * This timeout is intended to cover as close to the whole request-response transaction
+   * as possible although an implementation MAY choose to start the timeout after the entire
+   * request stream has been received instead of immediately after the transaction is
+   * initiated by the client.
+   *
+   *
+   * When this field is unspecified, request timeout behavior is implementation-specific.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesTimeouts#request
+   */
+  readonly request?: string;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteV1Beta1SpecRulesTimeouts' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteV1Beta1SpecRulesTimeouts(obj: HttpRouteV1Beta1SpecRulesTimeouts | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'backendRequest': obj.backendRequest,
+    'request': obj.request,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -13562,6 +16022,80 @@ export function toJson_HttpRouteV1Beta1SpecRulesMatchesQueryParams(obj: HttpRout
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
 }
 /* eslint-enable max-len, quote-props */
+
+/**
+ * CookieConfig provides configuration settings that are specific
+ * to cookie-based session persistence.
+ *
+ *
+ * Support: Core
+ *
+ * @schema HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig
+ */
+export interface HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig {
+  /**
+   * LifetimeType specifies whether the cookie has a permanent or
+   * session-based lifetime. A permanent cookie persists until its
+   * specified expiry time, defined by the Expires or Max-Age cookie
+   * attributes, while a session cookie is deleted when the current
+   * session ends.
+   *
+   *
+   * When set to "Permanent", AbsoluteTimeout indicates the
+   * cookie's lifetime via the Expires or Max-Age cookie attributes
+   * and is required.
+   *
+   *
+   * When set to "Session", AbsoluteTimeout indicates the
+   * absolute lifetime of the cookie tracked by the gateway and
+   * is optional.
+   *
+   *
+   * Support: Core for "Session" type
+   *
+   *
+   * Support: Extended for "Permanent" type
+   *
+   * @schema HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig#lifetimeType
+   */
+  readonly lifetimeType?: HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfigLifetimeType;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig(obj: HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'lifetimeType': obj.lifetimeType,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Type defines the type of session persistence such as through
+ * the use a header or cookie. Defaults to cookie based session
+ * persistence.
+ *
+ *
+ * Support: Core for "Cookie" type
+ *
+ *
+ * Support: Extended for "Header" type
+ *
+ * @default cookie based session
+ * @schema HttpRouteV1Beta1SpecRulesSessionPersistenceType
+ */
+export enum HttpRouteV1Beta1SpecRulesSessionPersistenceType {
+  /** Cookie */
+  COOKIE = "Cookie",
+  /** Header */
+  HEADER = "Header",
+}
 
 /**
  * ExtensionRef is an optional, implementation-specific extension to the
@@ -14727,6 +17261,38 @@ export enum HttpRouteV1Beta1SpecRulesMatchesQueryParamsType {
   EXACT = "Exact",
   /** RegularExpression */
   REGULAR_EXPRESSION = "RegularExpression",
+}
+
+/**
+ * LifetimeType specifies whether the cookie has a permanent or
+ * session-based lifetime. A permanent cookie persists until its
+ * specified expiry time, defined by the Expires or Max-Age cookie
+ * attributes, while a session cookie is deleted when the current
+ * session ends.
+ *
+ *
+ * When set to "Permanent", AbsoluteTimeout indicates the
+ * cookie's lifetime via the Expires or Max-Age cookie attributes
+ * and is required.
+ *
+ *
+ * When set to "Session", AbsoluteTimeout indicates the
+ * absolute lifetime of the cookie tracked by the gateway and
+ * is optional.
+ *
+ *
+ * Support: Core for "Session" type
+ *
+ *
+ * Support: Extended for "Permanent" type
+ *
+ * @schema HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfigLifetimeType
+ */
+export enum HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfigLifetimeType {
+  /** Permanent */
+  PERMANENT = "Permanent",
+  /** Session */
+  SESSION = "Session",
 }
 
 /**
@@ -15966,3 +18532,1844 @@ export function toJson_ReferenceGrantV1Beta1SpecTo(obj: ReferenceGrantV1Beta1Spe
 }
 /* eslint-enable max-len, quote-props */
 
+
+/**
+ * TCPRoute provides a way to route TCP requests. When combined with a Gateway
+listener, it can be used to forward connections on the port specified by the
+listener to a set of backends specified by the TCPRoute.
+ *
+ * @schema TCPRoute
+ */
+export class TcpRoute extends ApiObject {
+  /**
+   * Returns the apiVersion and kind for "TCPRoute"
+   */
+  public static readonly GVK: GroupVersionKind = {
+    apiVersion: 'gateway.networking.k8s.io/v1alpha2',
+    kind: 'TCPRoute',
+  }
+
+  /**
+   * Renders a Kubernetes manifest for "TCPRoute".
+   *
+   * This can be used to inline resource manifests inside other objects (e.g. as templates).
+   *
+   * @param props initialization props
+   */
+  public static manifest(props: TcpRouteProps): any {
+    return {
+      ...TcpRoute.GVK,
+      ...toJson_TcpRouteProps(props),
+    };
+  }
+
+  /**
+   * Defines a "TCPRoute" API object
+   * @param scope the scope in which to define this object
+   * @param id a scope-local name for the object
+   * @param props initialization props
+   */
+  public constructor(scope: Construct, id: string, props: TcpRouteProps) {
+    super(scope, id, {
+      ...TcpRoute.GVK,
+      ...props,
+    });
+  }
+
+  /**
+   * Renders the object to Kubernetes JSON.
+   */
+  public toJson(): any {
+    const resolved = super.toJson();
+
+    return {
+      ...TcpRoute.GVK,
+      ...toJson_TcpRouteProps(resolved),
+    };
+  }
+}
+
+/**
+ * TCPRoute provides a way to route TCP requests. When combined with a Gateway
+ * listener, it can be used to forward connections on the port specified by the
+ * listener to a set of backends specified by the TCPRoute.
+ *
+ * @schema TCPRoute
+ */
+export interface TcpRouteProps {
+  /**
+   * @schema TCPRoute#metadata
+   */
+  readonly metadata?: ApiObjectMetadata;
+
+  /**
+   * Spec defines the desired state of TCPRoute.
+   *
+   * @schema TCPRoute#spec
+   */
+  readonly spec: TcpRouteSpec;
+
+}
+
+/**
+ * Converts an object of type 'TcpRouteProps' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TcpRouteProps(obj: TcpRouteProps | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'metadata': obj.metadata,
+    'spec': toJson_TcpRouteSpec(obj.spec),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Spec defines the desired state of TCPRoute.
+ *
+ * @schema TcpRouteSpec
+ */
+export interface TcpRouteSpec {
+  /**
+   * ParentRefs references the resources (usually Gateways) that a Route wants
+   * to be attached to. Note that the referenced parent resource needs to
+   * allow this for the attachment to be complete. For Gateways, that means
+   * the Gateway needs to allow attachment from Routes of this kind and
+   * namespace. For Services, that means the Service must either be in the same
+   * namespace for a "producer" route, or the mesh implementation must support
+   * and allow "consumer" routes for the referenced Service. ReferenceGrant is
+   * not applicable for governing ParentRefs to Services - it is not possible to
+   * create a "producer" route for a Service in a different namespace from the
+   * Route.
+   *
+   *
+   * There are two kinds of parent resources with "Core" support:
+   *
+   *
+   * * Gateway (Gateway conformance profile)
+   * * Service (Mesh conformance profile, ClusterIP Services only)
+   *
+   *
+   * This API may be extended in the future to support additional kinds of parent
+   * resources.
+   *
+   *
+   * ParentRefs must be _distinct_. This means either that:
+   *
+   *
+   * * They select different objects.  If this is the case, then parentRef
+   * entries are distinct. In terms of fields, this means that the
+   * multi-part key defined by `group`, `kind`, `namespace`, and `name` must
+   * be unique across all parentRef entries in the Route.
+   * * They do not select different objects, but for each optional field used,
+   * each ParentRef that selects the same object must set the same set of
+   * optional fields to different values. If one ParentRef sets a
+   * combination of optional fields, all must set the same combination.
+   *
+   *
+   * Some examples:
+   *
+   *
+   * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
+   * same object must also set `sectionName`.
+   * * If one ParentRef sets `port`, all ParentRefs referencing the same
+   * object must also set `port`.
+   * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
+   * referencing the same object must also set `sectionName` and `port`.
+   *
+   *
+   * It is possible to separately reference multiple distinct objects that may
+   * be collapsed by an implementation. For example, some implementations may
+   * choose to merge compatible Gateway Listeners together. If that is the
+   * case, the list of routes attached to those resources should also be
+   * merged.
+   *
+   *
+   * Note that for ParentRefs that cross namespace boundaries, there are specific
+   * rules. Cross-namespace references are only valid if they are explicitly
+   * allowed by something in the namespace they are referring to. For example,
+   * Gateway has the AllowedRoutes field, and ReferenceGrant provides a
+   * generic way to enable other kinds of cross-namespace reference.
+   *
+   *
+   *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   * @schema TcpRouteSpec#parentRefs
+   */
+  readonly parentRefs?: TcpRouteSpecParentRefs[];
+
+  /**
+   * Rules are a list of TCP matchers and actions.
+   *
+   * @schema TcpRouteSpec#rules
+   */
+  readonly rules: TcpRouteSpecRules[];
+
+}
+
+/**
+ * Converts an object of type 'TcpRouteSpec' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TcpRouteSpec(obj: TcpRouteSpec | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'parentRefs': obj.parentRefs?.map(y => toJson_TcpRouteSpecParentRefs(y)),
+    'rules': obj.rules?.map(y => toJson_TcpRouteSpecRules(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * ParentReference identifies an API object (usually a Gateway) that can be considered
+ * a parent of this resource (usually a route). There are two kinds of parent resources
+ * with "Core" support:
+ *
+ *
+ * * Gateway (Gateway conformance profile)
+ * * Service (Mesh conformance profile, ClusterIP Services only)
+ *
+ *
+ * This API may be extended in the future to support additional kinds of parent
+ * resources.
+ *
+ *
+ * The API object must be valid in the cluster; the Group and Kind must
+ * be registered in the cluster for this reference to be valid.
+ *
+ * @schema TcpRouteSpecParentRefs
+ */
+export interface TcpRouteSpecParentRefs {
+  /**
+   * Group is the group of the referent.
+   * When unspecified, "gateway.networking.k8s.io" is inferred.
+   * To set the core API group (such as for a "Service" kind referent),
+   * Group must be explicitly set to "" (empty string).
+   *
+   *
+   * Support: Core
+   *
+   * @schema TcpRouteSpecParentRefs#group
+   */
+  readonly group?: string;
+
+  /**
+   * Kind is kind of the referent.
+   *
+   *
+   * There are two kinds of parent resources with "Core" support:
+   *
+   *
+   * * Gateway (Gateway conformance profile)
+   * * Service (Mesh conformance profile, ClusterIP Services only)
+   *
+   *
+   * Support for other resources is Implementation-Specific.
+   *
+   * @schema TcpRouteSpecParentRefs#kind
+   */
+  readonly kind?: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   *
+   * Support: Core
+   *
+   * @schema TcpRouteSpecParentRefs#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the referent. When unspecified, this refers
+   * to the local namespace of the Route.
+   *
+   *
+   * Note that there are specific rules for ParentRefs which cross namespace
+   * boundaries. Cross-namespace references are only valid if they are explicitly
+   * allowed by something in the namespace they are referring to. For example:
+   * Gateway has the AllowedRoutes field, and ReferenceGrant provides a
+   * generic way to enable any other kind of cross-namespace reference.
+   *
+   *
+   *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
+   *
+   *
+   * Support: Core
+   *
+   * @schema TcpRouteSpecParentRefs#namespace
+   */
+  readonly namespace?: string;
+
+  /**
+   * Port is the network port this Route targets. It can be interpreted
+   * differently based on the type of parent resource.
+   *
+   *
+   * When the parent resource is a Gateway, this targets all listeners
+   * listening on the specified port that also support this kind of Route(and
+   * select this Route). It's not recommended to set `Port` unless the
+   * networking behaviors specified in a Route must apply to a specific port
+   * as opposed to a listener(s) whose port(s) may be changed. When both Port
+   * and SectionName are specified, the name and port of the selected listener
+   * must match both specified values.
+   *
+   *
+   *
+   * When the parent resource is a Service, this targets a specific port in the
+   * Service spec. When both Port (experimental) and SectionName are specified,
+   * the name and port of the selected port must match both specified values.
+   *
+   *
+   *
+   * Implementations MAY choose to support other parent resources.
+   * Implementations supporting other types of parent resources MUST clearly
+   * document how/if Port is interpreted.
+   *
+   *
+   * For the purpose of status, an attachment is considered successful as
+   * long as the parent resource accepts it partially. For example, Gateway
+   * listeners can restrict which Routes can attach to them by Route kind,
+   * namespace, or hostname. If 1 of 2 Gateway listeners accept attachment
+   * from the referencing Route, the Route MUST be considered successfully
+   * attached. If no Gateway listeners accept attachment from this Route,
+   * the Route MUST be considered detached from the Gateway.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema TcpRouteSpecParentRefs#port
+   */
+  readonly port?: number;
+
+  /**
+   * SectionName is the name of a section within the target resource. In the
+   * following resources, SectionName is interpreted as the following:
+   *
+   *
+   * * Gateway: Listener name. When both Port (experimental) and SectionName
+   * are specified, the name and port of the selected listener must match
+   * both specified values.
+   * * Service: Port name. When both Port (experimental) and SectionName
+   * are specified, the name and port of the selected listener must match
+   * both specified values.
+   *
+   *
+   * Implementations MAY choose to support attaching Routes to other resources.
+   * If that is the case, they MUST clearly document how SectionName is
+   * interpreted.
+   *
+   *
+   * When unspecified (empty string), this will reference the entire resource.
+   * For the purpose of status, an attachment is considered successful if at
+   * least one section in the parent resource accepts it. For example, Gateway
+   * listeners can restrict which Routes can attach to them by Route kind,
+   * namespace, or hostname. If 1 of 2 Gateway listeners accept attachment from
+   * the referencing Route, the Route MUST be considered successfully
+   * attached. If no Gateway listeners accept attachment from this Route, the
+   * Route MUST be considered detached from the Gateway.
+   *
+   *
+   * Support: Core
+   *
+   * @schema TcpRouteSpecParentRefs#sectionName
+   */
+  readonly sectionName?: string;
+
+}
+
+/**
+ * Converts an object of type 'TcpRouteSpecParentRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TcpRouteSpecParentRefs(obj: TcpRouteSpecParentRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
+    'port': obj.port,
+    'sectionName': obj.sectionName,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * TCPRouteRule is the configuration for a given rule.
+ *
+ * @schema TcpRouteSpecRules
+ */
+export interface TcpRouteSpecRules {
+  /**
+   * BackendRefs defines the backend(s) where matching requests should be
+   * sent. If unspecified or invalid (refers to a non-existent resource or a
+   * Service with no endpoints), the underlying implementation MUST actively
+   * reject connection attempts to this backend. Connection rejections must
+   * respect weight; if an invalid backend is requested to have 80% of
+   * connections, then 80% of connections must be rejected instead.
+   *
+   *
+   * Support: Core for Kubernetes Service
+   *
+   *
+   * Support: Extended for Kubernetes ServiceImport
+   *
+   *
+   * Support: Implementation-specific for any other resource
+   *
+   *
+   * Support for weight: Extended
+   *
+   * @schema TcpRouteSpecRules#backendRefs
+   */
+  readonly backendRefs?: TcpRouteSpecRulesBackendRefs[];
+
+}
+
+/**
+ * Converts an object of type 'TcpRouteSpecRules' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TcpRouteSpecRules(obj: TcpRouteSpecRules | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'backendRefs': obj.backendRefs?.map(y => toJson_TcpRouteSpecRulesBackendRefs(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * BackendRef defines how a Route should forward a request to a Kubernetes
+ * resource.
+ *
+ *
+ * Note that when a namespace different than the local namespace is specified, a
+ * ReferenceGrant object is required in the referent namespace to allow that
+ * namespace's owner to accept the reference. See the ReferenceGrant
+ * documentation for details.
+ *
+ *
+ * <gateway:experimental:description>
+ *
+ *
+ * When the BackendRef points to a Kubernetes Service, implementations SHOULD
+ * honor the appProtocol field if it is set for the target Service Port.
+ *
+ *
+ * Implementations supporting appProtocol SHOULD recognize the Kubernetes
+ * Standard Application Protocols defined in KEP-3726.
+ *
+ *
+ * If a Service appProtocol isn't specified, an implementation MAY infer the
+ * backend protocol through its own means. Implementations MAY infer the
+ * protocol from the Route type referring to the backend Service.
+ *
+ *
+ * If a Route is not able to send traffic to the backend using the specified
+ * protocol then the backend is considered invalid. Implementations MUST set the
+ * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
+ *
+ *
+ * </gateway:experimental:description>
+ *
+ *
+ * Note that when the BackendTLSPolicy object is enabled by the implementation,
+ * there are some extra rules about validity to consider here. See the fields
+ * where this struct is used for more information about the exact behavior.
+ *
+ * @schema TcpRouteSpecRulesBackendRefs
+ */
+export interface TcpRouteSpecRulesBackendRefs {
+  /**
+   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
+   * When unspecified or empty string, core API group is inferred.
+   *
+   * @schema TcpRouteSpecRulesBackendRefs#group
+   */
+  readonly group?: string;
+
+  /**
+   * Kind is the Kubernetes resource kind of the referent. For example
+   * "Service".
+   *
+   *
+   * Defaults to "Service" when not specified.
+   *
+   *
+   * ExternalName services can refer to CNAME DNS records that may live
+   * outside of the cluster and as such are difficult to reason about in
+   * terms of conformance. They also may not be safe to forward to (see
+   * CVE-2021-25740 for more information). Implementations SHOULD NOT
+   * support ExternalName Services.
+   *
+   *
+   * Support: Core (Services with a type other than ExternalName)
+   *
+   *
+   * Support: Implementation-specific (Services with type ExternalName)
+   *
+   * @default Service" when not specified.
+   * @schema TcpRouteSpecRulesBackendRefs#kind
+   */
+  readonly kind?: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema TcpRouteSpecRulesBackendRefs#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the backend. When unspecified, the local
+   * namespace is inferred.
+   *
+   *
+   * Note that when a namespace different than the local namespace is specified,
+   * a ReferenceGrant object is required in the referent namespace to allow that
+   * namespace's owner to accept the reference. See the ReferenceGrant
+   * documentation for details.
+   *
+   *
+   * Support: Core
+   *
+   * @schema TcpRouteSpecRulesBackendRefs#namespace
+   */
+  readonly namespace?: string;
+
+  /**
+   * Port specifies the destination port number to use for this resource.
+   * Port is required when the referent is a Kubernetes Service. In this
+   * case, the port number is the service port number, not the target port.
+   * For other resources, destination port might be derived from the referent
+   * resource or this field.
+   *
+   * @schema TcpRouteSpecRulesBackendRefs#port
+   */
+  readonly port?: number;
+
+  /**
+   * Weight specifies the proportion of requests forwarded to the referenced
+   * backend. This is computed as weight/(sum of all weights in this
+   * BackendRefs list). For non-zero values, there may be some epsilon from
+   * the exact proportion defined here depending on the precision an
+   * implementation supports. Weight is not a percentage and the sum of
+   * weights does not need to equal 100.
+   *
+   *
+   * If only one backend is specified and it has a weight greater than 0, 100%
+   * of the traffic is forwarded to that backend. If weight is set to 0, no
+   * traffic should be forwarded for this entry. If unspecified, weight
+   * defaults to 1.
+   *
+   *
+   * Support for this field varies based on the context where used.
+   *
+   * @schema TcpRouteSpecRulesBackendRefs#weight
+   */
+  readonly weight?: number;
+
+}
+
+/**
+ * Converts an object of type 'TcpRouteSpecRulesBackendRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TcpRouteSpecRulesBackendRefs(obj: TcpRouteSpecRulesBackendRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
+    'port': obj.port,
+    'weight': obj.weight,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+
+/**
+ * The TLSRoute resource is similar to TCPRoute, but can be configured
+to match against TLS-specific metadata. This allows more flexibility
+in matching streams for a given TLS listener.
+
+
+If you need to forward traffic to a single target for a TLS listener, you
+could choose to use a TCPRoute with a TLS listener.
+ *
+ * @schema TLSRoute
+ */
+export class TlsRoute extends ApiObject {
+  /**
+   * Returns the apiVersion and kind for "TLSRoute"
+   */
+  public static readonly GVK: GroupVersionKind = {
+    apiVersion: 'gateway.networking.k8s.io/v1alpha2',
+    kind: 'TLSRoute',
+  }
+
+  /**
+   * Renders a Kubernetes manifest for "TLSRoute".
+   *
+   * This can be used to inline resource manifests inside other objects (e.g. as templates).
+   *
+   * @param props initialization props
+   */
+  public static manifest(props: TlsRouteProps): any {
+    return {
+      ...TlsRoute.GVK,
+      ...toJson_TlsRouteProps(props),
+    };
+  }
+
+  /**
+   * Defines a "TLSRoute" API object
+   * @param scope the scope in which to define this object
+   * @param id a scope-local name for the object
+   * @param props initialization props
+   */
+  public constructor(scope: Construct, id: string, props: TlsRouteProps) {
+    super(scope, id, {
+      ...TlsRoute.GVK,
+      ...props,
+    });
+  }
+
+  /**
+   * Renders the object to Kubernetes JSON.
+   */
+  public toJson(): any {
+    const resolved = super.toJson();
+
+    return {
+      ...TlsRoute.GVK,
+      ...toJson_TlsRouteProps(resolved),
+    };
+  }
+}
+
+/**
+ * The TLSRoute resource is similar to TCPRoute, but can be configured
+ * to match against TLS-specific metadata. This allows more flexibility
+ * in matching streams for a given TLS listener.
+ *
+ *
+ * If you need to forward traffic to a single target for a TLS listener, you
+ * could choose to use a TCPRoute with a TLS listener.
+ *
+ * @schema TLSRoute
+ */
+export interface TlsRouteProps {
+  /**
+   * @schema TLSRoute#metadata
+   */
+  readonly metadata?: ApiObjectMetadata;
+
+  /**
+   * Spec defines the desired state of TLSRoute.
+   *
+   * @schema TLSRoute#spec
+   */
+  readonly spec: TlsRouteSpec;
+
+}
+
+/**
+ * Converts an object of type 'TlsRouteProps' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TlsRouteProps(obj: TlsRouteProps | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'metadata': obj.metadata,
+    'spec': toJson_TlsRouteSpec(obj.spec),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Spec defines the desired state of TLSRoute.
+ *
+ * @schema TlsRouteSpec
+ */
+export interface TlsRouteSpec {
+  /**
+   * Hostnames defines a set of SNI names that should match against the
+   * SNI attribute of TLS ClientHello message in TLS handshake. This matches
+   * the RFC 1123 definition of a hostname with 2 notable exceptions:
+   *
+   *
+   * 1. IPs are not allowed in SNI names per RFC 6066.
+   * 2. A hostname may be prefixed with a wildcard label (`*.`). The wildcard
+   * label must appear by itself as the first label.
+   *
+   *
+   * If a hostname is specified by both the Listener and TLSRoute, there
+   * must be at least one intersecting hostname for the TLSRoute to be
+   * attached to the Listener. For example:
+   *
+   *
+   * * A Listener with `test.example.com` as the hostname matches TLSRoutes
+   * that have either not specified any hostnames, or have specified at
+   * least one of `test.example.com` or `*.example.com`.
+   * * A Listener with `*.example.com` as the hostname matches TLSRoutes
+   * that have either not specified any hostnames or have specified at least
+   * one hostname that matches the Listener hostname. For example,
+   * `test.example.com` and `*.example.com` would both match. On the other
+   * hand, `example.com` and `test.example.net` would not match.
+   *
+   *
+   * If both the Listener and TLSRoute have specified hostnames, any
+   * TLSRoute hostnames that do not match the Listener hostname MUST be
+   * ignored. For example, if a Listener specified `*.example.com`, and the
+   * TLSRoute specified `test.example.com` and `test.example.net`,
+   * `test.example.net` must not be considered for a match.
+   *
+   *
+   * If both the Listener and TLSRoute have specified hostnames, and none
+   * match with the criteria above, then the TLSRoute is not accepted. The
+   * implementation must raise an 'Accepted' Condition with a status of
+   * `False` in the corresponding RouteParentStatus.
+   *
+   *
+   * Support: Core
+   *
+   * @schema TlsRouteSpec#hostnames
+   */
+  readonly hostnames?: string[];
+
+  /**
+   * ParentRefs references the resources (usually Gateways) that a Route wants
+   * to be attached to. Note that the referenced parent resource needs to
+   * allow this for the attachment to be complete. For Gateways, that means
+   * the Gateway needs to allow attachment from Routes of this kind and
+   * namespace. For Services, that means the Service must either be in the same
+   * namespace for a "producer" route, or the mesh implementation must support
+   * and allow "consumer" routes for the referenced Service. ReferenceGrant is
+   * not applicable for governing ParentRefs to Services - it is not possible to
+   * create a "producer" route for a Service in a different namespace from the
+   * Route.
+   *
+   *
+   * There are two kinds of parent resources with "Core" support:
+   *
+   *
+   * * Gateway (Gateway conformance profile)
+   * * Service (Mesh conformance profile, ClusterIP Services only)
+   *
+   *
+   * This API may be extended in the future to support additional kinds of parent
+   * resources.
+   *
+   *
+   * ParentRefs must be _distinct_. This means either that:
+   *
+   *
+   * * They select different objects.  If this is the case, then parentRef
+   * entries are distinct. In terms of fields, this means that the
+   * multi-part key defined by `group`, `kind`, `namespace`, and `name` must
+   * be unique across all parentRef entries in the Route.
+   * * They do not select different objects, but for each optional field used,
+   * each ParentRef that selects the same object must set the same set of
+   * optional fields to different values. If one ParentRef sets a
+   * combination of optional fields, all must set the same combination.
+   *
+   *
+   * Some examples:
+   *
+   *
+   * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
+   * same object must also set `sectionName`.
+   * * If one ParentRef sets `port`, all ParentRefs referencing the same
+   * object must also set `port`.
+   * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
+   * referencing the same object must also set `sectionName` and `port`.
+   *
+   *
+   * It is possible to separately reference multiple distinct objects that may
+   * be collapsed by an implementation. For example, some implementations may
+   * choose to merge compatible Gateway Listeners together. If that is the
+   * case, the list of routes attached to those resources should also be
+   * merged.
+   *
+   *
+   * Note that for ParentRefs that cross namespace boundaries, there are specific
+   * rules. Cross-namespace references are only valid if they are explicitly
+   * allowed by something in the namespace they are referring to. For example,
+   * Gateway has the AllowedRoutes field, and ReferenceGrant provides a
+   * generic way to enable other kinds of cross-namespace reference.
+   *
+   *
+   *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   * @schema TlsRouteSpec#parentRefs
+   */
+  readonly parentRefs?: TlsRouteSpecParentRefs[];
+
+  /**
+   * Rules are a list of TLS matchers and actions.
+   *
+   * @schema TlsRouteSpec#rules
+   */
+  readonly rules: TlsRouteSpecRules[];
+
+}
+
+/**
+ * Converts an object of type 'TlsRouteSpec' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TlsRouteSpec(obj: TlsRouteSpec | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'hostnames': obj.hostnames?.map(y => y),
+    'parentRefs': obj.parentRefs?.map(y => toJson_TlsRouteSpecParentRefs(y)),
+    'rules': obj.rules?.map(y => toJson_TlsRouteSpecRules(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * ParentReference identifies an API object (usually a Gateway) that can be considered
+ * a parent of this resource (usually a route). There are two kinds of parent resources
+ * with "Core" support:
+ *
+ *
+ * * Gateway (Gateway conformance profile)
+ * * Service (Mesh conformance profile, ClusterIP Services only)
+ *
+ *
+ * This API may be extended in the future to support additional kinds of parent
+ * resources.
+ *
+ *
+ * The API object must be valid in the cluster; the Group and Kind must
+ * be registered in the cluster for this reference to be valid.
+ *
+ * @schema TlsRouteSpecParentRefs
+ */
+export interface TlsRouteSpecParentRefs {
+  /**
+   * Group is the group of the referent.
+   * When unspecified, "gateway.networking.k8s.io" is inferred.
+   * To set the core API group (such as for a "Service" kind referent),
+   * Group must be explicitly set to "" (empty string).
+   *
+   *
+   * Support: Core
+   *
+   * @schema TlsRouteSpecParentRefs#group
+   */
+  readonly group?: string;
+
+  /**
+   * Kind is kind of the referent.
+   *
+   *
+   * There are two kinds of parent resources with "Core" support:
+   *
+   *
+   * * Gateway (Gateway conformance profile)
+   * * Service (Mesh conformance profile, ClusterIP Services only)
+   *
+   *
+   * Support for other resources is Implementation-Specific.
+   *
+   * @schema TlsRouteSpecParentRefs#kind
+   */
+  readonly kind?: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   *
+   * Support: Core
+   *
+   * @schema TlsRouteSpecParentRefs#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the referent. When unspecified, this refers
+   * to the local namespace of the Route.
+   *
+   *
+   * Note that there are specific rules for ParentRefs which cross namespace
+   * boundaries. Cross-namespace references are only valid if they are explicitly
+   * allowed by something in the namespace they are referring to. For example:
+   * Gateway has the AllowedRoutes field, and ReferenceGrant provides a
+   * generic way to enable any other kind of cross-namespace reference.
+   *
+   *
+   *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
+   *
+   *
+   * Support: Core
+   *
+   * @schema TlsRouteSpecParentRefs#namespace
+   */
+  readonly namespace?: string;
+
+  /**
+   * Port is the network port this Route targets. It can be interpreted
+   * differently based on the type of parent resource.
+   *
+   *
+   * When the parent resource is a Gateway, this targets all listeners
+   * listening on the specified port that also support this kind of Route(and
+   * select this Route). It's not recommended to set `Port` unless the
+   * networking behaviors specified in a Route must apply to a specific port
+   * as opposed to a listener(s) whose port(s) may be changed. When both Port
+   * and SectionName are specified, the name and port of the selected listener
+   * must match both specified values.
+   *
+   *
+   *
+   * When the parent resource is a Service, this targets a specific port in the
+   * Service spec. When both Port (experimental) and SectionName are specified,
+   * the name and port of the selected port must match both specified values.
+   *
+   *
+   *
+   * Implementations MAY choose to support other parent resources.
+   * Implementations supporting other types of parent resources MUST clearly
+   * document how/if Port is interpreted.
+   *
+   *
+   * For the purpose of status, an attachment is considered successful as
+   * long as the parent resource accepts it partially. For example, Gateway
+   * listeners can restrict which Routes can attach to them by Route kind,
+   * namespace, or hostname. If 1 of 2 Gateway listeners accept attachment
+   * from the referencing Route, the Route MUST be considered successfully
+   * attached. If no Gateway listeners accept attachment from this Route,
+   * the Route MUST be considered detached from the Gateway.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema TlsRouteSpecParentRefs#port
+   */
+  readonly port?: number;
+
+  /**
+   * SectionName is the name of a section within the target resource. In the
+   * following resources, SectionName is interpreted as the following:
+   *
+   *
+   * * Gateway: Listener name. When both Port (experimental) and SectionName
+   * are specified, the name and port of the selected listener must match
+   * both specified values.
+   * * Service: Port name. When both Port (experimental) and SectionName
+   * are specified, the name and port of the selected listener must match
+   * both specified values.
+   *
+   *
+   * Implementations MAY choose to support attaching Routes to other resources.
+   * If that is the case, they MUST clearly document how SectionName is
+   * interpreted.
+   *
+   *
+   * When unspecified (empty string), this will reference the entire resource.
+   * For the purpose of status, an attachment is considered successful if at
+   * least one section in the parent resource accepts it. For example, Gateway
+   * listeners can restrict which Routes can attach to them by Route kind,
+   * namespace, or hostname. If 1 of 2 Gateway listeners accept attachment from
+   * the referencing Route, the Route MUST be considered successfully
+   * attached. If no Gateway listeners accept attachment from this Route, the
+   * Route MUST be considered detached from the Gateway.
+   *
+   *
+   * Support: Core
+   *
+   * @schema TlsRouteSpecParentRefs#sectionName
+   */
+  readonly sectionName?: string;
+
+}
+
+/**
+ * Converts an object of type 'TlsRouteSpecParentRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TlsRouteSpecParentRefs(obj: TlsRouteSpecParentRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
+    'port': obj.port,
+    'sectionName': obj.sectionName,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * TLSRouteRule is the configuration for a given rule.
+ *
+ * @schema TlsRouteSpecRules
+ */
+export interface TlsRouteSpecRules {
+  /**
+   * BackendRefs defines the backend(s) where matching requests should be
+   * sent. If unspecified or invalid (refers to a non-existent resource or
+   * a Service with no endpoints), the rule performs no forwarding; if no
+   * filters are specified that would result in a response being sent, the
+   * underlying implementation must actively reject request attempts to this
+   * backend, by rejecting the connection or returning a 500 status code.
+   * Request rejections must respect weight; if an invalid backend is
+   * requested to have 80% of requests, then 80% of requests must be rejected
+   * instead.
+   *
+   *
+   * Support: Core for Kubernetes Service
+   *
+   *
+   * Support: Extended for Kubernetes ServiceImport
+   *
+   *
+   * Support: Implementation-specific for any other resource
+   *
+   *
+   * Support for weight: Extended
+   *
+   * @schema TlsRouteSpecRules#backendRefs
+   */
+  readonly backendRefs?: TlsRouteSpecRulesBackendRefs[];
+
+}
+
+/**
+ * Converts an object of type 'TlsRouteSpecRules' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TlsRouteSpecRules(obj: TlsRouteSpecRules | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'backendRefs': obj.backendRefs?.map(y => toJson_TlsRouteSpecRulesBackendRefs(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * BackendRef defines how a Route should forward a request to a Kubernetes
+ * resource.
+ *
+ *
+ * Note that when a namespace different than the local namespace is specified, a
+ * ReferenceGrant object is required in the referent namespace to allow that
+ * namespace's owner to accept the reference. See the ReferenceGrant
+ * documentation for details.
+ *
+ *
+ * <gateway:experimental:description>
+ *
+ *
+ * When the BackendRef points to a Kubernetes Service, implementations SHOULD
+ * honor the appProtocol field if it is set for the target Service Port.
+ *
+ *
+ * Implementations supporting appProtocol SHOULD recognize the Kubernetes
+ * Standard Application Protocols defined in KEP-3726.
+ *
+ *
+ * If a Service appProtocol isn't specified, an implementation MAY infer the
+ * backend protocol through its own means. Implementations MAY infer the
+ * protocol from the Route type referring to the backend Service.
+ *
+ *
+ * If a Route is not able to send traffic to the backend using the specified
+ * protocol then the backend is considered invalid. Implementations MUST set the
+ * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
+ *
+ *
+ * </gateway:experimental:description>
+ *
+ *
+ * Note that when the BackendTLSPolicy object is enabled by the implementation,
+ * there are some extra rules about validity to consider here. See the fields
+ * where this struct is used for more information about the exact behavior.
+ *
+ * @schema TlsRouteSpecRulesBackendRefs
+ */
+export interface TlsRouteSpecRulesBackendRefs {
+  /**
+   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
+   * When unspecified or empty string, core API group is inferred.
+   *
+   * @schema TlsRouteSpecRulesBackendRefs#group
+   */
+  readonly group?: string;
+
+  /**
+   * Kind is the Kubernetes resource kind of the referent. For example
+   * "Service".
+   *
+   *
+   * Defaults to "Service" when not specified.
+   *
+   *
+   * ExternalName services can refer to CNAME DNS records that may live
+   * outside of the cluster and as such are difficult to reason about in
+   * terms of conformance. They also may not be safe to forward to (see
+   * CVE-2021-25740 for more information). Implementations SHOULD NOT
+   * support ExternalName Services.
+   *
+   *
+   * Support: Core (Services with a type other than ExternalName)
+   *
+   *
+   * Support: Implementation-specific (Services with type ExternalName)
+   *
+   * @default Service" when not specified.
+   * @schema TlsRouteSpecRulesBackendRefs#kind
+   */
+  readonly kind?: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema TlsRouteSpecRulesBackendRefs#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the backend. When unspecified, the local
+   * namespace is inferred.
+   *
+   *
+   * Note that when a namespace different than the local namespace is specified,
+   * a ReferenceGrant object is required in the referent namespace to allow that
+   * namespace's owner to accept the reference. See the ReferenceGrant
+   * documentation for details.
+   *
+   *
+   * Support: Core
+   *
+   * @schema TlsRouteSpecRulesBackendRefs#namespace
+   */
+  readonly namespace?: string;
+
+  /**
+   * Port specifies the destination port number to use for this resource.
+   * Port is required when the referent is a Kubernetes Service. In this
+   * case, the port number is the service port number, not the target port.
+   * For other resources, destination port might be derived from the referent
+   * resource or this field.
+   *
+   * @schema TlsRouteSpecRulesBackendRefs#port
+   */
+  readonly port?: number;
+
+  /**
+   * Weight specifies the proportion of requests forwarded to the referenced
+   * backend. This is computed as weight/(sum of all weights in this
+   * BackendRefs list). For non-zero values, there may be some epsilon from
+   * the exact proportion defined here depending on the precision an
+   * implementation supports. Weight is not a percentage and the sum of
+   * weights does not need to equal 100.
+   *
+   *
+   * If only one backend is specified and it has a weight greater than 0, 100%
+   * of the traffic is forwarded to that backend. If weight is set to 0, no
+   * traffic should be forwarded for this entry. If unspecified, weight
+   * defaults to 1.
+   *
+   *
+   * Support for this field varies based on the context where used.
+   *
+   * @schema TlsRouteSpecRulesBackendRefs#weight
+   */
+  readonly weight?: number;
+
+}
+
+/**
+ * Converts an object of type 'TlsRouteSpecRulesBackendRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_TlsRouteSpecRulesBackendRefs(obj: TlsRouteSpecRulesBackendRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
+    'port': obj.port,
+    'weight': obj.weight,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+
+/**
+ * UDPRoute provides a way to route UDP traffic. When combined with a Gateway
+listener, it can be used to forward traffic on the port specified by the
+listener to a set of backends specified by the UDPRoute.
+ *
+ * @schema UDPRoute
+ */
+export class UdpRoute extends ApiObject {
+  /**
+   * Returns the apiVersion and kind for "UDPRoute"
+   */
+  public static readonly GVK: GroupVersionKind = {
+    apiVersion: 'gateway.networking.k8s.io/v1alpha2',
+    kind: 'UDPRoute',
+  }
+
+  /**
+   * Renders a Kubernetes manifest for "UDPRoute".
+   *
+   * This can be used to inline resource manifests inside other objects (e.g. as templates).
+   *
+   * @param props initialization props
+   */
+  public static manifest(props: UdpRouteProps): any {
+    return {
+      ...UdpRoute.GVK,
+      ...toJson_UdpRouteProps(props),
+    };
+  }
+
+  /**
+   * Defines a "UDPRoute" API object
+   * @param scope the scope in which to define this object
+   * @param id a scope-local name for the object
+   * @param props initialization props
+   */
+  public constructor(scope: Construct, id: string, props: UdpRouteProps) {
+    super(scope, id, {
+      ...UdpRoute.GVK,
+      ...props,
+    });
+  }
+
+  /**
+   * Renders the object to Kubernetes JSON.
+   */
+  public toJson(): any {
+    const resolved = super.toJson();
+
+    return {
+      ...UdpRoute.GVK,
+      ...toJson_UdpRouteProps(resolved),
+    };
+  }
+}
+
+/**
+ * UDPRoute provides a way to route UDP traffic. When combined with a Gateway
+ * listener, it can be used to forward traffic on the port specified by the
+ * listener to a set of backends specified by the UDPRoute.
+ *
+ * @schema UDPRoute
+ */
+export interface UdpRouteProps {
+  /**
+   * @schema UDPRoute#metadata
+   */
+  readonly metadata?: ApiObjectMetadata;
+
+  /**
+   * Spec defines the desired state of UDPRoute.
+   *
+   * @schema UDPRoute#spec
+   */
+  readonly spec: UdpRouteSpec;
+
+}
+
+/**
+ * Converts an object of type 'UdpRouteProps' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_UdpRouteProps(obj: UdpRouteProps | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'metadata': obj.metadata,
+    'spec': toJson_UdpRouteSpec(obj.spec),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Spec defines the desired state of UDPRoute.
+ *
+ * @schema UdpRouteSpec
+ */
+export interface UdpRouteSpec {
+  /**
+   * ParentRefs references the resources (usually Gateways) that a Route wants
+   * to be attached to. Note that the referenced parent resource needs to
+   * allow this for the attachment to be complete. For Gateways, that means
+   * the Gateway needs to allow attachment from Routes of this kind and
+   * namespace. For Services, that means the Service must either be in the same
+   * namespace for a "producer" route, or the mesh implementation must support
+   * and allow "consumer" routes for the referenced Service. ReferenceGrant is
+   * not applicable for governing ParentRefs to Services - it is not possible to
+   * create a "producer" route for a Service in a different namespace from the
+   * Route.
+   *
+   *
+   * There are two kinds of parent resources with "Core" support:
+   *
+   *
+   * * Gateway (Gateway conformance profile)
+   * * Service (Mesh conformance profile, ClusterIP Services only)
+   *
+   *
+   * This API may be extended in the future to support additional kinds of parent
+   * resources.
+   *
+   *
+   * ParentRefs must be _distinct_. This means either that:
+   *
+   *
+   * * They select different objects.  If this is the case, then parentRef
+   * entries are distinct. In terms of fields, this means that the
+   * multi-part key defined by `group`, `kind`, `namespace`, and `name` must
+   * be unique across all parentRef entries in the Route.
+   * * They do not select different objects, but for each optional field used,
+   * each ParentRef that selects the same object must set the same set of
+   * optional fields to different values. If one ParentRef sets a
+   * combination of optional fields, all must set the same combination.
+   *
+   *
+   * Some examples:
+   *
+   *
+   * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
+   * same object must also set `sectionName`.
+   * * If one ParentRef sets `port`, all ParentRefs referencing the same
+   * object must also set `port`.
+   * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
+   * referencing the same object must also set `sectionName` and `port`.
+   *
+   *
+   * It is possible to separately reference multiple distinct objects that may
+   * be collapsed by an implementation. For example, some implementations may
+   * choose to merge compatible Gateway Listeners together. If that is the
+   * case, the list of routes attached to those resources should also be
+   * merged.
+   *
+   *
+   * Note that for ParentRefs that cross namespace boundaries, there are specific
+   * rules. Cross-namespace references are only valid if they are explicitly
+   * allowed by something in the namespace they are referring to. For example,
+   * Gateway has the AllowedRoutes field, and ReferenceGrant provides a
+   * generic way to enable other kinds of cross-namespace reference.
+   *
+   *
+   *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   * @schema UdpRouteSpec#parentRefs
+   */
+  readonly parentRefs?: UdpRouteSpecParentRefs[];
+
+  /**
+   * Rules are a list of UDP matchers and actions.
+   *
+   * @schema UdpRouteSpec#rules
+   */
+  readonly rules: UdpRouteSpecRules[];
+
+}
+
+/**
+ * Converts an object of type 'UdpRouteSpec' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_UdpRouteSpec(obj: UdpRouteSpec | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'parentRefs': obj.parentRefs?.map(y => toJson_UdpRouteSpecParentRefs(y)),
+    'rules': obj.rules?.map(y => toJson_UdpRouteSpecRules(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * ParentReference identifies an API object (usually a Gateway) that can be considered
+ * a parent of this resource (usually a route). There are two kinds of parent resources
+ * with "Core" support:
+ *
+ *
+ * * Gateway (Gateway conformance profile)
+ * * Service (Mesh conformance profile, ClusterIP Services only)
+ *
+ *
+ * This API may be extended in the future to support additional kinds of parent
+ * resources.
+ *
+ *
+ * The API object must be valid in the cluster; the Group and Kind must
+ * be registered in the cluster for this reference to be valid.
+ *
+ * @schema UdpRouteSpecParentRefs
+ */
+export interface UdpRouteSpecParentRefs {
+  /**
+   * Group is the group of the referent.
+   * When unspecified, "gateway.networking.k8s.io" is inferred.
+   * To set the core API group (such as for a "Service" kind referent),
+   * Group must be explicitly set to "" (empty string).
+   *
+   *
+   * Support: Core
+   *
+   * @schema UdpRouteSpecParentRefs#group
+   */
+  readonly group?: string;
+
+  /**
+   * Kind is kind of the referent.
+   *
+   *
+   * There are two kinds of parent resources with "Core" support:
+   *
+   *
+   * * Gateway (Gateway conformance profile)
+   * * Service (Mesh conformance profile, ClusterIP Services only)
+   *
+   *
+   * Support for other resources is Implementation-Specific.
+   *
+   * @schema UdpRouteSpecParentRefs#kind
+   */
+  readonly kind?: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   *
+   * Support: Core
+   *
+   * @schema UdpRouteSpecParentRefs#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the referent. When unspecified, this refers
+   * to the local namespace of the Route.
+   *
+   *
+   * Note that there are specific rules for ParentRefs which cross namespace
+   * boundaries. Cross-namespace references are only valid if they are explicitly
+   * allowed by something in the namespace they are referring to. For example:
+   * Gateway has the AllowedRoutes field, and ReferenceGrant provides a
+   * generic way to enable any other kind of cross-namespace reference.
+   *
+   *
+   *
+   * ParentRefs from a Route to a Service in the same namespace are "producer"
+   * routes, which apply default routing rules to inbound connections from
+   * any namespace to the Service.
+   *
+   *
+   * ParentRefs from a Route to a Service in a different namespace are
+   * "consumer" routes, and these routing rules are only applied to outbound
+   * connections originating from the same namespace as the Route, for which
+   * the intended destination of the connections are a Service targeted as a
+   * ParentRef of the Route.
+   *
+   *
+   *
+   * Support: Core
+   *
+   * @schema UdpRouteSpecParentRefs#namespace
+   */
+  readonly namespace?: string;
+
+  /**
+   * Port is the network port this Route targets. It can be interpreted
+   * differently based on the type of parent resource.
+   *
+   *
+   * When the parent resource is a Gateway, this targets all listeners
+   * listening on the specified port that also support this kind of Route(and
+   * select this Route). It's not recommended to set `Port` unless the
+   * networking behaviors specified in a Route must apply to a specific port
+   * as opposed to a listener(s) whose port(s) may be changed. When both Port
+   * and SectionName are specified, the name and port of the selected listener
+   * must match both specified values.
+   *
+   *
+   *
+   * When the parent resource is a Service, this targets a specific port in the
+   * Service spec. When both Port (experimental) and SectionName are specified,
+   * the name and port of the selected port must match both specified values.
+   *
+   *
+   *
+   * Implementations MAY choose to support other parent resources.
+   * Implementations supporting other types of parent resources MUST clearly
+   * document how/if Port is interpreted.
+   *
+   *
+   * For the purpose of status, an attachment is considered successful as
+   * long as the parent resource accepts it partially. For example, Gateway
+   * listeners can restrict which Routes can attach to them by Route kind,
+   * namespace, or hostname. If 1 of 2 Gateway listeners accept attachment
+   * from the referencing Route, the Route MUST be considered successfully
+   * attached. If no Gateway listeners accept attachment from this Route,
+   * the Route MUST be considered detached from the Gateway.
+   *
+   *
+   * Support: Extended
+   *
+   * @schema UdpRouteSpecParentRefs#port
+   */
+  readonly port?: number;
+
+  /**
+   * SectionName is the name of a section within the target resource. In the
+   * following resources, SectionName is interpreted as the following:
+   *
+   *
+   * * Gateway: Listener name. When both Port (experimental) and SectionName
+   * are specified, the name and port of the selected listener must match
+   * both specified values.
+   * * Service: Port name. When both Port (experimental) and SectionName
+   * are specified, the name and port of the selected listener must match
+   * both specified values.
+   *
+   *
+   * Implementations MAY choose to support attaching Routes to other resources.
+   * If that is the case, they MUST clearly document how SectionName is
+   * interpreted.
+   *
+   *
+   * When unspecified (empty string), this will reference the entire resource.
+   * For the purpose of status, an attachment is considered successful if at
+   * least one section in the parent resource accepts it. For example, Gateway
+   * listeners can restrict which Routes can attach to them by Route kind,
+   * namespace, or hostname. If 1 of 2 Gateway listeners accept attachment from
+   * the referencing Route, the Route MUST be considered successfully
+   * attached. If no Gateway listeners accept attachment from this Route, the
+   * Route MUST be considered detached from the Gateway.
+   *
+   *
+   * Support: Core
+   *
+   * @schema UdpRouteSpecParentRefs#sectionName
+   */
+  readonly sectionName?: string;
+
+}
+
+/**
+ * Converts an object of type 'UdpRouteSpecParentRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_UdpRouteSpecParentRefs(obj: UdpRouteSpecParentRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
+    'port': obj.port,
+    'sectionName': obj.sectionName,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * UDPRouteRule is the configuration for a given rule.
+ *
+ * @schema UdpRouteSpecRules
+ */
+export interface UdpRouteSpecRules {
+  /**
+   * BackendRefs defines the backend(s) where matching requests should be
+   * sent. If unspecified or invalid (refers to a non-existent resource or a
+   * Service with no endpoints), the underlying implementation MUST actively
+   * reject connection attempts to this backend. Packet drops must
+   * respect weight; if an invalid backend is requested to have 80% of
+   * the packets, then 80% of packets must be dropped instead.
+   *
+   *
+   * Support: Core for Kubernetes Service
+   *
+   *
+   * Support: Extended for Kubernetes ServiceImport
+   *
+   *
+   * Support: Implementation-specific for any other resource
+   *
+   *
+   * Support for weight: Extended
+   *
+   * @schema UdpRouteSpecRules#backendRefs
+   */
+  readonly backendRefs?: UdpRouteSpecRulesBackendRefs[];
+
+}
+
+/**
+ * Converts an object of type 'UdpRouteSpecRules' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_UdpRouteSpecRules(obj: UdpRouteSpecRules | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'backendRefs': obj.backendRefs?.map(y => toJson_UdpRouteSpecRulesBackendRefs(y)),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * BackendRef defines how a Route should forward a request to a Kubernetes
+ * resource.
+ *
+ *
+ * Note that when a namespace different than the local namespace is specified, a
+ * ReferenceGrant object is required in the referent namespace to allow that
+ * namespace's owner to accept the reference. See the ReferenceGrant
+ * documentation for details.
+ *
+ *
+ * <gateway:experimental:description>
+ *
+ *
+ * When the BackendRef points to a Kubernetes Service, implementations SHOULD
+ * honor the appProtocol field if it is set for the target Service Port.
+ *
+ *
+ * Implementations supporting appProtocol SHOULD recognize the Kubernetes
+ * Standard Application Protocols defined in KEP-3726.
+ *
+ *
+ * If a Service appProtocol isn't specified, an implementation MAY infer the
+ * backend protocol through its own means. Implementations MAY infer the
+ * protocol from the Route type referring to the backend Service.
+ *
+ *
+ * If a Route is not able to send traffic to the backend using the specified
+ * protocol then the backend is considered invalid. Implementations MUST set the
+ * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
+ *
+ *
+ * </gateway:experimental:description>
+ *
+ *
+ * Note that when the BackendTLSPolicy object is enabled by the implementation,
+ * there are some extra rules about validity to consider here. See the fields
+ * where this struct is used for more information about the exact behavior.
+ *
+ * @schema UdpRouteSpecRulesBackendRefs
+ */
+export interface UdpRouteSpecRulesBackendRefs {
+  /**
+   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
+   * When unspecified or empty string, core API group is inferred.
+   *
+   * @schema UdpRouteSpecRulesBackendRefs#group
+   */
+  readonly group?: string;
+
+  /**
+   * Kind is the Kubernetes resource kind of the referent. For example
+   * "Service".
+   *
+   *
+   * Defaults to "Service" when not specified.
+   *
+   *
+   * ExternalName services can refer to CNAME DNS records that may live
+   * outside of the cluster and as such are difficult to reason about in
+   * terms of conformance. They also may not be safe to forward to (see
+   * CVE-2021-25740 for more information). Implementations SHOULD NOT
+   * support ExternalName Services.
+   *
+   *
+   * Support: Core (Services with a type other than ExternalName)
+   *
+   *
+   * Support: Implementation-specific (Services with type ExternalName)
+   *
+   * @default Service" when not specified.
+   * @schema UdpRouteSpecRulesBackendRefs#kind
+   */
+  readonly kind?: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema UdpRouteSpecRulesBackendRefs#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the backend. When unspecified, the local
+   * namespace is inferred.
+   *
+   *
+   * Note that when a namespace different than the local namespace is specified,
+   * a ReferenceGrant object is required in the referent namespace to allow that
+   * namespace's owner to accept the reference. See the ReferenceGrant
+   * documentation for details.
+   *
+   *
+   * Support: Core
+   *
+   * @schema UdpRouteSpecRulesBackendRefs#namespace
+   */
+  readonly namespace?: string;
+
+  /**
+   * Port specifies the destination port number to use for this resource.
+   * Port is required when the referent is a Kubernetes Service. In this
+   * case, the port number is the service port number, not the target port.
+   * For other resources, destination port might be derived from the referent
+   * resource or this field.
+   *
+   * @schema UdpRouteSpecRulesBackendRefs#port
+   */
+  readonly port?: number;
+
+  /**
+   * Weight specifies the proportion of requests forwarded to the referenced
+   * backend. This is computed as weight/(sum of all weights in this
+   * BackendRefs list). For non-zero values, there may be some epsilon from
+   * the exact proportion defined here depending on the precision an
+   * implementation supports. Weight is not a percentage and the sum of
+   * weights does not need to equal 100.
+   *
+   *
+   * If only one backend is specified and it has a weight greater than 0, 100%
+   * of the traffic is forwarded to that backend. If weight is set to 0, no
+   * traffic should be forwarded for this entry. If unspecified, weight
+   * defaults to 1.
+   *
+   *
+   * Support for this field varies based on the context where used.
+   *
+   * @schema UdpRouteSpecRulesBackendRefs#weight
+   */
+  readonly weight?: number;
+
+}
+
+/**
+ * Converts an object of type 'UdpRouteSpecRulesBackendRefs' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_UdpRouteSpecRulesBackendRefs(obj: UdpRouteSpecRulesBackendRefs | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
+    'port': obj.port,
+    'weight': obj.weight,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
