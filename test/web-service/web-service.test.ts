@@ -102,6 +102,8 @@ describe("WebService", () => {
           | "makeAffinity"
           | "makeLoadBalancerName"
           | "replicas"
+          | "includeHttpRoute"
+          | "httpGateway"
         >
       > = {
         ...requiredProps,
@@ -771,6 +773,61 @@ describe("WebService", () => {
         }).toThrowError();
       },
     );
+
+    test("Throws error if includeHttpRoute is specified and no httpGateway is defined", () => {
+      expect(() => {
+        new WebService(Testing.chart(), "web", {
+          ...defaultProps,
+          includeHttpRoute: true,
+        });
+      }).toThrowErrorMatchingSnapshot();
+    });
+
+    test("Allows to skip HttpRoute", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        includeHttpRoute: false,
+        includeIngress: false,
+      });
+      expect(results).toHaveLength(2);
+      const httpRoute = results.find((obj) => obj.kind === "HTTPRoute");
+      expect(httpRoute).toBeUndefined();
+    });
+
+    test("Allows specifying the httpRoute and httpGateway", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        externalHostname: "api.example.com",
+        includeHttpRoute: true,
+        httpGateway: {
+          name: "gateway",
+          namespace: "envoy-gateway",
+          sectionName: "custom-section",
+        },
+      });
+      expect(results).toHaveLength(4);
+      const httpRoute = results.find((obj) => obj.kind === "HTTPRoute");
+      expect(httpRoute).toBeDefined();
+      expect(httpRoute).toMatchSnapshot();
+    });
+
+    test("Specifies the correct httpRoute when multiple domains are specified", () => {
+      const results = synthWebService({
+        ...defaultProps,
+        externalHostname: "api.example.com",
+        additionalExternalHostnames: ["api2.example.com", "api3.example.com"],
+        includeHttpRoute: true,
+        httpGateway: {
+          name: "gateway",
+          namespace: "envoy-gateway",
+          sectionName: "custom-section",
+        },
+      });
+      expect(results).toHaveLength(4);
+      const httpRoute = results.find((obj) => obj.kind === "HTTPRoute");
+      expect(httpRoute).toBeDefined();
+      expect(httpRoute).toMatchSnapshot();
+    });
   });
 
   describe("Containers", () => {
