@@ -16,7 +16,7 @@ commands:
       - run:
           name: Install kubectl
           command: |
-            KUBECTL_VERSION=1.31.2 
+            KUBECTL_VERSION=1.32.1 
             curl --fail -sLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
             curl --fail -sLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl.sha256"
             echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check --status -
