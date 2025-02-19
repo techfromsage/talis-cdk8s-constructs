@@ -14,7 +14,6 @@ import {
   WebService,
   WebServiceProps,
 } from "../../lib";
-import * as _ from "lodash";
 import { makeChart } from "../test-util";
 
 const annotations = {
@@ -918,24 +917,26 @@ describe("WebService", () => {
         });
       });
 
-      const byKind = _.groupBy(results, (obj) => obj.kind);
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
+      const service = byKind.Service?.[0];
+      const deployment = byKind.Deployment?.[0];
 
       // Service selector should include app label
-      expect(byKind.Service[0].spec.selector).toEqual({
+      expect(service.spec.selector).toEqual({
         app: "my-app",
         instance: "web",
         role: "server",
       });
 
       // Deployment selector should include app label
-      expect(byKind.Deployment[0].spec.selector.matchLabels).toEqual({
+      expect(deployment.spec.selector.matchLabels).toEqual({
         app: "my-app",
         instance: "web",
         role: "server",
       });
 
       // Deployment pod spec should include all labels
-      expect(byKind.Deployment[0].spec.template.metadata.labels).toEqual({
+      expect(deployment.spec.template.metadata.labels).toEqual({
         app: "my-app",
         environment: "test",
         instance: "web",
@@ -975,10 +976,12 @@ describe("WebService", () => {
         });
       });
 
-      const byKind = _.groupBy(results, (obj) => obj.kind);
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
+      const service = byKind.Service?.[0];
+      const deployment = byKind.Deployment?.[0];
 
       // Service selector should include custom labels
-      expect(byKind.Service[0].spec.selector).toEqual({
+      expect(service.spec.selector).toEqual({
         app: "side-app",
         instance: "web",
         role: "server",
@@ -986,7 +989,7 @@ describe("WebService", () => {
       });
 
       // Deployment selector should include custom labels
-      expect(byKind.Deployment[0].spec.selector.matchLabels).toEqual({
+      expect(deployment.spec.selector.matchLabels).toEqual({
         app: "side-app",
         instance: "web",
         role: "server",
@@ -994,7 +997,7 @@ describe("WebService", () => {
       });
 
       // Deployment pod spec should include all labels
-      expect(byKind.Deployment[0].spec.template.metadata.labels).toEqual({
+      expect(deployment.spec.template.metadata.labels).toEqual({
         app: "side-app",
         environment: "test",
         instance: "web",
@@ -1025,7 +1028,7 @@ describe("WebService", () => {
   describe("Canary releases", () => {
     test("Creates one set of objects with canary disabled", () => {
       const results = synthWebService({ ...defaultProps, canary: false });
-      const byKind = _.groupBy(results, (obj) => obj.kind);
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
       expect(byKind.Service).toHaveLength(1);
       expect(byKind.Ingress).toHaveLength(1);
       expect(byKind.Deployment).toHaveLength(1);
@@ -1037,7 +1040,7 @@ describe("WebService", () => {
         canary: true,
         stage: "base",
       });
-      const byKind = _.groupBy(results, (obj) => obj.kind);
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
 
       expect(byKind.Service).toHaveLength(2);
       expect(byKind.Ingress).toHaveLength(2);
@@ -1070,19 +1073,19 @@ describe("WebService", () => {
         "true",
       ]);
 
-      const byKind = _.groupBy(results, (obj) => obj.kind);
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
 
       // Services should have the canary selector in their spec
-      const services = byKind.Service;
+      const services = byKind.Service ?? [];
       expect(services[0].spec.selector.canary).toBe("false");
       expect(services[1].spec.selector.canary).toBe("true");
 
       // Deployments should have the canary label in their pod spec and selector
-      const deployments = byKind.Deployment;
-      expect(deployments[0].spec.template.metadata.labels.canary).toBe("false");
-      expect(deployments[0].spec.selector.matchLabels.canary).toBe("false");
-      expect(deployments[1].spec.template.metadata.labels.canary).toBe("true");
-      expect(deployments[1].spec.selector.matchLabels.canary).toBe("true");
+      const [deployA, deployB] = byKind.Deployment ?? [];
+      expect(deployA.spec.template.metadata.labels.canary).toBe("false");
+      expect(deployA.spec.selector.matchLabels.canary).toBe("false");
+      expect(deployB.spec.template.metadata.labels.canary).toBe("true");
+      expect(deployB.spec.selector.matchLabels.canary).toBe("true");
     });
 
     test("Does not include canary label with canary disabled", () => {
@@ -1092,9 +1095,10 @@ describe("WebService", () => {
       expect(results[1].metadata.labels).not.toHaveProperty("canary");
       expect(results[2].metadata.labels).not.toHaveProperty("canary");
 
-      const byKind = _.groupBy(results, (obj) => obj.kind);
-      expect(byKind.Service[0].spec.selector).not.toHaveProperty("canary");
-      const dep = byKind.Deployment[0];
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
+      const service = byKind.Service?.[0];
+      expect(service.spec.selector).not.toHaveProperty("canary");
+      const dep = byKind.Deployment?.[0];
       expect(dep.spec.template.metadata.labels).not.toHaveProperty("canary");
       expect(dep.spec.selector.matchLabels).not.toHaveProperty("canary");
     });
@@ -1105,15 +1109,15 @@ describe("WebService", () => {
         canary: true,
         stage: "canary",
       });
-      const byKind = _.groupBy(results, (obj) => obj.kind);
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
 
       // Services should have the canary selector in their spec
-      const services = byKind.Service;
+      const services = byKind.Service ?? [];
       expect(services[0].spec.selector.canary).toBe("false");
       expect(services[1].spec.selector.canary).toBe("true");
 
       // The "live" deployment should not be included
-      const deployments = byKind.Deployment;
+      const deployments = byKind.Deployment ?? [];
       expect(deployments).toHaveLength(1);
       expect(deployments[0].spec.selector.matchLabels.canary).toBe("true");
     });
@@ -1124,10 +1128,10 @@ describe("WebService", () => {
         canary: true,
         stage: "base",
       });
-      const byKind = _.groupBy(results, (obj) => obj.kind);
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
 
       // Services should have the canary selector in their spec
-      const services = byKind.Service;
+      const services = byKind.Service ?? [];
       expect(services[0].spec.selector.canary).toBe("false");
       expect(services[1].spec.selector.canary).toBe("true");
 
@@ -1142,15 +1146,15 @@ describe("WebService", () => {
         canary: true,
         stage: "post-canary",
       });
-      const byKind = _.groupBy(results, (obj) => obj.kind);
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
 
       // The "live" service should not have the canary selector
-      const services = byKind.Service;
+      const services = byKind.Service ?? [];
       expect(services[0].spec.selector).not.toHaveProperty("canary");
       expect(services[1].spec.selector.canary).toBe("true");
 
       // The "live" deployment should not be included
-      const deployments = byKind.Deployment;
+      const deployments = byKind.Deployment ?? [];
       expect(deployments).toHaveLength(1);
       expect(deployments[0].spec.selector.matchLabels.canary).toBe("true");
     });
@@ -1161,10 +1165,10 @@ describe("WebService", () => {
         canary: true,
         stage: "full",
       });
-      const byKind = _.groupBy(results, (obj) => obj.kind);
+      const byKind = Object.groupBy(results, (obj) => obj.kind);
 
       // The "live" service should not have the canary selector
-      const services = byKind.Service;
+      const services = byKind.Service ?? [];
       expect(services[0].spec.selector).not.toHaveProperty("canary");
       expect(services[1].spec.selector.canary).toBe("true");
 
