@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
@@ -7,5 +7,14 @@ export default defineConfig({
       interopDefault: true,
     },
     setupFiles: ["./test/setup.ts"],
+    coverage: {
+      exclude: [
+        ...coverageConfigDefaults.exclude,
+        "e2e/**",
+        "examples/**",
+        "imports/**",
+        "*.config.mjs",
+      ],
+    },
   },
 });
