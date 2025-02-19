@@ -13,8 +13,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "engines": {
-    "npm": ">=9.5.1",
-    "node": ">=18.17.1"
+    "npm": ">=10.8.2",
+    "node": ">=22.8.0"
   },
   "scripts": {
     "build": "tsc",
@@ -37,31 +37,31 @@
     "constructs": "^10.1.175"
   },
   "dependencies": {
-    "cron-parser": "4.9.0"
+    "cron-parser": "^5.0.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.4.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@types/lodash": "^4.17.7",
-    "@types/node": "^22.1.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.1",
-    "@typescript-eslint/parser": "^8.0.1",
-    "bats": "^1.11.0",
-    "c8": "^10.1.2",
-    "cdk8s": "^2.68.93",
-    "cdk8s-cli": "^2.198.184",
-    "constructs": "^10.3.0",
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
+    "@types/lodash": "^4.17.15",
+    "@types/node": "^22.13.4",
+    "@typescript-eslint/eslint-plugin": "^8.24.1",
+    "@typescript-eslint/parser": "^8.24.1",
+    "@vitest/coverage-v8": "^3.0.6",
+    "bats": "^1.11.1",
+    "cdk8s": "^2.69.41",
+    "cdk8s-cli": "^2.198.329",
+    "constructs": "^10.4.2",
     "conventional-changelog-conventionalcommits": "^8.0.0",
-    "eslint": "^9.8.0",
-    "eslint-config-prettier": "^9.1.0",
-    "husky": "^9.1.4",
-    "lint-staged": "^15.2.8",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
     "lodash": "^4.17.21",
-    "memfs": "^4.11.1",
-    "prettier": "^3.3.3",
-    "semantic-release": "^24.0.0",
+    "memfs": "^4.17.0",
+    "prettier": "^3.5.1",
+    "semantic-release": "^24.2.3",
     "ts-node": "^10.9.2",
-    "typescript": "~5.5.4",
-    "vitest": "^2.0.5"
+    "typescript": "~5.7.3",
+    "vitest": "^3.0.6"
   }
 }

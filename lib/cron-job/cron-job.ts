@@ -2,7 +2,7 @@ import { Chart } from "cdk8s";
 import { Construct } from "constructs";
 import { KubeCronJob } from "../../imports/k8s";
 import { CronJobProps } from "./cron-job-props";
-import { parseExpression } from "cron-parser";
+import { CronExpressionParser } from "cron-parser";
 import { ContainerImagePullPolicy } from "../k8s";
 import { makeSafeToEvictAnnotations } from "../common";
 
@@ -115,6 +115,6 @@ export class CronJob extends Construct {
       throw new Error("Invalid cron expression");
     }
 
-    parseExpression(props.schedule);
+    CronExpressionParser.parse(props.schedule);
   }
 }
