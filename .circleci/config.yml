@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  aws-cli: circleci/aws-cli@4.1.3
-  node: circleci/node@5.2.0
+  aws-cli: circleci/aws-cli@5.2.0
+  node: circleci/node@7.1.0
 
 parameters:
   cluster_name:
@@ -16,7 +16,7 @@ commands:
       - run:
           name: Install kubectl
           command: |
-            KUBECTL_VERSION=1.32.1 
+            KUBECTL_VERSION=1.32.1
             curl --fail -sLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
             curl --fail -sLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl.sha256"
             echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check --status -
@@ -42,7 +42,8 @@ jobs:
         default: []
     steps:
       - checkout
-      - node/install # install Node.js from .nvmrc
+      - run: echo "export NODE_VERSION=$(cat .nvmrc)" >> $BASH_ENV
+      - node/install
       - node/install-packages:
           include-branch-in-cache-key: false
       - steps: << parameters.steps >>
