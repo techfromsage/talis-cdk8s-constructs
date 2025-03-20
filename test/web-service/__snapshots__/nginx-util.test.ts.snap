@@ -39,6 +39,7 @@ upstream application {
 server {
     listen 80;
     server_name localhost;
+    server_tokens off;
 
     gzip on;
     gzip_comp_level 4;
@@ -81,7 +82,7 @@ server {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-9d5ctddt9h",
+      "name": "test-nginx-config-c88fe926-77btht5dbt",
     },
   },
 ]
@@ -105,6 +106,7 @@ upstream application {
 server {
     listen 80;
     server_name localhost;
+    server_tokens off;
 
     gzip on;
     gzip_comp_level 4;
@@ -147,7 +149,7 @@ server {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-7b7f6cfmf4",
+      "name": "test-nginx-config-c88fe926-ckc2bm4fb5",
     },
   },
 ]
@@ -190,6 +192,7 @@ upstream application {
 server {
     listen 80;
     server_name localhost;
+    server_tokens off;
 
     gzip on;
     gzip_comp_level 4;
@@ -243,7 +246,7 @@ server {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-99528m62bg",
+      "name": "test-nginx-config-c88fe926-5cfhb96cfc",
     },
   },
 ]
@@ -267,6 +270,7 @@ upstream application {
 server {
     listen 80;
     server_name localhost;
+    server_tokens off;
 
     gzip on;
     gzip_comp_level 4;
@@ -333,7 +337,7 @@ location /api/auth/login {
       "labels": {
         "prunable": "true",
       },
-      "name": "test-nginx-config-c88fe926-mdm92m6fhh",
+      "name": "test-nginx-config-c88fe926-52gf5fdthm",
     },
   },
 ]
