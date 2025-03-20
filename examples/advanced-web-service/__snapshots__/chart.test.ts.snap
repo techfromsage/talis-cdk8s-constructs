@@ -76,6 +76,7 @@ upstream application {
 server {
     listen 80;
     server_name localhost;
+    server_tokens off;
 
     gzip on;
     gzip_comp_level 4;
@@ -189,7 +190,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-g87b2gc9mg",
+      "name": "nginx-config-64ttdhkh54",
       "namespace": "advanced-test",
     },
   },
@@ -621,7 +622,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-g87b2gc9mg",
+                "name": "nginx-config-64ttdhkh54",
               },
               "name": "nginx-config",
             },
@@ -709,6 +710,7 @@ upstream application {
 server {
     listen 80;
     server_name localhost;
+    server_tokens off;
 
     gzip on;
     gzip_comp_level 4;
@@ -822,7 +824,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-g87b2gc9mg",
+      "name": "nginx-config-64ttdhkh54",
       "namespace": "advanced-test",
     },
   },
@@ -1111,7 +1113,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-g87b2gc9mg",
+                "name": "nginx-config-64ttdhkh54",
               },
               "name": "nginx-config",
             },
@@ -1474,7 +1476,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-g87b2gc9mg",
+                "name": "nginx-config-64ttdhkh54",
               },
               "name": "nginx-config",
             },
@@ -1562,6 +1564,7 @@ upstream application {
 server {
     listen 80;
     server_name localhost;
+    server_tokens off;
 
     gzip on;
     gzip_comp_level 4;
@@ -1675,7 +1678,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-g87b2gc9mg",
+      "name": "nginx-config-64ttdhkh54",
       "namespace": "advanced-test",
     },
   },
@@ -2107,7 +2110,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-g87b2gc9mg",
+                "name": "nginx-config-64ttdhkh54",
               },
               "name": "nginx-config",
             },
@@ -2195,6 +2198,7 @@ upstream application {
 server {
     listen 80;
     server_name localhost;
+    server_tokens off;
 
     gzip on;
     gzip_comp_level 4;
@@ -2308,7 +2312,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-g87b2gc9mg",
+      "name": "nginx-config-64ttdhkh54",
       "namespace": "advanced-test",
     },
   },
@@ -2596,7 +2600,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-g87b2gc9mg",
+                "name": "nginx-config-64ttdhkh54",
               },
               "name": "nginx-config",
             },
@@ -2959,7 +2963,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-g87b2gc9mg",
+                "name": "nginx-config-64ttdhkh54",
               },
               "name": "nginx-config",
             },
@@ -3047,6 +3051,7 @@ upstream application {
 server {
     listen 80;
     server_name localhost;
+    server_tokens off;
 
     gzip on;
     gzip_comp_level 4;
@@ -3160,7 +3165,7 @@ proxy_cookie_path / "/$cookie_path_patches";
         "region": "local",
         "service": "advanced-development-local",
       },
-      "name": "nginx-config-g87b2gc9mg",
+      "name": "nginx-config-64ttdhkh54",
       "namespace": "advanced-test",
     },
   },
@@ -3591,7 +3596,7 @@ proxy_cookie_path / "/$cookie_path_patches";
             {
               "configMap": {
                 "defaultMode": 292,
-                "name": "nginx-config-g87b2gc9mg",
+                "name": "nginx-config-64ttdhkh54",
               },
               "name": "nginx-config",
             },
