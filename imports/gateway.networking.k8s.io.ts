@@ -4,391 +4,6 @@ import { Construct } from 'constructs';
 
 
 /**
- * BackendLBPolicy provides a way to define load balancing rules
-for a backend.
- *
- * @schema BackendLBPolicy
- */
-export class BackendLbPolicy extends ApiObject {
-  /**
-   * Returns the apiVersion and kind for "BackendLBPolicy"
-   */
-  public static readonly GVK: GroupVersionKind = {
-    apiVersion: 'gateway.networking.k8s.io/v1alpha2',
-    kind: 'BackendLBPolicy',
-  }
-
-  /**
-   * Renders a Kubernetes manifest for "BackendLBPolicy".
-   *
-   * This can be used to inline resource manifests inside other objects (e.g. as templates).
-   *
-   * @param props initialization props
-   */
-  public static manifest(props: BackendLbPolicyProps): any {
-    return {
-      ...BackendLbPolicy.GVK,
-      ...toJson_BackendLbPolicyProps(props),
-    };
-  }
-
-  /**
-   * Defines a "BackendLBPolicy" API object
-   * @param scope the scope in which to define this object
-   * @param id a scope-local name for the object
-   * @param props initialization props
-   */
-  public constructor(scope: Construct, id: string, props: BackendLbPolicyProps) {
-    super(scope, id, {
-      ...BackendLbPolicy.GVK,
-      ...props,
-    });
-  }
-
-  /**
-   * Renders the object to Kubernetes JSON.
-   */
-  public toJson(): any {
-    const resolved = super.toJson();
-
-    return {
-      ...BackendLbPolicy.GVK,
-      ...toJson_BackendLbPolicyProps(resolved),
-    };
-  }
-}
-
-/**
- * BackendLBPolicy provides a way to define load balancing rules
- * for a backend.
- *
- * @schema BackendLBPolicy
- */
-export interface BackendLbPolicyProps {
-  /**
-   * @schema BackendLBPolicy#metadata
-   */
-  readonly metadata?: ApiObjectMetadata;
-
-  /**
-   * Spec defines the desired state of BackendLBPolicy.
-   *
-   * @schema BackendLBPolicy#spec
-   */
-  readonly spec: BackendLbPolicySpec;
-
-}
-
-/**
- * Converts an object of type 'BackendLbPolicyProps' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_BackendLbPolicyProps(obj: BackendLbPolicyProps | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'metadata': obj.metadata,
-    'spec': toJson_BackendLbPolicySpec(obj.spec),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * Spec defines the desired state of BackendLBPolicy.
- *
- * @schema BackendLbPolicySpec
- */
-export interface BackendLbPolicySpec {
-  /**
-   * SessionPersistence defines and configures session persistence
-   * for the backend.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema BackendLbPolicySpec#sessionPersistence
-   */
-  readonly sessionPersistence?: BackendLbPolicySpecSessionPersistence;
-
-  /**
-   * TargetRef identifies an API object to apply policy to.
-   * Currently, Backends (i.e. Service, ServiceImport, or any
-   * implementation-specific backendRef) are the only valid API
-   * target references.
-   *
-   * @schema BackendLbPolicySpec#targetRefs
-   */
-  readonly targetRefs: BackendLbPolicySpecTargetRefs[];
-
-}
-
-/**
- * Converts an object of type 'BackendLbPolicySpec' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_BackendLbPolicySpec(obj: BackendLbPolicySpec | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'sessionPersistence': toJson_BackendLbPolicySpecSessionPersistence(obj.sessionPersistence),
-    'targetRefs': obj.targetRefs?.map(y => toJson_BackendLbPolicySpecTargetRefs(y)),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * SessionPersistence defines and configures session persistence
- * for the backend.
- *
- *
- * Support: Extended
- *
- * @schema BackendLbPolicySpecSessionPersistence
- */
-export interface BackendLbPolicySpecSessionPersistence {
-  /**
-   * AbsoluteTimeout defines the absolute timeout of the persistent
-   * session. Once the AbsoluteTimeout duration has elapsed, the
-   * session becomes invalid.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema BackendLbPolicySpecSessionPersistence#absoluteTimeout
-   */
-  readonly absoluteTimeout?: string;
-
-  /**
-   * CookieConfig provides configuration settings that are specific
-   * to cookie-based session persistence.
-   *
-   *
-   * Support: Core
-   *
-   * @schema BackendLbPolicySpecSessionPersistence#cookieConfig
-   */
-  readonly cookieConfig?: BackendLbPolicySpecSessionPersistenceCookieConfig;
-
-  /**
-   * IdleTimeout defines the idle timeout of the persistent session.
-   * Once the session has been idle for more than the specified
-   * IdleTimeout duration, the session becomes invalid.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema BackendLbPolicySpecSessionPersistence#idleTimeout
-   */
-  readonly idleTimeout?: string;
-
-  /**
-   * SessionName defines the name of the persistent session token
-   * which may be reflected in the cookie or the header. Users
-   * should avoid reusing session names to prevent unintended
-   * consequences, such as rejection or unpredictable behavior.
-   *
-   *
-   * Support: Implementation-specific
-   *
-   * @schema BackendLbPolicySpecSessionPersistence#sessionName
-   */
-  readonly sessionName?: string;
-
-  /**
-   * Type defines the type of session persistence such as through
-   * the use a header or cookie. Defaults to cookie based session
-   * persistence.
-   *
-   *
-   * Support: Core for "Cookie" type
-   *
-   *
-   * Support: Extended for "Header" type
-   *
-   * @default cookie based session
-   * @schema BackendLbPolicySpecSessionPersistence#type
-   */
-  readonly type?: BackendLbPolicySpecSessionPersistenceType;
-
-}
-
-/**
- * Converts an object of type 'BackendLbPolicySpecSessionPersistence' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_BackendLbPolicySpecSessionPersistence(obj: BackendLbPolicySpecSessionPersistence | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'absoluteTimeout': obj.absoluteTimeout,
-    'cookieConfig': toJson_BackendLbPolicySpecSessionPersistenceCookieConfig(obj.cookieConfig),
-    'idleTimeout': obj.idleTimeout,
-    'sessionName': obj.sessionName,
-    'type': obj.type,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * LocalPolicyTargetReference identifies an API object to apply a direct or
- * inherited policy to. This should be used as part of Policy resources
- * that can target Gateway API resources. For more information on how this
- * policy attachment model works, and a sample Policy resource, refer to
- * the policy attachment documentation for Gateway API.
- *
- * @schema BackendLbPolicySpecTargetRefs
- */
-export interface BackendLbPolicySpecTargetRefs {
-  /**
-   * Group is the group of the target resource.
-   *
-   * @schema BackendLbPolicySpecTargetRefs#group
-   */
-  readonly group: string;
-
-  /**
-   * Kind is kind of the target resource.
-   *
-   * @schema BackendLbPolicySpecTargetRefs#kind
-   */
-  readonly kind: string;
-
-  /**
-   * Name is the name of the target resource.
-   *
-   * @schema BackendLbPolicySpecTargetRefs#name
-   */
-  readonly name: string;
-
-}
-
-/**
- * Converts an object of type 'BackendLbPolicySpecTargetRefs' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_BackendLbPolicySpecTargetRefs(obj: BackendLbPolicySpecTargetRefs | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'group': obj.group,
-    'kind': obj.kind,
-    'name': obj.name,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * CookieConfig provides configuration settings that are specific
- * to cookie-based session persistence.
- *
- *
- * Support: Core
- *
- * @schema BackendLbPolicySpecSessionPersistenceCookieConfig
- */
-export interface BackendLbPolicySpecSessionPersistenceCookieConfig {
-  /**
-   * LifetimeType specifies whether the cookie has a permanent or
-   * session-based lifetime. A permanent cookie persists until its
-   * specified expiry time, defined by the Expires or Max-Age cookie
-   * attributes, while a session cookie is deleted when the current
-   * session ends.
-   *
-   *
-   * When set to "Permanent", AbsoluteTimeout indicates the
-   * cookie's lifetime via the Expires or Max-Age cookie attributes
-   * and is required.
-   *
-   *
-   * When set to "Session", AbsoluteTimeout indicates the
-   * absolute lifetime of the cookie tracked by the gateway and
-   * is optional.
-   *
-   *
-   * Support: Core for "Session" type
-   *
-   *
-   * Support: Extended for "Permanent" type
-   *
-   * @schema BackendLbPolicySpecSessionPersistenceCookieConfig#lifetimeType
-   */
-  readonly lifetimeType?: BackendLbPolicySpecSessionPersistenceCookieConfigLifetimeType;
-
-}
-
-/**
- * Converts an object of type 'BackendLbPolicySpecSessionPersistenceCookieConfig' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_BackendLbPolicySpecSessionPersistenceCookieConfig(obj: BackendLbPolicySpecSessionPersistenceCookieConfig | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'lifetimeType': obj.lifetimeType,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * Type defines the type of session persistence such as through
- * the use a header or cookie. Defaults to cookie based session
- * persistence.
- *
- *
- * Support: Core for "Cookie" type
- *
- *
- * Support: Extended for "Header" type
- *
- * @default cookie based session
- * @schema BackendLbPolicySpecSessionPersistenceType
- */
-export enum BackendLbPolicySpecSessionPersistenceType {
-  /** Cookie */
-  COOKIE = "Cookie",
-  /** Header */
-  HEADER = "Header",
-}
-
-/**
- * LifetimeType specifies whether the cookie has a permanent or
- * session-based lifetime. A permanent cookie persists until its
- * specified expiry time, defined by the Expires or Max-Age cookie
- * attributes, while a session cookie is deleted when the current
- * session ends.
- *
- *
- * When set to "Permanent", AbsoluteTimeout indicates the
- * cookie's lifetime via the Expires or Max-Age cookie attributes
- * and is required.
- *
- *
- * When set to "Session", AbsoluteTimeout indicates the
- * absolute lifetime of the cookie tracked by the gateway and
- * is optional.
- *
- *
- * Support: Core for "Session" type
- *
- *
- * Support: Extended for "Permanent" type
- *
- * @schema BackendLbPolicySpecSessionPersistenceCookieConfigLifetimeType
- */
-export enum BackendLbPolicySpecSessionPersistenceCookieConfigLifetimeType {
-  /** Permanent */
-  PERMANENT = "Permanent",
-  /** Session */
-  SESSION = "Session",
-}
-
-
-/**
  * BackendTLSPolicy provides a way to configure how a Gateway
 connects to a Backend via TLS.
  *
@@ -486,6 +101,22 @@ export function toJson_BackendTlsPolicyProps(obj: BackendTlsPolicyProps | undefi
  */
 export interface BackendTlsPolicySpec {
   /**
+   * Options are a list of key/value pairs to enable extended TLS
+   * configuration for each implementation. For example, configuring the
+   * minimum TLS version or supported cipher suites.
+   *
+   * A set of common keys MAY be defined by the API in the future. To avoid
+   * any ambiguity, implementation-specific definitions MUST use
+   * domain-prefixed names, such as `example.com/my-custom-option`.
+   * Un-prefixed names are reserved for key names defined by Gateway API.
+   *
+   * Support: Implementation-specific
+   *
+   * @schema BackendTlsPolicySpec#options
+   */
+  readonly options?: { [key: string]: string };
+
+  /**
    * TargetRefs identifies an API object to apply the policy to.
    * Only Services have Extended support. Implementations MAY support
    * additional objects, with Implementation Specific support.
@@ -493,9 +124,15 @@ export interface BackendTlsPolicySpec {
    * by default, but this default may change in the future to provide
    * a more granular application of the policy.
    *
+   * TargetRefs must be _distinct_. This means either that:
+   *
+   * * They select different targets. If this is the case, then targetRef
+   * entries are distinct. In terms of fields, this means that the
+   * multi-part key defined by `group`, `kind`, and `name` must
+   * be unique across all targetRef entries in the BackendTLSPolicy.
+   * * They select different sectionNames in the same target.
    *
    * Support: Extended for Kubernetes Service
-   *
    *
    * Support: Implementation-specific for any other resource
    *
@@ -519,6 +156,7 @@ export interface BackendTlsPolicySpec {
 export function toJson_BackendTlsPolicySpec(obj: BackendTlsPolicySpec | undefined): Record<string, any> | undefined {
   if (obj === undefined) { return undefined; }
   const result = {
+    'options': ((obj.options) === undefined) ? undefined : (Object.entries(obj.options).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
     'targetRefs': obj.targetRefs?.map(y => toJson_BackendTlsPolicySpecTargetRefs(y)),
     'validation': toJson_BackendTlsPolicySpecValidation(obj.validation),
   };
@@ -533,7 +171,6 @@ export function toJson_BackendTlsPolicySpec(obj: BackendTlsPolicySpec | undefine
  * target single resources. For more information on how this policy attachment
  * mode works, and a sample Policy resource, refer to the policy attachment
  * documentation for Gateway API.
- *
  *
  * Note: This should only be used for direct policy attachment when references
  * to SectionName are actually needed. In all other cases,
@@ -568,11 +205,9 @@ export interface BackendTlsPolicySpecTargetRefs {
    * unspecified, this targetRef targets the entire resource. In the following
    * resources, SectionName is interpreted as the following:
    *
-   *
    * * Gateway: Listener name
    * * HTTPRoute: HTTPRouteRule name
    * * Service: Port name
-   *
    *
    * If a SectionName is specified, but does not exist on the targeted object,
    * the Policy must fail to attach, and the policy implementation should record
@@ -612,25 +247,20 @@ export interface BackendTlsPolicySpecValidation {
    * contain a PEM-encoded TLS CA certificate bundle, which is used to
    * validate a TLS handshake between the Gateway and backend Pod.
    *
-   *
    * If CACertificateRefs is empty or unspecified, then WellKnownCACertificates must be
    * specified. Only one of CACertificateRefs or WellKnownCACertificates may be specified,
-   * not both. If CACertifcateRefs is empty or unspecified, the configuration for
+   * not both. If CACertificateRefs is empty or unspecified, the configuration for
    * WellKnownCACertificates MUST be honored instead if supported by the implementation.
-   *
    *
    * References to a resource in a different namespace are invalid for the
    * moment, although we will revisit this in the future.
-   *
    *
    * A single CACertificateRef to a Kubernetes ConfigMap kind has "Core" support.
    * Implementations MAY choose to support attaching multiple certificates to
    * a backend, but this behavior is implementation-specific.
    *
-   *
    * Support: Core - An optional single reference to a Kubernetes ConfigMap,
    * with the CA certificate in a key named `ca.crt`.
-   *
    *
    * Support: Implementation-specific (More than one reference, or other kinds
    * of resources).
@@ -643,11 +273,10 @@ export interface BackendTlsPolicySpecValidation {
    * Hostname is used for two purposes in the connection between Gateways and
    * backends:
    *
-   *
    * 1. Hostname MUST be used as the SNI to connect to the backend (RFC 6066).
-   * 2. Hostname MUST be used for authentication and MUST match the certificate
-   * served by the matching backend.
-   *
+   * 2. Hostname MUST be used for authentication and MUST match the certificate served by the matching backend, unless SubjectAltNames is specified.
+   * authentication and MUST match the certificate served by the matching
+   * backend.
    *
    * Support: Core
    *
@@ -656,9 +285,19 @@ export interface BackendTlsPolicySpecValidation {
   readonly hostname: string;
 
   /**
+   * SubjectAltNames contains one or more Subject Alternative Names.
+   * When specified the certificate served from the backend MUST
+   * have at least one Subject Alternate Name matching one of the specified SubjectAltNames.
+   *
+   * Support: Extended
+   *
+   * @schema BackendTlsPolicySpecValidation#subjectAltNames
+   */
+  readonly subjectAltNames?: BackendTlsPolicySpecValidationSubjectAltNames[];
+
+  /**
    * WellKnownCACertificates specifies whether system CA certificates may be used in
    * the TLS handshake between the gateway and backend pod.
-   *
    *
    * If WellKnownCACertificates is unspecified or empty (""), then CACertificateRefs
    * must be specified with at least one entry for a valid configuration. Only one of
@@ -666,7 +305,6 @@ export interface BackendTlsPolicySpecValidation {
    * implementation does not support the WellKnownCACertificates field or the value
    * supplied is not supported, the Status Conditions on the Policy MUST be
    * updated to include an Accepted: False Condition with Reason: Invalid.
-   *
    *
    * Support: Implementation-specific
    *
@@ -685,6 +323,7 @@ export function toJson_BackendTlsPolicySpecValidation(obj: BackendTlsPolicySpecV
   const result = {
     'caCertificateRefs': obj.caCertificateRefs?.map(y => toJson_BackendTlsPolicySpecValidationCaCertificateRefs(y)),
     'hostname': obj.hostname,
+    'subjectAltNames': obj.subjectAltNames?.map(y => toJson_BackendTlsPolicySpecValidationSubjectAltNames(y)),
     'wellKnownCACertificates': obj.wellKnownCaCertificates,
   };
   // filter undefined values
@@ -697,7 +336,6 @@ export function toJson_BackendTlsPolicySpecValidation(obj: BackendTlsPolicySpecV
  * referrer.
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
- *
  *
  * References to objects with invalid Group and Kind are not valid, and must
  * be rejected by the implementation, with appropriate Conditions set
@@ -747,9 +385,63 @@ export function toJson_BackendTlsPolicySpecValidationCaCertificateRefs(obj: Back
 /* eslint-enable max-len, quote-props */
 
 /**
+ * SubjectAltName represents Subject Alternative Name.
+ *
+ * @schema BackendTlsPolicySpecValidationSubjectAltNames
+ */
+export interface BackendTlsPolicySpecValidationSubjectAltNames {
+  /**
+   * Hostname contains Subject Alternative Name specified in DNS name format.
+   * Required when Type is set to Hostname, ignored otherwise.
+   *
+   * Support: Core
+   *
+   * @schema BackendTlsPolicySpecValidationSubjectAltNames#hostname
+   */
+  readonly hostname?: string;
+
+  /**
+   * Type determines the format of the Subject Alternative Name. Always required.
+   *
+   * Support: Core
+   *
+   * @schema BackendTlsPolicySpecValidationSubjectAltNames#type
+   */
+  readonly type: BackendTlsPolicySpecValidationSubjectAltNamesType;
+
+  /**
+   * URI contains Subject Alternative Name specified in a full URI format.
+   * It MUST include both a scheme (e.g., "http" or "ftp") and a scheme-specific-part.
+   * Common values include SPIFFE IDs like "spiffe://mycluster.example.com/ns/myns/sa/svc1sa".
+   * Required when Type is set to URI, ignored otherwise.
+   *
+   * Support: Core
+   *
+   * @schema BackendTlsPolicySpecValidationSubjectAltNames#uri
+   */
+  readonly uri?: string;
+
+}
+
+/**
+ * Converts an object of type 'BackendTlsPolicySpecValidationSubjectAltNames' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_BackendTlsPolicySpecValidationSubjectAltNames(obj: BackendTlsPolicySpecValidationSubjectAltNames | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'hostname': obj.hostname,
+    'type': obj.type,
+    'uri': obj.uri,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * WellKnownCACertificates specifies whether system CA certificates may be used in
  * the TLS handshake between the gateway and backend pod.
- *
  *
  * If WellKnownCACertificates is unspecified or empty (""), then CACertificateRefs
  * must be specified with at least one entry for a valid configuration. Only one of
@@ -758,7 +450,6 @@ export function toJson_BackendTlsPolicySpecValidationCaCertificateRefs(obj: Back
  * supplied is not supported, the Status Conditions on the Policy MUST be
  * updated to include an Accepted: False Condition with Reason: Invalid.
  *
- *
  * Support: Implementation-specific
  *
  * @schema BackendTlsPolicySpecValidationWellKnownCaCertificates
@@ -766,6 +457,20 @@ export function toJson_BackendTlsPolicySpecValidationCaCertificateRefs(obj: Back
 export enum BackendTlsPolicySpecValidationWellKnownCaCertificates {
   /** System */
   SYSTEM = "System",
+}
+
+/**
+ * Type determines the format of the Subject Alternative Name. Always required.
+ *
+ * Support: Core
+ *
+ * @schema BackendTlsPolicySpecValidationSubjectAltNamesType
+ */
+export enum BackendTlsPolicySpecValidationSubjectAltNamesType {
+  /** Hostname */
+  HOSTNAME = "Hostname",
+  /** URI */
+  URI = "URI",
 }
 
 
@@ -872,32 +577,43 @@ export interface GatewaySpec {
    * requested address is invalid or unavailable, the implementation MUST
    * indicate this in the associated entry in GatewayStatus.Addresses.
    *
-   *
    * The Addresses field represents a request for the address(es) on the
    * "outside of the Gateway", that traffic bound for this Gateway will use.
    * This could be the IP address or hostname of an external load balancer or
    * other networking infrastructure, or some other address that traffic will
    * be sent to.
    *
-   *
    * If no Addresses are specified, the implementation MAY schedule the
    * Gateway in an implementation-specific manner, assigning an appropriate
    * set of Addresses.
-   *
    *
    * The implementation MUST bind all Listeners to every GatewayAddress that
    * it assigns to the Gateway and add a corresponding entry in
    * GatewayStatus.Addresses.
    *
-   *
    * Support: Extended
-   *
-   *
-   *
    *
    * @schema GatewaySpec#addresses
    */
   readonly addresses?: GatewaySpecAddresses[];
+
+  /**
+   * AllowedListeners defines which ListenerSets can be attached to this Gateway.
+   * While this feature is experimental, the default value is to allow no ListenerSets.
+   *
+   * @schema GatewaySpec#allowedListeners
+   */
+  readonly allowedListeners?: GatewaySpecAllowedListeners;
+
+  /**
+   * BackendTLS configures TLS settings for when this Gateway is connecting to
+   * backends with TLS.
+   *
+   * Support: Core
+   *
+   * @schema GatewaySpec#backendTLS
+   */
+  readonly backendTls?: GatewaySpecBackendTls;
 
   /**
    * GatewayClassName used for this Gateway. This is the name of a
@@ -910,11 +626,7 @@ export interface GatewaySpec {
   /**
    * Infrastructure defines infrastructure level attributes about this Gateway instance.
    *
-   *
-   * Support: Core
-   *
-   *
-   *
+   * Support: Extended
    *
    * @schema GatewaySpec#infrastructure
    */
@@ -925,6 +637,7 @@ export interface GatewaySpec {
    * logical endpoints that are bound on this Gateway's addresses.
    * At least one Listener MUST be specified.
    *
+   * ## Distinct Listeners
    *
    * Each Listener in a set of Listeners (for example, in a single Gateway)
    * MUST be _distinct_, in that a traffic flow MUST be able to be assigned to
@@ -933,97 +646,107 @@ export interface GatewaySpec {
    * from multiple Gateways onto a single data plane, and these rules _also_
    * apply in that case).
    *
-   *
    * Practically, this means that each listener in a set MUST have a unique
    * combination of Port, Protocol, and, if supported by the protocol, Hostname.
    *
-   *
    * Some combinations of port, protocol, and TLS settings are considered
-   * Core support and MUST be supported by implementations based on their
-   * targeted conformance profile:
+   * Core support and MUST be supported by implementations based on the objects
+   * they support:
    *
-   *
-   * HTTP Profile
-   *
+   * HTTPRoute
    *
    * 1. HTTPRoute, Port: 80, Protocol: HTTP
    * 2. HTTPRoute, Port: 443, Protocol: HTTPS, TLS Mode: Terminate, TLS keypair provided
    *
-   *
-   * TLS Profile
-   *
+   * TLSRoute
    *
    * 1. TLSRoute, Port: 443, Protocol: TLS, TLS Mode: Passthrough
    *
-   *
    * "Distinct" Listeners have the following property:
    *
+   * **The implementation can match inbound requests to a single distinct
+   * Listener**.
    *
-   * The implementation can match inbound requests to a single distinct
-   * Listener. When multiple Listeners share values for fields (for
+   * When multiple Listeners share values for fields (for
    * example, two Listeners with the same Port value), the implementation
    * can match requests to only one of the Listeners using other
    * Listener fields.
    *
+   * When multiple listeners have the same value for the Protocol field, then
+   * each of the Listeners with matching Protocol values MUST have different
+   * values for other fields.
    *
-   * For example, the following Listener scenarios are distinct:
+   * The set of fields that MUST be different for a Listener differs per protocol.
+   * The following rules define the rules for what fields MUST be considered for
+   * Listeners to be distinct with each protocol currently defined in the
+   * Gateway API spec.
    *
+   * The set of listeners that all share a protocol value MUST have _different_
+   * values for _at least one_ of these fields to be distinct:
    *
-   * 1. Multiple Listeners with the same Port that all use the "HTTP"
-   * Protocol that all have unique Hostname values.
-   * 2. Multiple Listeners with the same Port that use either the "HTTPS" or
-   * "TLS" Protocol that all have unique Hostname values.
-   * 3. A mixture of "TCP" and "UDP" Protocol Listeners, where no Listener
-   * with the same Protocol has the same Port value.
+   * * **HTTP, HTTPS, TLS**: Port, Hostname
+   * * **TCP, UDP**: Port
    *
+   * One **very** important rule to call out involves what happens when an
+   * implementation:
    *
-   * Some fields in the Listener struct have possible values that affect
-   * whether the Listener is distinct. Hostname is particularly relevant
-   * for HTTP or HTTPS protocols.
+   * * Supports TCP protocol Listeners, as well as HTTP, HTTPS, or TLS protocol
+   * Listeners, and
+   * * sees HTTP, HTTPS, or TLS protocols with the same `port` as one with TCP
+   * Protocol.
    *
+   * In this case all the Listeners that share a port with the
+   * TCP Listener are not distinct and so MUST NOT be accepted.
    *
-   * When using the Hostname value to select between same-Port, same-Protocol
-   * Listeners, the Hostname value must be different on each Listener for the
-   * Listener to be distinct.
+   * If an implementation does not support TCP Protocol Listeners, then the
+   * previous rule does not apply, and the TCP Listeners SHOULD NOT be
+   * accepted.
    *
+   * Note that the `tls` field is not used for determining if a listener is distinct, because
+   * Listeners that _only_ differ on TLS config will still conflict in all cases.
    *
-   * When the Listeners are distinct based on Hostname, inbound request
+   * ### Listeners that are distinct only by Hostname
+   *
+   * When the Listeners are distinct based only on Hostname, inbound request
    * hostnames MUST match from the most specific to least specific Hostname
    * values to choose the correct Listener and its associated set of Routes.
    *
-   *
-   * Exact matches must be processed before wildcard matches, and wildcard
-   * matches must be processed before fallback (empty Hostname value)
+   * Exact matches MUST be processed before wildcard matches, and wildcard
+   * matches MUST be processed before fallback (empty Hostname value)
    * matches. For example, `"foo.example.com"` takes precedence over
    * `"*.example.com"`, and `"*.example.com"` takes precedence over `""`.
-   *
    *
    * Additionally, if there are multiple wildcard entries, more specific
    * wildcard entries must be processed before less specific wildcard entries.
    * For example, `"*.foo.example.com"` takes precedence over `"*.example.com"`.
+   *
    * The precise definition here is that the higher the number of dots in the
    * hostname to the right of the wildcard character, the higher the precedence.
-   *
    *
    * The wildcard character will match any number of characters _and dots_ to
    * the left, however, so `"*.example.com"` will match both
    * `"foo.bar.example.com"` _and_ `"bar.example.com"`.
    *
+   * ## Handling indistinct Listeners
    *
    * If a set of Listeners contains Listeners that are not distinct, then those
-   * Listeners are Conflicted, and the implementation MUST set the "Conflicted"
+   * Listeners are _Conflicted_, and the implementation MUST set the "Conflicted"
    * condition in the Listener Status to "True".
    *
+   * The words "indistinct" and "conflicted" are considered equivalent for the
+   * purpose of this documentation.
    *
    * Implementations MAY choose to accept a Gateway with some Conflicted
    * Listeners only if they only accept the partial Listener set that contains
-   * no Conflicted Listeners. To put this another way, implementations may
-   * accept a partial Listener set only if they throw out *all* the conflicting
-   * Listeners. No picking one of the conflicting listeners as the winner.
-   * This also means that the Gateway must have at least one non-conflicting
-   * Listener in this case, otherwise it violates the requirement that at
-   * least one Listener must be present.
+   * no Conflicted Listeners.
    *
+   * Specifically, an implementation MAY accept a partial Listener set subject to
+   * the following rules:
+   *
+   * * The implementation MUST NOT pick one conflicting Listener as the winner.
+   * ALL indistinct Listeners must not be accepted for processing.
+   * * At least one distinct Listener MUST be present, or else the Gateway effectively
+   * contains _no_ Listeners, and must be rejected from processing as a whole.
    *
    * The implementation MUST set a "ListenersNotValid" condition on the
    * Gateway Status when the Gateway contains Conflicted Listeners whether or
@@ -1032,37 +755,43 @@ export interface GatewaySpec {
    * Accepted. Additionally, the Listener status for those listeners SHOULD
    * indicate which Listeners are conflicted and not Accepted.
    *
+   * ## General Listener behavior
    *
-   * A Gateway's Listeners are considered "compatible" if:
+   * Note that, for all distinct Listeners, requests SHOULD match at most one Listener.
+   * For example, if Listeners are defined for "foo.example.com" and "*.example.com", a
+   * request to "foo.example.com" SHOULD only be routed using routes attached
+   * to the "foo.example.com" Listener (and not the "*.example.com" Listener).
    *
+   * This concept is known as "Listener Isolation", and it is an Extended feature
+   * of Gateway API. Implementations that do not support Listener Isolation MUST
+   * clearly document this, and MUST NOT claim support for the
+   * `GatewayHTTPListenerIsolation` feature.
+   *
+   * Implementations that _do_ support Listener Isolation SHOULD claim support
+   * for the Extended `GatewayHTTPListenerIsolation` feature and pass the associated
+   * conformance tests.
+   *
+   * ## Compatible Listeners
+   *
+   * A Gateway's Listeners are considered _compatible_ if:
    *
    * 1. They are distinct.
    * 2. The implementation can serve them in compliance with the Addresses
    * requirement that all Listeners are available on all assigned
    * addresses.
    *
-   *
    * Compatible combinations in Extended support are expected to vary across
    * implementations. A combination that is compatible for one implementation
    * may not be compatible for another.
-   *
    *
    * For example, an implementation that cannot serve both TCP and UDP listeners
    * on the same address, or cannot mix HTTPS and generic TLS listens on the same port
    * would not consider those cases compatible, even though they are distinct.
    *
-   *
-   * Note that requests SHOULD match at most one Listener. For example, if
-   * Listeners are defined for "foo.example.com" and "*.example.com", a
-   * request to "foo.example.com" SHOULD only be routed using routes attached
-   * to the "foo.example.com" Listener (and not the "*.example.com" Listener).
-   * This concept is known as "Listener Isolation". Implementations that do
-   * not support Listener Isolation MUST clearly document this.
-   *
-   *
    * Implementations MAY merge separate Gateways onto a single set of
    * Addresses if all Listeners across all Gateways are compatible.
    *
+   * In a future release the MinItems=1 requirement MAY be dropped.
    *
    * Support: Core
    *
@@ -1080,6 +809,8 @@ export function toJson_GatewaySpec(obj: GatewaySpec | undefined): Record<string,
   if (obj === undefined) { return undefined; }
   const result = {
     'addresses': obj.addresses?.map(y => toJson_GatewaySpecAddresses(y)),
+    'allowedListeners': toJson_GatewaySpecAllowedListeners(obj.allowedListeners),
+    'backendTLS': toJson_GatewaySpecBackendTls(obj.backendTls),
     'gatewayClassName': obj.gatewayClassName,
     'infrastructure': toJson_GatewaySpecInfrastructure(obj.infrastructure),
     'listeners': obj.listeners?.map(y => toJson_GatewaySpecListeners(y)),
@@ -1090,7 +821,7 @@ export function toJson_GatewaySpec(obj: GatewaySpec | undefined): Record<string,
 /* eslint-enable max-len, quote-props */
 
 /**
- * GatewayAddress describes an address that can be bound to a Gateway.
+ * GatewaySpecAddress describes an address that can be bound to a Gateway.
  *
  * @schema GatewaySpecAddresses
  */
@@ -1103,15 +834,17 @@ export interface GatewaySpecAddresses {
   readonly type?: string;
 
   /**
-   * Value of the address. The validity of the values will depend
-   * on the type and support by the controller.
+   * When a value is unspecified, an implementation SHOULD automatically
+   * assign an address matching the requested type if possible.
    *
+   * If an implementation does not support an empty value, they MUST set the
+   * "Programmed" condition in status to False with a reason of "AddressNotAssigned".
    *
    * Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
    *
    * @schema GatewaySpecAddresses#value
    */
-  readonly value: string;
+  readonly value?: string;
 
 }
 
@@ -1131,13 +864,86 @@ export function toJson_GatewaySpecAddresses(obj: GatewaySpecAddresses | undefine
 /* eslint-enable max-len, quote-props */
 
 /**
- * Infrastructure defines infrastructure level attributes about this Gateway instance.
+ * AllowedListeners defines which ListenerSets can be attached to this Gateway.
+ * While this feature is experimental, the default value is to allow no ListenerSets.
  *
+ * @schema GatewaySpecAllowedListeners
+ */
+export interface GatewaySpecAllowedListeners {
+  /**
+   * Namespaces defines which namespaces ListenerSets can be attached to this Gateway.
+   * While this feature is experimental, the default value is to allow no ListenerSets.
+   *
+   * @schema GatewaySpecAllowedListeners#namespaces
+   */
+  readonly namespaces?: GatewaySpecAllowedListenersNamespaces;
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecAllowedListeners' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecAllowedListeners(obj: GatewaySpecAllowedListeners | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'namespaces': toJson_GatewaySpecAllowedListenersNamespaces(obj.namespaces),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * BackendTLS configures TLS settings for when this Gateway is connecting to
+ * backends with TLS.
  *
  * Support: Core
  *
+ * @schema GatewaySpecBackendTls
+ */
+export interface GatewaySpecBackendTls {
+  /**
+   * ClientCertificateRef is a reference to an object that contains a Client
+   * Certificate and the associated private key.
+   *
+   * References to a resource in different namespace are invalid UNLESS there
+   * is a ReferenceGrant in the target namespace that allows the certificate
+   * to be attached. If a ReferenceGrant does not allow this reference, the
+   * "ResolvedRefs" condition MUST be set to False for this listener with the
+   * "RefNotPermitted" reason.
+   *
+   * ClientCertificateRef can reference to standard Kubernetes resources, i.e.
+   * Secret, or implementation-specific custom resources.
+   *
+   * This setting can be overridden on the service level by use of BackendTLSPolicy.
+   *
+   * Support: Core
+   *
+   * @schema GatewaySpecBackendTls#clientCertificateRef
+   */
+  readonly clientCertificateRef?: GatewaySpecBackendTlsClientCertificateRef;
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecBackendTls' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecBackendTls(obj: GatewaySpecBackendTls | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'clientCertificateRef': toJson_GatewaySpecBackendTlsClientCertificateRef(obj.clientCertificateRef),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Infrastructure defines infrastructure level attributes about this Gateway instance.
  *
- *
+ * Support: Extended
  *
  * @schema GatewaySpecInfrastructure
  */
@@ -1145,13 +951,10 @@ export interface GatewaySpecInfrastructure {
   /**
    * Annotations that SHOULD be applied to any resources created in response to this Gateway.
    *
-   *
    * For implementations creating other Kubernetes objects, this should be the `metadata.annotations` field on resources.
    * For other implementations, this refers to any relevant (implementation specific) "annotations" concepts.
    *
-   *
    * An implementation may chose to add additional implementation-specific annotations as they see fit.
-   *
    *
    * Support: Extended
    *
@@ -1162,13 +965,13 @@ export interface GatewaySpecInfrastructure {
   /**
    * Labels that SHOULD be applied to any resources created in response to this Gateway.
    *
-   *
    * For implementations creating other Kubernetes objects, this should be the `metadata.labels` field on resources.
    * For other implementations, this refers to any relevant (implementation specific) "labels" concepts.
    *
-   *
    * An implementation may chose to add additional implementation-specific labels as they see fit.
    *
+   * If an implementation maps these labels to Pods, or any other resource that would need to be recreated when labels
+   * change, it SHOULD clearly warn about this behavior in documentation.
    *
    * Support: Extended
    *
@@ -1181,14 +984,16 @@ export interface GatewaySpecInfrastructure {
    * parameters corresponding to the Gateway. This is optional if the
    * controller does not require any additional configuration.
    *
-   *
    * This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
-   *
    *
    * The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
    * the merging behavior is implementation specific.
    * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
    *
+   * If the referent cannot be found, refers to an unsupported kind, or when
+   * the data within that resource is malformed, the Gateway SHOULD be
+   * rejected with the "Accepted" status condition set to "False" and an
+   * "InvalidParameters" reason.
    *
    * Support: Implementation-specific
    *
@@ -1226,11 +1031,9 @@ export interface GatewaySpecListeners {
    * Listener and the trusted namespaces where those Route resources MAY be
    * present.
    *
-   *
    * Although a client request may match multiple route rules, only one rule
    * may ultimately receive the request. Matching precedence MUST be
    * determined in order of the following criteria:
-   *
    *
    * * The most specific match as defined by the Route type.
    * * The oldest Route based on creation timestamp. For example, a Route with
@@ -1240,14 +1043,12 @@ export interface GatewaySpecListeners {
    * alphabetical order (namespace/name) should be given precedence. For
    * example, foo/bar is given precedence over foo/baz.
    *
-   *
    * All valid rules within a Route attached to this Listener should be
    * implemented. Invalid Route rules can be ignored (sometimes that will mean
    * the full Route). If a Route rule transitions from valid to invalid,
    * support for that Route rule should be dropped to ensure consistency. For
    * example, even if a filter specified by a Route rule is invalid, the rest
    * of the rules within that Route should still be supported.
-   *
    *
    * Support: Core
    *
@@ -1261,18 +1062,36 @@ export interface GatewaySpecListeners {
    * field is ignored for protocols that don't require hostname based
    * matching.
    *
-   *
    * Implementations MUST apply Hostname matching appropriately for each of
    * the following protocols:
    *
-   *
    * * TLS: The Listener Hostname MUST match the SNI.
    * * HTTP: The Listener Hostname MUST match the Host header of the request.
-   * * HTTPS: The Listener Hostname SHOULD match at both the TLS and HTTP
-   * protocol layers as described above. If an implementation does not
-   * ensure that both the SNI and Host header match the Listener hostname,
-   * it MUST clearly document that.
+   * * HTTPS: The Listener Hostname SHOULD match both the SNI and Host header.
+   * Note that this does not require the SNI and Host header to be the same.
+   * The semantics of this are described in more detail below.
    *
+   * To ensure security, Section 11.1 of RFC-6066 emphasizes that server
+   * implementations that rely on SNI hostname matching MUST also verify
+   * hostnames within the application protocol.
+   *
+   * Section 9.1.2 of RFC-7540 provides a mechanism for servers to reject the
+   * reuse of a connection by responding with the HTTP 421 Misdirected Request
+   * status code. This indicates that the origin server has rejected the
+   * request because it appears to have been misdirected.
+   *
+   * To detect misdirected requests, Gateways SHOULD match the authority of
+   * the requests with all the SNI hostname(s) configured across all the
+   * Gateway Listeners on the same port and protocol:
+   *
+   * * If another Listener has an exact match or more specific wildcard entry,
+   * the Gateway SHOULD return a 421.
+   * * If the current Listener (selected by SNI matching during ClientHello)
+   * does not match the Host:
+   * * If another Listener does match the Host the Gateway SHOULD return a
+   * 421.
+   * * If no other Listener matches the Host, the Gateway MUST return a
+   * 404.
    *
    * For HTTPRoute and TLSRoute resources, there is an interaction with the
    * `spec.hostnames` array. When both listener and route specify hostnames,
@@ -1280,11 +1099,9 @@ export interface GatewaySpecListeners {
    * accepted. For more information, refer to the Route specific Hostnames
    * documentation.
    *
-   *
    * Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
    * as a suffix match. That means that a match for `*.example.com` would match
    * both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
-   *
    *
    * Support: Core
    *
@@ -1296,7 +1113,6 @@ export interface GatewaySpecListeners {
    * Name is the name of the Listener. This name MUST be unique within a
    * Gateway.
    *
-   *
    * Support: Core
    *
    * @schema GatewaySpecListeners#name
@@ -1307,7 +1123,6 @@ export interface GatewaySpecListeners {
    * Port is the network port. Multiple listeners may use the
    * same port, subject to the Listener compatibility rules.
    *
-   *
    * Support: Core
    *
    * @schema GatewaySpecListeners#port
@@ -1316,7 +1131,6 @@ export interface GatewaySpecListeners {
 
   /**
    * Protocol specifies the network protocol this listener expects to receive.
-   *
    *
    * Support: Core
    *
@@ -1329,14 +1143,11 @@ export interface GatewaySpecListeners {
    * the Protocol field is "HTTPS" or "TLS". It is invalid to set this field
    * if the Protocol field is "HTTP", "TCP", or "UDP".
    *
-   *
    * The association of SNIs to Certificate defined in GatewayTLSConfig is
    * defined based on the Hostname field for this listener.
    *
-   *
    * The GatewayClass MUST use the longest matching SNI out of all
    * available certificates for any TLS handshake.
-   *
    *
    * Support: Core
    *
@@ -1366,18 +1177,144 @@ export function toJson_GatewaySpecListeners(obj: GatewaySpecListeners | undefine
 /* eslint-enable max-len, quote-props */
 
 /**
+ * Namespaces defines which namespaces ListenerSets can be attached to this Gateway.
+ * While this feature is experimental, the default value is to allow no ListenerSets.
+ *
+ * @schema GatewaySpecAllowedListenersNamespaces
+ */
+export interface GatewaySpecAllowedListenersNamespaces {
+  /**
+   * From indicates where ListenerSets can attach to this Gateway. Possible
+   * values are:
+   *
+   * * Same: Only ListenerSets in the same namespace may be attached to this Gateway.
+   * * Selector: ListenerSets in namespaces selected by the selector may be attached to this Gateway.
+   * * All: ListenerSets in all namespaces may be attached to this Gateway.
+   * * None: Only listeners defined in the Gateway's spec are allowed
+   *
+   * While this feature is experimental, the default value None
+   *
+   * @schema GatewaySpecAllowedListenersNamespaces#from
+   */
+  readonly from?: GatewaySpecAllowedListenersNamespacesFrom;
+
+  /**
+   * Selector must be specified when From is set to "Selector". In that case,
+   * only ListenerSets in Namespaces matching this Selector will be selected by this
+   * Gateway. This field is ignored for other values of "From".
+   *
+   * @schema GatewaySpecAllowedListenersNamespaces#selector
+   */
+  readonly selector?: GatewaySpecAllowedListenersNamespacesSelector;
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecAllowedListenersNamespaces' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecAllowedListenersNamespaces(obj: GatewaySpecAllowedListenersNamespaces | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'from': obj.from,
+    'selector': toJson_GatewaySpecAllowedListenersNamespacesSelector(obj.selector),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * ClientCertificateRef is a reference to an object that contains a Client
+ * Certificate and the associated private key.
+ *
+ * References to a resource in different namespace are invalid UNLESS there
+ * is a ReferenceGrant in the target namespace that allows the certificate
+ * to be attached. If a ReferenceGrant does not allow this reference, the
+ * "ResolvedRefs" condition MUST be set to False for this listener with the
+ * "RefNotPermitted" reason.
+ *
+ * ClientCertificateRef can reference to standard Kubernetes resources, i.e.
+ * Secret, or implementation-specific custom resources.
+ *
+ * This setting can be overridden on the service level by use of BackendTLSPolicy.
+ *
+ * Support: Core
+ *
+ * @schema GatewaySpecBackendTlsClientCertificateRef
+ */
+export interface GatewaySpecBackendTlsClientCertificateRef {
+  /**
+   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
+   * When unspecified or empty string, core API group is inferred.
+   *
+   * @schema GatewaySpecBackendTlsClientCertificateRef#group
+   */
+  readonly group?: string;
+
+  /**
+   * Kind is kind of the referent. For example "Secret".
+   *
+   * @schema GatewaySpecBackendTlsClientCertificateRef#kind
+   */
+  readonly kind?: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema GatewaySpecBackendTlsClientCertificateRef#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the referenced object. When unspecified, the local
+   * namespace is inferred.
+   *
+   * Note that when a namespace different than the local namespace is specified,
+   * a ReferenceGrant object is required in the referent namespace to allow that
+   * namespace's owner to accept the reference. See the ReferenceGrant
+   * documentation for details.
+   *
+   * Support: Core
+   *
+   * @schema GatewaySpecBackendTlsClientCertificateRef#namespace
+   */
+  readonly namespace?: string;
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecBackendTlsClientCertificateRef' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecBackendTlsClientCertificateRef(obj: GatewaySpecBackendTlsClientCertificateRef | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * ParametersRef is a reference to a resource that contains the configuration
  * parameters corresponding to the Gateway. This is optional if the
  * controller does not require any additional configuration.
  *
- *
  * This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
- *
  *
  * The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
  * the merging behavior is implementation specific.
  * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
  *
+ * If the referent cannot be found, refers to an unsupported kind, or when
+ * the data within that resource is malformed, the Gateway SHOULD be
+ * rejected with the "Accepted" status condition set to "False" and an
+ * "InvalidParameters" reason.
  *
  * Support: Implementation-specific
  *
@@ -1428,11 +1365,9 @@ export function toJson_GatewaySpecInfrastructureParametersRef(obj: GatewaySpecIn
  * Listener and the trusted namespaces where those Route resources MAY be
  * present.
  *
- *
  * Although a client request may match multiple route rules, only one rule
  * may ultimately receive the request. Matching precedence MUST be
  * determined in order of the following criteria:
- *
  *
  * * The most specific match as defined by the Route type.
  * * The oldest Route based on creation timestamp. For example, a Route with
@@ -1442,14 +1377,12 @@ export function toJson_GatewaySpecInfrastructureParametersRef(obj: GatewaySpecIn
  * alphabetical order (namespace/name) should be given precedence. For
  * example, foo/bar is given precedence over foo/baz.
  *
- *
  * All valid rules within a Route attached to this Listener should be
  * implemented. Invalid Route rules can be ignored (sometimes that will mean
  * the full Route). If a Route rule transitions from valid to invalid,
  * support for that Route rule should be dropped to ensure consistency. For
  * example, even if a filter specified by a Route rule is invalid, the rest
  * of the rules within that Route should still be supported.
- *
  *
  * Support: Core
  *
@@ -1461,13 +1394,11 @@ export interface GatewaySpecListenersAllowedRoutes {
    * to this Gateway Listener. When unspecified or empty, the kinds of Routes
    * selected are determined using the Listener protocol.
    *
-   *
    * A RouteGroupKind MUST correspond to kinds of Routes that are compatible
    * with the application protocol specified in the Listener's Protocol field.
    * If an implementation does not support or recognize this resource type, it
    * MUST set the "ResolvedRefs" condition to False for this Listener with the
    * "InvalidRouteKinds" reason.
-   *
    *
    * Support: Core
    *
@@ -1478,7 +1409,6 @@ export interface GatewaySpecListenersAllowedRoutes {
   /**
    * Namespaces indicates namespaces from which Routes may be attached to this
    * Listener. This is restricted to the namespace of this Gateway by default.
-   *
    *
    * Support: Core
    *
@@ -1508,14 +1438,11 @@ export function toJson_GatewaySpecListenersAllowedRoutes(obj: GatewaySpecListene
  * the Protocol field is "HTTPS" or "TLS". It is invalid to set this field
  * if the Protocol field is "HTTP", "TCP", or "UDP".
  *
- *
  * The association of SNIs to Certificate defined in GatewayTLSConfig is
  * defined based on the Hostname field for this listener.
  *
- *
  * The GatewayClass MUST use the longest matching SNI out of all
  * available certificates for any TLS handshake.
- *
  *
  * Support: Core
  *
@@ -1528,11 +1455,9 @@ export interface GatewaySpecListenersTls {
    * establish a TLS handshake for requests that match the hostname of the
    * associated listener.
    *
-   *
    * A single CertificateRef to a Kubernetes Secret has "Core" support.
    * Implementations MAY choose to support attaching multiple certificates to
    * a Listener, but this behavior is implementation-specific.
-   *
    *
    * References to a resource in different namespace are invalid UNLESS there
    * is a ReferenceGrant in the target namespace that allows the certificate
@@ -1540,17 +1465,13 @@ export interface GatewaySpecListenersTls {
    * "ResolvedRefs" condition MUST be set to False for this listener with the
    * "RefNotPermitted" reason.
    *
-   *
    * This field is required to have at least one element when the mode is set
    * to "Terminate" (default) and is optional otherwise.
-   *
    *
    * CertificateRefs can reference to standard Kubernetes resources, i.e.
    * Secret, or implementation-specific custom resources.
    *
-   *
    * Support: Core - A single reference to a Kubernetes Secret of type kubernetes.io/tls
-   *
    *
    * Support: Implementation-specific (More than one reference or other resource types)
    *
@@ -1565,11 +1486,7 @@ export interface GatewaySpecListenersTls {
    * that requests a user to specify the client certificate.
    * The maximum depth of a certificate chain accepted in verification is Implementation specific.
    *
-   *
    * Support: Extended
-   *
-   *
-   *
    *
    * @schema GatewaySpecListenersTls#frontendValidation
    */
@@ -1579,7 +1496,6 @@ export interface GatewaySpecListenersTls {
    * Mode defines the TLS behavior for the TLS session initiated by the client.
    * There are two possible modes:
    *
-   *
    * - Terminate: The TLS session between the downstream client and the
    * Gateway is terminated at the Gateway. This mode requires certificates
    * to be specified in some way, such as populating the certificateRefs
@@ -1588,7 +1504,6 @@ export interface GatewaySpecListenersTls {
    * implies that the Gateway can't decipher the TLS stream except for
    * the ClientHello message of the TLS protocol. The certificateRefs field
    * is ignored in this mode.
-   *
    *
    * Support: Core
    *
@@ -1601,12 +1516,10 @@ export interface GatewaySpecListenersTls {
    * configuration for each implementation. For example, configuring the
    * minimum TLS version or supported cipher suites.
    *
-   *
    * A set of common keys MAY be defined by the API in the future. To avoid
    * any ambiguity, implementation-specific definitions MUST use
    * domain-prefixed names, such as `example.com/my-custom-option`.
    * Un-prefixed names are reserved for key names defined by Gateway API.
-   *
    *
    * Support: Implementation-specific
    *
@@ -1627,6 +1540,71 @@ export function toJson_GatewaySpecListenersTls(obj: GatewaySpecListenersTls | un
     'frontendValidation': toJson_GatewaySpecListenersTlsFrontendValidation(obj.frontendValidation),
     'mode': obj.mode,
     'options': ((obj.options) === undefined) ? undefined : (Object.entries(obj.options).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * From indicates where ListenerSets can attach to this Gateway. Possible
+ * values are:
+ *
+ * * Same: Only ListenerSets in the same namespace may be attached to this Gateway.
+ * * Selector: ListenerSets in namespaces selected by the selector may be attached to this Gateway.
+ * * All: ListenerSets in all namespaces may be attached to this Gateway.
+ * * None: Only listeners defined in the Gateway's spec are allowed
+ *
+ * While this feature is experimental, the default value None
+ *
+ * @schema GatewaySpecAllowedListenersNamespacesFrom
+ */
+export enum GatewaySpecAllowedListenersNamespacesFrom {
+  /** All */
+  ALL = "All",
+  /** Selector */
+  SELECTOR = "Selector",
+  /** Same */
+  SAME = "Same",
+  /** None */
+  NONE = "None",
+}
+
+/**
+ * Selector must be specified when From is set to "Selector". In that case,
+ * only ListenerSets in Namespaces matching this Selector will be selected by this
+ * Gateway. This field is ignored for other values of "From".
+ *
+ * @schema GatewaySpecAllowedListenersNamespacesSelector
+ */
+export interface GatewaySpecAllowedListenersNamespacesSelector {
+  /**
+   * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+   *
+   * @schema GatewaySpecAllowedListenersNamespacesSelector#matchExpressions
+   */
+  readonly matchExpressions?: GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions[];
+
+  /**
+   * matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+   * map is equivalent to an element of matchExpressions, whose key field is "key", the
+   * operator is "In", and the values array contains only "value". The requirements are ANDed.
+   *
+   * @schema GatewaySpecAllowedListenersNamespacesSelector#matchLabels
+   */
+  readonly matchLabels?: { [key: string]: string };
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecAllowedListenersNamespacesSelector' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecAllowedListenersNamespacesSelector(obj: GatewaySpecAllowedListenersNamespacesSelector | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'matchExpressions': obj.matchExpressions?.map(y => toJson_GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions(y)),
+    'matchLabels': ((obj.matchLabels) === undefined) ? undefined : (Object.entries(obj.matchLabels).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -1674,7 +1652,6 @@ export function toJson_GatewaySpecListenersAllowedRoutesKinds(obj: GatewaySpecLi
  * Namespaces indicates namespaces from which Routes may be attached to this
  * Listener. This is restricted to the namespace of this Gateway by default.
  *
- *
  * Support: Core
  *
  * @schema GatewaySpecListenersAllowedRoutesNamespaces
@@ -1684,12 +1661,10 @@ export interface GatewaySpecListenersAllowedRoutesNamespaces {
    * From indicates where Routes will be selected for this Gateway. Possible
    * values are:
    *
-   *
    * * All: Routes in all namespaces may be used by this Gateway.
    * * Selector: Routes in namespaces selected by the selector may be used by
    * this Gateway.
    * * Same: Only Routes in the same namespace may be used by this Gateway.
-   *
    *
    * Support: Core
    *
@@ -1701,7 +1676,6 @@ export interface GatewaySpecListenersAllowedRoutesNamespaces {
    * Selector must be specified when From is set to "Selector". In that case,
    * only Routes in Namespaces matching this Selector will be selected by this
    * Gateway. This field is ignored for other values of "From".
-   *
    *
    * Support: Core
    *
@@ -1730,10 +1704,8 @@ export function toJson_GatewaySpecListenersAllowedRoutesNamespaces(obj: GatewayS
  * SecretObjectReference identifies an API object including its namespace,
  * defaulting to Secret.
  *
- *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
- *
  *
  * References to objects with invalid Group and Kind are not valid, and must
  * be rejected by the implementation, with appropriate Conditions set
@@ -1768,12 +1740,10 @@ export interface GatewaySpecListenersTlsCertificateRefs {
    * Namespace is the namespace of the referenced object. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -1807,11 +1777,7 @@ export function toJson_GatewaySpecListenersTlsCertificateRefs(obj: GatewaySpecLi
  * that requests a user to specify the client certificate.
  * The maximum depth of a certificate chain accepted in verification is Implementation specific.
  *
- *
  * Support: Extended
- *
- *
- *
  *
  * @schema GatewaySpecListenersTlsFrontendValidation
  */
@@ -1822,20 +1788,16 @@ export interface GatewaySpecListenersTlsFrontendValidation {
    * the Certificate Authorities that can be used
    * as a trust anchor to validate the certificates presented by the client.
    *
-   *
    * A single CA certificate reference to a Kubernetes ConfigMap
    * has "Core" support.
    * Implementations MAY choose to support attaching multiple CA certificates to
    * a Listener, but this behavior is implementation-specific.
    *
-   *
    * Support: Core - A single reference to a Kubernetes ConfigMap
    * with the CA certificate in a key named `ca.crt`.
    *
-   *
    * Support: Implementation-specific (More than one reference, or other kinds
    * of resources).
-   *
    *
    * References to a resource in a different namespace are invalid UNLESS there
    * is a ReferenceGrant in the target namespace that allows the certificate
@@ -1867,7 +1829,6 @@ export function toJson_GatewaySpecListenersTlsFrontendValidation(obj: GatewaySpe
  * Mode defines the TLS behavior for the TLS session initiated by the client.
  * There are two possible modes:
  *
- *
  * - Terminate: The TLS session between the downstream client and the
  * Gateway is terminated at the Gateway. This mode requires certificates
  * to be specified in some way, such as populating the certificateRefs
@@ -1876,7 +1837,6 @@ export function toJson_GatewaySpecListenersTlsFrontendValidation(obj: GatewaySpe
  * implies that the Gateway can't decipher the TLS stream except for
  * the ClientHello message of the TLS protocol. The certificateRefs field
  * is ignored in this mode.
- *
  *
  * Support: Core
  *
@@ -1890,15 +1850,63 @@ export enum GatewaySpecListenersTlsMode {
 }
 
 /**
+ * A label selector requirement is a selector that contains values, a key, and an operator that
+ * relates the key and values.
+ *
+ * @schema GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions
+ */
+export interface GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions {
+  /**
+   * key is the label key that the selector applies to.
+   *
+   * @schema GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions#key
+   */
+  readonly key: string;
+
+  /**
+   * operator represents a key's relationship to a set of values.
+   * Valid operators are In, NotIn, Exists and DoesNotExist.
+   *
+   * @schema GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions#operator
+   */
+  readonly operator: string;
+
+  /**
+   * values is an array of string values. If the operator is In or NotIn,
+   * the values array must be non-empty. If the operator is Exists or DoesNotExist,
+   * the values array must be empty. This array is replaced during a strategic
+   * merge patch.
+   *
+   * @schema GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions#values
+   */
+  readonly values?: string[];
+
+}
+
+/**
+ * Converts an object of type 'GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions(obj: GatewaySpecAllowedListenersNamespacesSelectorMatchExpressions | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'key': obj.key,
+    'operator': obj.operator,
+    'values': obj.values?.map(y => y),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * From indicates where Routes will be selected for this Gateway. Possible
  * values are:
- *
  *
  * * All: Routes in all namespaces may be used by this Gateway.
  * * Selector: Routes in namespaces selected by the selector may be used by
  * this Gateway.
  * * Same: Only Routes in the same namespace may be used by this Gateway.
- *
  *
  * Support: Core
  *
@@ -1917,7 +1925,6 @@ export enum GatewaySpecListenersAllowedRoutesNamespacesFrom {
  * Selector must be specified when From is set to "Selector". In that case,
  * only Routes in Namespaces matching this Selector will be selected by this
  * Gateway. This field is ignored for other values of "From".
- *
  *
  * Support: Core
  *
@@ -1960,10 +1967,8 @@ export function toJson_GatewaySpecListenersAllowedRoutesNamespacesSelector(obj: 
 /**
  * ObjectReference identifies an API object including its namespace.
  *
- *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
- *
  *
  * References to objects with invalid Group and Kind are not valid, and must
  * be rejected by the implementation, with appropriate Conditions set
@@ -1974,7 +1979,7 @@ export function toJson_GatewaySpecListenersAllowedRoutesNamespacesSelector(obj: 
 export interface GatewaySpecListenersTlsFrontendValidationCaCertificateRefs {
   /**
    * Group is the group of the referent. For example, "gateway.networking.k8s.io".
-   * When unspecified or empty string, core API group is inferred.
+   * When set to the empty string, core API group is inferred.
    *
    * @schema GatewaySpecListenersTlsFrontendValidationCaCertificateRefs#group
    */
@@ -1998,12 +2003,10 @@ export interface GatewaySpecListenersTlsFrontendValidationCaCertificateRefs {
    * Namespace is the namespace of the referenced object. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -2184,32 +2187,43 @@ export interface GatewayV1Beta1Spec {
    * requested address is invalid or unavailable, the implementation MUST
    * indicate this in the associated entry in GatewayStatus.Addresses.
    *
-   *
    * The Addresses field represents a request for the address(es) on the
    * "outside of the Gateway", that traffic bound for this Gateway will use.
    * This could be the IP address or hostname of an external load balancer or
    * other networking infrastructure, or some other address that traffic will
    * be sent to.
    *
-   *
    * If no Addresses are specified, the implementation MAY schedule the
    * Gateway in an implementation-specific manner, assigning an appropriate
    * set of Addresses.
-   *
    *
    * The implementation MUST bind all Listeners to every GatewayAddress that
    * it assigns to the Gateway and add a corresponding entry in
    * GatewayStatus.Addresses.
    *
-   *
    * Support: Extended
-   *
-   *
-   *
    *
    * @schema GatewayV1Beta1Spec#addresses
    */
   readonly addresses?: GatewayV1Beta1SpecAddresses[];
+
+  /**
+   * AllowedListeners defines which ListenerSets can be attached to this Gateway.
+   * While this feature is experimental, the default value is to allow no ListenerSets.
+   *
+   * @schema GatewayV1Beta1Spec#allowedListeners
+   */
+  readonly allowedListeners?: GatewayV1Beta1SpecAllowedListeners;
+
+  /**
+   * BackendTLS configures TLS settings for when this Gateway is connecting to
+   * backends with TLS.
+   *
+   * Support: Core
+   *
+   * @schema GatewayV1Beta1Spec#backendTLS
+   */
+  readonly backendTls?: GatewayV1Beta1SpecBackendTls;
 
   /**
    * GatewayClassName used for this Gateway. This is the name of a
@@ -2222,11 +2236,7 @@ export interface GatewayV1Beta1Spec {
   /**
    * Infrastructure defines infrastructure level attributes about this Gateway instance.
    *
-   *
-   * Support: Core
-   *
-   *
-   *
+   * Support: Extended
    *
    * @schema GatewayV1Beta1Spec#infrastructure
    */
@@ -2237,6 +2247,7 @@ export interface GatewayV1Beta1Spec {
    * logical endpoints that are bound on this Gateway's addresses.
    * At least one Listener MUST be specified.
    *
+   * ## Distinct Listeners
    *
    * Each Listener in a set of Listeners (for example, in a single Gateway)
    * MUST be _distinct_, in that a traffic flow MUST be able to be assigned to
@@ -2245,97 +2256,107 @@ export interface GatewayV1Beta1Spec {
    * from multiple Gateways onto a single data plane, and these rules _also_
    * apply in that case).
    *
-   *
    * Practically, this means that each listener in a set MUST have a unique
    * combination of Port, Protocol, and, if supported by the protocol, Hostname.
    *
-   *
    * Some combinations of port, protocol, and TLS settings are considered
-   * Core support and MUST be supported by implementations based on their
-   * targeted conformance profile:
+   * Core support and MUST be supported by implementations based on the objects
+   * they support:
    *
-   *
-   * HTTP Profile
-   *
+   * HTTPRoute
    *
    * 1. HTTPRoute, Port: 80, Protocol: HTTP
    * 2. HTTPRoute, Port: 443, Protocol: HTTPS, TLS Mode: Terminate, TLS keypair provided
    *
-   *
-   * TLS Profile
-   *
+   * TLSRoute
    *
    * 1. TLSRoute, Port: 443, Protocol: TLS, TLS Mode: Passthrough
    *
-   *
    * "Distinct" Listeners have the following property:
    *
+   * **The implementation can match inbound requests to a single distinct
+   * Listener**.
    *
-   * The implementation can match inbound requests to a single distinct
-   * Listener. When multiple Listeners share values for fields (for
+   * When multiple Listeners share values for fields (for
    * example, two Listeners with the same Port value), the implementation
    * can match requests to only one of the Listeners using other
    * Listener fields.
    *
+   * When multiple listeners have the same value for the Protocol field, then
+   * each of the Listeners with matching Protocol values MUST have different
+   * values for other fields.
    *
-   * For example, the following Listener scenarios are distinct:
+   * The set of fields that MUST be different for a Listener differs per protocol.
+   * The following rules define the rules for what fields MUST be considered for
+   * Listeners to be distinct with each protocol currently defined in the
+   * Gateway API spec.
    *
+   * The set of listeners that all share a protocol value MUST have _different_
+   * values for _at least one_ of these fields to be distinct:
    *
-   * 1. Multiple Listeners with the same Port that all use the "HTTP"
-   * Protocol that all have unique Hostname values.
-   * 2. Multiple Listeners with the same Port that use either the "HTTPS" or
-   * "TLS" Protocol that all have unique Hostname values.
-   * 3. A mixture of "TCP" and "UDP" Protocol Listeners, where no Listener
-   * with the same Protocol has the same Port value.
+   * * **HTTP, HTTPS, TLS**: Port, Hostname
+   * * **TCP, UDP**: Port
    *
+   * One **very** important rule to call out involves what happens when an
+   * implementation:
    *
-   * Some fields in the Listener struct have possible values that affect
-   * whether the Listener is distinct. Hostname is particularly relevant
-   * for HTTP or HTTPS protocols.
+   * * Supports TCP protocol Listeners, as well as HTTP, HTTPS, or TLS protocol
+   * Listeners, and
+   * * sees HTTP, HTTPS, or TLS protocols with the same `port` as one with TCP
+   * Protocol.
    *
+   * In this case all the Listeners that share a port with the
+   * TCP Listener are not distinct and so MUST NOT be accepted.
    *
-   * When using the Hostname value to select between same-Port, same-Protocol
-   * Listeners, the Hostname value must be different on each Listener for the
-   * Listener to be distinct.
+   * If an implementation does not support TCP Protocol Listeners, then the
+   * previous rule does not apply, and the TCP Listeners SHOULD NOT be
+   * accepted.
    *
+   * Note that the `tls` field is not used for determining if a listener is distinct, because
+   * Listeners that _only_ differ on TLS config will still conflict in all cases.
    *
-   * When the Listeners are distinct based on Hostname, inbound request
+   * ### Listeners that are distinct only by Hostname
+   *
+   * When the Listeners are distinct based only on Hostname, inbound request
    * hostnames MUST match from the most specific to least specific Hostname
    * values to choose the correct Listener and its associated set of Routes.
    *
-   *
-   * Exact matches must be processed before wildcard matches, and wildcard
-   * matches must be processed before fallback (empty Hostname value)
+   * Exact matches MUST be processed before wildcard matches, and wildcard
+   * matches MUST be processed before fallback (empty Hostname value)
    * matches. For example, `"foo.example.com"` takes precedence over
    * `"*.example.com"`, and `"*.example.com"` takes precedence over `""`.
-   *
    *
    * Additionally, if there are multiple wildcard entries, more specific
    * wildcard entries must be processed before less specific wildcard entries.
    * For example, `"*.foo.example.com"` takes precedence over `"*.example.com"`.
+   *
    * The precise definition here is that the higher the number of dots in the
    * hostname to the right of the wildcard character, the higher the precedence.
-   *
    *
    * The wildcard character will match any number of characters _and dots_ to
    * the left, however, so `"*.example.com"` will match both
    * `"foo.bar.example.com"` _and_ `"bar.example.com"`.
    *
+   * ## Handling indistinct Listeners
    *
    * If a set of Listeners contains Listeners that are not distinct, then those
-   * Listeners are Conflicted, and the implementation MUST set the "Conflicted"
+   * Listeners are _Conflicted_, and the implementation MUST set the "Conflicted"
    * condition in the Listener Status to "True".
    *
+   * The words "indistinct" and "conflicted" are considered equivalent for the
+   * purpose of this documentation.
    *
    * Implementations MAY choose to accept a Gateway with some Conflicted
    * Listeners only if they only accept the partial Listener set that contains
-   * no Conflicted Listeners. To put this another way, implementations may
-   * accept a partial Listener set only if they throw out *all* the conflicting
-   * Listeners. No picking one of the conflicting listeners as the winner.
-   * This also means that the Gateway must have at least one non-conflicting
-   * Listener in this case, otherwise it violates the requirement that at
-   * least one Listener must be present.
+   * no Conflicted Listeners.
    *
+   * Specifically, an implementation MAY accept a partial Listener set subject to
+   * the following rules:
+   *
+   * * The implementation MUST NOT pick one conflicting Listener as the winner.
+   * ALL indistinct Listeners must not be accepted for processing.
+   * * At least one distinct Listener MUST be present, or else the Gateway effectively
+   * contains _no_ Listeners, and must be rejected from processing as a whole.
    *
    * The implementation MUST set a "ListenersNotValid" condition on the
    * Gateway Status when the Gateway contains Conflicted Listeners whether or
@@ -2344,37 +2365,43 @@ export interface GatewayV1Beta1Spec {
    * Accepted. Additionally, the Listener status for those listeners SHOULD
    * indicate which Listeners are conflicted and not Accepted.
    *
+   * ## General Listener behavior
    *
-   * A Gateway's Listeners are considered "compatible" if:
+   * Note that, for all distinct Listeners, requests SHOULD match at most one Listener.
+   * For example, if Listeners are defined for "foo.example.com" and "*.example.com", a
+   * request to "foo.example.com" SHOULD only be routed using routes attached
+   * to the "foo.example.com" Listener (and not the "*.example.com" Listener).
    *
+   * This concept is known as "Listener Isolation", and it is an Extended feature
+   * of Gateway API. Implementations that do not support Listener Isolation MUST
+   * clearly document this, and MUST NOT claim support for the
+   * `GatewayHTTPListenerIsolation` feature.
+   *
+   * Implementations that _do_ support Listener Isolation SHOULD claim support
+   * for the Extended `GatewayHTTPListenerIsolation` feature and pass the associated
+   * conformance tests.
+   *
+   * ## Compatible Listeners
+   *
+   * A Gateway's Listeners are considered _compatible_ if:
    *
    * 1. They are distinct.
    * 2. The implementation can serve them in compliance with the Addresses
    * requirement that all Listeners are available on all assigned
    * addresses.
    *
-   *
    * Compatible combinations in Extended support are expected to vary across
    * implementations. A combination that is compatible for one implementation
    * may not be compatible for another.
-   *
    *
    * For example, an implementation that cannot serve both TCP and UDP listeners
    * on the same address, or cannot mix HTTPS and generic TLS listens on the same port
    * would not consider those cases compatible, even though they are distinct.
    *
-   *
-   * Note that requests SHOULD match at most one Listener. For example, if
-   * Listeners are defined for "foo.example.com" and "*.example.com", a
-   * request to "foo.example.com" SHOULD only be routed using routes attached
-   * to the "foo.example.com" Listener (and not the "*.example.com" Listener).
-   * This concept is known as "Listener Isolation". Implementations that do
-   * not support Listener Isolation MUST clearly document this.
-   *
-   *
    * Implementations MAY merge separate Gateways onto a single set of
    * Addresses if all Listeners across all Gateways are compatible.
    *
+   * In a future release the MinItems=1 requirement MAY be dropped.
    *
    * Support: Core
    *
@@ -2392,6 +2419,8 @@ export function toJson_GatewayV1Beta1Spec(obj: GatewayV1Beta1Spec | undefined): 
   if (obj === undefined) { return undefined; }
   const result = {
     'addresses': obj.addresses?.map(y => toJson_GatewayV1Beta1SpecAddresses(y)),
+    'allowedListeners': toJson_GatewayV1Beta1SpecAllowedListeners(obj.allowedListeners),
+    'backendTLS': toJson_GatewayV1Beta1SpecBackendTls(obj.backendTls),
     'gatewayClassName': obj.gatewayClassName,
     'infrastructure': toJson_GatewayV1Beta1SpecInfrastructure(obj.infrastructure),
     'listeners': obj.listeners?.map(y => toJson_GatewayV1Beta1SpecListeners(y)),
@@ -2402,7 +2431,7 @@ export function toJson_GatewayV1Beta1Spec(obj: GatewayV1Beta1Spec | undefined): 
 /* eslint-enable max-len, quote-props */
 
 /**
- * GatewayAddress describes an address that can be bound to a Gateway.
+ * GatewaySpecAddress describes an address that can be bound to a Gateway.
  *
  * @schema GatewayV1Beta1SpecAddresses
  */
@@ -2415,15 +2444,17 @@ export interface GatewayV1Beta1SpecAddresses {
   readonly type?: string;
 
   /**
-   * Value of the address. The validity of the values will depend
-   * on the type and support by the controller.
+   * When a value is unspecified, an implementation SHOULD automatically
+   * assign an address matching the requested type if possible.
    *
+   * If an implementation does not support an empty value, they MUST set the
+   * "Programmed" condition in status to False with a reason of "AddressNotAssigned".
    *
    * Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
    *
    * @schema GatewayV1Beta1SpecAddresses#value
    */
-  readonly value: string;
+  readonly value?: string;
 
 }
 
@@ -2443,13 +2474,86 @@ export function toJson_GatewayV1Beta1SpecAddresses(obj: GatewayV1Beta1SpecAddres
 /* eslint-enable max-len, quote-props */
 
 /**
- * Infrastructure defines infrastructure level attributes about this Gateway instance.
+ * AllowedListeners defines which ListenerSets can be attached to this Gateway.
+ * While this feature is experimental, the default value is to allow no ListenerSets.
  *
+ * @schema GatewayV1Beta1SpecAllowedListeners
+ */
+export interface GatewayV1Beta1SpecAllowedListeners {
+  /**
+   * Namespaces defines which namespaces ListenerSets can be attached to this Gateway.
+   * While this feature is experimental, the default value is to allow no ListenerSets.
+   *
+   * @schema GatewayV1Beta1SpecAllowedListeners#namespaces
+   */
+  readonly namespaces?: GatewayV1Beta1SpecAllowedListenersNamespaces;
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecAllowedListeners' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecAllowedListeners(obj: GatewayV1Beta1SpecAllowedListeners | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'namespaces': toJson_GatewayV1Beta1SpecAllowedListenersNamespaces(obj.namespaces),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * BackendTLS configures TLS settings for when this Gateway is connecting to
+ * backends with TLS.
  *
  * Support: Core
  *
+ * @schema GatewayV1Beta1SpecBackendTls
+ */
+export interface GatewayV1Beta1SpecBackendTls {
+  /**
+   * ClientCertificateRef is a reference to an object that contains a Client
+   * Certificate and the associated private key.
+   *
+   * References to a resource in different namespace are invalid UNLESS there
+   * is a ReferenceGrant in the target namespace that allows the certificate
+   * to be attached. If a ReferenceGrant does not allow this reference, the
+   * "ResolvedRefs" condition MUST be set to False for this listener with the
+   * "RefNotPermitted" reason.
+   *
+   * ClientCertificateRef can reference to standard Kubernetes resources, i.e.
+   * Secret, or implementation-specific custom resources.
+   *
+   * This setting can be overridden on the service level by use of BackendTLSPolicy.
+   *
+   * Support: Core
+   *
+   * @schema GatewayV1Beta1SpecBackendTls#clientCertificateRef
+   */
+  readonly clientCertificateRef?: GatewayV1Beta1SpecBackendTlsClientCertificateRef;
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecBackendTls' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecBackendTls(obj: GatewayV1Beta1SpecBackendTls | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'clientCertificateRef': toJson_GatewayV1Beta1SpecBackendTlsClientCertificateRef(obj.clientCertificateRef),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * Infrastructure defines infrastructure level attributes about this Gateway instance.
  *
- *
+ * Support: Extended
  *
  * @schema GatewayV1Beta1SpecInfrastructure
  */
@@ -2457,13 +2561,10 @@ export interface GatewayV1Beta1SpecInfrastructure {
   /**
    * Annotations that SHOULD be applied to any resources created in response to this Gateway.
    *
-   *
    * For implementations creating other Kubernetes objects, this should be the `metadata.annotations` field on resources.
    * For other implementations, this refers to any relevant (implementation specific) "annotations" concepts.
    *
-   *
    * An implementation may chose to add additional implementation-specific annotations as they see fit.
-   *
    *
    * Support: Extended
    *
@@ -2474,13 +2575,13 @@ export interface GatewayV1Beta1SpecInfrastructure {
   /**
    * Labels that SHOULD be applied to any resources created in response to this Gateway.
    *
-   *
    * For implementations creating other Kubernetes objects, this should be the `metadata.labels` field on resources.
    * For other implementations, this refers to any relevant (implementation specific) "labels" concepts.
    *
-   *
    * An implementation may chose to add additional implementation-specific labels as they see fit.
    *
+   * If an implementation maps these labels to Pods, or any other resource that would need to be recreated when labels
+   * change, it SHOULD clearly warn about this behavior in documentation.
    *
    * Support: Extended
    *
@@ -2493,14 +2594,16 @@ export interface GatewayV1Beta1SpecInfrastructure {
    * parameters corresponding to the Gateway. This is optional if the
    * controller does not require any additional configuration.
    *
-   *
    * This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
-   *
    *
    * The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
    * the merging behavior is implementation specific.
    * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
    *
+   * If the referent cannot be found, refers to an unsupported kind, or when
+   * the data within that resource is malformed, the Gateway SHOULD be
+   * rejected with the "Accepted" status condition set to "False" and an
+   * "InvalidParameters" reason.
    *
    * Support: Implementation-specific
    *
@@ -2538,11 +2641,9 @@ export interface GatewayV1Beta1SpecListeners {
    * Listener and the trusted namespaces where those Route resources MAY be
    * present.
    *
-   *
    * Although a client request may match multiple route rules, only one rule
    * may ultimately receive the request. Matching precedence MUST be
    * determined in order of the following criteria:
-   *
    *
    * * The most specific match as defined by the Route type.
    * * The oldest Route based on creation timestamp. For example, a Route with
@@ -2552,14 +2653,12 @@ export interface GatewayV1Beta1SpecListeners {
    * alphabetical order (namespace/name) should be given precedence. For
    * example, foo/bar is given precedence over foo/baz.
    *
-   *
    * All valid rules within a Route attached to this Listener should be
    * implemented. Invalid Route rules can be ignored (sometimes that will mean
    * the full Route). If a Route rule transitions from valid to invalid,
    * support for that Route rule should be dropped to ensure consistency. For
    * example, even if a filter specified by a Route rule is invalid, the rest
    * of the rules within that Route should still be supported.
-   *
    *
    * Support: Core
    *
@@ -2573,18 +2672,36 @@ export interface GatewayV1Beta1SpecListeners {
    * field is ignored for protocols that don't require hostname based
    * matching.
    *
-   *
    * Implementations MUST apply Hostname matching appropriately for each of
    * the following protocols:
    *
-   *
    * * TLS: The Listener Hostname MUST match the SNI.
    * * HTTP: The Listener Hostname MUST match the Host header of the request.
-   * * HTTPS: The Listener Hostname SHOULD match at both the TLS and HTTP
-   * protocol layers as described above. If an implementation does not
-   * ensure that both the SNI and Host header match the Listener hostname,
-   * it MUST clearly document that.
+   * * HTTPS: The Listener Hostname SHOULD match both the SNI and Host header.
+   * Note that this does not require the SNI and Host header to be the same.
+   * The semantics of this are described in more detail below.
    *
+   * To ensure security, Section 11.1 of RFC-6066 emphasizes that server
+   * implementations that rely on SNI hostname matching MUST also verify
+   * hostnames within the application protocol.
+   *
+   * Section 9.1.2 of RFC-7540 provides a mechanism for servers to reject the
+   * reuse of a connection by responding with the HTTP 421 Misdirected Request
+   * status code. This indicates that the origin server has rejected the
+   * request because it appears to have been misdirected.
+   *
+   * To detect misdirected requests, Gateways SHOULD match the authority of
+   * the requests with all the SNI hostname(s) configured across all the
+   * Gateway Listeners on the same port and protocol:
+   *
+   * * If another Listener has an exact match or more specific wildcard entry,
+   * the Gateway SHOULD return a 421.
+   * * If the current Listener (selected by SNI matching during ClientHello)
+   * does not match the Host:
+   * * If another Listener does match the Host the Gateway SHOULD return a
+   * 421.
+   * * If no other Listener matches the Host, the Gateway MUST return a
+   * 404.
    *
    * For HTTPRoute and TLSRoute resources, there is an interaction with the
    * `spec.hostnames` array. When both listener and route specify hostnames,
@@ -2592,11 +2709,9 @@ export interface GatewayV1Beta1SpecListeners {
    * accepted. For more information, refer to the Route specific Hostnames
    * documentation.
    *
-   *
    * Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
    * as a suffix match. That means that a match for `*.example.com` would match
    * both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
-   *
    *
    * Support: Core
    *
@@ -2608,7 +2723,6 @@ export interface GatewayV1Beta1SpecListeners {
    * Name is the name of the Listener. This name MUST be unique within a
    * Gateway.
    *
-   *
    * Support: Core
    *
    * @schema GatewayV1Beta1SpecListeners#name
@@ -2619,7 +2733,6 @@ export interface GatewayV1Beta1SpecListeners {
    * Port is the network port. Multiple listeners may use the
    * same port, subject to the Listener compatibility rules.
    *
-   *
    * Support: Core
    *
    * @schema GatewayV1Beta1SpecListeners#port
@@ -2628,7 +2741,6 @@ export interface GatewayV1Beta1SpecListeners {
 
   /**
    * Protocol specifies the network protocol this listener expects to receive.
-   *
    *
    * Support: Core
    *
@@ -2641,14 +2753,11 @@ export interface GatewayV1Beta1SpecListeners {
    * the Protocol field is "HTTPS" or "TLS". It is invalid to set this field
    * if the Protocol field is "HTTP", "TCP", or "UDP".
    *
-   *
    * The association of SNIs to Certificate defined in GatewayTLSConfig is
    * defined based on the Hostname field for this listener.
    *
-   *
    * The GatewayClass MUST use the longest matching SNI out of all
    * available certificates for any TLS handshake.
-   *
    *
    * Support: Core
    *
@@ -2678,18 +2787,144 @@ export function toJson_GatewayV1Beta1SpecListeners(obj: GatewayV1Beta1SpecListen
 /* eslint-enable max-len, quote-props */
 
 /**
+ * Namespaces defines which namespaces ListenerSets can be attached to this Gateway.
+ * While this feature is experimental, the default value is to allow no ListenerSets.
+ *
+ * @schema GatewayV1Beta1SpecAllowedListenersNamespaces
+ */
+export interface GatewayV1Beta1SpecAllowedListenersNamespaces {
+  /**
+   * From indicates where ListenerSets can attach to this Gateway. Possible
+   * values are:
+   *
+   * * Same: Only ListenerSets in the same namespace may be attached to this Gateway.
+   * * Selector: ListenerSets in namespaces selected by the selector may be attached to this Gateway.
+   * * All: ListenerSets in all namespaces may be attached to this Gateway.
+   * * None: Only listeners defined in the Gateway's spec are allowed
+   *
+   * While this feature is experimental, the default value None
+   *
+   * @schema GatewayV1Beta1SpecAllowedListenersNamespaces#from
+   */
+  readonly from?: GatewayV1Beta1SpecAllowedListenersNamespacesFrom;
+
+  /**
+   * Selector must be specified when From is set to "Selector". In that case,
+   * only ListenerSets in Namespaces matching this Selector will be selected by this
+   * Gateway. This field is ignored for other values of "From".
+   *
+   * @schema GatewayV1Beta1SpecAllowedListenersNamespaces#selector
+   */
+  readonly selector?: GatewayV1Beta1SpecAllowedListenersNamespacesSelector;
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecAllowedListenersNamespaces' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecAllowedListenersNamespaces(obj: GatewayV1Beta1SpecAllowedListenersNamespaces | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'from': obj.from,
+    'selector': toJson_GatewayV1Beta1SpecAllowedListenersNamespacesSelector(obj.selector),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * ClientCertificateRef is a reference to an object that contains a Client
+ * Certificate and the associated private key.
+ *
+ * References to a resource in different namespace are invalid UNLESS there
+ * is a ReferenceGrant in the target namespace that allows the certificate
+ * to be attached. If a ReferenceGrant does not allow this reference, the
+ * "ResolvedRefs" condition MUST be set to False for this listener with the
+ * "RefNotPermitted" reason.
+ *
+ * ClientCertificateRef can reference to standard Kubernetes resources, i.e.
+ * Secret, or implementation-specific custom resources.
+ *
+ * This setting can be overridden on the service level by use of BackendTLSPolicy.
+ *
+ * Support: Core
+ *
+ * @schema GatewayV1Beta1SpecBackendTlsClientCertificateRef
+ */
+export interface GatewayV1Beta1SpecBackendTlsClientCertificateRef {
+  /**
+   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
+   * When unspecified or empty string, core API group is inferred.
+   *
+   * @schema GatewayV1Beta1SpecBackendTlsClientCertificateRef#group
+   */
+  readonly group?: string;
+
+  /**
+   * Kind is kind of the referent. For example "Secret".
+   *
+   * @schema GatewayV1Beta1SpecBackendTlsClientCertificateRef#kind
+   */
+  readonly kind?: string;
+
+  /**
+   * Name is the name of the referent.
+   *
+   * @schema GatewayV1Beta1SpecBackendTlsClientCertificateRef#name
+   */
+  readonly name: string;
+
+  /**
+   * Namespace is the namespace of the referenced object. When unspecified, the local
+   * namespace is inferred.
+   *
+   * Note that when a namespace different than the local namespace is specified,
+   * a ReferenceGrant object is required in the referent namespace to allow that
+   * namespace's owner to accept the reference. See the ReferenceGrant
+   * documentation for details.
+   *
+   * Support: Core
+   *
+   * @schema GatewayV1Beta1SpecBackendTlsClientCertificateRef#namespace
+   */
+  readonly namespace?: string;
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecBackendTlsClientCertificateRef' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecBackendTlsClientCertificateRef(obj: GatewayV1Beta1SpecBackendTlsClientCertificateRef | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'group': obj.group,
+    'kind': obj.kind,
+    'name': obj.name,
+    'namespace': obj.namespace,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * ParametersRef is a reference to a resource that contains the configuration
  * parameters corresponding to the Gateway. This is optional if the
  * controller does not require any additional configuration.
  *
- *
  * This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
- *
  *
  * The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
  * the merging behavior is implementation specific.
  * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
  *
+ * If the referent cannot be found, refers to an unsupported kind, or when
+ * the data within that resource is malformed, the Gateway SHOULD be
+ * rejected with the "Accepted" status condition set to "False" and an
+ * "InvalidParameters" reason.
  *
  * Support: Implementation-specific
  *
@@ -2740,11 +2975,9 @@ export function toJson_GatewayV1Beta1SpecInfrastructureParametersRef(obj: Gatewa
  * Listener and the trusted namespaces where those Route resources MAY be
  * present.
  *
- *
  * Although a client request may match multiple route rules, only one rule
  * may ultimately receive the request. Matching precedence MUST be
  * determined in order of the following criteria:
- *
  *
  * * The most specific match as defined by the Route type.
  * * The oldest Route based on creation timestamp. For example, a Route with
@@ -2754,14 +2987,12 @@ export function toJson_GatewayV1Beta1SpecInfrastructureParametersRef(obj: Gatewa
  * alphabetical order (namespace/name) should be given precedence. For
  * example, foo/bar is given precedence over foo/baz.
  *
- *
  * All valid rules within a Route attached to this Listener should be
  * implemented. Invalid Route rules can be ignored (sometimes that will mean
  * the full Route). If a Route rule transitions from valid to invalid,
  * support for that Route rule should be dropped to ensure consistency. For
  * example, even if a filter specified by a Route rule is invalid, the rest
  * of the rules within that Route should still be supported.
- *
  *
  * Support: Core
  *
@@ -2773,13 +3004,11 @@ export interface GatewayV1Beta1SpecListenersAllowedRoutes {
    * to this Gateway Listener. When unspecified or empty, the kinds of Routes
    * selected are determined using the Listener protocol.
    *
-   *
    * A RouteGroupKind MUST correspond to kinds of Routes that are compatible
    * with the application protocol specified in the Listener's Protocol field.
    * If an implementation does not support or recognize this resource type, it
    * MUST set the "ResolvedRefs" condition to False for this Listener with the
    * "InvalidRouteKinds" reason.
-   *
    *
    * Support: Core
    *
@@ -2790,7 +3019,6 @@ export interface GatewayV1Beta1SpecListenersAllowedRoutes {
   /**
    * Namespaces indicates namespaces from which Routes may be attached to this
    * Listener. This is restricted to the namespace of this Gateway by default.
-   *
    *
    * Support: Core
    *
@@ -2820,14 +3048,11 @@ export function toJson_GatewayV1Beta1SpecListenersAllowedRoutes(obj: GatewayV1Be
  * the Protocol field is "HTTPS" or "TLS". It is invalid to set this field
  * if the Protocol field is "HTTP", "TCP", or "UDP".
  *
- *
  * The association of SNIs to Certificate defined in GatewayTLSConfig is
  * defined based on the Hostname field for this listener.
  *
- *
  * The GatewayClass MUST use the longest matching SNI out of all
  * available certificates for any TLS handshake.
- *
  *
  * Support: Core
  *
@@ -2840,11 +3065,9 @@ export interface GatewayV1Beta1SpecListenersTls {
    * establish a TLS handshake for requests that match the hostname of the
    * associated listener.
    *
-   *
    * A single CertificateRef to a Kubernetes Secret has "Core" support.
    * Implementations MAY choose to support attaching multiple certificates to
    * a Listener, but this behavior is implementation-specific.
-   *
    *
    * References to a resource in different namespace are invalid UNLESS there
    * is a ReferenceGrant in the target namespace that allows the certificate
@@ -2852,17 +3075,13 @@ export interface GatewayV1Beta1SpecListenersTls {
    * "ResolvedRefs" condition MUST be set to False for this listener with the
    * "RefNotPermitted" reason.
    *
-   *
    * This field is required to have at least one element when the mode is set
    * to "Terminate" (default) and is optional otherwise.
-   *
    *
    * CertificateRefs can reference to standard Kubernetes resources, i.e.
    * Secret, or implementation-specific custom resources.
    *
-   *
    * Support: Core - A single reference to a Kubernetes Secret of type kubernetes.io/tls
-   *
    *
    * Support: Implementation-specific (More than one reference or other resource types)
    *
@@ -2877,11 +3096,7 @@ export interface GatewayV1Beta1SpecListenersTls {
    * that requests a user to specify the client certificate.
    * The maximum depth of a certificate chain accepted in verification is Implementation specific.
    *
-   *
    * Support: Extended
-   *
-   *
-   *
    *
    * @schema GatewayV1Beta1SpecListenersTls#frontendValidation
    */
@@ -2891,7 +3106,6 @@ export interface GatewayV1Beta1SpecListenersTls {
    * Mode defines the TLS behavior for the TLS session initiated by the client.
    * There are two possible modes:
    *
-   *
    * - Terminate: The TLS session between the downstream client and the
    * Gateway is terminated at the Gateway. This mode requires certificates
    * to be specified in some way, such as populating the certificateRefs
@@ -2900,7 +3114,6 @@ export interface GatewayV1Beta1SpecListenersTls {
    * implies that the Gateway can't decipher the TLS stream except for
    * the ClientHello message of the TLS protocol. The certificateRefs field
    * is ignored in this mode.
-   *
    *
    * Support: Core
    *
@@ -2913,12 +3126,10 @@ export interface GatewayV1Beta1SpecListenersTls {
    * configuration for each implementation. For example, configuring the
    * minimum TLS version or supported cipher suites.
    *
-   *
    * A set of common keys MAY be defined by the API in the future. To avoid
    * any ambiguity, implementation-specific definitions MUST use
    * domain-prefixed names, such as `example.com/my-custom-option`.
    * Un-prefixed names are reserved for key names defined by Gateway API.
-   *
    *
    * Support: Implementation-specific
    *
@@ -2939,6 +3150,71 @@ export function toJson_GatewayV1Beta1SpecListenersTls(obj: GatewayV1Beta1SpecLis
     'frontendValidation': toJson_GatewayV1Beta1SpecListenersTlsFrontendValidation(obj.frontendValidation),
     'mode': obj.mode,
     'options': ((obj.options) === undefined) ? undefined : (Object.entries(obj.options).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * From indicates where ListenerSets can attach to this Gateway. Possible
+ * values are:
+ *
+ * * Same: Only ListenerSets in the same namespace may be attached to this Gateway.
+ * * Selector: ListenerSets in namespaces selected by the selector may be attached to this Gateway.
+ * * All: ListenerSets in all namespaces may be attached to this Gateway.
+ * * None: Only listeners defined in the Gateway's spec are allowed
+ *
+ * While this feature is experimental, the default value None
+ *
+ * @schema GatewayV1Beta1SpecAllowedListenersNamespacesFrom
+ */
+export enum GatewayV1Beta1SpecAllowedListenersNamespacesFrom {
+  /** All */
+  ALL = "All",
+  /** Selector */
+  SELECTOR = "Selector",
+  /** Same */
+  SAME = "Same",
+  /** None */
+  NONE = "None",
+}
+
+/**
+ * Selector must be specified when From is set to "Selector". In that case,
+ * only ListenerSets in Namespaces matching this Selector will be selected by this
+ * Gateway. This field is ignored for other values of "From".
+ *
+ * @schema GatewayV1Beta1SpecAllowedListenersNamespacesSelector
+ */
+export interface GatewayV1Beta1SpecAllowedListenersNamespacesSelector {
+  /**
+   * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+   *
+   * @schema GatewayV1Beta1SpecAllowedListenersNamespacesSelector#matchExpressions
+   */
+  readonly matchExpressions?: GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions[];
+
+  /**
+   * matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+   * map is equivalent to an element of matchExpressions, whose key field is "key", the
+   * operator is "In", and the values array contains only "value". The requirements are ANDed.
+   *
+   * @schema GatewayV1Beta1SpecAllowedListenersNamespacesSelector#matchLabels
+   */
+  readonly matchLabels?: { [key: string]: string };
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecAllowedListenersNamespacesSelector' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecAllowedListenersNamespacesSelector(obj: GatewayV1Beta1SpecAllowedListenersNamespacesSelector | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'matchExpressions': obj.matchExpressions?.map(y => toJson_GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions(y)),
+    'matchLabels': ((obj.matchLabels) === undefined) ? undefined : (Object.entries(obj.matchLabels).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {})),
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -2986,7 +3262,6 @@ export function toJson_GatewayV1Beta1SpecListenersAllowedRoutesKinds(obj: Gatewa
  * Namespaces indicates namespaces from which Routes may be attached to this
  * Listener. This is restricted to the namespace of this Gateway by default.
  *
- *
  * Support: Core
  *
  * @schema GatewayV1Beta1SpecListenersAllowedRoutesNamespaces
@@ -2996,12 +3271,10 @@ export interface GatewayV1Beta1SpecListenersAllowedRoutesNamespaces {
    * From indicates where Routes will be selected for this Gateway. Possible
    * values are:
    *
-   *
    * * All: Routes in all namespaces may be used by this Gateway.
    * * Selector: Routes in namespaces selected by the selector may be used by
    * this Gateway.
    * * Same: Only Routes in the same namespace may be used by this Gateway.
-   *
    *
    * Support: Core
    *
@@ -3013,7 +3286,6 @@ export interface GatewayV1Beta1SpecListenersAllowedRoutesNamespaces {
    * Selector must be specified when From is set to "Selector". In that case,
    * only Routes in Namespaces matching this Selector will be selected by this
    * Gateway. This field is ignored for other values of "From".
-   *
    *
    * Support: Core
    *
@@ -3042,10 +3314,8 @@ export function toJson_GatewayV1Beta1SpecListenersAllowedRoutesNamespaces(obj: G
  * SecretObjectReference identifies an API object including its namespace,
  * defaulting to Secret.
  *
- *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
- *
  *
  * References to objects with invalid Group and Kind are not valid, and must
  * be rejected by the implementation, with appropriate Conditions set
@@ -3080,12 +3350,10 @@ export interface GatewayV1Beta1SpecListenersTlsCertificateRefs {
    * Namespace is the namespace of the referenced object. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -3119,11 +3387,7 @@ export function toJson_GatewayV1Beta1SpecListenersTlsCertificateRefs(obj: Gatewa
  * that requests a user to specify the client certificate.
  * The maximum depth of a certificate chain accepted in verification is Implementation specific.
  *
- *
  * Support: Extended
- *
- *
- *
  *
  * @schema GatewayV1Beta1SpecListenersTlsFrontendValidation
  */
@@ -3134,20 +3398,16 @@ export interface GatewayV1Beta1SpecListenersTlsFrontendValidation {
    * the Certificate Authorities that can be used
    * as a trust anchor to validate the certificates presented by the client.
    *
-   *
    * A single CA certificate reference to a Kubernetes ConfigMap
    * has "Core" support.
    * Implementations MAY choose to support attaching multiple CA certificates to
    * a Listener, but this behavior is implementation-specific.
    *
-   *
    * Support: Core - A single reference to a Kubernetes ConfigMap
    * with the CA certificate in a key named `ca.crt`.
    *
-   *
    * Support: Implementation-specific (More than one reference, or other kinds
    * of resources).
-   *
    *
    * References to a resource in a different namespace are invalid UNLESS there
    * is a ReferenceGrant in the target namespace that allows the certificate
@@ -3179,7 +3439,6 @@ export function toJson_GatewayV1Beta1SpecListenersTlsFrontendValidation(obj: Gat
  * Mode defines the TLS behavior for the TLS session initiated by the client.
  * There are two possible modes:
  *
- *
  * - Terminate: The TLS session between the downstream client and the
  * Gateway is terminated at the Gateway. This mode requires certificates
  * to be specified in some way, such as populating the certificateRefs
@@ -3188,7 +3447,6 @@ export function toJson_GatewayV1Beta1SpecListenersTlsFrontendValidation(obj: Gat
  * implies that the Gateway can't decipher the TLS stream except for
  * the ClientHello message of the TLS protocol. The certificateRefs field
  * is ignored in this mode.
- *
  *
  * Support: Core
  *
@@ -3202,15 +3460,63 @@ export enum GatewayV1Beta1SpecListenersTlsMode {
 }
 
 /**
+ * A label selector requirement is a selector that contains values, a key, and an operator that
+ * relates the key and values.
+ *
+ * @schema GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions
+ */
+export interface GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions {
+  /**
+   * key is the label key that the selector applies to.
+   *
+   * @schema GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions#key
+   */
+  readonly key: string;
+
+  /**
+   * operator represents a key's relationship to a set of values.
+   * Valid operators are In, NotIn, Exists and DoesNotExist.
+   *
+   * @schema GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions#operator
+   */
+  readonly operator: string;
+
+  /**
+   * values is an array of string values. If the operator is In or NotIn,
+   * the values array must be non-empty. If the operator is Exists or DoesNotExist,
+   * the values array must be empty. This array is replaced during a strategic
+   * merge patch.
+   *
+   * @schema GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions#values
+   */
+  readonly values?: string[];
+
+}
+
+/**
+ * Converts an object of type 'GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions(obj: GatewayV1Beta1SpecAllowedListenersNamespacesSelectorMatchExpressions | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'key': obj.key,
+    'operator': obj.operator,
+    'values': obj.values?.map(y => y),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * From indicates where Routes will be selected for this Gateway. Possible
  * values are:
- *
  *
  * * All: Routes in all namespaces may be used by this Gateway.
  * * Selector: Routes in namespaces selected by the selector may be used by
  * this Gateway.
  * * Same: Only Routes in the same namespace may be used by this Gateway.
- *
  *
  * Support: Core
  *
@@ -3229,7 +3535,6 @@ export enum GatewayV1Beta1SpecListenersAllowedRoutesNamespacesFrom {
  * Selector must be specified when From is set to "Selector". In that case,
  * only Routes in Namespaces matching this Selector will be selected by this
  * Gateway. This field is ignored for other values of "From".
- *
  *
  * Support: Core
  *
@@ -3272,10 +3577,8 @@ export function toJson_GatewayV1Beta1SpecListenersAllowedRoutesNamespacesSelecto
 /**
  * ObjectReference identifies an API object including its namespace.
  *
- *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
- *
  *
  * References to objects with invalid Group and Kind are not valid, and must
  * be rejected by the implementation, with appropriate Conditions set
@@ -3286,7 +3589,7 @@ export function toJson_GatewayV1Beta1SpecListenersAllowedRoutesNamespacesSelecto
 export interface GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs {
   /**
    * Group is the group of the referent. For example, "gateway.networking.k8s.io".
-   * When unspecified or empty string, core API group is inferred.
+   * When set to the empty string, core API group is inferred.
    *
    * @schema GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRefs#group
    */
@@ -3310,12 +3613,10 @@ export interface GatewayV1Beta1SpecListenersTlsFrontendValidationCaCertificateRe
    * Namespace is the namespace of the referenced object. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -3397,7 +3698,6 @@ export function toJson_GatewayV1Beta1SpecListenersAllowedRoutesNamespacesSelecto
  * GatewayClass describes a class of Gateways available to the user for creating
 Gateway resources.
 
-
 It is recommended that this resource be used as a template for Gateways. This
 means that a Gateway is based on the state of the GatewayClass at the time it
 was created and changes to the GatewayClass or associated parameters are not
@@ -3406,12 +3706,10 @@ limit the blast radius of changes to GatewayClass or associated parameters.
 If implementations choose to propagate GatewayClass changes to existing
 Gateways, that MUST be clearly documented by the implementation.
 
-
 Whenever one or more Gateways are using a GatewayClass, implementations SHOULD
 add the `gateway-exists-finalizer.gateway.networking.k8s.io` finalizer on the
 associated GatewayClass. This ensures that a GatewayClass associated with a
 Gateway is not deleted while in use.
-
 
 GatewayClass is a Cluster level resource.
  *
@@ -3470,7 +3768,6 @@ export class GatewayClass extends ApiObject {
  * GatewayClass describes a class of Gateways available to the user for creating
  * Gateway resources.
  *
- *
  * It is recommended that this resource be used as a template for Gateways. This
  * means that a Gateway is based on the state of the GatewayClass at the time it
  * was created and changes to the GatewayClass or associated parameters are not
@@ -3479,12 +3776,10 @@ export class GatewayClass extends ApiObject {
  * If implementations choose to propagate GatewayClass changes to existing
  * Gateways, that MUST be clearly documented by the implementation.
  *
- *
  * Whenever one or more Gateways are using a GatewayClass, implementations SHOULD
  * add the `gateway-exists-finalizer.gateway.networking.k8s.io` finalizer on the
  * associated GatewayClass. This ensures that a GatewayClass associated with a
  * Gateway is not deleted while in use.
- *
  *
  * GatewayClass is a Cluster level resource.
  *
@@ -3530,12 +3825,9 @@ export interface GatewayClassSpec {
    * ControllerName is the name of the controller that is managing Gateways of
    * this class. The value of this field MUST be a domain prefixed path.
    *
-   *
    * Example: "example.net/gateway-controller".
    *
-   *
    * This field is not mutable and cannot be empty.
-   *
    *
    * Support: Core
    *
@@ -3555,20 +3847,18 @@ export interface GatewayClassSpec {
    * parameters corresponding to the GatewayClass. This is optional if the
    * controller does not require any additional configuration.
    *
-   *
    * ParametersRef can reference a standard Kubernetes resource, i.e. ConfigMap,
    * or an implementation-specific custom resource. The resource can be
    * cluster-scoped or namespace-scoped.
    *
-   *
-   * If the referent cannot be found, the GatewayClass's "InvalidParameters"
-   * status condition will be true.
-   *
+   * If the referent cannot be found, refers to an unsupported kind, or when
+   * the data within that resource is malformed, the GatewayClass SHOULD be
+   * rejected with the "Accepted" status condition set to "False" and an
+   * "InvalidParameters" reason.
    *
    * A Gateway for this GatewayClass may provide its own `parametersRef`. When both are specified,
    * the merging behavior is implementation specific.
    * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
-   *
    *
    * Support: Implementation-specific
    *
@@ -3599,20 +3889,18 @@ export function toJson_GatewayClassSpec(obj: GatewayClassSpec | undefined): Reco
  * parameters corresponding to the GatewayClass. This is optional if the
  * controller does not require any additional configuration.
  *
- *
  * ParametersRef can reference a standard Kubernetes resource, i.e. ConfigMap,
  * or an implementation-specific custom resource. The resource can be
  * cluster-scoped or namespace-scoped.
  *
- *
- * If the referent cannot be found, the GatewayClass's "InvalidParameters"
- * status condition will be true.
- *
+ * If the referent cannot be found, refers to an unsupported kind, or when
+ * the data within that resource is malformed, the GatewayClass SHOULD be
+ * rejected with the "Accepted" status condition set to "False" and an
+ * "InvalidParameters" reason.
  *
  * A Gateway for this GatewayClass may provide its own `parametersRef`. When both are specified,
  * the merging behavior is implementation specific.
  * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
- *
  *
  * Support: Implementation-specific
  *
@@ -3673,7 +3961,6 @@ export function toJson_GatewayClassSpecParametersRef(obj: GatewayClassSpecParame
  * GatewayClass describes a class of Gateways available to the user for creating
 Gateway resources.
 
-
 It is recommended that this resource be used as a template for Gateways. This
 means that a Gateway is based on the state of the GatewayClass at the time it
 was created and changes to the GatewayClass or associated parameters are not
@@ -3682,12 +3969,10 @@ limit the blast radius of changes to GatewayClass or associated parameters.
 If implementations choose to propagate GatewayClass changes to existing
 Gateways, that MUST be clearly documented by the implementation.
 
-
 Whenever one or more Gateways are using a GatewayClass, implementations SHOULD
 add the `gateway-exists-finalizer.gateway.networking.k8s.io` finalizer on the
 associated GatewayClass. This ensures that a GatewayClass associated with a
 Gateway is not deleted while in use.
-
 
 GatewayClass is a Cluster level resource.
  *
@@ -3746,7 +4031,6 @@ export class GatewayClassV1Beta1 extends ApiObject {
  * GatewayClass describes a class of Gateways available to the user for creating
  * Gateway resources.
  *
- *
  * It is recommended that this resource be used as a template for Gateways. This
  * means that a Gateway is based on the state of the GatewayClass at the time it
  * was created and changes to the GatewayClass or associated parameters are not
@@ -3755,12 +4039,10 @@ export class GatewayClassV1Beta1 extends ApiObject {
  * If implementations choose to propagate GatewayClass changes to existing
  * Gateways, that MUST be clearly documented by the implementation.
  *
- *
  * Whenever one or more Gateways are using a GatewayClass, implementations SHOULD
  * add the `gateway-exists-finalizer.gateway.networking.k8s.io` finalizer on the
  * associated GatewayClass. This ensures that a GatewayClass associated with a
  * Gateway is not deleted while in use.
- *
  *
  * GatewayClass is a Cluster level resource.
  *
@@ -3806,12 +4088,9 @@ export interface GatewayClassV1Beta1Spec {
    * ControllerName is the name of the controller that is managing Gateways of
    * this class. The value of this field MUST be a domain prefixed path.
    *
-   *
    * Example: "example.net/gateway-controller".
    *
-   *
    * This field is not mutable and cannot be empty.
-   *
    *
    * Support: Core
    *
@@ -3831,20 +4110,18 @@ export interface GatewayClassV1Beta1Spec {
    * parameters corresponding to the GatewayClass. This is optional if the
    * controller does not require any additional configuration.
    *
-   *
    * ParametersRef can reference a standard Kubernetes resource, i.e. ConfigMap,
    * or an implementation-specific custom resource. The resource can be
    * cluster-scoped or namespace-scoped.
    *
-   *
-   * If the referent cannot be found, the GatewayClass's "InvalidParameters"
-   * status condition will be true.
-   *
+   * If the referent cannot be found, refers to an unsupported kind, or when
+   * the data within that resource is malformed, the GatewayClass SHOULD be
+   * rejected with the "Accepted" status condition set to "False" and an
+   * "InvalidParameters" reason.
    *
    * A Gateway for this GatewayClass may provide its own `parametersRef`. When both are specified,
    * the merging behavior is implementation specific.
    * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
-   *
    *
    * Support: Implementation-specific
    *
@@ -3875,20 +4152,18 @@ export function toJson_GatewayClassV1Beta1Spec(obj: GatewayClassV1Beta1Spec | un
  * parameters corresponding to the GatewayClass. This is optional if the
  * controller does not require any additional configuration.
  *
- *
  * ParametersRef can reference a standard Kubernetes resource, i.e. ConfigMap,
  * or an implementation-specific custom resource. The resource can be
  * cluster-scoped or namespace-scoped.
  *
- *
- * If the referent cannot be found, the GatewayClass's "InvalidParameters"
- * status condition will be true.
- *
+ * If the referent cannot be found, refers to an unsupported kind, or when
+ * the data within that resource is malformed, the GatewayClass SHOULD be
+ * rejected with the "Accepted" status condition set to "False" and an
+ * "InvalidParameters" reason.
  *
  * A Gateway for this GatewayClass may provide its own `parametersRef`. When both are specified,
  * the merging behavior is implementation specific.
  * It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
- *
  *
  * Support: Implementation-specific
  *
@@ -3951,13 +4226,11 @@ to match requests by hostname, gRPC service, gRPC method, or HTTP/2 header.
 Filters can be used to specify additional processing steps. Backends specify
 where matching requests will be routed.
 
-
 GRPCRoute falls under extended support within the Gateway API. Within the
 following specification, the word "MUST" indicates that an implementation
 supporting GRPCRoute must conform to the indicated requirement, but an
 implementation not supporting this route type need not follow the requirement
 unless explicitly indicated.
-
 
 Implementations supporting `GRPCRoute` with the `HTTPS` `ProtocolType` MUST
 accept HTTP/2 connections without an initial upgrade from HTTP/1.1, i.e. via
@@ -3965,7 +4238,6 @@ ALPN. If the implementation does not support this, then it MUST set the
 "Accepted" condition to "False" for the affected listener with a reason of
 "UnsupportedProtocol".  Implementations MAY also accept HTTP/2 connections
 with an upgrade from HTTP/1.
-
 
 Implementations supporting `GRPCRoute` with the `HTTP` `ProtocolType` MUST
 support HTTP/2 over cleartext TCP (h2c,
@@ -4034,13 +4306,11 @@ export class GrpcRoute extends ApiObject {
  * Filters can be used to specify additional processing steps. Backends specify
  * where matching requests will be routed.
  *
- *
  * GRPCRoute falls under extended support within the Gateway API. Within the
  * following specification, the word "MUST" indicates that an implementation
  * supporting GRPCRoute must conform to the indicated requirement, but an
  * implementation not supporting this route type need not follow the requirement
  * unless explicitly indicated.
- *
  *
  * Implementations supporting `GRPCRoute` with the `HTTPS` `ProtocolType` MUST
  * accept HTTP/2 connections without an initial upgrade from HTTP/1.1, i.e. via
@@ -4048,7 +4318,6 @@ export class GrpcRoute extends ApiObject {
  * "Accepted" condition to "False" for the affected listener with a reason of
  * "UnsupportedProtocol".  Implementations MAY also accept HTTP/2 connections
  * with an upgrade from HTTP/1.
- *
  *
  * Implementations supporting `GRPCRoute` with the `HTTP` `ProtocolType` MUST
  * support HTTP/2 over cleartext TCP (h2c,
@@ -4103,16 +4372,13 @@ export interface GrpcRouteSpec {
    * Host header to select a GRPCRoute to process the request. This matches
    * the RFC 1123 definition of a hostname with 2 notable exceptions:
    *
-   *
    * 1. IPs are not allowed.
    * 2. A hostname may be prefixed with a wildcard label (`*.`). The wildcard
    * label MUST appear by itself as the first label.
    *
-   *
    * If a hostname is specified by both the Listener and GRPCRoute, there
    * MUST be at least one intersecting hostname for the GRPCRoute to be
    * attached to the Listener. For example:
-   *
    *
    * * A Listener with `test.example.com` as the hostname matches GRPCRoutes
    * that have either not specified any hostnames, or have specified at
@@ -4123,11 +4389,9 @@ export interface GrpcRouteSpec {
    * `test.example.com` and `*.example.com` would both match. On the other
    * hand, `example.com` and `test.example.net` would not match.
    *
-   *
    * Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
    * as a suffix match. That means that a match for `*.example.com` would match
    * both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
-   *
    *
    * If both the Listener and GRPCRoute have specified hostnames, any
    * GRPCRoute hostnames that do not match the Listener hostname MUST be
@@ -4135,12 +4399,10 @@ export interface GrpcRouteSpec {
    * GRPCRoute specified `test.example.com` and `test.example.net`,
    * `test.example.net` MUST NOT be considered for a match.
    *
-   *
    * If both the Listener and GRPCRoute have specified hostnames, and none
    * match with the criteria above, then the GRPCRoute MUST NOT be accepted by
    * the implementation. The implementation MUST raise an 'Accepted' Condition
    * with a status of `False` in the corresponding RouteParentStatus.
-   *
    *
    * If a Route (A) of type HTTPRoute or GRPCRoute is attached to a
    * Listener and that listener already has another Route (B) of the other
@@ -4148,15 +4410,12 @@ export interface GrpcRouteSpec {
    * non-empty, then the implementation MUST accept exactly one of these two
    * routes, determined by the following criteria, in order:
    *
-   *
    * * The oldest Route based on creation timestamp.
    * * The Route appearing first in alphabetical order by
    * "{namespace}/{name}".
    *
-   *
    * The rejected Route MUST raise an 'Accepted' condition with a status of
    * 'False' in the corresponding RouteParentStatus.
-   *
    *
    * Support: Core
    *
@@ -4176,20 +4435,15 @@ export interface GrpcRouteSpec {
    * create a "producer" route for a Service in a different namespace from the
    * Route.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
    *
-   *
    * This API may be extended in the future to support additional kinds of parent
    * resources.
    *
-   *
    * ParentRefs must be _distinct_. This means either that:
-   *
    *
    * * They select different objects.  If this is the case, then parentRef
    * entries are distinct. In terms of fields, this means that the
@@ -4200,9 +4454,7 @@ export interface GrpcRouteSpec {
    * optional fields to different values. If one ParentRef sets a
    * combination of optional fields, all must set the same combination.
    *
-   *
    * Some examples:
-   *
    *
    * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
    * same object must also set `sectionName`.
@@ -4211,13 +4463,11 @@ export interface GrpcRouteSpec {
    * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
    * referencing the same object must also set `sectionName` and `port`.
    *
-   *
    * It is possible to separately reference multiple distinct objects that may
    * be collapsed by an implementation. For example, some implementations may
    * choose to merge compatible Gateway Listeners together. If that is the
    * case, the list of routes attached to those resources should also be
    * merged.
-   *
    *
    * Note that for ParentRefs that cross namespace boundaries, there are specific
    * rules. Cross-namespace references are only valid if they are explicitly
@@ -4226,24 +4476,15 @@ export interface GrpcRouteSpec {
    * generic way to enable other kinds of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
-   *
-   *
-   *
-   *
-   *
-   *
    *
    * @schema GrpcRouteSpec#parentRefs
    */
@@ -4279,14 +4520,11 @@ export function toJson_GrpcRouteSpec(obj: GrpcRouteSpec | undefined): Record<str
  * a parent of this resource (usually a route). There are two kinds of parent resources
  * with "Core" support:
  *
- *
  * * Gateway (Gateway conformance profile)
  * * Service (Mesh conformance profile, ClusterIP Services only)
  *
- *
  * This API may be extended in the future to support additional kinds of parent
  * resources.
- *
  *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
@@ -4300,7 +4538,6 @@ export interface GrpcRouteSpecParentRefs {
    * To set the core API group (such as for a "Service" kind referent),
    * Group must be explicitly set to "" (empty string).
    *
-   *
    * Support: Core
    *
    * @schema GrpcRouteSpecParentRefs#group
@@ -4310,13 +4547,10 @@ export interface GrpcRouteSpecParentRefs {
   /**
    * Kind is kind of the referent.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
-   *
    *
    * Support for other resources is Implementation-Specific.
    *
@@ -4326,7 +4560,6 @@ export interface GrpcRouteSpecParentRefs {
 
   /**
    * Name is the name of the referent.
-   *
    *
    * Support: Core
    *
@@ -4338,7 +4571,6 @@ export interface GrpcRouteSpecParentRefs {
    * Namespace is the namespace of the referent. When unspecified, this refers
    * to the local namespace of the Route.
    *
-   *
    * Note that there are specific rules for ParentRefs which cross namespace
    * boundaries. Cross-namespace references are only valid if they are explicitly
    * allowed by something in the namespace they are referring to. For example:
@@ -4346,18 +4578,15 @@ export interface GrpcRouteSpecParentRefs {
    * generic way to enable any other kind of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
    *
    *
    * Support: Core
@@ -4370,7 +4599,6 @@ export interface GrpcRouteSpecParentRefs {
    * Port is the network port this Route targets. It can be interpreted
    * differently based on the type of parent resource.
    *
-   *
    * When the parent resource is a Gateway, this targets all listeners
    * listening on the specified port that also support this kind of Route(and
    * select this Route). It's not recommended to set `Port` unless the
@@ -4380,17 +4608,14 @@ export interface GrpcRouteSpecParentRefs {
    * must match both specified values.
    *
    *
-   *
    * When the parent resource is a Service, this targets a specific port in the
    * Service spec. When both Port (experimental) and SectionName are specified,
    * the name and port of the selected port must match both specified values.
    *
    *
-   *
    * Implementations MAY choose to support other parent resources.
    * Implementations supporting other types of parent resources MUST clearly
    * document how/if Port is interpreted.
-   *
    *
    * For the purpose of status, an attachment is considered successful as
    * long as the parent resource accepts it partially. For example, Gateway
@@ -4399,7 +4624,6 @@ export interface GrpcRouteSpecParentRefs {
    * from the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route,
    * the Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Extended
    *
@@ -4411,7 +4635,6 @@ export interface GrpcRouteSpecParentRefs {
    * SectionName is the name of a section within the target resource. In the
    * following resources, SectionName is interpreted as the following:
    *
-   *
    * * Gateway: Listener name. When both Port (experimental) and SectionName
    * are specified, the name and port of the selected listener must match
    * both specified values.
@@ -4419,11 +4642,9 @@ export interface GrpcRouteSpecParentRefs {
    * are specified, the name and port of the selected listener must match
    * both specified values.
    *
-   *
    * Implementations MAY choose to support attaching Routes to other resources.
    * If that is the case, they MUST clearly document how SectionName is
    * interpreted.
-   *
    *
    * When unspecified (empty string), this will reference the entire resource.
    * For the purpose of status, an attachment is considered successful if at
@@ -4433,7 +4654,6 @@ export interface GrpcRouteSpecParentRefs {
    * the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route, the
    * Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Core
    *
@@ -4474,19 +4694,15 @@ export interface GrpcRouteSpecRules {
    * BackendRefs defines the backend(s) where matching requests should be
    * sent.
    *
-   *
    * Failure behavior here depends on how many BackendRefs are specified and
    * how many are invalid.
-   *
    *
    * If *all* entries in BackendRefs are invalid, and there are also no filters
    * specified in this route rule, *all* traffic which matches this rule MUST
    * receive an `UNAVAILABLE` status.
    *
-   *
    * See the GRPCBackendRef definition for the rules about what makes a single
    * GRPCBackendRef invalid.
-   *
    *
    * When a GRPCBackendRef is invalid, `UNAVAILABLE` statuses MUST be returned for
    * requests that would have otherwise been routed to an invalid backend. If
@@ -4494,17 +4710,13 @@ export interface GrpcRouteSpecRules {
    * requests that would otherwise have been routed to an invalid backend
    * MUST receive an `UNAVAILABLE` status.
    *
-   *
    * For example, if two backends are specified with equal weights, and one is
    * invalid, 50 percent of traffic MUST receive an `UNAVAILABLE` status.
    * Implementations may choose how that 50 percent is determined.
    *
-   *
    * Support: Core for Kubernetes Service
    *
-   *
    * Support: Implementation-specific for any other resource
-   *
    *
    * Support for weight: Core
    *
@@ -4516,13 +4728,10 @@ export interface GrpcRouteSpecRules {
    * Filters define the filters that are applied to requests that match
    * this rule.
    *
-   *
    * The effects of ordering of multiple behaviors are currently unspecified.
    * This can change in the future based on feedback during the alpha stage.
    *
-   *
    * Conformance-levels at this level are defined based on the type of filter:
-   *
    *
    * - ALL core filters MUST be supported by all implementations that support
    * GRPCRoute.
@@ -4530,17 +4739,14 @@ export interface GrpcRouteSpecRules {
    * - Implementation-specific custom filters have no API guarantees across
    * implementations.
    *
-   *
    * Specifying the same filter multiple times is not supported unless explicitly
    * indicated in the filter.
    *
-   *
-   * If an implementation can not support a combination of filters, it must clearly
+   * If an implementation cannot support a combination of filters, it must clearly
    * document that limitation. In cases where incompatible or unsupported
    * filters are specified and cause the `Accepted` condition to be set to status
    * `False`, implementations may use the `IncompatibleFilters` reason to specify
    * this configuration error.
-   *
    *
    * Support: Core
    *
@@ -4553,9 +4759,7 @@ export interface GrpcRouteSpecRules {
    * gRPC requests. Each match is independent, i.e. this rule will be matched
    * if **any** one of the matches is satisfied.
    *
-   *
    * For example, take the following matches configuration:
-   *
    *
    * ```
    * matches:
@@ -4568,27 +4772,21 @@ export interface GrpcRouteSpecRules {
    * service: foo.bar.v2
    * ```
    *
-   *
    * For a request to match against this rule, it MUST satisfy
    * EITHER of the two conditions:
-   *
    *
    * - service of foo.bar AND contains the header `version: 2`
    * - service of foo.bar.v2
    *
-   *
    * See the documentation for GRPCRouteMatch on how to specify multiple
    * match conditions to be ANDed together.
    *
-   *
    * If no matches are specified, the implementation MUST match every gRPC request.
-   *
    *
    * Proxy or Load Balancer routing configuration generated from GRPCRoutes
    * MUST prioritize rules based on the following criteria, continuing on
    * ties. Merging MUST not be done between GRPCRoutes and HTTPRoutes.
    * Precedence MUST be given to the rule with the largest number of:
-   *
    *
    * * Characters in a matching non-wildcard hostname.
    * * Characters in a matching hostname.
@@ -4596,15 +4794,12 @@ export interface GrpcRouteSpecRules {
    * * Characters in a matching method.
    * * Header matches.
    *
-   *
    * If ties still exist across multiple Routes, matching precedence MUST be
    * determined in order of the following criteria, continuing on ties:
-   *
    *
    * * The oldest Route based on creation timestamp.
    * * The Route appearing first in alphabetical order by
    * "{namespace}/{name}".
-   *
    *
    * If ties still exist within the Route that has been given precedence,
    * matching precedence MUST be granted to the first matching rule meeting
@@ -4615,14 +4810,19 @@ export interface GrpcRouteSpecRules {
   readonly matches?: GrpcRouteSpecRulesMatches[];
 
   /**
-   * SessionPersistence defines and configures session persistence
-   * for the route rule.
-   *
+   * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
    *
    * Support: Extended
    *
+   * @schema GrpcRouteSpecRules#name
+   */
+  readonly name?: string;
+
+  /**
+   * SessionPersistence defines and configures session persistence
+   * for the route rule.
    *
-   *
+   * Support: Extended
    *
    * @schema GrpcRouteSpecRules#sessionPersistence
    */
@@ -4640,6 +4840,7 @@ export function toJson_GrpcRouteSpecRules(obj: GrpcRouteSpecRules | undefined): 
     'backendRefs': obj.backendRefs?.map(y => toJson_GrpcRouteSpecRulesBackendRefs(y)),
     'filters': obj.filters?.map(y => toJson_GrpcRouteSpecRulesFilters(y)),
     'matches': obj.matches?.map(y => toJson_GrpcRouteSpecRulesMatches(y)),
+    'name': obj.name,
     'sessionPersistence': toJson_GrpcRouteSpecRulesSessionPersistence(obj.sessionPersistence),
   };
   // filter undefined values
@@ -4650,35 +4851,25 @@ export function toJson_GrpcRouteSpecRules(obj: GrpcRouteSpecRules | undefined): 
 /**
  * GRPCBackendRef defines how a GRPCRoute forwards a gRPC request.
  *
- *
  * Note that when a namespace different than the local namespace is specified, a
  * ReferenceGrant object is required in the referent namespace to allow that
  * namespace's owner to accept the reference. See the ReferenceGrant
  * documentation for details.
  *
  *
- * <gateway:experimental:description>
- *
- *
  * When the BackendRef points to a Kubernetes Service, implementations SHOULD
  * honor the appProtocol field if it is set for the target Service Port.
  *
- *
  * Implementations supporting appProtocol SHOULD recognize the Kubernetes
  * Standard Application Protocols defined in KEP-3726.
- *
  *
  * If a Service appProtocol isn't specified, an implementation MAY infer the
  * backend protocol through its own means. Implementations MAY infer the
  * protocol from the Route type referring to the backend Service.
  *
- *
  * If a Route is not able to send traffic to the backend using the specified
  * protocol then the backend is considered invalid. Implementations MUST set the
  * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
- *
- *
- * </gateway:experimental:description>
  *
  * @schema GrpcRouteSpecRulesBackendRefs
  */
@@ -4686,7 +4877,6 @@ export interface GrpcRouteSpecRulesBackendRefs {
   /**
    * Filters defined at this level MUST be executed if and only if the
    * request is being forwarded to the backend defined here.
-   *
    *
    * Support: Implementation-specific (For broader support of filters, use the
    * Filters field in GRPCRouteRule.)
@@ -4707,9 +4897,7 @@ export interface GrpcRouteSpecRulesBackendRefs {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -4717,9 +4905,7 @@ export interface GrpcRouteSpecRulesBackendRefs {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -4739,12 +4925,10 @@ export interface GrpcRouteSpecRulesBackendRefs {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -4771,12 +4955,10 @@ export interface GrpcRouteSpecRulesBackendRefs {
    * implementation supports. Weight is not a percentage and the sum of
    * weights does not need to equal 100.
    *
-   *
    * If only one backend is specified and it has a weight greater than 0, 100%
    * of the traffic is forwarded to that backend. If weight is set to 0, no
    * traffic should be forwarded for this entry. If unspecified, weight
    * defaults to 1.
-   *
    *
    * Support for this field varies based on the context where used.
    *
@@ -4823,9 +5005,7 @@ export interface GrpcRouteSpecRulesFilters {
    * "networking.example.net"). ExtensionRef MUST NOT be used for core and
    * extended filters.
    *
-   *
    * Support: Implementation-specific
-   *
    *
    * This filter can be used multiple times within the same rule.
    *
@@ -4836,7 +5016,6 @@ export interface GrpcRouteSpecRulesFilters {
   /**
    * RequestHeaderModifier defines a schema for a filter that modifies request
    * headers.
-   *
    *
    * Support: Core
    *
@@ -4849,11 +5028,9 @@ export interface GrpcRouteSpecRulesFilters {
    * Requests are sent to the specified destination, but responses from
    * that destination are ignored.
    *
-   *
    * This filter can be used multiple times within the same rule. Note that
    * not all implementations will be able to support mirroring to multiple
    * backends.
-   *
    *
    * Support: Extended
    *
@@ -4865,7 +5042,6 @@ export interface GrpcRouteSpecRulesFilters {
    * ResponseHeaderModifier defines a schema for a filter that modifies response
    * headers.
    *
-   *
    * Support: Extended
    *
    * @schema GrpcRouteSpecRulesFilters#responseHeaderModifier
@@ -4876,16 +5052,13 @@ export interface GrpcRouteSpecRulesFilters {
    * Type identifies the type of filter to apply. As with other API fields,
    * types are classified into three conformance levels:
    *
-   *
    * - Core: Filter types and their corresponding configuration defined by
    * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
    * implementations supporting GRPCRoute MUST support core filters.
    *
-   *
    * - Extended: Filter types and their corresponding configuration defined by
    * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
    * are encouraged to support extended filters.
-   *
    *
    * - Implementation-specific: Filters that are defined and supported by specific vendors.
    * In the future, filters showing convergence in behavior across multiple
@@ -4894,17 +5067,12 @@ export interface GrpcRouteSpecRulesFilters {
    * is specified using the ExtensionRef field. `Type` MUST be set to
    * "ExtensionRef" for custom filters.
    *
-   *
    * Implementers are encouraged to define custom implementation types to
    * extend the core API with implementation-specific behavior.
-   *
    *
    * If a reference to a custom filter type cannot be resolved, the filter
    * MUST NOT be skipped. Instead, requests that would have been processed by
    * that filter MUST receive a HTTP error response.
-   *
-   *
-   *
    *
    * @schema GrpcRouteSpecRulesFilters#type
    */
@@ -4935,10 +5103,8 @@ export function toJson_GrpcRouteSpecRulesFilters(obj: GrpcRouteSpecRulesFilters 
  * action. Multiple match types are ANDed together, i.e. the match will
  * evaluate to true only if all conditions are satisfied.
  *
- *
  * For example, the match below will match a gRPC request only if its service
  * is `foo` AND it contains the `version: v1` header:
- *
  *
  * ```
  * matches:
@@ -4948,7 +5114,6 @@ export function toJson_GrpcRouteSpecRulesFilters(obj: GrpcRouteSpecRulesFilters 
  * headers:
  * - name: "version"
  * value "v1"
- *
  *
  * ```
  *
@@ -4993,11 +5158,7 @@ export function toJson_GrpcRouteSpecRulesMatches(obj: GrpcRouteSpecRulesMatches 
  * SessionPersistence defines and configures session persistence
  * for the route rule.
  *
- *
  * Support: Extended
- *
- *
- *
  *
  * @schema GrpcRouteSpecRulesSessionPersistence
  */
@@ -5006,7 +5167,6 @@ export interface GrpcRouteSpecRulesSessionPersistence {
    * AbsoluteTimeout defines the absolute timeout of the persistent
    * session. Once the AbsoluteTimeout duration has elapsed, the
    * session becomes invalid.
-   *
    *
    * Support: Extended
    *
@@ -5018,7 +5178,6 @@ export interface GrpcRouteSpecRulesSessionPersistence {
    * CookieConfig provides configuration settings that are specific
    * to cookie-based session persistence.
    *
-   *
    * Support: Core
    *
    * @schema GrpcRouteSpecRulesSessionPersistence#cookieConfig
@@ -5029,7 +5188,6 @@ export interface GrpcRouteSpecRulesSessionPersistence {
    * IdleTimeout defines the idle timeout of the persistent session.
    * Once the session has been idle for more than the specified
    * IdleTimeout duration, the session becomes invalid.
-   *
    *
    * Support: Extended
    *
@@ -5043,7 +5201,6 @@ export interface GrpcRouteSpecRulesSessionPersistence {
    * should avoid reusing session names to prevent unintended
    * consequences, such as rejection or unpredictable behavior.
    *
-   *
    * Support: Implementation-specific
    *
    * @schema GrpcRouteSpecRulesSessionPersistence#sessionName
@@ -5055,9 +5212,7 @@ export interface GrpcRouteSpecRulesSessionPersistence {
    * the use a header or cookie. Defaults to cookie based session
    * persistence.
    *
-   *
    * Support: Core for "Cookie" type
-   *
    *
    * Support: Extended for "Header" type
    *
@@ -5103,9 +5258,7 @@ export interface GrpcRouteSpecRulesBackendRefsFilters {
    * "networking.example.net"). ExtensionRef MUST NOT be used for core and
    * extended filters.
    *
-   *
    * Support: Implementation-specific
-   *
    *
    * This filter can be used multiple times within the same rule.
    *
@@ -5116,7 +5269,6 @@ export interface GrpcRouteSpecRulesBackendRefsFilters {
   /**
    * RequestHeaderModifier defines a schema for a filter that modifies request
    * headers.
-   *
    *
    * Support: Core
    *
@@ -5129,11 +5281,9 @@ export interface GrpcRouteSpecRulesBackendRefsFilters {
    * Requests are sent to the specified destination, but responses from
    * that destination are ignored.
    *
-   *
    * This filter can be used multiple times within the same rule. Note that
    * not all implementations will be able to support mirroring to multiple
    * backends.
-   *
    *
    * Support: Extended
    *
@@ -5145,7 +5295,6 @@ export interface GrpcRouteSpecRulesBackendRefsFilters {
    * ResponseHeaderModifier defines a schema for a filter that modifies response
    * headers.
    *
-   *
    * Support: Extended
    *
    * @schema GrpcRouteSpecRulesBackendRefsFilters#responseHeaderModifier
@@ -5156,16 +5305,13 @@ export interface GrpcRouteSpecRulesBackendRefsFilters {
    * Type identifies the type of filter to apply. As with other API fields,
    * types are classified into three conformance levels:
    *
-   *
    * - Core: Filter types and their corresponding configuration defined by
    * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
    * implementations supporting GRPCRoute MUST support core filters.
    *
-   *
    * - Extended: Filter types and their corresponding configuration defined by
    * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
    * are encouraged to support extended filters.
-   *
    *
    * - Implementation-specific: Filters that are defined and supported by specific vendors.
    * In the future, filters showing convergence in behavior across multiple
@@ -5174,17 +5320,12 @@ export interface GrpcRouteSpecRulesBackendRefsFilters {
    * is specified using the ExtensionRef field. `Type` MUST be set to
    * "ExtensionRef" for custom filters.
    *
-   *
    * Implementers are encouraged to define custom implementation types to
    * extend the core API with implementation-specific behavior.
-   *
    *
    * If a reference to a custom filter type cannot be resolved, the filter
    * MUST NOT be skipped. Instead, requests that would have been processed by
    * that filter MUST receive a HTTP error response.
-   *
-   *
-   *
    *
    * @schema GrpcRouteSpecRulesBackendRefsFilters#type
    */
@@ -5216,9 +5357,7 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFilters(obj: GrpcRouteSpecRu
  * "networking.example.net"). ExtensionRef MUST NOT be used for core and
  * extended filters.
  *
- *
  * Support: Implementation-specific
- *
  *
  * This filter can be used multiple times within the same rule.
  *
@@ -5269,7 +5408,6 @@ export function toJson_GrpcRouteSpecRulesFiltersExtensionRef(obj: GrpcRouteSpecR
  * RequestHeaderModifier defines a schema for a filter that modifies request
  * headers.
  *
- *
  * Support: Core
  *
  * @schema GrpcRouteSpecRulesFiltersRequestHeaderModifier
@@ -5280,17 +5418,14 @@ export interface GrpcRouteSpecRulesFiltersRequestHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -5306,17 +5441,14 @@ export interface GrpcRouteSpecRulesFiltersRequestHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -5330,17 +5462,14 @@ export interface GrpcRouteSpecRulesFiltersRequestHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -5373,11 +5502,9 @@ export function toJson_GrpcRouteSpecRulesFiltersRequestHeaderModifier(obj: GrpcR
  * Requests are sent to the specified destination, but responses from
  * that destination are ignored.
  *
- *
  * This filter can be used multiple times within the same rule. Note that
  * not all implementations will be able to support mirroring to multiple
  * backends.
- *
  *
  * Support: Extended
  *
@@ -5387,17 +5514,14 @@ export interface GrpcRouteSpecRulesFiltersRequestMirror {
   /**
    * BackendRef references a resource where mirrored requests are sent.
    *
-   *
    * Mirrored requests must be sent only to a single destination endpoint
    * within this BackendRef, irrespective of how many endpoints are present
    * within this BackendRef.
-   *
    *
    * If the referent cannot be found, this BackendRef is invalid and must be
    * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
    * condition on the Route status is set to `status: False` and not configure
    * this backend in the underlying implementation.
-   *
    *
    * If there is a cross-namespace reference to an *existing* object
    * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -5405,19 +5529,39 @@ export interface GrpcRouteSpecRulesFiltersRequestMirror {
    * with the "RefNotPermitted" reason and not configure this backend in the
    * underlying implementation.
    *
-   *
    * In either error case, the Message of the `ResolvedRefs` Condition
    * should be used to provide more detail about the problem.
    *
-   *
    * Support: Extended for Kubernetes Service
-   *
    *
    * Support: Implementation-specific for any other resource
    *
    * @schema GrpcRouteSpecRulesFiltersRequestMirror#backendRef
    */
   readonly backendRef: GrpcRouteSpecRulesFiltersRequestMirrorBackendRef;
+
+  /**
+   * Fraction represents the fraction of requests that should be
+   * mirrored to BackendRef.
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema GrpcRouteSpecRulesFiltersRequestMirror#fraction
+   */
+  readonly fraction?: GrpcRouteSpecRulesFiltersRequestMirrorFraction;
+
+  /**
+   * Percent represents the percentage of requests that should be
+   * mirrored to BackendRef. Its minimum value is 0 (indicating 0% of
+   * requests) and its maximum value is 100 (indicating 100% of requests).
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema GrpcRouteSpecRulesFiltersRequestMirror#percent
+   */
+  readonly percent?: number;
 
 }
 
@@ -5429,6 +5573,8 @@ export function toJson_GrpcRouteSpecRulesFiltersRequestMirror(obj: GrpcRouteSpec
   if (obj === undefined) { return undefined; }
   const result = {
     'backendRef': toJson_GrpcRouteSpecRulesFiltersRequestMirrorBackendRef(obj.backendRef),
+    'fraction': toJson_GrpcRouteSpecRulesFiltersRequestMirrorFraction(obj.fraction),
+    'percent': obj.percent,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -5438,7 +5584,6 @@ export function toJson_GrpcRouteSpecRulesFiltersRequestMirror(obj: GrpcRouteSpec
 /**
  * ResponseHeaderModifier defines a schema for a filter that modifies response
  * headers.
- *
  *
  * Support: Extended
  *
@@ -5450,17 +5595,14 @@ export interface GrpcRouteSpecRulesFiltersResponseHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -5476,17 +5618,14 @@ export interface GrpcRouteSpecRulesFiltersResponseHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -5500,17 +5639,14 @@ export interface GrpcRouteSpecRulesFiltersResponseHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -5542,16 +5678,13 @@ export function toJson_GrpcRouteSpecRulesFiltersResponseHeaderModifier(obj: Grpc
  * Type identifies the type of filter to apply. As with other API fields,
  * types are classified into three conformance levels:
  *
- *
  * - Core: Filter types and their corresponding configuration defined by
  * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
  * implementations supporting GRPCRoute MUST support core filters.
  *
- *
  * - Extended: Filter types and their corresponding configuration defined by
  * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
  * are encouraged to support extended filters.
- *
  *
  * - Implementation-specific: Filters that are defined and supported by specific vendors.
  * In the future, filters showing convergence in behavior across multiple
@@ -5560,17 +5693,12 @@ export function toJson_GrpcRouteSpecRulesFiltersResponseHeaderModifier(obj: Grpc
  * is specified using the ExtensionRef field. `Type` MUST be set to
  * "ExtensionRef" for custom filters.
  *
- *
  * Implementers are encouraged to define custom implementation types to
  * extend the core API with implementation-specific behavior.
- *
  *
  * If a reference to a custom filter type cannot be resolved, the filter
  * MUST NOT be skipped. Instead, requests that would have been processed by
  * that filter MUST receive a HTTP error response.
- *
- *
- *
  *
  * @schema GrpcRouteSpecRulesFiltersType
  */
@@ -5594,7 +5722,6 @@ export enum GrpcRouteSpecRulesFiltersType {
 export interface GrpcRouteSpecRulesMatchesHeaders {
   /**
    * Name is the name of the gRPC Header to be matched.
-   *
    *
    * If multiple entries specify equivalent header names, only the first
    * entry with an equivalent name MUST be considered for a match. Subsequent
@@ -5649,7 +5776,6 @@ export interface GrpcRouteSpecRulesMatchesMethod {
    * Value of the method to match against. If left empty or omitted, will
    * match all services.
    *
-   *
    * At least one of Service and Method MUST be a non-empty string.
    *
    * @schema GrpcRouteSpecRulesMatchesMethod#method
@@ -5659,7 +5785,6 @@ export interface GrpcRouteSpecRulesMatchesMethod {
   /**
    * Value of the service to match against. If left empty or omitted, will
    * match any service.
-   *
    *
    * At least one of Service and Method MUST be a non-empty string.
    *
@@ -5671,9 +5796,7 @@ export interface GrpcRouteSpecRulesMatchesMethod {
    * Type specifies how to match against the service and/or method.
    * Support: Core (Exact with service and method specified)
    *
-   *
    * Support: Implementation-specific (Exact with method specified but no service specified)
-   *
    *
    * Support: Implementation-specific (RegularExpression)
    *
@@ -5703,7 +5826,6 @@ export function toJson_GrpcRouteSpecRulesMatchesMethod(obj: GrpcRouteSpecRulesMa
  * CookieConfig provides configuration settings that are specific
  * to cookie-based session persistence.
  *
- *
  * Support: Core
  *
  * @schema GrpcRouteSpecRulesSessionPersistenceCookieConfig
@@ -5716,22 +5838,21 @@ export interface GrpcRouteSpecRulesSessionPersistenceCookieConfig {
    * attributes, while a session cookie is deleted when the current
    * session ends.
    *
-   *
    * When set to "Permanent", AbsoluteTimeout indicates the
    * cookie's lifetime via the Expires or Max-Age cookie attributes
    * and is required.
-   *
    *
    * When set to "Session", AbsoluteTimeout indicates the
    * absolute lifetime of the cookie tracked by the gateway and
    * is optional.
    *
+   * Defaults to "Session".
    *
    * Support: Core for "Session" type
    *
-   *
    * Support: Extended for "Permanent" type
    *
+   * @default Session".
    * @schema GrpcRouteSpecRulesSessionPersistenceCookieConfig#lifetimeType
    */
   readonly lifetimeType?: GrpcRouteSpecRulesSessionPersistenceCookieConfigLifetimeType;
@@ -5757,9 +5878,7 @@ export function toJson_GrpcRouteSpecRulesSessionPersistenceCookieConfig(obj: Grp
  * the use a header or cookie. Defaults to cookie based session
  * persistence.
  *
- *
  * Support: Core for "Cookie" type
- *
  *
  * Support: Extended for "Header" type
  *
@@ -5779,9 +5898,7 @@ export enum GrpcRouteSpecRulesSessionPersistenceType {
  * "networking.example.net"). ExtensionRef MUST NOT be used for core and
  * extended filters.
  *
- *
  * Support: Implementation-specific
- *
  *
  * This filter can be used multiple times within the same rule.
  *
@@ -5832,7 +5949,6 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersExtensionRef(obj: Grp
  * RequestHeaderModifier defines a schema for a filter that modifies request
  * headers.
  *
- *
  * Support: Core
  *
  * @schema GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
@@ -5843,17 +5959,14 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -5869,17 +5982,14 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -5893,17 +6003,14 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -5936,11 +6043,9 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
  * Requests are sent to the specified destination, but responses from
  * that destination are ignored.
  *
- *
  * This filter can be used multiple times within the same rule. Note that
  * not all implementations will be able to support mirroring to multiple
  * backends.
- *
  *
  * Support: Extended
  *
@@ -5950,17 +6055,14 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersRequestMirror {
   /**
    * BackendRef references a resource where mirrored requests are sent.
    *
-   *
    * Mirrored requests must be sent only to a single destination endpoint
    * within this BackendRef, irrespective of how many endpoints are present
    * within this BackendRef.
-   *
    *
    * If the referent cannot be found, this BackendRef is invalid and must be
    * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
    * condition on the Route status is set to `status: False` and not configure
    * this backend in the underlying implementation.
-   *
    *
    * If there is a cross-namespace reference to an *existing* object
    * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -5968,19 +6070,39 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersRequestMirror {
    * with the "RefNotPermitted" reason and not configure this backend in the
    * underlying implementation.
    *
-   *
    * In either error case, the Message of the `ResolvedRefs` Condition
    * should be used to provide more detail about the problem.
    *
-   *
    * Support: Extended for Kubernetes Service
-   *
    *
    * Support: Implementation-specific for any other resource
    *
    * @schema GrpcRouteSpecRulesBackendRefsFiltersRequestMirror#backendRef
    */
   readonly backendRef: GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef;
+
+  /**
+   * Fraction represents the fraction of requests that should be
+   * mirrored to BackendRef.
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema GrpcRouteSpecRulesBackendRefsFiltersRequestMirror#fraction
+   */
+  readonly fraction?: GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorFraction;
+
+  /**
+   * Percent represents the percentage of requests that should be
+   * mirrored to BackendRef. Its minimum value is 0 (indicating 0% of
+   * requests) and its maximum value is 100 (indicating 100% of requests).
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema GrpcRouteSpecRulesBackendRefsFiltersRequestMirror#percent
+   */
+  readonly percent?: number;
 
 }
 
@@ -5992,6 +6114,8 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestMirror(obj: Gr
   if (obj === undefined) { return undefined; }
   const result = {
     'backendRef': toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef(obj.backendRef),
+    'fraction': toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorFraction(obj.fraction),
+    'percent': obj.percent,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -6001,7 +6125,6 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestMirror(obj: Gr
 /**
  * ResponseHeaderModifier defines a schema for a filter that modifies response
  * headers.
- *
  *
  * Support: Extended
  *
@@ -6013,17 +6136,14 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -6039,17 +6159,14 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -6063,17 +6180,14 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -6105,16 +6219,13 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifie
  * Type identifies the type of filter to apply. As with other API fields,
  * types are classified into three conformance levels:
  *
- *
  * - Core: Filter types and their corresponding configuration defined by
  * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
  * implementations supporting GRPCRoute MUST support core filters.
  *
- *
  * - Extended: Filter types and their corresponding configuration defined by
  * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
  * are encouraged to support extended filters.
- *
  *
  * - Implementation-specific: Filters that are defined and supported by specific vendors.
  * In the future, filters showing convergence in behavior across multiple
@@ -6123,17 +6234,12 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifie
  * is specified using the ExtensionRef field. `Type` MUST be set to
  * "ExtensionRef" for custom filters.
  *
- *
  * Implementers are encouraged to define custom implementation types to
  * extend the core API with implementation-specific behavior.
- *
  *
  * If a reference to a custom filter type cannot be resolved, the filter
  * MUST NOT be skipped. Instead, requests that would have been processed by
  * that filter MUST receive a HTTP error response.
- *
- *
- *
  *
  * @schema GrpcRouteSpecRulesBackendRefsFiltersType
  */
@@ -6156,8 +6262,7 @@ export enum GrpcRouteSpecRulesBackendRefsFiltersType {
 export interface GrpcRouteSpecRulesFiltersRequestHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -6201,8 +6306,7 @@ export function toJson_GrpcRouteSpecRulesFiltersRequestHeaderModifierAdd(obj: Gr
 export interface GrpcRouteSpecRulesFiltersRequestHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -6241,17 +6345,14 @@ export function toJson_GrpcRouteSpecRulesFiltersRequestHeaderModifierSet(obj: Gr
 /**
  * BackendRef references a resource where mirrored requests are sent.
  *
- *
  * Mirrored requests must be sent only to a single destination endpoint
  * within this BackendRef, irrespective of how many endpoints are present
  * within this BackendRef.
- *
  *
  * If the referent cannot be found, this BackendRef is invalid and must be
  * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
  * condition on the Route status is set to `status: False` and not configure
  * this backend in the underlying implementation.
- *
  *
  * If there is a cross-namespace reference to an *existing* object
  * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -6259,13 +6360,10 @@ export function toJson_GrpcRouteSpecRulesFiltersRequestHeaderModifierSet(obj: Gr
  * with the "RefNotPermitted" reason and not configure this backend in the
  * underlying implementation.
  *
- *
  * In either error case, the Message of the `ResolvedRefs` Condition
  * should be used to provide more detail about the problem.
  *
- *
  * Support: Extended for Kubernetes Service
- *
  *
  * Support: Implementation-specific for any other resource
  *
@@ -6284,9 +6382,7 @@ export interface GrpcRouteSpecRulesFiltersRequestMirrorBackendRef {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -6294,9 +6390,7 @@ export interface GrpcRouteSpecRulesFiltersRequestMirrorBackendRef {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -6316,12 +6410,10 @@ export interface GrpcRouteSpecRulesFiltersRequestMirrorBackendRef {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -6361,6 +6453,43 @@ export function toJson_GrpcRouteSpecRulesFiltersRequestMirrorBackendRef(obj: Grp
 /* eslint-enable max-len, quote-props */
 
 /**
+ * Fraction represents the fraction of requests that should be
+ * mirrored to BackendRef.
+ *
+ * Only one of Fraction or Percent may be specified. If neither field
+ * is specified, 100% of requests will be mirrored.
+ *
+ * @schema GrpcRouteSpecRulesFiltersRequestMirrorFraction
+ */
+export interface GrpcRouteSpecRulesFiltersRequestMirrorFraction {
+  /**
+   * @schema GrpcRouteSpecRulesFiltersRequestMirrorFraction#denominator
+   */
+  readonly denominator?: number;
+
+  /**
+   * @schema GrpcRouteSpecRulesFiltersRequestMirrorFraction#numerator
+   */
+  readonly numerator: number;
+
+}
+
+/**
+ * Converts an object of type 'GrpcRouteSpecRulesFiltersRequestMirrorFraction' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GrpcRouteSpecRulesFiltersRequestMirrorFraction(obj: GrpcRouteSpecRulesFiltersRequestMirrorFraction | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'denominator': obj.denominator,
+    'numerator': obj.numerator,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
  *
  * @schema GrpcRouteSpecRulesFiltersResponseHeaderModifierAdd
@@ -6368,8 +6497,7 @@ export function toJson_GrpcRouteSpecRulesFiltersRequestMirrorBackendRef(obj: Grp
 export interface GrpcRouteSpecRulesFiltersResponseHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -6413,8 +6541,7 @@ export function toJson_GrpcRouteSpecRulesFiltersResponseHeaderModifierAdd(obj: G
 export interface GrpcRouteSpecRulesFiltersResponseHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -6466,9 +6593,7 @@ export enum GrpcRouteSpecRulesMatchesHeadersType {
  * Type specifies how to match against the service and/or method.
  * Support: Core (Exact with service and method specified)
  *
- *
  * Support: Implementation-specific (Exact with method specified but no service specified)
- *
  *
  * Support: Implementation-specific (RegularExpression)
  *
@@ -6488,22 +6613,21 @@ export enum GrpcRouteSpecRulesMatchesMethodType {
  * attributes, while a session cookie is deleted when the current
  * session ends.
  *
- *
  * When set to "Permanent", AbsoluteTimeout indicates the
  * cookie's lifetime via the Expires or Max-Age cookie attributes
  * and is required.
- *
  *
  * When set to "Session", AbsoluteTimeout indicates the
  * absolute lifetime of the cookie tracked by the gateway and
  * is optional.
  *
+ * Defaults to "Session".
  *
  * Support: Core for "Session" type
  *
- *
  * Support: Extended for "Permanent" type
  *
+ * @default Session".
  * @schema GrpcRouteSpecRulesSessionPersistenceCookieConfigLifetimeType
  */
 export enum GrpcRouteSpecRulesSessionPersistenceCookieConfigLifetimeType {
@@ -6521,8 +6645,7 @@ export enum GrpcRouteSpecRulesSessionPersistenceCookieConfigLifetimeType {
 export interface GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -6566,8 +6689,7 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
 export interface GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -6606,17 +6728,14 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
 /**
  * BackendRef references a resource where mirrored requests are sent.
  *
- *
  * Mirrored requests must be sent only to a single destination endpoint
  * within this BackendRef, irrespective of how many endpoints are present
  * within this BackendRef.
- *
  *
  * If the referent cannot be found, this BackendRef is invalid and must be
  * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
  * condition on the Route status is set to `status: False` and not configure
  * this backend in the underlying implementation.
- *
  *
  * If there is a cross-namespace reference to an *existing* object
  * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -6624,13 +6743,10 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
  * with the "RefNotPermitted" reason and not configure this backend in the
  * underlying implementation.
  *
- *
  * In either error case, the Message of the `ResolvedRefs` Condition
  * should be used to provide more detail about the problem.
  *
- *
  * Support: Extended for Kubernetes Service
- *
  *
  * Support: Implementation-specific for any other resource
  *
@@ -6649,9 +6765,7 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -6659,9 +6773,7 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -6681,12 +6793,10 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -6726,6 +6836,43 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorBackendR
 /* eslint-enable max-len, quote-props */
 
 /**
+ * Fraction represents the fraction of requests that should be
+ * mirrored to BackendRef.
+ *
+ * Only one of Fraction or Percent may be specified. If neither field
+ * is specified, 100% of requests will be mirrored.
+ *
+ * @schema GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorFraction
+ */
+export interface GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorFraction {
+  /**
+   * @schema GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorFraction#denominator
+   */
+  readonly denominator?: number;
+
+  /**
+   * @schema GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorFraction#numerator
+   */
+  readonly numerator: number;
+
+}
+
+/**
+ * Converts an object of type 'GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorFraction' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorFraction(obj: GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorFraction | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'denominator': obj.denominator,
+    'numerator': obj.numerator,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
  *
  * @schema GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifierAdd
@@ -6733,8 +6880,7 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersRequestMirrorBackendR
 export interface GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -6778,8 +6924,7 @@ export function toJson_GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifie
 export interface GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -6805,2877 +6950,6 @@ export interface GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifierSet {
  */
 /* eslint-disable max-len, quote-props */
 export function toJson_GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifierSet(obj: GrpcRouteSpecRulesBackendRefsFiltersResponseHeaderModifierSet | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'name': obj.name,
-    'value': obj.value,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-
-/**
- * GRPCRoute provides a way to route gRPC requests. This includes the capability
-to match requests by hostname, gRPC service, gRPC method, or HTTP/2 header.
-Filters can be used to specify additional processing steps. Backends specify
-where matching requests will be routed.
-
-
-GRPCRoute falls under extended support within the Gateway API. Within the
-following specification, the word "MUST" indicates that an implementation
-supporting GRPCRoute must conform to the indicated requirement, but an
-implementation not supporting this route type need not follow the requirement
-unless explicitly indicated.
-
-
-Implementations supporting `GRPCRoute` with the `HTTPS` `ProtocolType` MUST
-accept HTTP/2 connections without an initial upgrade from HTTP/1.1, i.e. via
-ALPN. If the implementation does not support this, then it MUST set the
-"Accepted" condition to "False" for the affected listener with a reason of
-"UnsupportedProtocol".  Implementations MAY also accept HTTP/2 connections
-with an upgrade from HTTP/1.
-
-
-Implementations supporting `GRPCRoute` with the `HTTP` `ProtocolType` MUST
-support HTTP/2 over cleartext TCP (h2c,
-https://www.rfc-editor.org/rfc/rfc7540#section-3.1) without an initial
-upgrade from HTTP/1.1, i.e. with prior knowledge
-(https://www.rfc-editor.org/rfc/rfc7540#section-3.4). If the implementation
-does not support this, then it MUST set the "Accepted" condition to "False"
-for the affected listener with a reason of "UnsupportedProtocol".
-Implementations MAY also accept HTTP/2 connections with an upgrade from
-HTTP/1, i.e. without prior knowledge.
- *
- * @schema GRPCRouteV1Alpha2
- */
-export class GrpcRouteV1Alpha2 extends ApiObject {
-  /**
-   * Returns the apiVersion and kind for "GRPCRouteV1Alpha2"
-   */
-  public static readonly GVK: GroupVersionKind = {
-    apiVersion: 'gateway.networking.k8s.io/v1alpha2',
-    kind: 'GRPCRoute',
-  }
-
-  /**
-   * Renders a Kubernetes manifest for "GRPCRouteV1Alpha2".
-   *
-   * This can be used to inline resource manifests inside other objects (e.g. as templates).
-   *
-   * @param props initialization props
-   */
-  public static manifest(props: GrpcRouteV1Alpha2Props = {}): any {
-    return {
-      ...GrpcRouteV1Alpha2.GVK,
-      ...toJson_GrpcRouteV1Alpha2Props(props),
-    };
-  }
-
-  /**
-   * Defines a "GRPCRouteV1Alpha2" API object
-   * @param scope the scope in which to define this object
-   * @param id a scope-local name for the object
-   * @param props initialization props
-   */
-  public constructor(scope: Construct, id: string, props: GrpcRouteV1Alpha2Props = {}) {
-    super(scope, id, {
-      ...GrpcRouteV1Alpha2.GVK,
-      ...props,
-    });
-  }
-
-  /**
-   * Renders the object to Kubernetes JSON.
-   */
-  public toJson(): any {
-    const resolved = super.toJson();
-
-    return {
-      ...GrpcRouteV1Alpha2.GVK,
-      ...toJson_GrpcRouteV1Alpha2Props(resolved),
-    };
-  }
-}
-
-/**
- * GRPCRoute provides a way to route gRPC requests. This includes the capability
- * to match requests by hostname, gRPC service, gRPC method, or HTTP/2 header.
- * Filters can be used to specify additional processing steps. Backends specify
- * where matching requests will be routed.
- *
- *
- * GRPCRoute falls under extended support within the Gateway API. Within the
- * following specification, the word "MUST" indicates that an implementation
- * supporting GRPCRoute must conform to the indicated requirement, but an
- * implementation not supporting this route type need not follow the requirement
- * unless explicitly indicated.
- *
- *
- * Implementations supporting `GRPCRoute` with the `HTTPS` `ProtocolType` MUST
- * accept HTTP/2 connections without an initial upgrade from HTTP/1.1, i.e. via
- * ALPN. If the implementation does not support this, then it MUST set the
- * "Accepted" condition to "False" for the affected listener with a reason of
- * "UnsupportedProtocol".  Implementations MAY also accept HTTP/2 connections
- * with an upgrade from HTTP/1.
- *
- *
- * Implementations supporting `GRPCRoute` with the `HTTP` `ProtocolType` MUST
- * support HTTP/2 over cleartext TCP (h2c,
- * https://www.rfc-editor.org/rfc/rfc7540#section-3.1) without an initial
- * upgrade from HTTP/1.1, i.e. with prior knowledge
- * (https://www.rfc-editor.org/rfc/rfc7540#section-3.4). If the implementation
- * does not support this, then it MUST set the "Accepted" condition to "False"
- * for the affected listener with a reason of "UnsupportedProtocol".
- * Implementations MAY also accept HTTP/2 connections with an upgrade from
- * HTTP/1, i.e. without prior knowledge.
- *
- * @schema GRPCRouteV1Alpha2
- */
-export interface GrpcRouteV1Alpha2Props {
-  /**
-   * @schema GRPCRouteV1Alpha2#metadata
-   */
-  readonly metadata?: ApiObjectMetadata;
-
-  /**
-   * Spec defines the desired state of GRPCRoute.
-   *
-   * @schema GRPCRouteV1Alpha2#spec
-   */
-  readonly spec?: GrpcRouteV1Alpha2Spec;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2Props' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2Props(obj: GrpcRouteV1Alpha2Props | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'metadata': obj.metadata,
-    'spec': toJson_GrpcRouteV1Alpha2Spec(obj.spec),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * Spec defines the desired state of GRPCRoute.
- *
- * @schema GrpcRouteV1Alpha2Spec
- */
-export interface GrpcRouteV1Alpha2Spec {
-  /**
-   * Hostnames defines a set of hostnames to match against the GRPC
-   * Host header to select a GRPCRoute to process the request. This matches
-   * the RFC 1123 definition of a hostname with 2 notable exceptions:
-   *
-   *
-   * 1. IPs are not allowed.
-   * 2. A hostname may be prefixed with a wildcard label (`*.`). The wildcard
-   * label MUST appear by itself as the first label.
-   *
-   *
-   * If a hostname is specified by both the Listener and GRPCRoute, there
-   * MUST be at least one intersecting hostname for the GRPCRoute to be
-   * attached to the Listener. For example:
-   *
-   *
-   * * A Listener with `test.example.com` as the hostname matches GRPCRoutes
-   * that have either not specified any hostnames, or have specified at
-   * least one of `test.example.com` or `*.example.com`.
-   * * A Listener with `*.example.com` as the hostname matches GRPCRoutes
-   * that have either not specified any hostnames or have specified at least
-   * one hostname that matches the Listener hostname. For example,
-   * `test.example.com` and `*.example.com` would both match. On the other
-   * hand, `example.com` and `test.example.net` would not match.
-   *
-   *
-   * Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
-   * as a suffix match. That means that a match for `*.example.com` would match
-   * both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
-   *
-   *
-   * If both the Listener and GRPCRoute have specified hostnames, any
-   * GRPCRoute hostnames that do not match the Listener hostname MUST be
-   * ignored. For example, if a Listener specified `*.example.com`, and the
-   * GRPCRoute specified `test.example.com` and `test.example.net`,
-   * `test.example.net` MUST NOT be considered for a match.
-   *
-   *
-   * If both the Listener and GRPCRoute have specified hostnames, and none
-   * match with the criteria above, then the GRPCRoute MUST NOT be accepted by
-   * the implementation. The implementation MUST raise an 'Accepted' Condition
-   * with a status of `False` in the corresponding RouteParentStatus.
-   *
-   *
-   * If a Route (A) of type HTTPRoute or GRPCRoute is attached to a
-   * Listener and that listener already has another Route (B) of the other
-   * type attached and the intersection of the hostnames of A and B is
-   * non-empty, then the implementation MUST accept exactly one of these two
-   * routes, determined by the following criteria, in order:
-   *
-   *
-   * * The oldest Route based on creation timestamp.
-   * * The Route appearing first in alphabetical order by
-   * "{namespace}/{name}".
-   *
-   *
-   * The rejected Route MUST raise an 'Accepted' condition with a status of
-   * 'False' in the corresponding RouteParentStatus.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2Spec#hostnames
-   */
-  readonly hostnames?: string[];
-
-  /**
-   * ParentRefs references the resources (usually Gateways) that a Route wants
-   * to be attached to. Note that the referenced parent resource needs to
-   * allow this for the attachment to be complete. For Gateways, that means
-   * the Gateway needs to allow attachment from Routes of this kind and
-   * namespace. For Services, that means the Service must either be in the same
-   * namespace for a "producer" route, or the mesh implementation must support
-   * and allow "consumer" routes for the referenced Service. ReferenceGrant is
-   * not applicable for governing ParentRefs to Services - it is not possible to
-   * create a "producer" route for a Service in a different namespace from the
-   * Route.
-   *
-   *
-   * There are two kinds of parent resources with "Core" support:
-   *
-   *
-   * * Gateway (Gateway conformance profile)
-   * * Service (Mesh conformance profile, ClusterIP Services only)
-   *
-   *
-   * This API may be extended in the future to support additional kinds of parent
-   * resources.
-   *
-   *
-   * ParentRefs must be _distinct_. This means either that:
-   *
-   *
-   * * They select different objects.  If this is the case, then parentRef
-   * entries are distinct. In terms of fields, this means that the
-   * multi-part key defined by `group`, `kind`, `namespace`, and `name` must
-   * be unique across all parentRef entries in the Route.
-   * * They do not select different objects, but for each optional field used,
-   * each ParentRef that selects the same object must set the same set of
-   * optional fields to different values. If one ParentRef sets a
-   * combination of optional fields, all must set the same combination.
-   *
-   *
-   * Some examples:
-   *
-   *
-   * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
-   * same object must also set `sectionName`.
-   * * If one ParentRef sets `port`, all ParentRefs referencing the same
-   * object must also set `port`.
-   * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
-   * referencing the same object must also set `sectionName` and `port`.
-   *
-   *
-   * It is possible to separately reference multiple distinct objects that may
-   * be collapsed by an implementation. For example, some implementations may
-   * choose to merge compatible Gateway Listeners together. If that is the
-   * case, the list of routes attached to those resources should also be
-   * merged.
-   *
-   *
-   * Note that for ParentRefs that cross namespace boundaries, there are specific
-   * rules. Cross-namespace references are only valid if they are explicitly
-   * allowed by something in the namespace they are referring to. For example,
-   * Gateway has the AllowedRoutes field, and ReferenceGrant provides a
-   * generic way to enable other kinds of cross-namespace reference.
-   *
-   *
-   *
-   * ParentRefs from a Route to a Service in the same namespace are "producer"
-   * routes, which apply default routing rules to inbound connections from
-   * any namespace to the Service.
-   *
-   *
-   * ParentRefs from a Route to a Service in a different namespace are
-   * "consumer" routes, and these routing rules are only applied to outbound
-   * connections originating from the same namespace as the Route, for which
-   * the intended destination of the connections are a Service targeted as a
-   * ParentRef of the Route.
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   * @schema GrpcRouteV1Alpha2Spec#parentRefs
-   */
-  readonly parentRefs?: GrpcRouteV1Alpha2SpecParentRefs[];
-
-  /**
-   * Rules are a list of GRPC matchers, filters and actions.
-   *
-   * @schema GrpcRouteV1Alpha2Spec#rules
-   */
-  readonly rules?: GrpcRouteV1Alpha2SpecRules[];
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2Spec' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2Spec(obj: GrpcRouteV1Alpha2Spec | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'hostnames': obj.hostnames?.map(y => y),
-    'parentRefs': obj.parentRefs?.map(y => toJson_GrpcRouteV1Alpha2SpecParentRefs(y)),
-    'rules': obj.rules?.map(y => toJson_GrpcRouteV1Alpha2SpecRules(y)),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * ParentReference identifies an API object (usually a Gateway) that can be considered
- * a parent of this resource (usually a route). There are two kinds of parent resources
- * with "Core" support:
- *
- *
- * * Gateway (Gateway conformance profile)
- * * Service (Mesh conformance profile, ClusterIP Services only)
- *
- *
- * This API may be extended in the future to support additional kinds of parent
- * resources.
- *
- *
- * The API object must be valid in the cluster; the Group and Kind must
- * be registered in the cluster for this reference to be valid.
- *
- * @schema GrpcRouteV1Alpha2SpecParentRefs
- */
-export interface GrpcRouteV1Alpha2SpecParentRefs {
-  /**
-   * Group is the group of the referent.
-   * When unspecified, "gateway.networking.k8s.io" is inferred.
-   * To set the core API group (such as for a "Service" kind referent),
-   * Group must be explicitly set to "" (empty string).
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecParentRefs#group
-   */
-  readonly group?: string;
-
-  /**
-   * Kind is kind of the referent.
-   *
-   *
-   * There are two kinds of parent resources with "Core" support:
-   *
-   *
-   * * Gateway (Gateway conformance profile)
-   * * Service (Mesh conformance profile, ClusterIP Services only)
-   *
-   *
-   * Support for other resources is Implementation-Specific.
-   *
-   * @schema GrpcRouteV1Alpha2SpecParentRefs#kind
-   */
-  readonly kind?: string;
-
-  /**
-   * Name is the name of the referent.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecParentRefs#name
-   */
-  readonly name: string;
-
-  /**
-   * Namespace is the namespace of the referent. When unspecified, this refers
-   * to the local namespace of the Route.
-   *
-   *
-   * Note that there are specific rules for ParentRefs which cross namespace
-   * boundaries. Cross-namespace references are only valid if they are explicitly
-   * allowed by something in the namespace they are referring to. For example:
-   * Gateway has the AllowedRoutes field, and ReferenceGrant provides a
-   * generic way to enable any other kind of cross-namespace reference.
-   *
-   *
-   *
-   * ParentRefs from a Route to a Service in the same namespace are "producer"
-   * routes, which apply default routing rules to inbound connections from
-   * any namespace to the Service.
-   *
-   *
-   * ParentRefs from a Route to a Service in a different namespace are
-   * "consumer" routes, and these routing rules are only applied to outbound
-   * connections originating from the same namespace as the Route, for which
-   * the intended destination of the connections are a Service targeted as a
-   * ParentRef of the Route.
-   *
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecParentRefs#namespace
-   */
-  readonly namespace?: string;
-
-  /**
-   * Port is the network port this Route targets. It can be interpreted
-   * differently based on the type of parent resource.
-   *
-   *
-   * When the parent resource is a Gateway, this targets all listeners
-   * listening on the specified port that also support this kind of Route(and
-   * select this Route). It's not recommended to set `Port` unless the
-   * networking behaviors specified in a Route must apply to a specific port
-   * as opposed to a listener(s) whose port(s) may be changed. When both Port
-   * and SectionName are specified, the name and port of the selected listener
-   * must match both specified values.
-   *
-   *
-   *
-   * When the parent resource is a Service, this targets a specific port in the
-   * Service spec. When both Port (experimental) and SectionName are specified,
-   * the name and port of the selected port must match both specified values.
-   *
-   *
-   *
-   * Implementations MAY choose to support other parent resources.
-   * Implementations supporting other types of parent resources MUST clearly
-   * document how/if Port is interpreted.
-   *
-   *
-   * For the purpose of status, an attachment is considered successful as
-   * long as the parent resource accepts it partially. For example, Gateway
-   * listeners can restrict which Routes can attach to them by Route kind,
-   * namespace, or hostname. If 1 of 2 Gateway listeners accept attachment
-   * from the referencing Route, the Route MUST be considered successfully
-   * attached. If no Gateway listeners accept attachment from this Route,
-   * the Route MUST be considered detached from the Gateway.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema GrpcRouteV1Alpha2SpecParentRefs#port
-   */
-  readonly port?: number;
-
-  /**
-   * SectionName is the name of a section within the target resource. In the
-   * following resources, SectionName is interpreted as the following:
-   *
-   *
-   * * Gateway: Listener name. When both Port (experimental) and SectionName
-   * are specified, the name and port of the selected listener must match
-   * both specified values.
-   * * Service: Port name. When both Port (experimental) and SectionName
-   * are specified, the name and port of the selected listener must match
-   * both specified values.
-   *
-   *
-   * Implementations MAY choose to support attaching Routes to other resources.
-   * If that is the case, they MUST clearly document how SectionName is
-   * interpreted.
-   *
-   *
-   * When unspecified (empty string), this will reference the entire resource.
-   * For the purpose of status, an attachment is considered successful if at
-   * least one section in the parent resource accepts it. For example, Gateway
-   * listeners can restrict which Routes can attach to them by Route kind,
-   * namespace, or hostname. If 1 of 2 Gateway listeners accept attachment from
-   * the referencing Route, the Route MUST be considered successfully
-   * attached. If no Gateway listeners accept attachment from this Route, the
-   * Route MUST be considered detached from the Gateway.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecParentRefs#sectionName
-   */
-  readonly sectionName?: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecParentRefs' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecParentRefs(obj: GrpcRouteV1Alpha2SpecParentRefs | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'group': obj.group,
-    'kind': obj.kind,
-    'name': obj.name,
-    'namespace': obj.namespace,
-    'port': obj.port,
-    'sectionName': obj.sectionName,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * GRPCRouteRule defines the semantics for matching a gRPC request based on
- * conditions (matches), processing it (filters), and forwarding the request to
- * an API object (backendRefs).
- *
- * @schema GrpcRouteV1Alpha2SpecRules
- */
-export interface GrpcRouteV1Alpha2SpecRules {
-  /**
-   * BackendRefs defines the backend(s) where matching requests should be
-   * sent.
-   *
-   *
-   * Failure behavior here depends on how many BackendRefs are specified and
-   * how many are invalid.
-   *
-   *
-   * If *all* entries in BackendRefs are invalid, and there are also no filters
-   * specified in this route rule, *all* traffic which matches this rule MUST
-   * receive an `UNAVAILABLE` status.
-   *
-   *
-   * See the GRPCBackendRef definition for the rules about what makes a single
-   * GRPCBackendRef invalid.
-   *
-   *
-   * When a GRPCBackendRef is invalid, `UNAVAILABLE` statuses MUST be returned for
-   * requests that would have otherwise been routed to an invalid backend. If
-   * multiple backends are specified, and some are invalid, the proportion of
-   * requests that would otherwise have been routed to an invalid backend
-   * MUST receive an `UNAVAILABLE` status.
-   *
-   *
-   * For example, if two backends are specified with equal weights, and one is
-   * invalid, 50 percent of traffic MUST receive an `UNAVAILABLE` status.
-   * Implementations may choose how that 50 percent is determined.
-   *
-   *
-   * Support: Core for Kubernetes Service
-   *
-   *
-   * Support: Implementation-specific for any other resource
-   *
-   *
-   * Support for weight: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecRules#backendRefs
-   */
-  readonly backendRefs?: GrpcRouteV1Alpha2SpecRulesBackendRefs[];
-
-  /**
-   * Filters define the filters that are applied to requests that match
-   * this rule.
-   *
-   *
-   * The effects of ordering of multiple behaviors are currently unspecified.
-   * This can change in the future based on feedback during the alpha stage.
-   *
-   *
-   * Conformance-levels at this level are defined based on the type of filter:
-   *
-   *
-   * - ALL core filters MUST be supported by all implementations that support
-   * GRPCRoute.
-   * - Implementers are encouraged to support extended filters.
-   * - Implementation-specific custom filters have no API guarantees across
-   * implementations.
-   *
-   *
-   * Specifying the same filter multiple times is not supported unless explicitly
-   * indicated in the filter.
-   *
-   *
-   * If an implementation can not support a combination of filters, it must clearly
-   * document that limitation. In cases where incompatible or unsupported
-   * filters are specified and cause the `Accepted` condition to be set to status
-   * `False`, implementations may use the `IncompatibleFilters` reason to specify
-   * this configuration error.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecRules#filters
-   */
-  readonly filters?: GrpcRouteV1Alpha2SpecRulesFilters[];
-
-  /**
-   * Matches define conditions used for matching the rule against incoming
-   * gRPC requests. Each match is independent, i.e. this rule will be matched
-   * if **any** one of the matches is satisfied.
-   *
-   *
-   * For example, take the following matches configuration:
-   *
-   *
-   * ```
-   * matches:
-   * - method:
-   * service: foo.bar
-   * headers:
-   * values:
-   * version: 2
-   * - method:
-   * service: foo.bar.v2
-   * ```
-   *
-   *
-   * For a request to match against this rule, it MUST satisfy
-   * EITHER of the two conditions:
-   *
-   *
-   * - service of foo.bar AND contains the header `version: 2`
-   * - service of foo.bar.v2
-   *
-   *
-   * See the documentation for GRPCRouteMatch on how to specify multiple
-   * match conditions to be ANDed together.
-   *
-   *
-   * If no matches are specified, the implementation MUST match every gRPC request.
-   *
-   *
-   * Proxy or Load Balancer routing configuration generated from GRPCRoutes
-   * MUST prioritize rules based on the following criteria, continuing on
-   * ties. Merging MUST not be done between GRPCRoutes and HTTPRoutes.
-   * Precedence MUST be given to the rule with the largest number of:
-   *
-   *
-   * * Characters in a matching non-wildcard hostname.
-   * * Characters in a matching hostname.
-   * * Characters in a matching service.
-   * * Characters in a matching method.
-   * * Header matches.
-   *
-   *
-   * If ties still exist across multiple Routes, matching precedence MUST be
-   * determined in order of the following criteria, continuing on ties:
-   *
-   *
-   * * The oldest Route based on creation timestamp.
-   * * The Route appearing first in alphabetical order by
-   * "{namespace}/{name}".
-   *
-   *
-   * If ties still exist within the Route that has been given precedence,
-   * matching precedence MUST be granted to the first matching rule meeting
-   * the above criteria.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRules#matches
-   */
-  readonly matches?: GrpcRouteV1Alpha2SpecRulesMatches[];
-
-  /**
-   * SessionPersistence defines and configures session persistence
-   * for the route rule.
-   *
-   *
-   * Support: Extended
-   *
-   *
-   *
-   *
-   * @schema GrpcRouteV1Alpha2SpecRules#sessionPersistence
-   */
-  readonly sessionPersistence?: GrpcRouteV1Alpha2SpecRulesSessionPersistence;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRules' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRules(obj: GrpcRouteV1Alpha2SpecRules | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'backendRefs': obj.backendRefs?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesBackendRefs(y)),
-    'filters': obj.filters?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesFilters(y)),
-    'matches': obj.matches?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesMatches(y)),
-    'sessionPersistence': toJson_GrpcRouteV1Alpha2SpecRulesSessionPersistence(obj.sessionPersistence),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * GRPCBackendRef defines how a GRPCRoute forwards a gRPC request.
- *
- *
- * Note that when a namespace different than the local namespace is specified, a
- * ReferenceGrant object is required in the referent namespace to allow that
- * namespace's owner to accept the reference. See the ReferenceGrant
- * documentation for details.
- *
- *
- * <gateway:experimental:description>
- *
- *
- * When the BackendRef points to a Kubernetes Service, implementations SHOULD
- * honor the appProtocol field if it is set for the target Service Port.
- *
- *
- * Implementations supporting appProtocol SHOULD recognize the Kubernetes
- * Standard Application Protocols defined in KEP-3726.
- *
- *
- * If a Service appProtocol isn't specified, an implementation MAY infer the
- * backend protocol through its own means. Implementations MAY infer the
- * protocol from the Route type referring to the backend Service.
- *
- *
- * If a Route is not able to send traffic to the backend using the specified
- * protocol then the backend is considered invalid. Implementations MUST set the
- * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
- *
- *
- * </gateway:experimental:description>
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefs
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefs {
-  /**
-   * Filters defined at this level MUST be executed if and only if the
-   * request is being forwarded to the backend defined here.
-   *
-   *
-   * Support: Implementation-specific (For broader support of filters, use the
-   * Filters field in GRPCRouteRule.)
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefs#filters
-   */
-  readonly filters?: GrpcRouteV1Alpha2SpecRulesBackendRefsFilters[];
-
-  /**
-   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
-   * When unspecified or empty string, core API group is inferred.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefs#group
-   */
-  readonly group?: string;
-
-  /**
-   * Kind is the Kubernetes resource kind of the referent. For example
-   * "Service".
-   *
-   *
-   * Defaults to "Service" when not specified.
-   *
-   *
-   * ExternalName services can refer to CNAME DNS records that may live
-   * outside of the cluster and as such are difficult to reason about in
-   * terms of conformance. They also may not be safe to forward to (see
-   * CVE-2021-25740 for more information). Implementations SHOULD NOT
-   * support ExternalName Services.
-   *
-   *
-   * Support: Core (Services with a type other than ExternalName)
-   *
-   *
-   * Support: Implementation-specific (Services with type ExternalName)
-   *
-   * @default Service" when not specified.
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefs#kind
-   */
-  readonly kind?: string;
-
-  /**
-   * Name is the name of the referent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefs#name
-   */
-  readonly name: string;
-
-  /**
-   * Namespace is the namespace of the backend. When unspecified, the local
-   * namespace is inferred.
-   *
-   *
-   * Note that when a namespace different than the local namespace is specified,
-   * a ReferenceGrant object is required in the referent namespace to allow that
-   * namespace's owner to accept the reference. See the ReferenceGrant
-   * documentation for details.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefs#namespace
-   */
-  readonly namespace?: string;
-
-  /**
-   * Port specifies the destination port number to use for this resource.
-   * Port is required when the referent is a Kubernetes Service. In this
-   * case, the port number is the service port number, not the target port.
-   * For other resources, destination port might be derived from the referent
-   * resource or this field.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefs#port
-   */
-  readonly port?: number;
-
-  /**
-   * Weight specifies the proportion of requests forwarded to the referenced
-   * backend. This is computed as weight/(sum of all weights in this
-   * BackendRefs list). For non-zero values, there may be some epsilon from
-   * the exact proportion defined here depending on the precision an
-   * implementation supports. Weight is not a percentage and the sum of
-   * weights does not need to equal 100.
-   *
-   *
-   * If only one backend is specified and it has a weight greater than 0, 100%
-   * of the traffic is forwarded to that backend. If weight is set to 0, no
-   * traffic should be forwarded for this entry. If unspecified, weight
-   * defaults to 1.
-   *
-   *
-   * Support for this field varies based on the context where used.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefs#weight
-   */
-  readonly weight?: number;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefs' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefs(obj: GrpcRouteV1Alpha2SpecRulesBackendRefs | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'filters': obj.filters?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFilters(y)),
-    'group': obj.group,
-    'kind': obj.kind,
-    'name': obj.name,
-    'namespace': obj.namespace,
-    'port': obj.port,
-    'weight': obj.weight,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * GRPCRouteFilter defines processing steps that must be completed during the
- * request or response lifecycle. GRPCRouteFilters are meant as an extension
- * point to express processing that may be done in Gateway implementations. Some
- * examples include request or response modification, implementing
- * authentication strategies, rate-limiting, and traffic shaping. API
- * guarantee/conformance is defined based on the type of the filter.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFilters
- */
-export interface GrpcRouteV1Alpha2SpecRulesFilters {
-  /**
-   * ExtensionRef is an optional, implementation-specific extension to the
-   * "filter" behavior.  For example, resource "myroutefilter" in group
-   * "networking.example.net"). ExtensionRef MUST NOT be used for core and
-   * extended filters.
-   *
-   *
-   * Support: Implementation-specific
-   *
-   *
-   * This filter can be used multiple times within the same rule.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFilters#extensionRef
-   */
-  readonly extensionRef?: GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef;
-
-  /**
-   * RequestHeaderModifier defines a schema for a filter that modifies request
-   * headers.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFilters#requestHeaderModifier
-   */
-  readonly requestHeaderModifier?: GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier;
-
-  /**
-   * RequestMirror defines a schema for a filter that mirrors requests.
-   * Requests are sent to the specified destination, but responses from
-   * that destination are ignored.
-   *
-   *
-   * This filter can be used multiple times within the same rule. Note that
-   * not all implementations will be able to support mirroring to multiple
-   * backends.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFilters#requestMirror
-   */
-  readonly requestMirror?: GrpcRouteV1Alpha2SpecRulesFiltersRequestMirror;
-
-  /**
-   * ResponseHeaderModifier defines a schema for a filter that modifies response
-   * headers.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFilters#responseHeaderModifier
-   */
-  readonly responseHeaderModifier?: GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier;
-
-  /**
-   * Type identifies the type of filter to apply. As with other API fields,
-   * types are classified into three conformance levels:
-   *
-   *
-   * - Core: Filter types and their corresponding configuration defined by
-   * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
-   * implementations supporting GRPCRoute MUST support core filters.
-   *
-   *
-   * - Extended: Filter types and their corresponding configuration defined by
-   * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
-   * are encouraged to support extended filters.
-   *
-   *
-   * - Implementation-specific: Filters that are defined and supported by specific vendors.
-   * In the future, filters showing convergence in behavior across multiple
-   * implementations will be considered for inclusion in extended or core
-   * conformance levels. Filter-specific configuration for such filters
-   * is specified using the ExtensionRef field. `Type` MUST be set to
-   * "ExtensionRef" for custom filters.
-   *
-   *
-   * Implementers are encouraged to define custom implementation types to
-   * extend the core API with implementation-specific behavior.
-   *
-   *
-   * If a reference to a custom filter type cannot be resolved, the filter
-   * MUST NOT be skipped. Instead, requests that would have been processed by
-   * that filter MUST receive a HTTP error response.
-   *
-   *
-   *
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFilters#type
-   */
-  readonly type: GrpcRouteV1Alpha2SpecRulesFiltersType;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFilters' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFilters(obj: GrpcRouteV1Alpha2SpecRulesFilters | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'extensionRef': toJson_GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef(obj.extensionRef),
-    'requestHeaderModifier': toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier(obj.requestHeaderModifier),
-    'requestMirror': toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestMirror(obj.requestMirror),
-    'responseHeaderModifier': toJson_GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier(obj.responseHeaderModifier),
-    'type': obj.type,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * GRPCRouteMatch defines the predicate used to match requests to a given
- * action. Multiple match types are ANDed together, i.e. the match will
- * evaluate to true only if all conditions are satisfied.
- *
- *
- * For example, the match below will match a gRPC request only if its service
- * is `foo` AND it contains the `version: v1` header:
- *
- *
- * ```
- * matches:
- * - method:
- * type: Exact
- * service: "foo"
- * headers:
- * - name: "version"
- * value "v1"
- *
- *
- * ```
- *
- * @schema GrpcRouteV1Alpha2SpecRulesMatches
- */
-export interface GrpcRouteV1Alpha2SpecRulesMatches {
-  /**
-   * Headers specifies gRPC request header matchers. Multiple match values are
-   * ANDed together, meaning, a request MUST match all the specified headers
-   * to select the route.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesMatches#headers
-   */
-  readonly headers?: GrpcRouteV1Alpha2SpecRulesMatchesHeaders[];
-
-  /**
-   * Method specifies a gRPC request service/method matcher. If this field is
-   * not specified, all services and methods will match.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesMatches#method
-   */
-  readonly method?: GrpcRouteV1Alpha2SpecRulesMatchesMethod;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesMatches' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesMatches(obj: GrpcRouteV1Alpha2SpecRulesMatches | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'headers': obj.headers?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesMatchesHeaders(y)),
-    'method': toJson_GrpcRouteV1Alpha2SpecRulesMatchesMethod(obj.method),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * SessionPersistence defines and configures session persistence
- * for the route rule.
- *
- *
- * Support: Extended
- *
- *
- *
- *
- * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence
- */
-export interface GrpcRouteV1Alpha2SpecRulesSessionPersistence {
-  /**
-   * AbsoluteTimeout defines the absolute timeout of the persistent
-   * session. Once the AbsoluteTimeout duration has elapsed, the
-   * session becomes invalid.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#absoluteTimeout
-   */
-  readonly absoluteTimeout?: string;
-
-  /**
-   * CookieConfig provides configuration settings that are specific
-   * to cookie-based session persistence.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#cookieConfig
-   */
-  readonly cookieConfig?: GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig;
-
-  /**
-   * IdleTimeout defines the idle timeout of the persistent session.
-   * Once the session has been idle for more than the specified
-   * IdleTimeout duration, the session becomes invalid.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#idleTimeout
-   */
-  readonly idleTimeout?: string;
-
-  /**
-   * SessionName defines the name of the persistent session token
-   * which may be reflected in the cookie or the header. Users
-   * should avoid reusing session names to prevent unintended
-   * consequences, such as rejection or unpredictable behavior.
-   *
-   *
-   * Support: Implementation-specific
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#sessionName
-   */
-  readonly sessionName?: string;
-
-  /**
-   * Type defines the type of session persistence such as through
-   * the use a header or cookie. Defaults to cookie based session
-   * persistence.
-   *
-   *
-   * Support: Core for "Cookie" type
-   *
-   *
-   * Support: Extended for "Header" type
-   *
-   * @default cookie based session
-   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistence#type
-   */
-  readonly type?: GrpcRouteV1Alpha2SpecRulesSessionPersistenceType;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesSessionPersistence' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesSessionPersistence(obj: GrpcRouteV1Alpha2SpecRulesSessionPersistence | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'absoluteTimeout': obj.absoluteTimeout,
-    'cookieConfig': toJson_GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig(obj.cookieConfig),
-    'idleTimeout': obj.idleTimeout,
-    'sessionName': obj.sessionName,
-    'type': obj.type,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * GRPCRouteFilter defines processing steps that must be completed during the
- * request or response lifecycle. GRPCRouteFilters are meant as an extension
- * point to express processing that may be done in Gateway implementations. Some
- * examples include request or response modification, implementing
- * authentication strategies, rate-limiting, and traffic shaping. API
- * guarantee/conformance is defined based on the type of the filter.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFilters
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFilters {
-  /**
-   * ExtensionRef is an optional, implementation-specific extension to the
-   * "filter" behavior.  For example, resource "myroutefilter" in group
-   * "networking.example.net"). ExtensionRef MUST NOT be used for core and
-   * extended filters.
-   *
-   *
-   * Support: Implementation-specific
-   *
-   *
-   * This filter can be used multiple times within the same rule.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFilters#extensionRef
-   */
-  readonly extensionRef?: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef;
-
-  /**
-   * RequestHeaderModifier defines a schema for a filter that modifies request
-   * headers.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFilters#requestHeaderModifier
-   */
-  readonly requestHeaderModifier?: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier;
-
-  /**
-   * RequestMirror defines a schema for a filter that mirrors requests.
-   * Requests are sent to the specified destination, but responses from
-   * that destination are ignored.
-   *
-   *
-   * This filter can be used multiple times within the same rule. Note that
-   * not all implementations will be able to support mirroring to multiple
-   * backends.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFilters#requestMirror
-   */
-  readonly requestMirror?: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirror;
-
-  /**
-   * ResponseHeaderModifier defines a schema for a filter that modifies response
-   * headers.
-   *
-   *
-   * Support: Extended
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFilters#responseHeaderModifier
-   */
-  readonly responseHeaderModifier?: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier;
-
-  /**
-   * Type identifies the type of filter to apply. As with other API fields,
-   * types are classified into three conformance levels:
-   *
-   *
-   * - Core: Filter types and their corresponding configuration defined by
-   * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
-   * implementations supporting GRPCRoute MUST support core filters.
-   *
-   *
-   * - Extended: Filter types and their corresponding configuration defined by
-   * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
-   * are encouraged to support extended filters.
-   *
-   *
-   * - Implementation-specific: Filters that are defined and supported by specific vendors.
-   * In the future, filters showing convergence in behavior across multiple
-   * implementations will be considered for inclusion in extended or core
-   * conformance levels. Filter-specific configuration for such filters
-   * is specified using the ExtensionRef field. `Type` MUST be set to
-   * "ExtensionRef" for custom filters.
-   *
-   *
-   * Implementers are encouraged to define custom implementation types to
-   * extend the core API with implementation-specific behavior.
-   *
-   *
-   * If a reference to a custom filter type cannot be resolved, the filter
-   * MUST NOT be skipped. Instead, requests that would have been processed by
-   * that filter MUST receive a HTTP error response.
-   *
-   *
-   *
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFilters#type
-   */
-  readonly type: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersType;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFilters' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFilters(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFilters | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'extensionRef': toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef(obj.extensionRef),
-    'requestHeaderModifier': toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier(obj.requestHeaderModifier),
-    'requestMirror': toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirror(obj.requestMirror),
-    'responseHeaderModifier': toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier(obj.responseHeaderModifier),
-    'type': obj.type,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * ExtensionRef is an optional, implementation-specific extension to the
- * "filter" behavior.  For example, resource "myroutefilter" in group
- * "networking.example.net"). ExtensionRef MUST NOT be used for core and
- * extended filters.
- *
- *
- * Support: Implementation-specific
- *
- *
- * This filter can be used multiple times within the same rule.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef
- */
-export interface GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef {
-  /**
-   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
-   * When unspecified or empty string, core API group is inferred.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef#group
-   */
-  readonly group: string;
-
-  /**
-   * Kind is kind of the referent. For example "HTTPRoute" or "Service".
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef#kind
-   */
-  readonly kind: string;
-
-  /**
-   * Name is the name of the referent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef#name
-   */
-  readonly name: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef(obj: GrpcRouteV1Alpha2SpecRulesFiltersExtensionRef | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'group': obj.group,
-    'kind': obj.kind,
-    'name': obj.name,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * RequestHeaderModifier defines a schema for a filter that modifies request
- * headers.
- *
- *
- * Support: Core
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier
- */
-export interface GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier {
-  /**
-   * Add adds the given header(s) (name, value) to the request
-   * before the action. It appends to any existing values associated
-   * with the header name.
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header: foo
-   *
-   *
-   * Config:
-   * add:
-   * - name: "my-header"
-   * value: "bar,baz"
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header: foo,bar,baz
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier#add
-   */
-  readonly add?: GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierAdd[];
-
-  /**
-   * Remove the given header(s) from the HTTP request before the action. The
-   * value of Remove is a list of HTTP header names. Note that the header
-   * names are case-insensitive (see
-   * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header1: foo
-   * my-header2: bar
-   * my-header3: baz
-   *
-   *
-   * Config:
-   * remove: ["my-header1", "my-header3"]
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header2: bar
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier#remove
-   */
-  readonly remove?: string[];
-
-  /**
-   * Set overwrites the request with the given header (name, value)
-   * before the action.
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header: foo
-   *
-   *
-   * Config:
-   * set:
-   * - name: "my-header"
-   * value: "bar"
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header: bar
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier#set
-   */
-  readonly set?: GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierSet[];
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier(obj: GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifier | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'add': obj.add?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierAdd(y)),
-    'remove': obj.remove?.map(y => y),
-    'set': obj.set?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierSet(y)),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * RequestMirror defines a schema for a filter that mirrors requests.
- * Requests are sent to the specified destination, but responses from
- * that destination are ignored.
- *
- *
- * This filter can be used multiple times within the same rule. Note that
- * not all implementations will be able to support mirroring to multiple
- * backends.
- *
- *
- * Support: Extended
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestMirror
- */
-export interface GrpcRouteV1Alpha2SpecRulesFiltersRequestMirror {
-  /**
-   * BackendRef references a resource where mirrored requests are sent.
-   *
-   *
-   * Mirrored requests must be sent only to a single destination endpoint
-   * within this BackendRef, irrespective of how many endpoints are present
-   * within this BackendRef.
-   *
-   *
-   * If the referent cannot be found, this BackendRef is invalid and must be
-   * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
-   * condition on the Route status is set to `status: False` and not configure
-   * this backend in the underlying implementation.
-   *
-   *
-   * If there is a cross-namespace reference to an *existing* object
-   * that is not allowed by a ReferenceGrant, the controller must ensure the
-   * "ResolvedRefs"  condition on the Route is set to `status: False`,
-   * with the "RefNotPermitted" reason and not configure this backend in the
-   * underlying implementation.
-   *
-   *
-   * In either error case, the Message of the `ResolvedRefs` Condition
-   * should be used to provide more detail about the problem.
-   *
-   *
-   * Support: Extended for Kubernetes Service
-   *
-   *
-   * Support: Implementation-specific for any other resource
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestMirror#backendRef
-   */
-  readonly backendRef: GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFiltersRequestMirror' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestMirror(obj: GrpcRouteV1Alpha2SpecRulesFiltersRequestMirror | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'backendRef': toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef(obj.backendRef),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * ResponseHeaderModifier defines a schema for a filter that modifies response
- * headers.
- *
- *
- * Support: Extended
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier
- */
-export interface GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier {
-  /**
-   * Add adds the given header(s) (name, value) to the request
-   * before the action. It appends to any existing values associated
-   * with the header name.
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header: foo
-   *
-   *
-   * Config:
-   * add:
-   * - name: "my-header"
-   * value: "bar,baz"
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header: foo,bar,baz
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier#add
-   */
-  readonly add?: GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierAdd[];
-
-  /**
-   * Remove the given header(s) from the HTTP request before the action. The
-   * value of Remove is a list of HTTP header names. Note that the header
-   * names are case-insensitive (see
-   * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header1: foo
-   * my-header2: bar
-   * my-header3: baz
-   *
-   *
-   * Config:
-   * remove: ["my-header1", "my-header3"]
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header2: bar
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier#remove
-   */
-  readonly remove?: string[];
-
-  /**
-   * Set overwrites the request with the given header (name, value)
-   * before the action.
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header: foo
-   *
-   *
-   * Config:
-   * set:
-   * - name: "my-header"
-   * value: "bar"
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header: bar
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier#set
-   */
-  readonly set?: GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierSet[];
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier(obj: GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifier | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'add': obj.add?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierAdd(y)),
-    'remove': obj.remove?.map(y => y),
-    'set': obj.set?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierSet(y)),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * Type identifies the type of filter to apply. As with other API fields,
- * types are classified into three conformance levels:
- *
- *
- * - Core: Filter types and their corresponding configuration defined by
- * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
- * implementations supporting GRPCRoute MUST support core filters.
- *
- *
- * - Extended: Filter types and their corresponding configuration defined by
- * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
- * are encouraged to support extended filters.
- *
- *
- * - Implementation-specific: Filters that are defined and supported by specific vendors.
- * In the future, filters showing convergence in behavior across multiple
- * implementations will be considered for inclusion in extended or core
- * conformance levels. Filter-specific configuration for such filters
- * is specified using the ExtensionRef field. `Type` MUST be set to
- * "ExtensionRef" for custom filters.
- *
- *
- * Implementers are encouraged to define custom implementation types to
- * extend the core API with implementation-specific behavior.
- *
- *
- * If a reference to a custom filter type cannot be resolved, the filter
- * MUST NOT be skipped. Instead, requests that would have been processed by
- * that filter MUST receive a HTTP error response.
- *
- *
- *
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersType
- */
-export enum GrpcRouteV1Alpha2SpecRulesFiltersType {
-  /** ResponseHeaderModifier */
-  RESPONSE_HEADER_MODIFIER = "ResponseHeaderModifier",
-  /** RequestHeaderModifier */
-  REQUEST_HEADER_MODIFIER = "RequestHeaderModifier",
-  /** RequestMirror */
-  REQUEST_MIRROR = "RequestMirror",
-  /** ExtensionRef */
-  EXTENSION_REF = "ExtensionRef",
-}
-
-/**
- * GRPCHeaderMatch describes how to select a gRPC route by matching gRPC request
- * headers.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesMatchesHeaders
- */
-export interface GrpcRouteV1Alpha2SpecRulesMatchesHeaders {
-  /**
-   * Name is the name of the gRPC Header to be matched.
-   *
-   *
-   * If multiple entries specify equivalent header names, only the first
-   * entry with an equivalent name MUST be considered for a match. Subsequent
-   * entries with an equivalent header name MUST be ignored. Due to the
-   * case-insensitivity of header names, "foo" and "Foo" are considered
-   * equivalent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesMatchesHeaders#name
-   */
-  readonly name: string;
-
-  /**
-   * Type specifies how to match against the value of the header.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesMatchesHeaders#type
-   */
-  readonly type?: GrpcRouteV1Alpha2SpecRulesMatchesHeadersType;
-
-  /**
-   * Value is the value of the gRPC Header to be matched.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesMatchesHeaders#value
-   */
-  readonly value: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesMatchesHeaders' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesMatchesHeaders(obj: GrpcRouteV1Alpha2SpecRulesMatchesHeaders | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'name': obj.name,
-    'type': obj.type,
-    'value': obj.value,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * Method specifies a gRPC request service/method matcher. If this field is
- * not specified, all services and methods will match.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesMatchesMethod
- */
-export interface GrpcRouteV1Alpha2SpecRulesMatchesMethod {
-  /**
-   * Value of the method to match against. If left empty or omitted, will
-   * match all services.
-   *
-   *
-   * At least one of Service and Method MUST be a non-empty string.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesMatchesMethod#method
-   */
-  readonly method?: string;
-
-  /**
-   * Value of the service to match against. If left empty or omitted, will
-   * match any service.
-   *
-   *
-   * At least one of Service and Method MUST be a non-empty string.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesMatchesMethod#service
-   */
-  readonly service?: string;
-
-  /**
-   * Type specifies how to match against the service and/or method.
-   * Support: Core (Exact with service and method specified)
-   *
-   *
-   * Support: Implementation-specific (Exact with method specified but no service specified)
-   *
-   *
-   * Support: Implementation-specific (RegularExpression)
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesMatchesMethod#type
-   */
-  readonly type?: GrpcRouteV1Alpha2SpecRulesMatchesMethodType;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesMatchesMethod' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesMatchesMethod(obj: GrpcRouteV1Alpha2SpecRulesMatchesMethod | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'method': obj.method,
-    'service': obj.service,
-    'type': obj.type,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * CookieConfig provides configuration settings that are specific
- * to cookie-based session persistence.
- *
- *
- * Support: Core
- *
- * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig
- */
-export interface GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig {
-  /**
-   * LifetimeType specifies whether the cookie has a permanent or
-   * session-based lifetime. A permanent cookie persists until its
-   * specified expiry time, defined by the Expires or Max-Age cookie
-   * attributes, while a session cookie is deleted when the current
-   * session ends.
-   *
-   *
-   * When set to "Permanent", AbsoluteTimeout indicates the
-   * cookie's lifetime via the Expires or Max-Age cookie attributes
-   * and is required.
-   *
-   *
-   * When set to "Session", AbsoluteTimeout indicates the
-   * absolute lifetime of the cookie tracked by the gateway and
-   * is optional.
-   *
-   *
-   * Support: Core for "Session" type
-   *
-   *
-   * Support: Extended for "Permanent" type
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig#lifetimeType
-   */
-  readonly lifetimeType?: GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfigLifetimeType;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig(obj: GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfig | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'lifetimeType': obj.lifetimeType,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * Type defines the type of session persistence such as through
- * the use a header or cookie. Defaults to cookie based session
- * persistence.
- *
- *
- * Support: Core for "Cookie" type
- *
- *
- * Support: Extended for "Header" type
- *
- * @default cookie based session
- * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistenceType
- */
-export enum GrpcRouteV1Alpha2SpecRulesSessionPersistenceType {
-  /** Cookie */
-  COOKIE = "Cookie",
-  /** Header */
-  HEADER = "Header",
-}
-
-/**
- * ExtensionRef is an optional, implementation-specific extension to the
- * "filter" behavior.  For example, resource "myroutefilter" in group
- * "networking.example.net"). ExtensionRef MUST NOT be used for core and
- * extended filters.
- *
- *
- * Support: Implementation-specific
- *
- *
- * This filter can be used multiple times within the same rule.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef {
-  /**
-   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
-   * When unspecified or empty string, core API group is inferred.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef#group
-   */
-  readonly group: string;
-
-  /**
-   * Kind is kind of the referent. For example "HTTPRoute" or "Service".
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef#kind
-   */
-  readonly kind: string;
-
-  /**
-   * Name is the name of the referent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef#name
-   */
-  readonly name: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersExtensionRef | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'group': obj.group,
-    'kind': obj.kind,
-    'name': obj.name,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * RequestHeaderModifier defines a schema for a filter that modifies request
- * headers.
- *
- *
- * Support: Core
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier {
-  /**
-   * Add adds the given header(s) (name, value) to the request
-   * before the action. It appends to any existing values associated
-   * with the header name.
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header: foo
-   *
-   *
-   * Config:
-   * add:
-   * - name: "my-header"
-   * value: "bar,baz"
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header: foo,bar,baz
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier#add
-   */
-  readonly add?: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd[];
-
-  /**
-   * Remove the given header(s) from the HTTP request before the action. The
-   * value of Remove is a list of HTTP header names. Note that the header
-   * names are case-insensitive (see
-   * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header1: foo
-   * my-header2: bar
-   * my-header3: baz
-   *
-   *
-   * Config:
-   * remove: ["my-header1", "my-header3"]
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header2: bar
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier#remove
-   */
-  readonly remove?: string[];
-
-  /**
-   * Set overwrites the request with the given header (name, value)
-   * before the action.
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header: foo
-   *
-   *
-   * Config:
-   * set:
-   * - name: "my-header"
-   * value: "bar"
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header: bar
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier#set
-   */
-  readonly set?: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierSet[];
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifier | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'add': obj.add?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd(y)),
-    'remove': obj.remove?.map(y => y),
-    'set': obj.set?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierSet(y)),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * RequestMirror defines a schema for a filter that mirrors requests.
- * Requests are sent to the specified destination, but responses from
- * that destination are ignored.
- *
- *
- * This filter can be used multiple times within the same rule. Note that
- * not all implementations will be able to support mirroring to multiple
- * backends.
- *
- *
- * Support: Extended
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirror
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirror {
-  /**
-   * BackendRef references a resource where mirrored requests are sent.
-   *
-   *
-   * Mirrored requests must be sent only to a single destination endpoint
-   * within this BackendRef, irrespective of how many endpoints are present
-   * within this BackendRef.
-   *
-   *
-   * If the referent cannot be found, this BackendRef is invalid and must be
-   * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
-   * condition on the Route status is set to `status: False` and not configure
-   * this backend in the underlying implementation.
-   *
-   *
-   * If there is a cross-namespace reference to an *existing* object
-   * that is not allowed by a ReferenceGrant, the controller must ensure the
-   * "ResolvedRefs"  condition on the Route is set to `status: False`,
-   * with the "RefNotPermitted" reason and not configure this backend in the
-   * underlying implementation.
-   *
-   *
-   * In either error case, the Message of the `ResolvedRefs` Condition
-   * should be used to provide more detail about the problem.
-   *
-   *
-   * Support: Extended for Kubernetes Service
-   *
-   *
-   * Support: Implementation-specific for any other resource
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirror#backendRef
-   */
-  readonly backendRef: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirror' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirror(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirror | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'backendRef': toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef(obj.backendRef),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * ResponseHeaderModifier defines a schema for a filter that modifies response
- * headers.
- *
- *
- * Support: Extended
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier {
-  /**
-   * Add adds the given header(s) (name, value) to the request
-   * before the action. It appends to any existing values associated
-   * with the header name.
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header: foo
-   *
-   *
-   * Config:
-   * add:
-   * - name: "my-header"
-   * value: "bar,baz"
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header: foo,bar,baz
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier#add
-   */
-  readonly add?: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierAdd[];
-
-  /**
-   * Remove the given header(s) from the HTTP request before the action. The
-   * value of Remove is a list of HTTP header names. Note that the header
-   * names are case-insensitive (see
-   * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header1: foo
-   * my-header2: bar
-   * my-header3: baz
-   *
-   *
-   * Config:
-   * remove: ["my-header1", "my-header3"]
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header2: bar
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier#remove
-   */
-  readonly remove?: string[];
-
-  /**
-   * Set overwrites the request with the given header (name, value)
-   * before the action.
-   *
-   *
-   * Input:
-   * GET /foo HTTP/1.1
-   * my-header: foo
-   *
-   *
-   * Config:
-   * set:
-   * - name: "my-header"
-   * value: "bar"
-   *
-   *
-   * Output:
-   * GET /foo HTTP/1.1
-   * my-header: bar
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier#set
-   */
-  readonly set?: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierSet[];
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifier | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'add': obj.add?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierAdd(y)),
-    'remove': obj.remove?.map(y => y),
-    'set': obj.set?.map(y => toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierSet(y)),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * Type identifies the type of filter to apply. As with other API fields,
- * types are classified into three conformance levels:
- *
- *
- * - Core: Filter types and their corresponding configuration defined by
- * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
- * implementations supporting GRPCRoute MUST support core filters.
- *
- *
- * - Extended: Filter types and their corresponding configuration defined by
- * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
- * are encouraged to support extended filters.
- *
- *
- * - Implementation-specific: Filters that are defined and supported by specific vendors.
- * In the future, filters showing convergence in behavior across multiple
- * implementations will be considered for inclusion in extended or core
- * conformance levels. Filter-specific configuration for such filters
- * is specified using the ExtensionRef field. `Type` MUST be set to
- * "ExtensionRef" for custom filters.
- *
- *
- * Implementers are encouraged to define custom implementation types to
- * extend the core API with implementation-specific behavior.
- *
- *
- * If a reference to a custom filter type cannot be resolved, the filter
- * MUST NOT be skipped. Instead, requests that would have been processed by
- * that filter MUST receive a HTTP error response.
- *
- *
- *
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersType
- */
-export enum GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersType {
-  /** ResponseHeaderModifier */
-  RESPONSE_HEADER_MODIFIER = "ResponseHeaderModifier",
-  /** RequestHeaderModifier */
-  REQUEST_HEADER_MODIFIER = "RequestHeaderModifier",
-  /** RequestMirror */
-  REQUEST_MIRROR = "RequestMirror",
-  /** ExtensionRef */
-  EXTENSION_REF = "ExtensionRef",
-}
-
-/**
- * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierAdd
- */
-export interface GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierAdd {
-  /**
-   * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
-   *
-   * If multiple entries specify equivalent header names, the first entry with
-   * an equivalent name MUST be considered for a match. Subsequent entries
-   * with an equivalent header name MUST be ignored. Due to the
-   * case-insensitivity of header names, "foo" and "Foo" are considered
-   * equivalent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierAdd#name
-   */
-  readonly name: string;
-
-  /**
-   * Value is the value of HTTP Header to be matched.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierAdd#value
-   */
-  readonly value: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierAdd' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierAdd(obj: GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierAdd | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'name': obj.name,
-    'value': obj.value,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierSet
- */
-export interface GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierSet {
-  /**
-   * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
-   *
-   * If multiple entries specify equivalent header names, the first entry with
-   * an equivalent name MUST be considered for a match. Subsequent entries
-   * with an equivalent header name MUST be ignored. Due to the
-   * case-insensitivity of header names, "foo" and "Foo" are considered
-   * equivalent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierSet#name
-   */
-  readonly name: string;
-
-  /**
-   * Value is the value of HTTP Header to be matched.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierSet#value
-   */
-  readonly value: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierSet' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierSet(obj: GrpcRouteV1Alpha2SpecRulesFiltersRequestHeaderModifierSet | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'name': obj.name,
-    'value': obj.value,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * BackendRef references a resource where mirrored requests are sent.
- *
- *
- * Mirrored requests must be sent only to a single destination endpoint
- * within this BackendRef, irrespective of how many endpoints are present
- * within this BackendRef.
- *
- *
- * If the referent cannot be found, this BackendRef is invalid and must be
- * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
- * condition on the Route status is set to `status: False` and not configure
- * this backend in the underlying implementation.
- *
- *
- * If there is a cross-namespace reference to an *existing* object
- * that is not allowed by a ReferenceGrant, the controller must ensure the
- * "ResolvedRefs"  condition on the Route is set to `status: False`,
- * with the "RefNotPermitted" reason and not configure this backend in the
- * underlying implementation.
- *
- *
- * In either error case, the Message of the `ResolvedRefs` Condition
- * should be used to provide more detail about the problem.
- *
- *
- * Support: Extended for Kubernetes Service
- *
- *
- * Support: Implementation-specific for any other resource
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef
- */
-export interface GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef {
-  /**
-   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
-   * When unspecified or empty string, core API group is inferred.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef#group
-   */
-  readonly group?: string;
-
-  /**
-   * Kind is the Kubernetes resource kind of the referent. For example
-   * "Service".
-   *
-   *
-   * Defaults to "Service" when not specified.
-   *
-   *
-   * ExternalName services can refer to CNAME DNS records that may live
-   * outside of the cluster and as such are difficult to reason about in
-   * terms of conformance. They also may not be safe to forward to (see
-   * CVE-2021-25740 for more information). Implementations SHOULD NOT
-   * support ExternalName Services.
-   *
-   *
-   * Support: Core (Services with a type other than ExternalName)
-   *
-   *
-   * Support: Implementation-specific (Services with type ExternalName)
-   *
-   * @default Service" when not specified.
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef#kind
-   */
-  readonly kind?: string;
-
-  /**
-   * Name is the name of the referent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef#name
-   */
-  readonly name: string;
-
-  /**
-   * Namespace is the namespace of the backend. When unspecified, the local
-   * namespace is inferred.
-   *
-   *
-   * Note that when a namespace different than the local namespace is specified,
-   * a ReferenceGrant object is required in the referent namespace to allow that
-   * namespace's owner to accept the reference. See the ReferenceGrant
-   * documentation for details.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef#namespace
-   */
-  readonly namespace?: string;
-
-  /**
-   * Port specifies the destination port number to use for this resource.
-   * Port is required when the referent is a Kubernetes Service. In this
-   * case, the port number is the service port number, not the target port.
-   * For other resources, destination port might be derived from the referent
-   * resource or this field.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef#port
-   */
-  readonly port?: number;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef(obj: GrpcRouteV1Alpha2SpecRulesFiltersRequestMirrorBackendRef | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'group': obj.group,
-    'kind': obj.kind,
-    'name': obj.name,
-    'namespace': obj.namespace,
-    'port': obj.port,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierAdd
- */
-export interface GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierAdd {
-  /**
-   * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
-   *
-   * If multiple entries specify equivalent header names, the first entry with
-   * an equivalent name MUST be considered for a match. Subsequent entries
-   * with an equivalent header name MUST be ignored. Due to the
-   * case-insensitivity of header names, "foo" and "Foo" are considered
-   * equivalent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierAdd#name
-   */
-  readonly name: string;
-
-  /**
-   * Value is the value of HTTP Header to be matched.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierAdd#value
-   */
-  readonly value: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierAdd' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierAdd(obj: GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierAdd | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'name': obj.name,
-    'value': obj.value,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierSet
- */
-export interface GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierSet {
-  /**
-   * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
-   *
-   * If multiple entries specify equivalent header names, the first entry with
-   * an equivalent name MUST be considered for a match. Subsequent entries
-   * with an equivalent header name MUST be ignored. Due to the
-   * case-insensitivity of header names, "foo" and "Foo" are considered
-   * equivalent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierSet#name
-   */
-  readonly name: string;
-
-  /**
-   * Value is the value of HTTP Header to be matched.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierSet#value
-   */
-  readonly value: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierSet' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierSet(obj: GrpcRouteV1Alpha2SpecRulesFiltersResponseHeaderModifierSet | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'name': obj.name,
-    'value': obj.value,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * Type specifies how to match against the value of the header.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesMatchesHeadersType
- */
-export enum GrpcRouteV1Alpha2SpecRulesMatchesHeadersType {
-  /** Exact */
-  EXACT = "Exact",
-  /** RegularExpression */
-  REGULAR_EXPRESSION = "RegularExpression",
-}
-
-/**
- * Type specifies how to match against the service and/or method.
- * Support: Core (Exact with service and method specified)
- *
- *
- * Support: Implementation-specific (Exact with method specified but no service specified)
- *
- *
- * Support: Implementation-specific (RegularExpression)
- *
- * @schema GrpcRouteV1Alpha2SpecRulesMatchesMethodType
- */
-export enum GrpcRouteV1Alpha2SpecRulesMatchesMethodType {
-  /** Exact */
-  EXACT = "Exact",
-  /** RegularExpression */
-  REGULAR_EXPRESSION = "RegularExpression",
-}
-
-/**
- * LifetimeType specifies whether the cookie has a permanent or
- * session-based lifetime. A permanent cookie persists until its
- * specified expiry time, defined by the Expires or Max-Age cookie
- * attributes, while a session cookie is deleted when the current
- * session ends.
- *
- *
- * When set to "Permanent", AbsoluteTimeout indicates the
- * cookie's lifetime via the Expires or Max-Age cookie attributes
- * and is required.
- *
- *
- * When set to "Session", AbsoluteTimeout indicates the
- * absolute lifetime of the cookie tracked by the gateway and
- * is optional.
- *
- *
- * Support: Core for "Session" type
- *
- *
- * Support: Extended for "Permanent" type
- *
- * @schema GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfigLifetimeType
- */
-export enum GrpcRouteV1Alpha2SpecRulesSessionPersistenceCookieConfigLifetimeType {
-  /** Permanent */
-  PERMANENT = "Permanent",
-  /** Session */
-  SESSION = "Session",
-}
-
-/**
- * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd {
-  /**
-   * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
-   *
-   * If multiple entries specify equivalent header names, the first entry with
-   * an equivalent name MUST be considered for a match. Subsequent entries
-   * with an equivalent header name MUST be ignored. Due to the
-   * case-insensitivity of header names, "foo" and "Foo" are considered
-   * equivalent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd#name
-   */
-  readonly name: string;
-
-  /**
-   * Value is the value of HTTP Header to be matched.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd#value
-   */
-  readonly value: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierAdd | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'name': obj.name,
-    'value': obj.value,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierSet
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierSet {
-  /**
-   * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
-   *
-   * If multiple entries specify equivalent header names, the first entry with
-   * an equivalent name MUST be considered for a match. Subsequent entries
-   * with an equivalent header name MUST be ignored. Due to the
-   * case-insensitivity of header names, "foo" and "Foo" are considered
-   * equivalent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierSet#name
-   */
-  readonly name: string;
-
-  /**
-   * Value is the value of HTTP Header to be matched.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierSet#value
-   */
-  readonly value: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierSet' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierSet(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestHeaderModifierSet | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'name': obj.name,
-    'value': obj.value,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * BackendRef references a resource where mirrored requests are sent.
- *
- *
- * Mirrored requests must be sent only to a single destination endpoint
- * within this BackendRef, irrespective of how many endpoints are present
- * within this BackendRef.
- *
- *
- * If the referent cannot be found, this BackendRef is invalid and must be
- * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
- * condition on the Route status is set to `status: False` and not configure
- * this backend in the underlying implementation.
- *
- *
- * If there is a cross-namespace reference to an *existing* object
- * that is not allowed by a ReferenceGrant, the controller must ensure the
- * "ResolvedRefs"  condition on the Route is set to `status: False`,
- * with the "RefNotPermitted" reason and not configure this backend in the
- * underlying implementation.
- *
- *
- * In either error case, the Message of the `ResolvedRefs` Condition
- * should be used to provide more detail about the problem.
- *
- *
- * Support: Extended for Kubernetes Service
- *
- *
- * Support: Implementation-specific for any other resource
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef {
-  /**
-   * Group is the group of the referent. For example, "gateway.networking.k8s.io".
-   * When unspecified or empty string, core API group is inferred.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef#group
-   */
-  readonly group?: string;
-
-  /**
-   * Kind is the Kubernetes resource kind of the referent. For example
-   * "Service".
-   *
-   *
-   * Defaults to "Service" when not specified.
-   *
-   *
-   * ExternalName services can refer to CNAME DNS records that may live
-   * outside of the cluster and as such are difficult to reason about in
-   * terms of conformance. They also may not be safe to forward to (see
-   * CVE-2021-25740 for more information). Implementations SHOULD NOT
-   * support ExternalName Services.
-   *
-   *
-   * Support: Core (Services with a type other than ExternalName)
-   *
-   *
-   * Support: Implementation-specific (Services with type ExternalName)
-   *
-   * @default Service" when not specified.
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef#kind
-   */
-  readonly kind?: string;
-
-  /**
-   * Name is the name of the referent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef#name
-   */
-  readonly name: string;
-
-  /**
-   * Namespace is the namespace of the backend. When unspecified, the local
-   * namespace is inferred.
-   *
-   *
-   * Note that when a namespace different than the local namespace is specified,
-   * a ReferenceGrant object is required in the referent namespace to allow that
-   * namespace's owner to accept the reference. See the ReferenceGrant
-   * documentation for details.
-   *
-   *
-   * Support: Core
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef#namespace
-   */
-  readonly namespace?: string;
-
-  /**
-   * Port specifies the destination port number to use for this resource.
-   * Port is required when the referent is a Kubernetes Service. In this
-   * case, the port number is the service port number, not the target port.
-   * For other resources, destination port might be derived from the referent
-   * resource or this field.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef#port
-   */
-  readonly port?: number;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersRequestMirrorBackendRef | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'group': obj.group,
-    'kind': obj.kind,
-    'name': obj.name,
-    'namespace': obj.namespace,
-    'port': obj.port,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierAdd
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierAdd {
-  /**
-   * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
-   *
-   * If multiple entries specify equivalent header names, the first entry with
-   * an equivalent name MUST be considered for a match. Subsequent entries
-   * with an equivalent header name MUST be ignored. Due to the
-   * case-insensitivity of header names, "foo" and "Foo" are considered
-   * equivalent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierAdd#name
-   */
-  readonly name: string;
-
-  /**
-   * Value is the value of HTTP Header to be matched.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierAdd#value
-   */
-  readonly value: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierAdd' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierAdd(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierAdd | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'name': obj.name,
-    'value': obj.value,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
- *
- * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierSet
- */
-export interface GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierSet {
-  /**
-   * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
-   *
-   * If multiple entries specify equivalent header names, the first entry with
-   * an equivalent name MUST be considered for a match. Subsequent entries
-   * with an equivalent header name MUST be ignored. Due to the
-   * case-insensitivity of header names, "foo" and "Foo" are considered
-   * equivalent.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierSet#name
-   */
-  readonly name: string;
-
-  /**
-   * Value is the value of HTTP Header to be matched.
-   *
-   * @schema GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierSet#value
-   */
-  readonly value: string;
-
-}
-
-/**
- * Converts an object of type 'GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierSet' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierSet(obj: GrpcRouteV1Alpha2SpecRulesBackendRefsFiltersResponseHeaderModifierSet | undefined): Record<string, any> | undefined {
   if (obj === undefined) { return undefined; }
   const result = {
     'name': obj.name,
@@ -9795,20 +7069,16 @@ export interface HttpRouteSpec {
    * performing a match and (absent of any applicable header modification
    * configuration) MUST forward this header unmodified to the backend.
    *
-   *
    * Valid values for Hostnames are determined by RFC 1123 definition of a
    * hostname with 2 notable exceptions:
-   *
    *
    * 1. IPs are not allowed.
    * 2. A hostname may be prefixed with a wildcard label (`*.`). The wildcard
    * label must appear by itself as the first label.
    *
-   *
    * If a hostname is specified by both the Listener and HTTPRoute, there
    * must be at least one intersecting hostname for the HTTPRoute to be
    * attached to the Listener. For example:
-   *
    *
    * * A Listener with `test.example.com` as the hostname matches HTTPRoutes
    * that have either not specified any hostnames, or have specified at
@@ -9820,11 +7090,9 @@ export interface HttpRouteSpec {
    * all match. On the other hand, `example.com` and `test.example.net` would
    * not match.
    *
-   *
    * Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
    * as a suffix match. That means that a match for `*.example.com` would match
    * both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
-   *
    *
    * If both the Listener and HTTPRoute have specified hostnames, any
    * HTTPRoute hostnames that do not match the Listener hostname MUST be
@@ -9832,25 +7100,20 @@ export interface HttpRouteSpec {
    * HTTPRoute specified `test.example.com` and `test.example.net`,
    * `test.example.net` must not be considered for a match.
    *
-   *
    * If both the Listener and HTTPRoute have specified hostnames, and none
    * match with the criteria above, then the HTTPRoute is not accepted. The
    * implementation must raise an 'Accepted' Condition with a status of
    * `False` in the corresponding RouteParentStatus.
    *
-   *
    * In the event that multiple HTTPRoutes specify intersecting hostnames (e.g.
    * overlapping wildcard matching and exact matching hostnames), precedence must
    * be given to rules from the HTTPRoute with the largest number of:
    *
-   *
    * * Characters in a matching non-wildcard hostname.
    * * Characters in a matching hostname.
    *
-   *
    * If ties exist across multiple Routes, the matching precedence rules for
    * HTTPRouteMatches takes over.
-   *
    *
    * Support: Core
    *
@@ -9870,20 +7133,15 @@ export interface HttpRouteSpec {
    * create a "producer" route for a Service in a different namespace from the
    * Route.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
    *
-   *
    * This API may be extended in the future to support additional kinds of parent
    * resources.
    *
-   *
    * ParentRefs must be _distinct_. This means either that:
-   *
    *
    * * They select different objects.  If this is the case, then parentRef
    * entries are distinct. In terms of fields, this means that the
@@ -9894,9 +7152,7 @@ export interface HttpRouteSpec {
    * optional fields to different values. If one ParentRef sets a
    * combination of optional fields, all must set the same combination.
    *
-   *
    * Some examples:
-   *
    *
    * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
    * same object must also set `sectionName`.
@@ -9905,13 +7161,11 @@ export interface HttpRouteSpec {
    * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
    * referencing the same object must also set `sectionName` and `port`.
    *
-   *
    * It is possible to separately reference multiple distinct objects that may
    * be collapsed by an implementation. For example, some implementations may
    * choose to merge compatible Gateway Listeners together. If that is the
    * case, the list of routes attached to those resources should also be
    * merged.
-   *
    *
    * Note that for ParentRefs that cross namespace boundaries, there are specific
    * rules. Cross-namespace references are only valid if they are explicitly
@@ -9920,24 +7174,15 @@ export interface HttpRouteSpec {
    * generic way to enable other kinds of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
-   *
-   *
-   *
-   *
-   *
-   *
    *
    * @schema HttpRouteSpec#parentRefs
    */
@@ -9973,14 +7218,11 @@ export function toJson_HttpRouteSpec(obj: HttpRouteSpec | undefined): Record<str
  * a parent of this resource (usually a route). There are two kinds of parent resources
  * with "Core" support:
  *
- *
  * * Gateway (Gateway conformance profile)
  * * Service (Mesh conformance profile, ClusterIP Services only)
  *
- *
  * This API may be extended in the future to support additional kinds of parent
  * resources.
- *
  *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
@@ -9994,7 +7236,6 @@ export interface HttpRouteSpecParentRefs {
    * To set the core API group (such as for a "Service" kind referent),
    * Group must be explicitly set to "" (empty string).
    *
-   *
    * Support: Core
    *
    * @schema HttpRouteSpecParentRefs#group
@@ -10004,13 +7245,10 @@ export interface HttpRouteSpecParentRefs {
   /**
    * Kind is kind of the referent.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
-   *
    *
    * Support for other resources is Implementation-Specific.
    *
@@ -10020,7 +7258,6 @@ export interface HttpRouteSpecParentRefs {
 
   /**
    * Name is the name of the referent.
-   *
    *
    * Support: Core
    *
@@ -10032,7 +7269,6 @@ export interface HttpRouteSpecParentRefs {
    * Namespace is the namespace of the referent. When unspecified, this refers
    * to the local namespace of the Route.
    *
-   *
    * Note that there are specific rules for ParentRefs which cross namespace
    * boundaries. Cross-namespace references are only valid if they are explicitly
    * allowed by something in the namespace they are referring to. For example:
@@ -10040,18 +7276,15 @@ export interface HttpRouteSpecParentRefs {
    * generic way to enable any other kind of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
    *
    *
    * Support: Core
@@ -10064,7 +7297,6 @@ export interface HttpRouteSpecParentRefs {
    * Port is the network port this Route targets. It can be interpreted
    * differently based on the type of parent resource.
    *
-   *
    * When the parent resource is a Gateway, this targets all listeners
    * listening on the specified port that also support this kind of Route(and
    * select this Route). It's not recommended to set `Port` unless the
@@ -10074,17 +7306,14 @@ export interface HttpRouteSpecParentRefs {
    * must match both specified values.
    *
    *
-   *
    * When the parent resource is a Service, this targets a specific port in the
    * Service spec. When both Port (experimental) and SectionName are specified,
    * the name and port of the selected port must match both specified values.
    *
    *
-   *
    * Implementations MAY choose to support other parent resources.
    * Implementations supporting other types of parent resources MUST clearly
    * document how/if Port is interpreted.
-   *
    *
    * For the purpose of status, an attachment is considered successful as
    * long as the parent resource accepts it partially. For example, Gateway
@@ -10093,7 +7322,6 @@ export interface HttpRouteSpecParentRefs {
    * from the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route,
    * the Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Extended
    *
@@ -10105,7 +7333,6 @@ export interface HttpRouteSpecParentRefs {
    * SectionName is the name of a section within the target resource. In the
    * following resources, SectionName is interpreted as the following:
    *
-   *
    * * Gateway: Listener name. When both Port (experimental) and SectionName
    * are specified, the name and port of the selected listener must match
    * both specified values.
@@ -10113,11 +7340,9 @@ export interface HttpRouteSpecParentRefs {
    * are specified, the name and port of the selected listener must match
    * both specified values.
    *
-   *
    * Implementations MAY choose to support attaching Routes to other resources.
    * If that is the case, they MUST clearly document how SectionName is
    * interpreted.
-   *
    *
    * When unspecified (empty string), this will reference the entire resource.
    * For the purpose of status, an attachment is considered successful if at
@@ -10127,7 +7352,6 @@ export interface HttpRouteSpecParentRefs {
    * the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route, the
    * Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Core
    *
@@ -10168,19 +7392,15 @@ export interface HttpRouteSpecRules {
    * BackendRefs defines the backend(s) where matching requests should be
    * sent.
    *
-   *
    * Failure behavior here depends on how many BackendRefs are specified and
    * how many are invalid.
-   *
    *
    * If *all* entries in BackendRefs are invalid, and there are also no filters
    * specified in this route rule, *all* traffic which matches this rule MUST
    * receive a 500 status code.
    *
-   *
    * See the HTTPBackendRef definition for the rules about what makes a single
    * HTTPBackendRef invalid.
-   *
    *
    * When a HTTPBackendRef is invalid, 500 status codes MUST be returned for
    * requests that would have otherwise been routed to an invalid backend. If
@@ -10188,20 +7408,20 @@ export interface HttpRouteSpecRules {
    * requests that would otherwise have been routed to an invalid backend
    * MUST receive a 500 status code.
    *
-   *
    * For example, if two backends are specified with equal weights, and one is
    * invalid, 50 percent of traffic must receive a 500. Implementations may
    * choose how that 50 percent is determined.
    *
+   * When a HTTPBackendRef refers to a Service that has no ready endpoints,
+   * implementations SHOULD return a 503 for requests to that backend instead.
+   * If an implementation chooses to do this, all of the above rules for 500 responses
+   * MUST also apply for responses that return a 503.
    *
    * Support: Core for Kubernetes Service
    *
-   *
    * Support: Extended for Kubernetes ServiceImport
    *
-   *
    * Support: Implementation-specific for any other resource
-   *
    *
    * Support for weight: Core
    *
@@ -10213,16 +7433,13 @@ export interface HttpRouteSpecRules {
    * Filters define the filters that are applied to requests that match
    * this rule.
    *
-   *
    * Wherever possible, implementations SHOULD implement filters in the order
    * they are specified.
    *
-   *
    * Implementations MAY choose to implement this ordering strictly, rejecting
-   * any combination or order of filters that can not be supported. If implementations
+   * any combination or order of filters that cannot be supported. If implementations
    * choose a strict interpretation of filter ordering, they MUST clearly document
    * that behavior.
-   *
    *
    * To reject an invalid combination or order of filters, implementations SHOULD
    * consider the Route Rules with this configuration invalid. If all Route Rules
@@ -10230,28 +7447,23 @@ export interface HttpRouteSpecRules {
    * a portion of Route Rules are invalid, implementations MUST set the
    * "PartiallyInvalid" condition for the Route.
    *
-   *
    * Conformance-levels at this level are defined based on the type of filter:
-   *
    *
    * - ALL core filters MUST be supported by all implementations.
    * - Implementers are encouraged to support extended filters.
    * - Implementation-specific custom filters have no API guarantees across
    * implementations.
    *
-   *
    * Specifying the same filter multiple times is not supported unless explicitly
    * indicated in the filter.
    *
-   *
    * All filters are expected to be compatible with each other except for the
    * URLRewrite and RequestRedirect filters, which may not be combined. If an
-   * implementation can not support other combinations of filters, they must clearly
+   * implementation cannot support other combinations of filters, they must clearly
    * document that limitation. In cases where incompatible or unsupported
    * filters are specified and cause the `Accepted` condition to be set to status
    * `False`, implementations may use the `IncompatibleFilters` reason to specify
    * this configuration error.
-   *
    *
    * Support: Core
    *
@@ -10264,9 +7476,7 @@ export interface HttpRouteSpecRules {
    * HTTP requests. Each match is independent, i.e. this rule will be matched
    * if **any** one of the matches is satisfied.
    *
-   *
    * For example, take the following matches configuration:
-   *
    *
    * ```
    * matches:
@@ -10279,29 +7489,23 @@ export interface HttpRouteSpecRules {
    * value: "/v2/foo"
    * ```
    *
-   *
    * For a request to match against this rule, a request must satisfy
    * EITHER of the two conditions:
-   *
    *
    * - path prefixed with `/foo` AND contains the header `version: v2`
    * - path prefix of `/v2/foo`
    *
-   *
    * See the documentation for HTTPRouteMatch on how to specify multiple
    * match conditions that should be ANDed together.
-   *
    *
    * If no matches are specified, the default is a prefix
    * path match on "/", which has the effect of matching every
    * HTTP request.
    *
-   *
    * Proxy or Load Balancer routing configuration generated from HTTPRoutes
    * MUST prioritize matches based on the following criteria, continuing on
    * ties. Across all rules specified on applicable Routes, precedence must be
    * given to the match having:
-   *
    *
    * * "Exact" path match.
    * * "Prefix" path match with largest number of characters.
@@ -10309,23 +7513,18 @@ export interface HttpRouteSpecRules {
    * * Largest number of header matches.
    * * Largest number of query param matches.
    *
-   *
    * Note: The precedence of RegularExpression path matches are implementation-specific.
-   *
    *
    * If ties still exist across multiple Routes, matching precedence MUST be
    * determined in order of the following criteria, continuing on ties:
-   *
    *
    * * The oldest Route based on creation timestamp.
    * * The Route appearing first in alphabetical order by
    * "{namespace}/{name}".
    *
-   *
    * If ties still exist within an HTTPRoute, matching precedence MUST be granted
    * to the FIRST matching rule (in list order) with a match meeting the above
    * criteria.
-   *
    *
    * When no rules matching a request have been successfully attached to the
    * parent a request is coming from, a HTTP 404 status code MUST be returned.
@@ -10335,14 +7534,28 @@ export interface HttpRouteSpecRules {
   readonly matches?: HttpRouteSpecRulesMatches[];
 
   /**
-   * SessionPersistence defines and configures session persistence
-   * for the route rule.
-   *
+   * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
    *
    * Support: Extended
    *
+   * @schema HttpRouteSpecRules#name
+   */
+  readonly name?: string;
+
+  /**
+   * Retry defines the configuration for when to retry an HTTP request.
    *
+   * Support: Extended
    *
+   * @schema HttpRouteSpecRules#retry
+   */
+  readonly retry?: HttpRouteSpecRulesRetry;
+
+  /**
+   * SessionPersistence defines and configures session persistence
+   * for the route rule.
+   *
+   * Support: Extended
    *
    * @schema HttpRouteSpecRules#sessionPersistence
    */
@@ -10351,11 +7564,7 @@ export interface HttpRouteSpecRules {
   /**
    * Timeouts defines the timeouts that can be configured for an HTTP request.
    *
-   *
    * Support: Extended
-   *
-   *
-   *
    *
    * @schema HttpRouteSpecRules#timeouts
    */
@@ -10373,6 +7582,8 @@ export function toJson_HttpRouteSpecRules(obj: HttpRouteSpecRules | undefined): 
     'backendRefs': obj.backendRefs?.map(y => toJson_HttpRouteSpecRulesBackendRefs(y)),
     'filters': obj.filters?.map(y => toJson_HttpRouteSpecRulesFilters(y)),
     'matches': obj.matches?.map(y => toJson_HttpRouteSpecRulesMatches(y)),
+    'name': obj.name,
+    'retry': toJson_HttpRouteSpecRulesRetry(obj.retry),
     'sessionPersistence': toJson_HttpRouteSpecRulesSessionPersistence(obj.sessionPersistence),
     'timeouts': toJson_HttpRouteSpecRulesTimeouts(obj.timeouts),
   };
@@ -10384,35 +7595,25 @@ export function toJson_HttpRouteSpecRules(obj: HttpRouteSpecRules | undefined): 
 /**
  * HTTPBackendRef defines how a HTTPRoute forwards a HTTP request.
  *
- *
  * Note that when a namespace different than the local namespace is specified, a
  * ReferenceGrant object is required in the referent namespace to allow that
  * namespace's owner to accept the reference. See the ReferenceGrant
  * documentation for details.
  *
  *
- * <gateway:experimental:description>
- *
- *
  * When the BackendRef points to a Kubernetes Service, implementations SHOULD
  * honor the appProtocol field if it is set for the target Service Port.
  *
- *
  * Implementations supporting appProtocol SHOULD recognize the Kubernetes
  * Standard Application Protocols defined in KEP-3726.
- *
  *
  * If a Service appProtocol isn't specified, an implementation MAY infer the
  * backend protocol through its own means. Implementations MAY infer the
  * protocol from the Route type referring to the backend Service.
  *
- *
  * If a Route is not able to send traffic to the backend using the specified
  * protocol then the backend is considered invalid. Implementations MUST set the
  * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
- *
- *
- * </gateway:experimental:description>
  *
  * @schema HttpRouteSpecRulesBackendRefs
  */
@@ -10420,7 +7621,6 @@ export interface HttpRouteSpecRulesBackendRefs {
   /**
    * Filters defined at this level should be executed if and only if the
    * request is being forwarded to the backend defined here.
-   *
    *
    * Support: Implementation-specific (For broader support of filters, use the
    * Filters field in HTTPRouteRule.)
@@ -10441,9 +7641,7 @@ export interface HttpRouteSpecRulesBackendRefs {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -10451,9 +7649,7 @@ export interface HttpRouteSpecRulesBackendRefs {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -10473,12 +7669,10 @@ export interface HttpRouteSpecRulesBackendRefs {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -10505,12 +7699,10 @@ export interface HttpRouteSpecRulesBackendRefs {
    * implementation supports. Weight is not a percentage and the sum of
    * weights does not need to equal 100.
    *
-   *
    * If only one backend is specified and it has a weight greater than 0, 100%
    * of the traffic is forwarded to that backend. If weight is set to 0, no
    * traffic should be forwarded for this entry. If unspecified, weight
    * defaults to 1.
-   *
    *
    * Support for this field varies based on the context where used.
    *
@@ -10552,14 +7744,22 @@ export function toJson_HttpRouteSpecRulesBackendRefs(obj: HttpRouteSpecRulesBack
  */
 export interface HttpRouteSpecRulesFilters {
   /**
+   * CORS defines a schema for a filter that responds to the
+   * cross-origin request based on HTTP response header.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesFilters#cors
+   */
+  readonly cors?: HttpRouteSpecRulesFiltersCors;
+
+  /**
    * ExtensionRef is an optional, implementation-specific extension to the
    * "filter" behavior.  For example, resource "myroutefilter" in group
    * "networking.example.net"). ExtensionRef MUST NOT be used for core and
    * extended filters.
    *
-   *
    * This filter can be used multiple times within the same rule.
-   *
    *
    * Support: Implementation-specific
    *
@@ -10570,7 +7770,6 @@ export interface HttpRouteSpecRulesFilters {
   /**
    * RequestHeaderModifier defines a schema for a filter that modifies request
    * headers.
-   *
    *
    * Support: Core
    *
@@ -10583,11 +7782,9 @@ export interface HttpRouteSpecRulesFilters {
    * Requests are sent to the specified destination, but responses from
    * that destination are ignored.
    *
-   *
    * This filter can be used multiple times within the same rule. Note that
    * not all implementations will be able to support mirroring to multiple
    * backends.
-   *
    *
    * Support: Extended
    *
@@ -10599,7 +7796,6 @@ export interface HttpRouteSpecRulesFilters {
    * RequestRedirect defines a schema for a filter that responds to the
    * request with an HTTP redirection.
    *
-   *
    * Support: Core
    *
    * @schema HttpRouteSpecRulesFilters#requestRedirect
@@ -10609,7 +7805,6 @@ export interface HttpRouteSpecRulesFilters {
   /**
    * ResponseHeaderModifier defines a schema for a filter that modifies response
    * headers.
-   *
    *
    * Support: Extended
    *
@@ -10621,16 +7816,13 @@ export interface HttpRouteSpecRulesFilters {
    * Type identifies the type of filter to apply. As with other API fields,
    * types are classified into three conformance levels:
    *
-   *
    * - Core: Filter types and their corresponding configuration defined by
    * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
    * implementations must support core filters.
    *
-   *
    * - Extended: Filter types and their corresponding configuration defined by
    * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
    * are encouraged to support extended filters.
-   *
    *
    * - Implementation-specific: Filters that are defined and supported by
    * specific vendors.
@@ -10640,19 +7832,15 @@ export interface HttpRouteSpecRulesFilters {
    * is specified using the ExtensionRef field. `Type` should be set to
    * "ExtensionRef" for custom filters.
    *
-   *
    * Implementers are encouraged to define custom implementation types to
    * extend the core API with implementation-specific behavior.
-   *
    *
    * If a reference to a custom filter type cannot be resolved, the filter
    * MUST NOT be skipped. Instead, requests that would have been processed by
    * that filter MUST receive a HTTP error response.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -10664,7 +7852,6 @@ export interface HttpRouteSpecRulesFilters {
 
   /**
    * URLRewrite defines a schema for a filter that modifies a request during forwarding.
-   *
    *
    * Support: Extended
    *
@@ -10681,6 +7868,7 @@ export interface HttpRouteSpecRulesFilters {
 export function toJson_HttpRouteSpecRulesFilters(obj: HttpRouteSpecRulesFilters | undefined): Record<string, any> | undefined {
   if (obj === undefined) { return undefined; }
   const result = {
+    'cors': toJson_HttpRouteSpecRulesFiltersCors(obj.cors),
     'extensionRef': toJson_HttpRouteSpecRulesFiltersExtensionRef(obj.extensionRef),
     'requestHeaderModifier': toJson_HttpRouteSpecRulesFiltersRequestHeaderModifier(obj.requestHeaderModifier),
     'requestMirror': toJson_HttpRouteSpecRulesFiltersRequestMirror(obj.requestMirror),
@@ -10699,21 +7887,17 @@ export function toJson_HttpRouteSpecRulesFilters(obj: HttpRouteSpecRulesFilters 
  * action. Multiple match types are ANDed together, i.e. the match will
  * evaluate to true only if all conditions are satisfied.
  *
- *
  * For example, the match below will match a HTTP request only if its path
  * starts with `/foo` AND it contains the `version: v1` header:
  *
- *
  * ```
  * match:
- *
  *
  * path:
  * value: "/foo"
  * headers:
  * - name: "version"
  * value "v1"
- *
  *
  * ```
  *
@@ -10734,7 +7918,6 @@ export interface HttpRouteSpecRulesMatches {
    * When specified, this route will be matched only if the request has the
    * specified method.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteSpecRulesMatches#method
@@ -10753,7 +7936,6 @@ export interface HttpRouteSpecRulesMatches {
    * QueryParams specifies HTTP query parameter matchers. Multiple match
    * values are ANDed together, meaning, a request must match all the
    * specified query parameters to select the route.
-   *
    *
    * Support: Extended
    *
@@ -10781,14 +7963,104 @@ export function toJson_HttpRouteSpecRulesMatches(obj: HttpRouteSpecRulesMatches 
 /* eslint-enable max-len, quote-props */
 
 /**
- * SessionPersistence defines and configures session persistence
- * for the route rule.
- *
+ * Retry defines the configuration for when to retry an HTTP request.
  *
  * Support: Extended
  *
+ * @schema HttpRouteSpecRulesRetry
+ */
+export interface HttpRouteSpecRulesRetry {
+  /**
+   * Attempts specifies the maximum number of times an individual request
+   * from the gateway to a backend should be retried.
+   *
+   * If the maximum number of retries has been attempted without a successful
+   * response from the backend, the Gateway MUST return an error.
+   *
+   * When this field is unspecified, the number of times to attempt to retry
+   * a backend request is implementation-specific.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesRetry#attempts
+   */
+  readonly attempts?: number;
+
+  /**
+   * Backoff specifies the minimum duration a Gateway should wait between
+   * retry attempts and is represented in Gateway API Duration formatting.
+   *
+   * For example, setting the `rules[].retry.backoff` field to the value
+   * `100ms` will cause a backend request to first be retried approximately
+   * 100 milliseconds after timing out or receiving a response code configured
+   * to be retryable.
+   *
+   * An implementation MAY use an exponential or alternative backoff strategy
+   * for subsequent retry attempts, MAY cap the maximum backoff duration to
+   * some amount greater than the specified minimum, and MAY add arbitrary
+   * jitter to stagger requests, as long as unsuccessful backend requests are
+   * not retried before the configured minimum duration.
+   *
+   * If a Request timeout (`rules[].timeouts.request`) is configured on the
+   * route, the entire duration of the initial request and any retry attempts
+   * MUST not exceed the Request timeout duration. If any retry attempts are
+   * still in progress when the Request timeout duration has been reached,
+   * these SHOULD be canceled if possible and the Gateway MUST immediately
+   * return a timeout error.
+   *
+   * If a BackendRequest timeout (`rules[].timeouts.backendRequest`) is
+   * configured on the route, any retry attempts which reach the configured
+   * BackendRequest timeout duration without a response SHOULD be canceled if
+   * possible and the Gateway should wait for at least the specified backoff
+   * duration before attempting to retry the backend request again.
+   *
+   * If a BackendRequest timeout is _not_ configured on the route, retry
+   * attempts MAY time out after an implementation default duration, or MAY
+   * remain pending until a configured Request timeout or implementation
+   * default duration for total request time is reached.
+   *
+   * When this field is unspecified, the time to wait between retry attempts
+   * is implementation-specific.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesRetry#backoff
+   */
+  readonly backoff?: string;
+
+  /**
+   * Codes defines the HTTP response status codes for which a backend request
+   * should be retried.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesRetry#codes
+   */
+  readonly codes?: number[];
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteSpecRulesRetry' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteSpecRulesRetry(obj: HttpRouteSpecRulesRetry | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'attempts': obj.attempts,
+    'backoff': obj.backoff,
+    'codes': obj.codes?.map(y => y),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * SessionPersistence defines and configures session persistence
+ * for the route rule.
  *
- *
+ * Support: Extended
  *
  * @schema HttpRouteSpecRulesSessionPersistence
  */
@@ -10797,7 +8069,6 @@ export interface HttpRouteSpecRulesSessionPersistence {
    * AbsoluteTimeout defines the absolute timeout of the persistent
    * session. Once the AbsoluteTimeout duration has elapsed, the
    * session becomes invalid.
-   *
    *
    * Support: Extended
    *
@@ -10809,7 +8080,6 @@ export interface HttpRouteSpecRulesSessionPersistence {
    * CookieConfig provides configuration settings that are specific
    * to cookie-based session persistence.
    *
-   *
    * Support: Core
    *
    * @schema HttpRouteSpecRulesSessionPersistence#cookieConfig
@@ -10820,7 +8090,6 @@ export interface HttpRouteSpecRulesSessionPersistence {
    * IdleTimeout defines the idle timeout of the persistent session.
    * Once the session has been idle for more than the specified
    * IdleTimeout duration, the session becomes invalid.
-   *
    *
    * Support: Extended
    *
@@ -10834,7 +8103,6 @@ export interface HttpRouteSpecRulesSessionPersistence {
    * should avoid reusing session names to prevent unintended
    * consequences, such as rejection or unpredictable behavior.
    *
-   *
    * Support: Implementation-specific
    *
    * @schema HttpRouteSpecRulesSessionPersistence#sessionName
@@ -10846,9 +8114,7 @@ export interface HttpRouteSpecRulesSessionPersistence {
    * the use a header or cookie. Defaults to cookie based session
    * persistence.
    *
-   *
    * Support: Core for "Cookie" type
-   *
    *
    * Support: Extended for "Header" type
    *
@@ -10880,11 +8146,7 @@ export function toJson_HttpRouteSpecRulesSessionPersistence(obj: HttpRouteSpecRu
 /**
  * Timeouts defines the timeouts that can be configured for an HTTP request.
  *
- *
  * Support: Extended
- *
- *
- *
  *
  * @schema HttpRouteSpecRulesTimeouts
  */
@@ -10894,21 +8156,19 @@ export interface HttpRouteSpecRulesTimeouts {
    * to a backend. This covers the time from when the request first starts being
    * sent from the gateway to when the full response has been received from the backend.
    *
-   *
    * Setting a timeout to the zero duration (e.g. "0s") SHOULD disable the timeout
    * completely. Implementations that cannot completely disable the timeout MUST
    * instead interpret the zero duration as the longest possible value to which
    * the timeout can be set.
    *
-   *
    * An entire client HTTP transaction with a gateway, covered by the Request timeout,
    * may result in more than one call from the gateway to the destination backend,
    * for example, if automatic retries are supported.
    *
-   *
-   * Because the Request timeout encompasses the BackendRequest timeout, the value of
-   * BackendRequest must be <= the value of Request timeout.
-   *
+   * The value of BackendRequest must be a Gateway API Duration string as defined by
+   * GEP-2257.  When this field is unspecified, its behavior is implementation-specific;
+   * when specified, the value of BackendRequest must be no more than the value of the
+   * Request timeout (since the Request timeout encompasses the BackendRequest timeout).
    *
    * Support: Extended
    *
@@ -10921,26 +8181,22 @@ export interface HttpRouteSpecRulesTimeouts {
    * If the gateway has not been able to respond before this deadline is met, the gateway
    * MUST return a timeout error.
    *
-   *
    * For example, setting the `rules.timeouts.request` field to the value `10s` in an
    * `HTTPRoute` will cause a timeout if a client request is taking longer than 10 seconds
    * to complete.
-   *
    *
    * Setting a timeout to the zero duration (e.g. "0s") SHOULD disable the timeout
    * completely. Implementations that cannot completely disable the timeout MUST
    * instead interpret the zero duration as the longest possible value to which
    * the timeout can be set.
    *
-   *
    * This timeout is intended to cover as close to the whole request-response transaction
    * as possible although an implementation MAY choose to start the timeout after the entire
    * request stream has been received instead of immediately after the transaction is
    * initiated by the client.
    *
-   *
-   * When this field is unspecified, request timeout behavior is implementation-specific.
-   *
+   * The value of Request is a Gateway API Duration string as defined by GEP-2257. When this
+   * field is unspecified, request timeout behavior is implementation-specific.
    *
    * Support: Extended
    *
@@ -10977,14 +8233,22 @@ export function toJson_HttpRouteSpecRulesTimeouts(obj: HttpRouteSpecRulesTimeout
  */
 export interface HttpRouteSpecRulesBackendRefsFilters {
   /**
+   * CORS defines a schema for a filter that responds to the
+   * cross-origin request based on HTTP response header.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesBackendRefsFilters#cors
+   */
+  readonly cors?: HttpRouteSpecRulesBackendRefsFiltersCors;
+
+  /**
    * ExtensionRef is an optional, implementation-specific extension to the
    * "filter" behavior.  For example, resource "myroutefilter" in group
    * "networking.example.net"). ExtensionRef MUST NOT be used for core and
    * extended filters.
    *
-   *
    * This filter can be used multiple times within the same rule.
-   *
    *
    * Support: Implementation-specific
    *
@@ -10995,7 +8259,6 @@ export interface HttpRouteSpecRulesBackendRefsFilters {
   /**
    * RequestHeaderModifier defines a schema for a filter that modifies request
    * headers.
-   *
    *
    * Support: Core
    *
@@ -11008,11 +8271,9 @@ export interface HttpRouteSpecRulesBackendRefsFilters {
    * Requests are sent to the specified destination, but responses from
    * that destination are ignored.
    *
-   *
    * This filter can be used multiple times within the same rule. Note that
    * not all implementations will be able to support mirroring to multiple
    * backends.
-   *
    *
    * Support: Extended
    *
@@ -11024,7 +8285,6 @@ export interface HttpRouteSpecRulesBackendRefsFilters {
    * RequestRedirect defines a schema for a filter that responds to the
    * request with an HTTP redirection.
    *
-   *
    * Support: Core
    *
    * @schema HttpRouteSpecRulesBackendRefsFilters#requestRedirect
@@ -11034,7 +8294,6 @@ export interface HttpRouteSpecRulesBackendRefsFilters {
   /**
    * ResponseHeaderModifier defines a schema for a filter that modifies response
    * headers.
-   *
    *
    * Support: Extended
    *
@@ -11046,16 +8305,13 @@ export interface HttpRouteSpecRulesBackendRefsFilters {
    * Type identifies the type of filter to apply. As with other API fields,
    * types are classified into three conformance levels:
    *
-   *
    * - Core: Filter types and their corresponding configuration defined by
    * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
    * implementations must support core filters.
    *
-   *
    * - Extended: Filter types and their corresponding configuration defined by
    * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
    * are encouraged to support extended filters.
-   *
    *
    * - Implementation-specific: Filters that are defined and supported by
    * specific vendors.
@@ -11065,19 +8321,15 @@ export interface HttpRouteSpecRulesBackendRefsFilters {
    * is specified using the ExtensionRef field. `Type` should be set to
    * "ExtensionRef" for custom filters.
    *
-   *
    * Implementers are encouraged to define custom implementation types to
    * extend the core API with implementation-specific behavior.
-   *
    *
    * If a reference to a custom filter type cannot be resolved, the filter
    * MUST NOT be skipped. Instead, requests that would have been processed by
    * that filter MUST receive a HTTP error response.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -11089,7 +8341,6 @@ export interface HttpRouteSpecRulesBackendRefsFilters {
 
   /**
    * URLRewrite defines a schema for a filter that modifies a request during forwarding.
-   *
    *
    * Support: Extended
    *
@@ -11106,6 +8357,7 @@ export interface HttpRouteSpecRulesBackendRefsFilters {
 export function toJson_HttpRouteSpecRulesBackendRefsFilters(obj: HttpRouteSpecRulesBackendRefsFilters | undefined): Record<string, any> | undefined {
   if (obj === undefined) { return undefined; }
   const result = {
+    'cors': toJson_HttpRouteSpecRulesBackendRefsFiltersCors(obj.cors),
     'extensionRef': toJson_HttpRouteSpecRulesBackendRefsFiltersExtensionRef(obj.extensionRef),
     'requestHeaderModifier': toJson_HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifier(obj.requestHeaderModifier),
     'requestMirror': toJson_HttpRouteSpecRulesBackendRefsFiltersRequestMirror(obj.requestMirror),
@@ -11120,14 +8372,258 @@ export function toJson_HttpRouteSpecRulesBackendRefsFilters(obj: HttpRouteSpecRu
 /* eslint-enable max-len, quote-props */
 
 /**
+ * CORS defines a schema for a filter that responds to the
+ * cross-origin request based on HTTP response header.
+ *
+ * Support: Extended
+ *
+ * @schema HttpRouteSpecRulesFiltersCors
+ */
+export interface HttpRouteSpecRulesFiltersCors {
+  /**
+   * AllowCredentials indicates whether the actual cross-origin request allows
+   * to include credentials.
+   *
+   * The only valid value for the `Access-Control-Allow-Credentials` response
+   * header is true (case-sensitive).
+   *
+   * If the credentials are not allowed in cross-origin requests, the gateway
+   * will omit the header `Access-Control-Allow-Credentials` entirely rather
+   * than setting its value to false.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesFiltersCors#allowCredentials
+   */
+  readonly allowCredentials?: boolean;
+
+  /**
+   * AllowHeaders indicates which HTTP request headers are supported for
+   * accessing the requested resource.
+   *
+   * Header names are not case sensitive.
+   *
+   * Multiple header names in the value of the `Access-Control-Allow-Headers`
+   * response header are separated by a comma (",").
+   *
+   * When the `AllowHeaders` field is configured with one or more headers, the
+   * gateway must return the `Access-Control-Allow-Headers` response header
+   * which value is present in the `AllowHeaders` field.
+   *
+   * If any header name in the `Access-Control-Request-Headers` request header
+   * is not included in the list of header names specified by the response
+   * header `Access-Control-Allow-Headers`, it will present an error on the
+   * client side.
+   *
+   * If any header name in the `Access-Control-Allow-Headers` response header
+   * does not recognize by the client, it will also occur an error on the
+   * client side.
+   *
+   * A wildcard indicates that the requests with all HTTP headers are allowed.
+   * The `Access-Control-Allow-Headers` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowHeaders` field
+   * specified with the `*` wildcard, the gateway must specify one or more
+   * HTTP headers in the value of the `Access-Control-Allow-Headers` response
+   * header. The value of the header `Access-Control-Allow-Headers` is same as
+   * the `Access-Control-Request-Headers` header provided by the client. If
+   * the header `Access-Control-Request-Headers` is not included in the
+   * request, the gateway will omit the `Access-Control-Allow-Headers`
+   * response header, instead of specifying the `*` wildcard. A Gateway
+   * implementation may choose to add implementation-specific default headers.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesFiltersCors#allowHeaders
+   */
+  readonly allowHeaders?: string[];
+
+  /**
+   * AllowMethods indicates which HTTP methods are supported for accessing the
+   * requested resource.
+   *
+   * Valid values are any method defined by RFC9110, along with the special
+   * value `*`, which represents all HTTP methods are allowed.
+   *
+   * Method names are case sensitive, so these values are also case-sensitive.
+   * (See https://www.rfc-editor.org/rfc/rfc2616#section-5.1.1)
+   *
+   * Multiple method names in the value of the `Access-Control-Allow-Methods`
+   * response header are separated by a comma (",").
+   *
+   * A CORS-safelisted method is a method that is `GET`, `HEAD`, or `POST`.
+   * (See https://fetch.spec.whatwg.org/#cors-safelisted-method) The
+   * CORS-safelisted methods are always allowed, regardless of whether they
+   * are specified in the `AllowMethods` field.
+   *
+   * When the `AllowMethods` field is configured with one or more methods, the
+   * gateway must return the `Access-Control-Allow-Methods` response header
+   * which value is present in the `AllowMethods` field.
+   *
+   * If the HTTP method of the `Access-Control-Request-Method` request header
+   * is not included in the list of methods specified by the response header
+   * `Access-Control-Allow-Methods`, it will present an error on the client
+   * side.
+   *
+   * The `Access-Control-Allow-Methods` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowMethods` field
+   * specified with the `*` wildcard, the gateway must specify one HTTP method
+   * in the value of the Access-Control-Allow-Methods response header. The
+   * value of the header `Access-Control-Allow-Methods` is same as the
+   * `Access-Control-Request-Method` header provided by the client. If the
+   * header `Access-Control-Request-Method` is not included in the request,
+   * the gateway will omit the `Access-Control-Allow-Methods` response header,
+   * instead of specifying the `*` wildcard. A Gateway implementation may
+   * choose to add implementation-specific default methods.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesFiltersCors#allowMethods
+   */
+  readonly allowMethods?: HttpRouteSpecRulesFiltersCorsAllowMethods[];
+
+  /**
+   * AllowOrigins indicates whether the response can be shared with requested
+   * resource from the given `Origin`.
+   *
+   * The `Origin` consists of a scheme and a host, with an optional port, and
+   * takes the form `<scheme>://<host>(:<port>)`.
+   *
+   * Valid values for scheme are: `http` and `https`.
+   *
+   * Valid values for port are any integer between 1 and 65535 (the list of
+   * available TCP/UDP ports). Note that, if not included, port `80` is
+   * assumed for `http` scheme origins, and port `443` is assumed for `https`
+   * origins. This may affect origin matching.
+   *
+   * The host part of the origin may contain the wildcard character `*`. These
+   * wildcard characters behave as follows:
+   *
+   * * `*` is a greedy match to the _left_, including any number of
+   * DNS labels to the left of its position. This also means that
+   * `*` will include any number of period `.` characters to the
+   * left of its position.
+   * * A wildcard by itself matches all hosts.
+   *
+   * An origin value that includes _only_ the `*` character indicates requests
+   * from all `Origin`s are allowed.
+   *
+   * When the `AllowOrigins` field is configured with multiple origins, it
+   * means the server supports clients from multiple origins. If the request
+   * `Origin` matches the configured allowed origins, the gateway must return
+   * the given `Origin` and sets value of the header
+   * `Access-Control-Allow-Origin` same as the `Origin` header provided by the
+   * client.
+   *
+   * The status code of a successful response to a "preflight" request is
+   * always an OK status (i.e., 204 or 200).
+   *
+   * If the request `Origin` does not match the configured allowed origins,
+   * the gateway returns 204/200 response but doesn't set the relevant
+   * cross-origin response headers. Alternatively, the gateway responds with
+   * 403 status to the "preflight" request is denied, coupled with omitting
+   * the CORS headers. The cross-origin request fails on the client side.
+   * Therefore, the client doesn't attempt the actual cross-origin request.
+   *
+   * The `Access-Control-Allow-Origin` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowOrigins` field
+   * specified with the `*` wildcard, the gateway must return a single origin
+   * in the value of the `Access-Control-Allow-Origin` response header,
+   * instead of specifying the `*` wildcard. The value of the header
+   * `Access-Control-Allow-Origin` is same as the `Origin` header provided by
+   * the client.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesFiltersCors#allowOrigins
+   */
+  readonly allowOrigins?: string[];
+
+  /**
+   * ExposeHeaders indicates which HTTP response headers can be exposed
+   * to client-side scripts in response to a cross-origin request.
+   *
+   * A CORS-safelisted response header is an HTTP header in a CORS response
+   * that it is considered safe to expose to the client scripts.
+   * The CORS-safelisted response headers include the following headers:
+   * `Cache-Control`
+   * `Content-Language`
+   * `Content-Length`
+   * `Content-Type`
+   * `Expires`
+   * `Last-Modified`
+   * `Pragma`
+   * (See https://fetch.spec.whatwg.org/#cors-safelisted-response-header-name)
+   * The CORS-safelisted response headers are exposed to client by default.
+   *
+   * When an HTTP header name is specified using the `ExposeHeaders` field,
+   * this additional header will be exposed as part of the response to the
+   * client.
+   *
+   * Header names are not case sensitive.
+   *
+   * Multiple header names in the value of the `Access-Control-Expose-Headers`
+   * response header are separated by a comma (",").
+   *
+   * A wildcard indicates that the responses with all HTTP headers are exposed
+   * to clients. The `Access-Control-Expose-Headers` response header can only
+   * use `*` wildcard as value when the `AllowCredentials` field is
+   * unspecified.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesFiltersCors#exposeHeaders
+   */
+  readonly exposeHeaders?: string[];
+
+  /**
+   * MaxAge indicates the duration (in seconds) for the client to cache the
+   * results of a "preflight" request.
+   *
+   * The information provided by the `Access-Control-Allow-Methods` and
+   * `Access-Control-Allow-Headers` response headers can be cached by the
+   * client until the time specified by `Access-Control-Max-Age` elapses.
+   *
+   * The default value of `Access-Control-Max-Age` response header is 5
+   * (seconds).
+   *
+   * @schema HttpRouteSpecRulesFiltersCors#maxAge
+   */
+  readonly maxAge?: number;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteSpecRulesFiltersCors' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteSpecRulesFiltersCors(obj: HttpRouteSpecRulesFiltersCors | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'allowCredentials': obj.allowCredentials,
+    'allowHeaders': obj.allowHeaders?.map(y => y),
+    'allowMethods': obj.allowMethods?.map(y => y),
+    'allowOrigins': obj.allowOrigins?.map(y => y),
+    'exposeHeaders': obj.exposeHeaders?.map(y => y),
+    'maxAge': obj.maxAge,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * ExtensionRef is an optional, implementation-specific extension to the
  * "filter" behavior.  For example, resource "myroutefilter" in group
  * "networking.example.net"). ExtensionRef MUST NOT be used for core and
  * extended filters.
  *
- *
  * This filter can be used multiple times within the same rule.
- *
  *
  * Support: Implementation-specific
  *
@@ -11178,7 +8674,6 @@ export function toJson_HttpRouteSpecRulesFiltersExtensionRef(obj: HttpRouteSpecR
  * RequestHeaderModifier defines a schema for a filter that modifies request
  * headers.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteSpecRulesFiltersRequestHeaderModifier
@@ -11189,17 +8684,14 @@ export interface HttpRouteSpecRulesFiltersRequestHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -11215,17 +8707,14 @@ export interface HttpRouteSpecRulesFiltersRequestHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -11239,17 +8728,14 @@ export interface HttpRouteSpecRulesFiltersRequestHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -11282,11 +8768,9 @@ export function toJson_HttpRouteSpecRulesFiltersRequestHeaderModifier(obj: HttpR
  * Requests are sent to the specified destination, but responses from
  * that destination are ignored.
  *
- *
  * This filter can be used multiple times within the same rule. Note that
  * not all implementations will be able to support mirroring to multiple
  * backends.
- *
  *
  * Support: Extended
  *
@@ -11296,17 +8780,14 @@ export interface HttpRouteSpecRulesFiltersRequestMirror {
   /**
    * BackendRef references a resource where mirrored requests are sent.
    *
-   *
    * Mirrored requests must be sent only to a single destination endpoint
    * within this BackendRef, irrespective of how many endpoints are present
    * within this BackendRef.
-   *
    *
    * If the referent cannot be found, this BackendRef is invalid and must be
    * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
    * condition on the Route status is set to `status: False` and not configure
    * this backend in the underlying implementation.
-   *
    *
    * If there is a cross-namespace reference to an *existing* object
    * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -11314,19 +8795,39 @@ export interface HttpRouteSpecRulesFiltersRequestMirror {
    * with the "RefNotPermitted" reason and not configure this backend in the
    * underlying implementation.
    *
-   *
    * In either error case, the Message of the `ResolvedRefs` Condition
    * should be used to provide more detail about the problem.
    *
-   *
    * Support: Extended for Kubernetes Service
-   *
    *
    * Support: Implementation-specific for any other resource
    *
    * @schema HttpRouteSpecRulesFiltersRequestMirror#backendRef
    */
   readonly backendRef: HttpRouteSpecRulesFiltersRequestMirrorBackendRef;
+
+  /**
+   * Fraction represents the fraction of requests that should be
+   * mirrored to BackendRef.
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema HttpRouteSpecRulesFiltersRequestMirror#fraction
+   */
+  readonly fraction?: HttpRouteSpecRulesFiltersRequestMirrorFraction;
+
+  /**
+   * Percent represents the percentage of requests that should be
+   * mirrored to BackendRef. Its minimum value is 0 (indicating 0% of
+   * requests) and its maximum value is 100 (indicating 100% of requests).
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema HttpRouteSpecRulesFiltersRequestMirror#percent
+   */
+  readonly percent?: number;
 
 }
 
@@ -11338,6 +8839,8 @@ export function toJson_HttpRouteSpecRulesFiltersRequestMirror(obj: HttpRouteSpec
   if (obj === undefined) { return undefined; }
   const result = {
     'backendRef': toJson_HttpRouteSpecRulesFiltersRequestMirrorBackendRef(obj.backendRef),
+    'fraction': toJson_HttpRouteSpecRulesFiltersRequestMirrorFraction(obj.fraction),
+    'percent': obj.percent,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -11348,7 +8851,6 @@ export function toJson_HttpRouteSpecRulesFiltersRequestMirror(obj: HttpRouteSpec
  * RequestRedirect defines a schema for a filter that responds to the
  * request with an HTTP redirection.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteSpecRulesFiltersRequestRedirect
@@ -11358,7 +8860,6 @@ export interface HttpRouteSpecRulesFiltersRequestRedirect {
    * Hostname is the hostname to be used in the value of the `Location`
    * header in the response.
    * When empty, the hostname in the `Host` header of the request is used.
-   *
    *
    * Support: Core
    *
@@ -11371,7 +8872,6 @@ export interface HttpRouteSpecRulesFiltersRequestRedirect {
    * The modified path is then used to construct the `Location` header. When
    * empty, the request path is used as-is.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteSpecRulesFiltersRequestRedirect#path
@@ -11382,10 +8882,8 @@ export interface HttpRouteSpecRulesFiltersRequestRedirect {
    * Port is the port to be used in the value of the `Location`
    * header in the response.
    *
-   *
    * If no port is specified, the redirect port MUST be derived using the
    * following rules:
-   *
    *
    * * If redirect scheme is not-empty, the redirect port MUST be the well-known
    * port associated with the redirect scheme. Specifically "http" to port 80
@@ -11394,16 +8892,13 @@ export interface HttpRouteSpecRulesFiltersRequestRedirect {
    * * If redirect scheme is empty, the redirect port MUST be the Gateway
    * Listener port.
    *
-   *
    * Implementations SHOULD NOT add the port number in the 'Location'
    * header in the following cases:
-   *
    *
    * * A Location header that will use HTTP (whether that is determined via
    * the Listener protocol or the Scheme field) _and_ use port 80.
    * * A Location header that will use HTTPS (whether that is determined via
    * the Listener protocol or the Scheme field) _and_ use port 443.
-   *
    *
    * Support: Extended
    *
@@ -11415,19 +8910,15 @@ export interface HttpRouteSpecRulesFiltersRequestRedirect {
    * Scheme is the scheme to be used in the value of the `Location` header in
    * the response. When empty, the scheme of the request is used.
    *
-   *
    * Scheme redirects can affect the port of the redirect, for more information,
    * refer to the documentation for the port field of this filter.
-   *
    *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
    *
-   *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
    * Reason of `UnsupportedValue`.
-   *
    *
    * Support: Extended
    *
@@ -11438,15 +8929,12 @@ export interface HttpRouteSpecRulesFiltersRequestRedirect {
   /**
    * StatusCode is the HTTP status code to be used in response.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
    * Reason of `UnsupportedValue`.
-   *
    *
    * Support: Core
    *
@@ -11478,7 +8966,6 @@ export function toJson_HttpRouteSpecRulesFiltersRequestRedirect(obj: HttpRouteSp
  * ResponseHeaderModifier defines a schema for a filter that modifies response
  * headers.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteSpecRulesFiltersResponseHeaderModifier
@@ -11489,17 +8976,14 @@ export interface HttpRouteSpecRulesFiltersResponseHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -11515,17 +8999,14 @@ export interface HttpRouteSpecRulesFiltersResponseHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -11539,17 +9020,14 @@ export interface HttpRouteSpecRulesFiltersResponseHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -11581,16 +9059,13 @@ export function toJson_HttpRouteSpecRulesFiltersResponseHeaderModifier(obj: Http
  * Type identifies the type of filter to apply. As with other API fields,
  * types are classified into three conformance levels:
  *
- *
  * - Core: Filter types and their corresponding configuration defined by
  * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
  * implementations must support core filters.
  *
- *
  * - Extended: Filter types and their corresponding configuration defined by
  * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
  * are encouraged to support extended filters.
- *
  *
  * - Implementation-specific: Filters that are defined and supported by
  * specific vendors.
@@ -11600,19 +9075,15 @@ export function toJson_HttpRouteSpecRulesFiltersResponseHeaderModifier(obj: Http
  * is specified using the ExtensionRef field. `Type` should be set to
  * "ExtensionRef" for custom filters.
  *
- *
  * Implementers are encouraged to define custom implementation types to
  * extend the core API with implementation-specific behavior.
- *
  *
  * If a reference to a custom filter type cannot be resolved, the filter
  * MUST NOT be skipped. Instead, requests that would have been processed by
  * that filter MUST receive a HTTP error response.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -11633,11 +9104,12 @@ export enum HttpRouteSpecRulesFiltersType {
   URL_REWRITE = "URLRewrite",
   /** ExtensionRef */
   EXTENSION_REF = "ExtensionRef",
+  /** CORS */
+  CORS = "CORS",
 }
 
 /**
  * URLRewrite defines a schema for a filter that modifies a request during forwarding.
- *
  *
  * Support: Extended
  *
@@ -11648,7 +9120,6 @@ export interface HttpRouteSpecRulesFiltersUrlRewrite {
    * Hostname is the value to be used to replace the Host header value during
    * forwarding.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteSpecRulesFiltersUrlRewrite#hostname
@@ -11657,7 +9128,6 @@ export interface HttpRouteSpecRulesFiltersUrlRewrite {
 
   /**
    * Path defines a path rewrite.
-   *
    *
    * Support: Extended
    *
@@ -11691,15 +9161,13 @@ export function toJson_HttpRouteSpecRulesFiltersUrlRewrite(obj: HttpRouteSpecRul
 export interface HttpRouteSpecRulesMatchesHeaders {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, only the first
    * entry with an equivalent name MUST be considered for a match. Subsequent
    * entries with an equivalent header name MUST be ignored. Due to the
    * case-insensitivity of header names, "foo" and "Foo" are considered
    * equivalent.
-   *
    *
    * When a header is repeated in an HTTP request, it is
    * implementation-specific behavior as to how this is represented.
@@ -11714,12 +9182,9 @@ export interface HttpRouteSpecRulesMatchesHeaders {
   /**
    * Type specifies how to match against the value of the header.
    *
-   *
    * Support: Core (Exact)
    *
-   *
    * Support: Implementation-specific (RegularExpression)
-   *
    *
    * Since RegularExpression HeaderMatchType has implementation-specific
    * conformance, implementations can support POSIX, PCRE or any other dialects
@@ -11760,7 +9225,6 @@ export function toJson_HttpRouteSpecRulesMatchesHeaders(obj: HttpRouteSpecRulesM
  * When specified, this route will be matched only if the request has the
  * specified method.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteSpecRulesMatchesMethod
@@ -11796,9 +9260,7 @@ export interface HttpRouteSpecRulesMatchesPath {
   /**
    * Type specifies how to match against the path Value.
    *
-   *
    * Support: Core (Exact, PathPrefix)
-   *
    *
    * Support: Implementation-specific (RegularExpression)
    *
@@ -11842,11 +9304,9 @@ export interface HttpRouteSpecRulesMatchesQueryParams {
    * exact string match. (See
    * https://tools.ietf.org/html/rfc7230#section-2.7.3).
    *
-   *
    * If multiple entries specify equivalent query param names, only the first
    * entry with an equivalent name MUST be considered for a match. Subsequent
    * entries with an equivalent query param name MUST be ignored.
-   *
    *
    * If a query param is repeated in an HTTP request, the behavior is
    * purposely left undefined, since different data planes have different
@@ -11854,7 +9314,6 @@ export interface HttpRouteSpecRulesMatchesQueryParams {
    * match against the first value of the param if the data plane supports it,
    * as this behavior is expected in other load balancing contexts outside of
    * the Gateway API.
-   *
    *
    * Users SHOULD NOT route traffic based on repeated query params to guard
    * themselves against potential differences in the implementations.
@@ -11866,12 +9325,9 @@ export interface HttpRouteSpecRulesMatchesQueryParams {
   /**
    * Type specifies how to match against the value of the query parameter.
    *
-   *
    * Support: Extended (Exact)
    *
-   *
    * Support: Implementation-specific (RegularExpression)
-   *
    *
    * Since RegularExpression QueryParamMatchType has Implementation-specific
    * conformance, implementations can support POSIX, PCRE or any other
@@ -11911,7 +9367,6 @@ export function toJson_HttpRouteSpecRulesMatchesQueryParams(obj: HttpRouteSpecRu
  * CookieConfig provides configuration settings that are specific
  * to cookie-based session persistence.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteSpecRulesSessionPersistenceCookieConfig
@@ -11924,22 +9379,21 @@ export interface HttpRouteSpecRulesSessionPersistenceCookieConfig {
    * attributes, while a session cookie is deleted when the current
    * session ends.
    *
-   *
    * When set to "Permanent", AbsoluteTimeout indicates the
    * cookie's lifetime via the Expires or Max-Age cookie attributes
    * and is required.
-   *
    *
    * When set to "Session", AbsoluteTimeout indicates the
    * absolute lifetime of the cookie tracked by the gateway and
    * is optional.
    *
+   * Defaults to "Session".
    *
    * Support: Core for "Session" type
    *
-   *
    * Support: Extended for "Permanent" type
    *
+   * @default Session".
    * @schema HttpRouteSpecRulesSessionPersistenceCookieConfig#lifetimeType
    */
   readonly lifetimeType?: HttpRouteSpecRulesSessionPersistenceCookieConfigLifetimeType;
@@ -11965,9 +9419,7 @@ export function toJson_HttpRouteSpecRulesSessionPersistenceCookieConfig(obj: Htt
  * the use a header or cookie. Defaults to cookie based session
  * persistence.
  *
- *
  * Support: Core for "Cookie" type
- *
  *
  * Support: Extended for "Header" type
  *
@@ -11982,14 +9434,258 @@ export enum HttpRouteSpecRulesSessionPersistenceType {
 }
 
 /**
+ * CORS defines a schema for a filter that responds to the
+ * cross-origin request based on HTTP response header.
+ *
+ * Support: Extended
+ *
+ * @schema HttpRouteSpecRulesBackendRefsFiltersCors
+ */
+export interface HttpRouteSpecRulesBackendRefsFiltersCors {
+  /**
+   * AllowCredentials indicates whether the actual cross-origin request allows
+   * to include credentials.
+   *
+   * The only valid value for the `Access-Control-Allow-Credentials` response
+   * header is true (case-sensitive).
+   *
+   * If the credentials are not allowed in cross-origin requests, the gateway
+   * will omit the header `Access-Control-Allow-Credentials` entirely rather
+   * than setting its value to false.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesBackendRefsFiltersCors#allowCredentials
+   */
+  readonly allowCredentials?: boolean;
+
+  /**
+   * AllowHeaders indicates which HTTP request headers are supported for
+   * accessing the requested resource.
+   *
+   * Header names are not case sensitive.
+   *
+   * Multiple header names in the value of the `Access-Control-Allow-Headers`
+   * response header are separated by a comma (",").
+   *
+   * When the `AllowHeaders` field is configured with one or more headers, the
+   * gateway must return the `Access-Control-Allow-Headers` response header
+   * which value is present in the `AllowHeaders` field.
+   *
+   * If any header name in the `Access-Control-Request-Headers` request header
+   * is not included in the list of header names specified by the response
+   * header `Access-Control-Allow-Headers`, it will present an error on the
+   * client side.
+   *
+   * If any header name in the `Access-Control-Allow-Headers` response header
+   * does not recognize by the client, it will also occur an error on the
+   * client side.
+   *
+   * A wildcard indicates that the requests with all HTTP headers are allowed.
+   * The `Access-Control-Allow-Headers` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowHeaders` field
+   * specified with the `*` wildcard, the gateway must specify one or more
+   * HTTP headers in the value of the `Access-Control-Allow-Headers` response
+   * header. The value of the header `Access-Control-Allow-Headers` is same as
+   * the `Access-Control-Request-Headers` header provided by the client. If
+   * the header `Access-Control-Request-Headers` is not included in the
+   * request, the gateway will omit the `Access-Control-Allow-Headers`
+   * response header, instead of specifying the `*` wildcard. A Gateway
+   * implementation may choose to add implementation-specific default headers.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesBackendRefsFiltersCors#allowHeaders
+   */
+  readonly allowHeaders?: string[];
+
+  /**
+   * AllowMethods indicates which HTTP methods are supported for accessing the
+   * requested resource.
+   *
+   * Valid values are any method defined by RFC9110, along with the special
+   * value `*`, which represents all HTTP methods are allowed.
+   *
+   * Method names are case sensitive, so these values are also case-sensitive.
+   * (See https://www.rfc-editor.org/rfc/rfc2616#section-5.1.1)
+   *
+   * Multiple method names in the value of the `Access-Control-Allow-Methods`
+   * response header are separated by a comma (",").
+   *
+   * A CORS-safelisted method is a method that is `GET`, `HEAD`, or `POST`.
+   * (See https://fetch.spec.whatwg.org/#cors-safelisted-method) The
+   * CORS-safelisted methods are always allowed, regardless of whether they
+   * are specified in the `AllowMethods` field.
+   *
+   * When the `AllowMethods` field is configured with one or more methods, the
+   * gateway must return the `Access-Control-Allow-Methods` response header
+   * which value is present in the `AllowMethods` field.
+   *
+   * If the HTTP method of the `Access-Control-Request-Method` request header
+   * is not included in the list of methods specified by the response header
+   * `Access-Control-Allow-Methods`, it will present an error on the client
+   * side.
+   *
+   * The `Access-Control-Allow-Methods` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowMethods` field
+   * specified with the `*` wildcard, the gateway must specify one HTTP method
+   * in the value of the Access-Control-Allow-Methods response header. The
+   * value of the header `Access-Control-Allow-Methods` is same as the
+   * `Access-Control-Request-Method` header provided by the client. If the
+   * header `Access-Control-Request-Method` is not included in the request,
+   * the gateway will omit the `Access-Control-Allow-Methods` response header,
+   * instead of specifying the `*` wildcard. A Gateway implementation may
+   * choose to add implementation-specific default methods.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesBackendRefsFiltersCors#allowMethods
+   */
+  readonly allowMethods?: HttpRouteSpecRulesBackendRefsFiltersCorsAllowMethods[];
+
+  /**
+   * AllowOrigins indicates whether the response can be shared with requested
+   * resource from the given `Origin`.
+   *
+   * The `Origin` consists of a scheme and a host, with an optional port, and
+   * takes the form `<scheme>://<host>(:<port>)`.
+   *
+   * Valid values for scheme are: `http` and `https`.
+   *
+   * Valid values for port are any integer between 1 and 65535 (the list of
+   * available TCP/UDP ports). Note that, if not included, port `80` is
+   * assumed for `http` scheme origins, and port `443` is assumed for `https`
+   * origins. This may affect origin matching.
+   *
+   * The host part of the origin may contain the wildcard character `*`. These
+   * wildcard characters behave as follows:
+   *
+   * * `*` is a greedy match to the _left_, including any number of
+   * DNS labels to the left of its position. This also means that
+   * `*` will include any number of period `.` characters to the
+   * left of its position.
+   * * A wildcard by itself matches all hosts.
+   *
+   * An origin value that includes _only_ the `*` character indicates requests
+   * from all `Origin`s are allowed.
+   *
+   * When the `AllowOrigins` field is configured with multiple origins, it
+   * means the server supports clients from multiple origins. If the request
+   * `Origin` matches the configured allowed origins, the gateway must return
+   * the given `Origin` and sets value of the header
+   * `Access-Control-Allow-Origin` same as the `Origin` header provided by the
+   * client.
+   *
+   * The status code of a successful response to a "preflight" request is
+   * always an OK status (i.e., 204 or 200).
+   *
+   * If the request `Origin` does not match the configured allowed origins,
+   * the gateway returns 204/200 response but doesn't set the relevant
+   * cross-origin response headers. Alternatively, the gateway responds with
+   * 403 status to the "preflight" request is denied, coupled with omitting
+   * the CORS headers. The cross-origin request fails on the client side.
+   * Therefore, the client doesn't attempt the actual cross-origin request.
+   *
+   * The `Access-Control-Allow-Origin` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowOrigins` field
+   * specified with the `*` wildcard, the gateway must return a single origin
+   * in the value of the `Access-Control-Allow-Origin` response header,
+   * instead of specifying the `*` wildcard. The value of the header
+   * `Access-Control-Allow-Origin` is same as the `Origin` header provided by
+   * the client.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesBackendRefsFiltersCors#allowOrigins
+   */
+  readonly allowOrigins?: string[];
+
+  /**
+   * ExposeHeaders indicates which HTTP response headers can be exposed
+   * to client-side scripts in response to a cross-origin request.
+   *
+   * A CORS-safelisted response header is an HTTP header in a CORS response
+   * that it is considered safe to expose to the client scripts.
+   * The CORS-safelisted response headers include the following headers:
+   * `Cache-Control`
+   * `Content-Language`
+   * `Content-Length`
+   * `Content-Type`
+   * `Expires`
+   * `Last-Modified`
+   * `Pragma`
+   * (See https://fetch.spec.whatwg.org/#cors-safelisted-response-header-name)
+   * The CORS-safelisted response headers are exposed to client by default.
+   *
+   * When an HTTP header name is specified using the `ExposeHeaders` field,
+   * this additional header will be exposed as part of the response to the
+   * client.
+   *
+   * Header names are not case sensitive.
+   *
+   * Multiple header names in the value of the `Access-Control-Expose-Headers`
+   * response header are separated by a comma (",").
+   *
+   * A wildcard indicates that the responses with all HTTP headers are exposed
+   * to clients. The `Access-Control-Expose-Headers` response header can only
+   * use `*` wildcard as value when the `AllowCredentials` field is
+   * unspecified.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteSpecRulesBackendRefsFiltersCors#exposeHeaders
+   */
+  readonly exposeHeaders?: string[];
+
+  /**
+   * MaxAge indicates the duration (in seconds) for the client to cache the
+   * results of a "preflight" request.
+   *
+   * The information provided by the `Access-Control-Allow-Methods` and
+   * `Access-Control-Allow-Headers` response headers can be cached by the
+   * client until the time specified by `Access-Control-Max-Age` elapses.
+   *
+   * The default value of `Access-Control-Max-Age` response header is 5
+   * (seconds).
+   *
+   * @schema HttpRouteSpecRulesBackendRefsFiltersCors#maxAge
+   */
+  readonly maxAge?: number;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteSpecRulesBackendRefsFiltersCors' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteSpecRulesBackendRefsFiltersCors(obj: HttpRouteSpecRulesBackendRefsFiltersCors | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'allowCredentials': obj.allowCredentials,
+    'allowHeaders': obj.allowHeaders?.map(y => y),
+    'allowMethods': obj.allowMethods?.map(y => y),
+    'allowOrigins': obj.allowOrigins?.map(y => y),
+    'exposeHeaders': obj.exposeHeaders?.map(y => y),
+    'maxAge': obj.maxAge,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * ExtensionRef is an optional, implementation-specific extension to the
  * "filter" behavior.  For example, resource "myroutefilter" in group
  * "networking.example.net"). ExtensionRef MUST NOT be used for core and
  * extended filters.
  *
- *
  * This filter can be used multiple times within the same rule.
- *
  *
  * Support: Implementation-specific
  *
@@ -12040,7 +9736,6 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersExtensionRef(obj: Htt
  * RequestHeaderModifier defines a schema for a filter that modifies request
  * headers.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
@@ -12051,17 +9746,14 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -12077,17 +9769,14 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -12101,17 +9790,14 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -12144,11 +9830,9 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
  * Requests are sent to the specified destination, but responses from
  * that destination are ignored.
  *
- *
  * This filter can be used multiple times within the same rule. Note that
  * not all implementations will be able to support mirroring to multiple
  * backends.
- *
  *
  * Support: Extended
  *
@@ -12158,17 +9842,14 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestMirror {
   /**
    * BackendRef references a resource where mirrored requests are sent.
    *
-   *
    * Mirrored requests must be sent only to a single destination endpoint
    * within this BackendRef, irrespective of how many endpoints are present
    * within this BackendRef.
-   *
    *
    * If the referent cannot be found, this BackendRef is invalid and must be
    * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
    * condition on the Route status is set to `status: False` and not configure
    * this backend in the underlying implementation.
-   *
    *
    * If there is a cross-namespace reference to an *existing* object
    * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -12176,19 +9857,39 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestMirror {
    * with the "RefNotPermitted" reason and not configure this backend in the
    * underlying implementation.
    *
-   *
    * In either error case, the Message of the `ResolvedRefs` Condition
    * should be used to provide more detail about the problem.
    *
-   *
    * Support: Extended for Kubernetes Service
-   *
    *
    * Support: Implementation-specific for any other resource
    *
    * @schema HttpRouteSpecRulesBackendRefsFiltersRequestMirror#backendRef
    */
   readonly backendRef: HttpRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef;
+
+  /**
+   * Fraction represents the fraction of requests that should be
+   * mirrored to BackendRef.
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema HttpRouteSpecRulesBackendRefsFiltersRequestMirror#fraction
+   */
+  readonly fraction?: HttpRouteSpecRulesBackendRefsFiltersRequestMirrorFraction;
+
+  /**
+   * Percent represents the percentage of requests that should be
+   * mirrored to BackendRef. Its minimum value is 0 (indicating 0% of
+   * requests) and its maximum value is 100 (indicating 100% of requests).
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema HttpRouteSpecRulesBackendRefsFiltersRequestMirror#percent
+   */
+  readonly percent?: number;
 
 }
 
@@ -12200,6 +9901,8 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestMirror(obj: Ht
   if (obj === undefined) { return undefined; }
   const result = {
     'backendRef': toJson_HttpRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef(obj.backendRef),
+    'fraction': toJson_HttpRouteSpecRulesBackendRefsFiltersRequestMirrorFraction(obj.fraction),
+    'percent': obj.percent,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -12210,7 +9913,6 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestMirror(obj: Ht
  * RequestRedirect defines a schema for a filter that responds to the
  * request with an HTTP redirection.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteSpecRulesBackendRefsFiltersRequestRedirect
@@ -12220,7 +9922,6 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestRedirect {
    * Hostname is the hostname to be used in the value of the `Location`
    * header in the response.
    * When empty, the hostname in the `Host` header of the request is used.
-   *
    *
    * Support: Core
    *
@@ -12233,7 +9934,6 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestRedirect {
    * The modified path is then used to construct the `Location` header. When
    * empty, the request path is used as-is.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteSpecRulesBackendRefsFiltersRequestRedirect#path
@@ -12244,10 +9944,8 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestRedirect {
    * Port is the port to be used in the value of the `Location`
    * header in the response.
    *
-   *
    * If no port is specified, the redirect port MUST be derived using the
    * following rules:
-   *
    *
    * * If redirect scheme is not-empty, the redirect port MUST be the well-known
    * port associated with the redirect scheme. Specifically "http" to port 80
@@ -12256,16 +9954,13 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestRedirect {
    * * If redirect scheme is empty, the redirect port MUST be the Gateway
    * Listener port.
    *
-   *
    * Implementations SHOULD NOT add the port number in the 'Location'
    * header in the following cases:
-   *
    *
    * * A Location header that will use HTTP (whether that is determined via
    * the Listener protocol or the Scheme field) _and_ use port 80.
    * * A Location header that will use HTTPS (whether that is determined via
    * the Listener protocol or the Scheme field) _and_ use port 443.
-   *
    *
    * Support: Extended
    *
@@ -12277,19 +9972,15 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestRedirect {
    * Scheme is the scheme to be used in the value of the `Location` header in
    * the response. When empty, the scheme of the request is used.
    *
-   *
    * Scheme redirects can affect the port of the redirect, for more information,
    * refer to the documentation for the port field of this filter.
-   *
    *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
    *
-   *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
    * Reason of `UnsupportedValue`.
-   *
    *
    * Support: Extended
    *
@@ -12300,15 +9991,12 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestRedirect {
   /**
    * StatusCode is the HTTP status code to be used in response.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
    * Reason of `UnsupportedValue`.
-   *
    *
    * Support: Core
    *
@@ -12340,7 +10028,6 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestRedirect(obj: 
  * ResponseHeaderModifier defines a schema for a filter that modifies response
  * headers.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifier
@@ -12351,17 +10038,14 @@ export interface HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -12377,17 +10061,14 @@ export interface HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -12401,17 +10082,14 @@ export interface HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -12443,16 +10121,13 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifie
  * Type identifies the type of filter to apply. As with other API fields,
  * types are classified into three conformance levels:
  *
- *
  * - Core: Filter types and their corresponding configuration defined by
  * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
  * implementations must support core filters.
  *
- *
  * - Extended: Filter types and their corresponding configuration defined by
  * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
  * are encouraged to support extended filters.
- *
  *
  * - Implementation-specific: Filters that are defined and supported by
  * specific vendors.
@@ -12462,19 +10137,15 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifie
  * is specified using the ExtensionRef field. `Type` should be set to
  * "ExtensionRef" for custom filters.
  *
- *
  * Implementers are encouraged to define custom implementation types to
  * extend the core API with implementation-specific behavior.
- *
  *
  * If a reference to a custom filter type cannot be resolved, the filter
  * MUST NOT be skipped. Instead, requests that would have been processed by
  * that filter MUST receive a HTTP error response.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -12495,11 +10166,12 @@ export enum HttpRouteSpecRulesBackendRefsFiltersType {
   URL_REWRITE = "URLRewrite",
   /** ExtensionRef */
   EXTENSION_REF = "ExtensionRef",
+  /** CORS */
+  CORS = "CORS",
 }
 
 /**
  * URLRewrite defines a schema for a filter that modifies a request during forwarding.
- *
  *
  * Support: Extended
  *
@@ -12510,7 +10182,6 @@ export interface HttpRouteSpecRulesBackendRefsFiltersUrlRewrite {
    * Hostname is the value to be used to replace the Host header value during
    * forwarding.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteSpecRulesBackendRefsFiltersUrlRewrite#hostname
@@ -12519,7 +10190,6 @@ export interface HttpRouteSpecRulesBackendRefsFiltersUrlRewrite {
 
   /**
    * Path defines a path rewrite.
-   *
    *
    * Support: Extended
    *
@@ -12545,6 +10215,32 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersUrlRewrite(obj: HttpR
 /* eslint-enable max-len, quote-props */
 
 /**
+ * @schema HttpRouteSpecRulesFiltersCorsAllowMethods
+ */
+export enum HttpRouteSpecRulesFiltersCorsAllowMethods {
+  /** GET */
+  GET = "GET",
+  /** HEAD */
+  HEAD = "HEAD",
+  /** POST */
+  POST = "POST",
+  /** PUT */
+  PUT = "PUT",
+  /** DELETE */
+  DELETE = "DELETE",
+  /** CONNECT */
+  CONNECT = "CONNECT",
+  /** OPTIONS */
+  OPTIONS = "OPTIONS",
+  /** TRACE */
+  TRACE = "TRACE",
+  /** PATCH */
+  PATCH = "PATCH",
+  /** * */
+  VALUE_ASTERISK = "*",
+}
+
+/**
  * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
  *
  * @schema HttpRouteSpecRulesFiltersRequestHeaderModifierAdd
@@ -12552,8 +10248,7 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersUrlRewrite(obj: HttpR
 export interface HttpRouteSpecRulesFiltersRequestHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -12597,8 +10292,7 @@ export function toJson_HttpRouteSpecRulesFiltersRequestHeaderModifierAdd(obj: Ht
 export interface HttpRouteSpecRulesFiltersRequestHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -12637,17 +10331,14 @@ export function toJson_HttpRouteSpecRulesFiltersRequestHeaderModifierSet(obj: Ht
 /**
  * BackendRef references a resource where mirrored requests are sent.
  *
- *
  * Mirrored requests must be sent only to a single destination endpoint
  * within this BackendRef, irrespective of how many endpoints are present
  * within this BackendRef.
- *
  *
  * If the referent cannot be found, this BackendRef is invalid and must be
  * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
  * condition on the Route status is set to `status: False` and not configure
  * this backend in the underlying implementation.
- *
  *
  * If there is a cross-namespace reference to an *existing* object
  * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -12655,13 +10346,10 @@ export function toJson_HttpRouteSpecRulesFiltersRequestHeaderModifierSet(obj: Ht
  * with the "RefNotPermitted" reason and not configure this backend in the
  * underlying implementation.
  *
- *
  * In either error case, the Message of the `ResolvedRefs` Condition
  * should be used to provide more detail about the problem.
  *
- *
  * Support: Extended for Kubernetes Service
- *
  *
  * Support: Implementation-specific for any other resource
  *
@@ -12680,9 +10368,7 @@ export interface HttpRouteSpecRulesFiltersRequestMirrorBackendRef {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -12690,9 +10376,7 @@ export interface HttpRouteSpecRulesFiltersRequestMirrorBackendRef {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -12712,12 +10396,10 @@ export interface HttpRouteSpecRulesFiltersRequestMirrorBackendRef {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -12757,10 +10439,46 @@ export function toJson_HttpRouteSpecRulesFiltersRequestMirrorBackendRef(obj: Htt
 /* eslint-enable max-len, quote-props */
 
 /**
+ * Fraction represents the fraction of requests that should be
+ * mirrored to BackendRef.
+ *
+ * Only one of Fraction or Percent may be specified. If neither field
+ * is specified, 100% of requests will be mirrored.
+ *
+ * @schema HttpRouteSpecRulesFiltersRequestMirrorFraction
+ */
+export interface HttpRouteSpecRulesFiltersRequestMirrorFraction {
+  /**
+   * @schema HttpRouteSpecRulesFiltersRequestMirrorFraction#denominator
+   */
+  readonly denominator?: number;
+
+  /**
+   * @schema HttpRouteSpecRulesFiltersRequestMirrorFraction#numerator
+   */
+  readonly numerator: number;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteSpecRulesFiltersRequestMirrorFraction' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteSpecRulesFiltersRequestMirrorFraction(obj: HttpRouteSpecRulesFiltersRequestMirrorFraction | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'denominator': obj.denominator,
+    'numerator': obj.numerator,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * Path defines parameters used to modify the path of the incoming request.
  * The modified path is then used to construct the `Location` header. When
  * empty, the request path is used as-is.
- *
  *
  * Support: Extended
  *
@@ -12781,32 +10499,17 @@ export interface HttpRouteSpecRulesFiltersRequestRedirectPath {
    * to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch
    * of "/xyz" would be modified to "/xyz/bar".
    *
-   *
    * Note that this matches the behavior of the PathPrefix match type. This
    * matches full path elements. A path element refers to the list of labels
    * in the path split by the `/` separator. When specified, a trailing `/` is
    * ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all
    * match the prefix `/abc`, but the path `/abcd` would not.
    *
-   *
    * ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch.
    * Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in
    * the implementation setting the Accepted Condition for the Route to `status: False`.
    *
-   *
    * Request Path | Prefix Match | Replace Prefix | Modified Path
-   * -------------|--------------|----------------|----------
-   * /foo/bar     | /foo         | /xyz           | /xyz/bar
-   * /foo/bar     | /foo         | /xyz/          | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz           | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz/          | /xyz/bar
-   * /foo         | /foo         | /xyz           | /xyz
-   * /foo/        | /foo         | /xyz           | /xyz/
-   * /foo/bar     | /foo         | <empty string> | /bar
-   * /foo/        | /foo         | <empty string> | /
-   * /foo         | /foo         | <empty string> | /
-   * /foo/        | /foo         | /              | /
-   * /foo         | /foo         | /              | /
    *
    * @schema HttpRouteSpecRulesFiltersRequestRedirectPath#replacePrefixMatch
    */
@@ -12816,10 +10519,8 @@ export interface HttpRouteSpecRulesFiltersRequestRedirectPath {
    * Type defines the type of path modifier. Additional types may be
    * added in a future release of the API.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -12851,19 +10552,15 @@ export function toJson_HttpRouteSpecRulesFiltersRequestRedirectPath(obj: HttpRou
  * Scheme is the scheme to be used in the value of the `Location` header in
  * the response. When empty, the scheme of the request is used.
  *
- *
  * Scheme redirects can affect the port of the redirect, for more information,
  * refer to the documentation for the port field of this filter.
- *
  *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
  *
- *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
  * Reason of `UnsupportedValue`.
- *
  *
  * Support: Extended
  *
@@ -12879,15 +10576,12 @@ export enum HttpRouteSpecRulesFiltersRequestRedirectScheme {
 /**
  * StatusCode is the HTTP status code to be used in response.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
  * Reason of `UnsupportedValue`.
- *
  *
  * Support: Core
  *
@@ -12908,8 +10602,7 @@ export enum HttpRouteSpecRulesFiltersRequestRedirectStatusCode {
 export interface HttpRouteSpecRulesFiltersResponseHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -12953,8 +10646,7 @@ export function toJson_HttpRouteSpecRulesFiltersResponseHeaderModifierAdd(obj: H
 export interface HttpRouteSpecRulesFiltersResponseHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -12993,7 +10685,6 @@ export function toJson_HttpRouteSpecRulesFiltersResponseHeaderModifierSet(obj: H
 /**
  * Path defines a path rewrite.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteSpecRulesFiltersUrlRewritePath
@@ -13013,32 +10704,17 @@ export interface HttpRouteSpecRulesFiltersUrlRewritePath {
    * to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch
    * of "/xyz" would be modified to "/xyz/bar".
    *
-   *
    * Note that this matches the behavior of the PathPrefix match type. This
    * matches full path elements. A path element refers to the list of labels
    * in the path split by the `/` separator. When specified, a trailing `/` is
    * ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all
    * match the prefix `/abc`, but the path `/abcd` would not.
    *
-   *
    * ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch.
    * Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in
    * the implementation setting the Accepted Condition for the Route to `status: False`.
    *
-   *
    * Request Path | Prefix Match | Replace Prefix | Modified Path
-   * -------------|--------------|----------------|----------
-   * /foo/bar     | /foo         | /xyz           | /xyz/bar
-   * /foo/bar     | /foo         | /xyz/          | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz           | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz/          | /xyz/bar
-   * /foo         | /foo         | /xyz           | /xyz
-   * /foo/        | /foo         | /xyz           | /xyz/
-   * /foo/bar     | /foo         | <empty string> | /bar
-   * /foo/        | /foo         | <empty string> | /
-   * /foo         | /foo         | <empty string> | /
-   * /foo/        | /foo         | /              | /
-   * /foo         | /foo         | /              | /
    *
    * @schema HttpRouteSpecRulesFiltersUrlRewritePath#replacePrefixMatch
    */
@@ -13048,10 +10724,8 @@ export interface HttpRouteSpecRulesFiltersUrlRewritePath {
    * Type defines the type of path modifier. Additional types may be
    * added in a future release of the API.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -13082,12 +10756,9 @@ export function toJson_HttpRouteSpecRulesFiltersUrlRewritePath(obj: HttpRouteSpe
 /**
  * Type specifies how to match against the value of the header.
  *
- *
  * Support: Core (Exact)
  *
- *
  * Support: Implementation-specific (RegularExpression)
- *
  *
  * Since RegularExpression HeaderMatchType has implementation-specific
  * conformance, implementations can support POSIX, PCRE or any other dialects
@@ -13106,9 +10777,7 @@ export enum HttpRouteSpecRulesMatchesHeadersType {
 /**
  * Type specifies how to match against the path Value.
  *
- *
  * Support: Core (Exact, PathPrefix)
- *
  *
  * Support: Implementation-specific (RegularExpression)
  *
@@ -13126,12 +10795,9 @@ export enum HttpRouteSpecRulesMatchesPathType {
 /**
  * Type specifies how to match against the value of the query parameter.
  *
- *
  * Support: Extended (Exact)
  *
- *
  * Support: Implementation-specific (RegularExpression)
- *
  *
  * Since RegularExpression QueryParamMatchType has Implementation-specific
  * conformance, implementations can support POSIX, PCRE or any other
@@ -13154,22 +10820,21 @@ export enum HttpRouteSpecRulesMatchesQueryParamsType {
  * attributes, while a session cookie is deleted when the current
  * session ends.
  *
- *
  * When set to "Permanent", AbsoluteTimeout indicates the
  * cookie's lifetime via the Expires or Max-Age cookie attributes
  * and is required.
- *
  *
  * When set to "Session", AbsoluteTimeout indicates the
  * absolute lifetime of the cookie tracked by the gateway and
  * is optional.
  *
+ * Defaults to "Session".
  *
  * Support: Core for "Session" type
  *
- *
  * Support: Extended for "Permanent" type
  *
+ * @default Session".
  * @schema HttpRouteSpecRulesSessionPersistenceCookieConfigLifetimeType
  */
 export enum HttpRouteSpecRulesSessionPersistenceCookieConfigLifetimeType {
@@ -13180,6 +10845,32 @@ export enum HttpRouteSpecRulesSessionPersistenceCookieConfigLifetimeType {
 }
 
 /**
+ * @schema HttpRouteSpecRulesBackendRefsFiltersCorsAllowMethods
+ */
+export enum HttpRouteSpecRulesBackendRefsFiltersCorsAllowMethods {
+  /** GET */
+  GET = "GET",
+  /** HEAD */
+  HEAD = "HEAD",
+  /** POST */
+  POST = "POST",
+  /** PUT */
+  PUT = "PUT",
+  /** DELETE */
+  DELETE = "DELETE",
+  /** CONNECT */
+  CONNECT = "CONNECT",
+  /** OPTIONS */
+  OPTIONS = "OPTIONS",
+  /** TRACE */
+  TRACE = "TRACE",
+  /** PATCH */
+  PATCH = "PATCH",
+  /** * */
+  VALUE_ASTERISK = "*",
+}
+
+/**
  * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
  *
  * @schema HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifierAdd
@@ -13187,8 +10878,7 @@ export enum HttpRouteSpecRulesSessionPersistenceCookieConfigLifetimeType {
 export interface HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -13232,8 +10922,7 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
 export interface HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -13272,17 +10961,14 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
 /**
  * BackendRef references a resource where mirrored requests are sent.
  *
- *
  * Mirrored requests must be sent only to a single destination endpoint
  * within this BackendRef, irrespective of how many endpoints are present
  * within this BackendRef.
- *
  *
  * If the referent cannot be found, this BackendRef is invalid and must be
  * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
  * condition on the Route status is set to `status: False` and not configure
  * this backend in the underlying implementation.
- *
  *
  * If there is a cross-namespace reference to an *existing* object
  * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -13290,13 +10976,10 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestHeaderModifier
  * with the "RefNotPermitted" reason and not configure this backend in the
  * underlying implementation.
  *
- *
  * In either error case, the Message of the `ResolvedRefs` Condition
  * should be used to provide more detail about the problem.
  *
- *
  * Support: Extended for Kubernetes Service
- *
  *
  * Support: Implementation-specific for any other resource
  *
@@ -13315,9 +10998,7 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -13325,9 +11006,7 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -13347,12 +11026,10 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestMirrorBackendRef {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -13392,10 +11069,46 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestMirrorBackendR
 /* eslint-enable max-len, quote-props */
 
 /**
+ * Fraction represents the fraction of requests that should be
+ * mirrored to BackendRef.
+ *
+ * Only one of Fraction or Percent may be specified. If neither field
+ * is specified, 100% of requests will be mirrored.
+ *
+ * @schema HttpRouteSpecRulesBackendRefsFiltersRequestMirrorFraction
+ */
+export interface HttpRouteSpecRulesBackendRefsFiltersRequestMirrorFraction {
+  /**
+   * @schema HttpRouteSpecRulesBackendRefsFiltersRequestMirrorFraction#denominator
+   */
+  readonly denominator?: number;
+
+  /**
+   * @schema HttpRouteSpecRulesBackendRefsFiltersRequestMirrorFraction#numerator
+   */
+  readonly numerator: number;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteSpecRulesBackendRefsFiltersRequestMirrorFraction' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestMirrorFraction(obj: HttpRouteSpecRulesBackendRefsFiltersRequestMirrorFraction | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'denominator': obj.denominator,
+    'numerator': obj.numerator,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * Path defines parameters used to modify the path of the incoming request.
  * The modified path is then used to construct the `Location` header. When
  * empty, the request path is used as-is.
- *
  *
  * Support: Extended
  *
@@ -13416,32 +11129,17 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestRedirectPath {
    * to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch
    * of "/xyz" would be modified to "/xyz/bar".
    *
-   *
    * Note that this matches the behavior of the PathPrefix match type. This
    * matches full path elements. A path element refers to the list of labels
    * in the path split by the `/` separator. When specified, a trailing `/` is
    * ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all
    * match the prefix `/abc`, but the path `/abcd` would not.
    *
-   *
    * ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch.
    * Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in
    * the implementation setting the Accepted Condition for the Route to `status: False`.
    *
-   *
    * Request Path | Prefix Match | Replace Prefix | Modified Path
-   * -------------|--------------|----------------|----------
-   * /foo/bar     | /foo         | /xyz           | /xyz/bar
-   * /foo/bar     | /foo         | /xyz/          | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz           | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz/          | /xyz/bar
-   * /foo         | /foo         | /xyz           | /xyz
-   * /foo/        | /foo         | /xyz           | /xyz/
-   * /foo/bar     | /foo         | <empty string> | /bar
-   * /foo/        | /foo         | <empty string> | /
-   * /foo         | /foo         | <empty string> | /
-   * /foo/        | /foo         | /              | /
-   * /foo         | /foo         | /              | /
    *
    * @schema HttpRouteSpecRulesBackendRefsFiltersRequestRedirectPath#replacePrefixMatch
    */
@@ -13451,10 +11149,8 @@ export interface HttpRouteSpecRulesBackendRefsFiltersRequestRedirectPath {
    * Type defines the type of path modifier. Additional types may be
    * added in a future release of the API.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -13486,19 +11182,15 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersRequestRedirectPath(o
  * Scheme is the scheme to be used in the value of the `Location` header in
  * the response. When empty, the scheme of the request is used.
  *
- *
  * Scheme redirects can affect the port of the redirect, for more information,
  * refer to the documentation for the port field of this filter.
- *
  *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
  *
- *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
  * Reason of `UnsupportedValue`.
- *
  *
  * Support: Extended
  *
@@ -13514,15 +11206,12 @@ export enum HttpRouteSpecRulesBackendRefsFiltersRequestRedirectScheme {
 /**
  * StatusCode is the HTTP status code to be used in response.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
  * Reason of `UnsupportedValue`.
- *
  *
  * Support: Core
  *
@@ -13543,8 +11232,7 @@ export enum HttpRouteSpecRulesBackendRefsFiltersRequestRedirectStatusCode {
 export interface HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -13588,8 +11276,7 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifie
 export interface HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -13628,7 +11315,6 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersResponseHeaderModifie
 /**
  * Path defines a path rewrite.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteSpecRulesBackendRefsFiltersUrlRewritePath
@@ -13648,32 +11334,17 @@ export interface HttpRouteSpecRulesBackendRefsFiltersUrlRewritePath {
    * to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch
    * of "/xyz" would be modified to "/xyz/bar".
    *
-   *
    * Note that this matches the behavior of the PathPrefix match type. This
    * matches full path elements. A path element refers to the list of labels
    * in the path split by the `/` separator. When specified, a trailing `/` is
    * ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all
    * match the prefix `/abc`, but the path `/abcd` would not.
    *
-   *
    * ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch.
    * Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in
    * the implementation setting the Accepted Condition for the Route to `status: False`.
    *
-   *
    * Request Path | Prefix Match | Replace Prefix | Modified Path
-   * -------------|--------------|----------------|----------
-   * /foo/bar     | /foo         | /xyz           | /xyz/bar
-   * /foo/bar     | /foo         | /xyz/          | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz           | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz/          | /xyz/bar
-   * /foo         | /foo         | /xyz           | /xyz
-   * /foo/        | /foo         | /xyz           | /xyz/
-   * /foo/bar     | /foo         | <empty string> | /bar
-   * /foo/        | /foo         | <empty string> | /
-   * /foo         | /foo         | <empty string> | /
-   * /foo/        | /foo         | /              | /
-   * /foo         | /foo         | /              | /
    *
    * @schema HttpRouteSpecRulesBackendRefsFiltersUrlRewritePath#replacePrefixMatch
    */
@@ -13683,10 +11354,8 @@ export interface HttpRouteSpecRulesBackendRefsFiltersUrlRewritePath {
    * Type defines the type of path modifier. Additional types may be
    * added in a future release of the API.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -13718,10 +11387,8 @@ export function toJson_HttpRouteSpecRulesBackendRefsFiltersUrlRewritePath(obj: H
  * Type defines the type of path modifier. Additional types may be
  * added in a future release of the API.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -13740,10 +11407,8 @@ export enum HttpRouteSpecRulesFiltersRequestRedirectPathType {
  * Type defines the type of path modifier. Additional types may be
  * added in a future release of the API.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -13762,10 +11427,8 @@ export enum HttpRouteSpecRulesFiltersUrlRewritePathType {
  * Type defines the type of path modifier. Additional types may be
  * added in a future release of the API.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -13784,10 +11447,8 @@ export enum HttpRouteSpecRulesBackendRefsFiltersRequestRedirectPathType {
  * Type defines the type of path modifier. Additional types may be
  * added in a future release of the API.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -13911,20 +11572,16 @@ export interface HttpRouteV1Beta1Spec {
    * performing a match and (absent of any applicable header modification
    * configuration) MUST forward this header unmodified to the backend.
    *
-   *
    * Valid values for Hostnames are determined by RFC 1123 definition of a
    * hostname with 2 notable exceptions:
-   *
    *
    * 1. IPs are not allowed.
    * 2. A hostname may be prefixed with a wildcard label (`*.`). The wildcard
    * label must appear by itself as the first label.
    *
-   *
    * If a hostname is specified by both the Listener and HTTPRoute, there
    * must be at least one intersecting hostname for the HTTPRoute to be
    * attached to the Listener. For example:
-   *
    *
    * * A Listener with `test.example.com` as the hostname matches HTTPRoutes
    * that have either not specified any hostnames, or have specified at
@@ -13936,11 +11593,9 @@ export interface HttpRouteV1Beta1Spec {
    * all match. On the other hand, `example.com` and `test.example.net` would
    * not match.
    *
-   *
    * Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
    * as a suffix match. That means that a match for `*.example.com` would match
    * both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
-   *
    *
    * If both the Listener and HTTPRoute have specified hostnames, any
    * HTTPRoute hostnames that do not match the Listener hostname MUST be
@@ -13948,25 +11603,20 @@ export interface HttpRouteV1Beta1Spec {
    * HTTPRoute specified `test.example.com` and `test.example.net`,
    * `test.example.net` must not be considered for a match.
    *
-   *
    * If both the Listener and HTTPRoute have specified hostnames, and none
    * match with the criteria above, then the HTTPRoute is not accepted. The
    * implementation must raise an 'Accepted' Condition with a status of
    * `False` in the corresponding RouteParentStatus.
    *
-   *
    * In the event that multiple HTTPRoutes specify intersecting hostnames (e.g.
    * overlapping wildcard matching and exact matching hostnames), precedence must
    * be given to rules from the HTTPRoute with the largest number of:
    *
-   *
    * * Characters in a matching non-wildcard hostname.
    * * Characters in a matching hostname.
    *
-   *
    * If ties exist across multiple Routes, the matching precedence rules for
    * HTTPRouteMatches takes over.
-   *
    *
    * Support: Core
    *
@@ -13986,20 +11636,15 @@ export interface HttpRouteV1Beta1Spec {
    * create a "producer" route for a Service in a different namespace from the
    * Route.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
    *
-   *
    * This API may be extended in the future to support additional kinds of parent
    * resources.
    *
-   *
    * ParentRefs must be _distinct_. This means either that:
-   *
    *
    * * They select different objects.  If this is the case, then parentRef
    * entries are distinct. In terms of fields, this means that the
@@ -14010,9 +11655,7 @@ export interface HttpRouteV1Beta1Spec {
    * optional fields to different values. If one ParentRef sets a
    * combination of optional fields, all must set the same combination.
    *
-   *
    * Some examples:
-   *
    *
    * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
    * same object must also set `sectionName`.
@@ -14021,13 +11664,11 @@ export interface HttpRouteV1Beta1Spec {
    * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
    * referencing the same object must also set `sectionName` and `port`.
    *
-   *
    * It is possible to separately reference multiple distinct objects that may
    * be collapsed by an implementation. For example, some implementations may
    * choose to merge compatible Gateway Listeners together. If that is the
    * case, the list of routes attached to those resources should also be
    * merged.
-   *
    *
    * Note that for ParentRefs that cross namespace boundaries, there are specific
    * rules. Cross-namespace references are only valid if they are explicitly
@@ -14036,24 +11677,15 @@ export interface HttpRouteV1Beta1Spec {
    * generic way to enable other kinds of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
-   *
-   *
-   *
-   *
-   *
-   *
    *
    * @schema HttpRouteV1Beta1Spec#parentRefs
    */
@@ -14089,14 +11721,11 @@ export function toJson_HttpRouteV1Beta1Spec(obj: HttpRouteV1Beta1Spec | undefine
  * a parent of this resource (usually a route). There are two kinds of parent resources
  * with "Core" support:
  *
- *
  * * Gateway (Gateway conformance profile)
  * * Service (Mesh conformance profile, ClusterIP Services only)
  *
- *
  * This API may be extended in the future to support additional kinds of parent
  * resources.
- *
  *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
@@ -14110,7 +11739,6 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * To set the core API group (such as for a "Service" kind referent),
    * Group must be explicitly set to "" (empty string).
    *
-   *
    * Support: Core
    *
    * @schema HttpRouteV1Beta1SpecParentRefs#group
@@ -14120,13 +11748,10 @@ export interface HttpRouteV1Beta1SpecParentRefs {
   /**
    * Kind is kind of the referent.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
-   *
    *
    * Support for other resources is Implementation-Specific.
    *
@@ -14136,7 +11761,6 @@ export interface HttpRouteV1Beta1SpecParentRefs {
 
   /**
    * Name is the name of the referent.
-   *
    *
    * Support: Core
    *
@@ -14148,7 +11772,6 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * Namespace is the namespace of the referent. When unspecified, this refers
    * to the local namespace of the Route.
    *
-   *
    * Note that there are specific rules for ParentRefs which cross namespace
    * boundaries. Cross-namespace references are only valid if they are explicitly
    * allowed by something in the namespace they are referring to. For example:
@@ -14156,18 +11779,15 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * generic way to enable any other kind of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
    *
    *
    * Support: Core
@@ -14180,7 +11800,6 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * Port is the network port this Route targets. It can be interpreted
    * differently based on the type of parent resource.
    *
-   *
    * When the parent resource is a Gateway, this targets all listeners
    * listening on the specified port that also support this kind of Route(and
    * select this Route). It's not recommended to set `Port` unless the
@@ -14190,17 +11809,14 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * must match both specified values.
    *
    *
-   *
    * When the parent resource is a Service, this targets a specific port in the
    * Service spec. When both Port (experimental) and SectionName are specified,
    * the name and port of the selected port must match both specified values.
    *
    *
-   *
    * Implementations MAY choose to support other parent resources.
    * Implementations supporting other types of parent resources MUST clearly
    * document how/if Port is interpreted.
-   *
    *
    * For the purpose of status, an attachment is considered successful as
    * long as the parent resource accepts it partially. For example, Gateway
@@ -14209,7 +11825,6 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * from the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route,
    * the Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Extended
    *
@@ -14221,7 +11836,6 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * SectionName is the name of a section within the target resource. In the
    * following resources, SectionName is interpreted as the following:
    *
-   *
    * * Gateway: Listener name. When both Port (experimental) and SectionName
    * are specified, the name and port of the selected listener must match
    * both specified values.
@@ -14229,11 +11843,9 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * are specified, the name and port of the selected listener must match
    * both specified values.
    *
-   *
    * Implementations MAY choose to support attaching Routes to other resources.
    * If that is the case, they MUST clearly document how SectionName is
    * interpreted.
-   *
    *
    * When unspecified (empty string), this will reference the entire resource.
    * For the purpose of status, an attachment is considered successful if at
@@ -14243,7 +11855,6 @@ export interface HttpRouteV1Beta1SpecParentRefs {
    * the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route, the
    * Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Core
    *
@@ -14284,19 +11895,15 @@ export interface HttpRouteV1Beta1SpecRules {
    * BackendRefs defines the backend(s) where matching requests should be
    * sent.
    *
-   *
    * Failure behavior here depends on how many BackendRefs are specified and
    * how many are invalid.
-   *
    *
    * If *all* entries in BackendRefs are invalid, and there are also no filters
    * specified in this route rule, *all* traffic which matches this rule MUST
    * receive a 500 status code.
    *
-   *
    * See the HTTPBackendRef definition for the rules about what makes a single
    * HTTPBackendRef invalid.
-   *
    *
    * When a HTTPBackendRef is invalid, 500 status codes MUST be returned for
    * requests that would have otherwise been routed to an invalid backend. If
@@ -14304,20 +11911,20 @@ export interface HttpRouteV1Beta1SpecRules {
    * requests that would otherwise have been routed to an invalid backend
    * MUST receive a 500 status code.
    *
-   *
    * For example, if two backends are specified with equal weights, and one is
    * invalid, 50 percent of traffic must receive a 500. Implementations may
    * choose how that 50 percent is determined.
    *
+   * When a HTTPBackendRef refers to a Service that has no ready endpoints,
+   * implementations SHOULD return a 503 for requests to that backend instead.
+   * If an implementation chooses to do this, all of the above rules for 500 responses
+   * MUST also apply for responses that return a 503.
    *
    * Support: Core for Kubernetes Service
    *
-   *
    * Support: Extended for Kubernetes ServiceImport
    *
-   *
    * Support: Implementation-specific for any other resource
-   *
    *
    * Support for weight: Core
    *
@@ -14329,16 +11936,13 @@ export interface HttpRouteV1Beta1SpecRules {
    * Filters define the filters that are applied to requests that match
    * this rule.
    *
-   *
    * Wherever possible, implementations SHOULD implement filters in the order
    * they are specified.
    *
-   *
    * Implementations MAY choose to implement this ordering strictly, rejecting
-   * any combination or order of filters that can not be supported. If implementations
+   * any combination or order of filters that cannot be supported. If implementations
    * choose a strict interpretation of filter ordering, they MUST clearly document
    * that behavior.
-   *
    *
    * To reject an invalid combination or order of filters, implementations SHOULD
    * consider the Route Rules with this configuration invalid. If all Route Rules
@@ -14346,28 +11950,23 @@ export interface HttpRouteV1Beta1SpecRules {
    * a portion of Route Rules are invalid, implementations MUST set the
    * "PartiallyInvalid" condition for the Route.
    *
-   *
    * Conformance-levels at this level are defined based on the type of filter:
-   *
    *
    * - ALL core filters MUST be supported by all implementations.
    * - Implementers are encouraged to support extended filters.
    * - Implementation-specific custom filters have no API guarantees across
    * implementations.
    *
-   *
    * Specifying the same filter multiple times is not supported unless explicitly
    * indicated in the filter.
    *
-   *
    * All filters are expected to be compatible with each other except for the
    * URLRewrite and RequestRedirect filters, which may not be combined. If an
-   * implementation can not support other combinations of filters, they must clearly
+   * implementation cannot support other combinations of filters, they must clearly
    * document that limitation. In cases where incompatible or unsupported
    * filters are specified and cause the `Accepted` condition to be set to status
    * `False`, implementations may use the `IncompatibleFilters` reason to specify
    * this configuration error.
-   *
    *
    * Support: Core
    *
@@ -14380,9 +11979,7 @@ export interface HttpRouteV1Beta1SpecRules {
    * HTTP requests. Each match is independent, i.e. this rule will be matched
    * if **any** one of the matches is satisfied.
    *
-   *
    * For example, take the following matches configuration:
-   *
    *
    * ```
    * matches:
@@ -14395,29 +11992,23 @@ export interface HttpRouteV1Beta1SpecRules {
    * value: "/v2/foo"
    * ```
    *
-   *
    * For a request to match against this rule, a request must satisfy
    * EITHER of the two conditions:
-   *
    *
    * - path prefixed with `/foo` AND contains the header `version: v2`
    * - path prefix of `/v2/foo`
    *
-   *
    * See the documentation for HTTPRouteMatch on how to specify multiple
    * match conditions that should be ANDed together.
-   *
    *
    * If no matches are specified, the default is a prefix
    * path match on "/", which has the effect of matching every
    * HTTP request.
    *
-   *
    * Proxy or Load Balancer routing configuration generated from HTTPRoutes
    * MUST prioritize matches based on the following criteria, continuing on
    * ties. Across all rules specified on applicable Routes, precedence must be
    * given to the match having:
-   *
    *
    * * "Exact" path match.
    * * "Prefix" path match with largest number of characters.
@@ -14425,23 +12016,18 @@ export interface HttpRouteV1Beta1SpecRules {
    * * Largest number of header matches.
    * * Largest number of query param matches.
    *
-   *
    * Note: The precedence of RegularExpression path matches are implementation-specific.
-   *
    *
    * If ties still exist across multiple Routes, matching precedence MUST be
    * determined in order of the following criteria, continuing on ties:
-   *
    *
    * * The oldest Route based on creation timestamp.
    * * The Route appearing first in alphabetical order by
    * "{namespace}/{name}".
    *
-   *
    * If ties still exist within an HTTPRoute, matching precedence MUST be granted
    * to the FIRST matching rule (in list order) with a match meeting the above
    * criteria.
-   *
    *
    * When no rules matching a request have been successfully attached to the
    * parent a request is coming from, a HTTP 404 status code MUST be returned.
@@ -14451,14 +12037,28 @@ export interface HttpRouteV1Beta1SpecRules {
   readonly matches?: HttpRouteV1Beta1SpecRulesMatches[];
 
   /**
-   * SessionPersistence defines and configures session persistence
-   * for the route rule.
-   *
+   * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
    *
    * Support: Extended
    *
+   * @schema HttpRouteV1Beta1SpecRules#name
+   */
+  readonly name?: string;
+
+  /**
+   * Retry defines the configuration for when to retry an HTTP request.
    *
+   * Support: Extended
    *
+   * @schema HttpRouteV1Beta1SpecRules#retry
+   */
+  readonly retry?: HttpRouteV1Beta1SpecRulesRetry;
+
+  /**
+   * SessionPersistence defines and configures session persistence
+   * for the route rule.
+   *
+   * Support: Extended
    *
    * @schema HttpRouteV1Beta1SpecRules#sessionPersistence
    */
@@ -14467,11 +12067,7 @@ export interface HttpRouteV1Beta1SpecRules {
   /**
    * Timeouts defines the timeouts that can be configured for an HTTP request.
    *
-   *
    * Support: Extended
-   *
-   *
-   *
    *
    * @schema HttpRouteV1Beta1SpecRules#timeouts
    */
@@ -14489,6 +12085,8 @@ export function toJson_HttpRouteV1Beta1SpecRules(obj: HttpRouteV1Beta1SpecRules 
     'backendRefs': obj.backendRefs?.map(y => toJson_HttpRouteV1Beta1SpecRulesBackendRefs(y)),
     'filters': obj.filters?.map(y => toJson_HttpRouteV1Beta1SpecRulesFilters(y)),
     'matches': obj.matches?.map(y => toJson_HttpRouteV1Beta1SpecRulesMatches(y)),
+    'name': obj.name,
+    'retry': toJson_HttpRouteV1Beta1SpecRulesRetry(obj.retry),
     'sessionPersistence': toJson_HttpRouteV1Beta1SpecRulesSessionPersistence(obj.sessionPersistence),
     'timeouts': toJson_HttpRouteV1Beta1SpecRulesTimeouts(obj.timeouts),
   };
@@ -14500,35 +12098,25 @@ export function toJson_HttpRouteV1Beta1SpecRules(obj: HttpRouteV1Beta1SpecRules 
 /**
  * HTTPBackendRef defines how a HTTPRoute forwards a HTTP request.
  *
- *
  * Note that when a namespace different than the local namespace is specified, a
  * ReferenceGrant object is required in the referent namespace to allow that
  * namespace's owner to accept the reference. See the ReferenceGrant
  * documentation for details.
  *
  *
- * <gateway:experimental:description>
- *
- *
  * When the BackendRef points to a Kubernetes Service, implementations SHOULD
  * honor the appProtocol field if it is set for the target Service Port.
  *
- *
  * Implementations supporting appProtocol SHOULD recognize the Kubernetes
  * Standard Application Protocols defined in KEP-3726.
- *
  *
  * If a Service appProtocol isn't specified, an implementation MAY infer the
  * backend protocol through its own means. Implementations MAY infer the
  * protocol from the Route type referring to the backend Service.
  *
- *
  * If a Route is not able to send traffic to the backend using the specified
  * protocol then the backend is considered invalid. Implementations MUST set the
  * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
- *
- *
- * </gateway:experimental:description>
  *
  * @schema HttpRouteV1Beta1SpecRulesBackendRefs
  */
@@ -14536,7 +12124,6 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefs {
   /**
    * Filters defined at this level should be executed if and only if the
    * request is being forwarded to the backend defined here.
-   *
    *
    * Support: Implementation-specific (For broader support of filters, use the
    * Filters field in HTTPRouteRule.)
@@ -14557,9 +12144,7 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefs {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -14567,9 +12152,7 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefs {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -14589,12 +12172,10 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefs {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -14621,12 +12202,10 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefs {
    * implementation supports. Weight is not a percentage and the sum of
    * weights does not need to equal 100.
    *
-   *
    * If only one backend is specified and it has a weight greater than 0, 100%
    * of the traffic is forwarded to that backend. If weight is set to 0, no
    * traffic should be forwarded for this entry. If unspecified, weight
    * defaults to 1.
-   *
    *
    * Support for this field varies based on the context where used.
    *
@@ -14668,14 +12247,22 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefs(obj: HttpRouteV1Beta
  */
 export interface HttpRouteV1Beta1SpecRulesFilters {
   /**
+   * CORS defines a schema for a filter that responds to the
+   * cross-origin request based on HTTP response header.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesFilters#cors
+   */
+  readonly cors?: HttpRouteV1Beta1SpecRulesFiltersCors;
+
+  /**
    * ExtensionRef is an optional, implementation-specific extension to the
    * "filter" behavior.  For example, resource "myroutefilter" in group
    * "networking.example.net"). ExtensionRef MUST NOT be used for core and
    * extended filters.
    *
-   *
    * This filter can be used multiple times within the same rule.
-   *
    *
    * Support: Implementation-specific
    *
@@ -14686,7 +12273,6 @@ export interface HttpRouteV1Beta1SpecRulesFilters {
   /**
    * RequestHeaderModifier defines a schema for a filter that modifies request
    * headers.
-   *
    *
    * Support: Core
    *
@@ -14699,11 +12285,9 @@ export interface HttpRouteV1Beta1SpecRulesFilters {
    * Requests are sent to the specified destination, but responses from
    * that destination are ignored.
    *
-   *
    * This filter can be used multiple times within the same rule. Note that
    * not all implementations will be able to support mirroring to multiple
    * backends.
-   *
    *
    * Support: Extended
    *
@@ -14715,7 +12299,6 @@ export interface HttpRouteV1Beta1SpecRulesFilters {
    * RequestRedirect defines a schema for a filter that responds to the
    * request with an HTTP redirection.
    *
-   *
    * Support: Core
    *
    * @schema HttpRouteV1Beta1SpecRulesFilters#requestRedirect
@@ -14725,7 +12308,6 @@ export interface HttpRouteV1Beta1SpecRulesFilters {
   /**
    * ResponseHeaderModifier defines a schema for a filter that modifies response
    * headers.
-   *
    *
    * Support: Extended
    *
@@ -14737,16 +12319,13 @@ export interface HttpRouteV1Beta1SpecRulesFilters {
    * Type identifies the type of filter to apply. As with other API fields,
    * types are classified into three conformance levels:
    *
-   *
    * - Core: Filter types and their corresponding configuration defined by
    * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
    * implementations must support core filters.
    *
-   *
    * - Extended: Filter types and their corresponding configuration defined by
    * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
    * are encouraged to support extended filters.
-   *
    *
    * - Implementation-specific: Filters that are defined and supported by
    * specific vendors.
@@ -14756,19 +12335,15 @@ export interface HttpRouteV1Beta1SpecRulesFilters {
    * is specified using the ExtensionRef field. `Type` should be set to
    * "ExtensionRef" for custom filters.
    *
-   *
    * Implementers are encouraged to define custom implementation types to
    * extend the core API with implementation-specific behavior.
-   *
    *
    * If a reference to a custom filter type cannot be resolved, the filter
    * MUST NOT be skipped. Instead, requests that would have been processed by
    * that filter MUST receive a HTTP error response.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -14780,7 +12355,6 @@ export interface HttpRouteV1Beta1SpecRulesFilters {
 
   /**
    * URLRewrite defines a schema for a filter that modifies a request during forwarding.
-   *
    *
    * Support: Extended
    *
@@ -14797,6 +12371,7 @@ export interface HttpRouteV1Beta1SpecRulesFilters {
 export function toJson_HttpRouteV1Beta1SpecRulesFilters(obj: HttpRouteV1Beta1SpecRulesFilters | undefined): Record<string, any> | undefined {
   if (obj === undefined) { return undefined; }
   const result = {
+    'cors': toJson_HttpRouteV1Beta1SpecRulesFiltersCors(obj.cors),
     'extensionRef': toJson_HttpRouteV1Beta1SpecRulesFiltersExtensionRef(obj.extensionRef),
     'requestHeaderModifier': toJson_HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifier(obj.requestHeaderModifier),
     'requestMirror': toJson_HttpRouteV1Beta1SpecRulesFiltersRequestMirror(obj.requestMirror),
@@ -14815,21 +12390,17 @@ export function toJson_HttpRouteV1Beta1SpecRulesFilters(obj: HttpRouteV1Beta1Spe
  * action. Multiple match types are ANDed together, i.e. the match will
  * evaluate to true only if all conditions are satisfied.
  *
- *
  * For example, the match below will match a HTTP request only if its path
  * starts with `/foo` AND it contains the `version: v1` header:
  *
- *
  * ```
  * match:
- *
  *
  * path:
  * value: "/foo"
  * headers:
  * - name: "version"
  * value "v1"
- *
  *
  * ```
  *
@@ -14850,7 +12421,6 @@ export interface HttpRouteV1Beta1SpecRulesMatches {
    * When specified, this route will be matched only if the request has the
    * specified method.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteV1Beta1SpecRulesMatches#method
@@ -14869,7 +12439,6 @@ export interface HttpRouteV1Beta1SpecRulesMatches {
    * QueryParams specifies HTTP query parameter matchers. Multiple match
    * values are ANDed together, meaning, a request must match all the
    * specified query parameters to select the route.
-   *
    *
    * Support: Extended
    *
@@ -14897,14 +12466,104 @@ export function toJson_HttpRouteV1Beta1SpecRulesMatches(obj: HttpRouteV1Beta1Spe
 /* eslint-enable max-len, quote-props */
 
 /**
- * SessionPersistence defines and configures session persistence
- * for the route rule.
- *
+ * Retry defines the configuration for when to retry an HTTP request.
  *
  * Support: Extended
  *
+ * @schema HttpRouteV1Beta1SpecRulesRetry
+ */
+export interface HttpRouteV1Beta1SpecRulesRetry {
+  /**
+   * Attempts specifies the maximum number of times an individual request
+   * from the gateway to a backend should be retried.
+   *
+   * If the maximum number of retries has been attempted without a successful
+   * response from the backend, the Gateway MUST return an error.
+   *
+   * When this field is unspecified, the number of times to attempt to retry
+   * a backend request is implementation-specific.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesRetry#attempts
+   */
+  readonly attempts?: number;
+
+  /**
+   * Backoff specifies the minimum duration a Gateway should wait between
+   * retry attempts and is represented in Gateway API Duration formatting.
+   *
+   * For example, setting the `rules[].retry.backoff` field to the value
+   * `100ms` will cause a backend request to first be retried approximately
+   * 100 milliseconds after timing out or receiving a response code configured
+   * to be retryable.
+   *
+   * An implementation MAY use an exponential or alternative backoff strategy
+   * for subsequent retry attempts, MAY cap the maximum backoff duration to
+   * some amount greater than the specified minimum, and MAY add arbitrary
+   * jitter to stagger requests, as long as unsuccessful backend requests are
+   * not retried before the configured minimum duration.
+   *
+   * If a Request timeout (`rules[].timeouts.request`) is configured on the
+   * route, the entire duration of the initial request and any retry attempts
+   * MUST not exceed the Request timeout duration. If any retry attempts are
+   * still in progress when the Request timeout duration has been reached,
+   * these SHOULD be canceled if possible and the Gateway MUST immediately
+   * return a timeout error.
+   *
+   * If a BackendRequest timeout (`rules[].timeouts.backendRequest`) is
+   * configured on the route, any retry attempts which reach the configured
+   * BackendRequest timeout duration without a response SHOULD be canceled if
+   * possible and the Gateway should wait for at least the specified backoff
+   * duration before attempting to retry the backend request again.
+   *
+   * If a BackendRequest timeout is _not_ configured on the route, retry
+   * attempts MAY time out after an implementation default duration, or MAY
+   * remain pending until a configured Request timeout or implementation
+   * default duration for total request time is reached.
+   *
+   * When this field is unspecified, the time to wait between retry attempts
+   * is implementation-specific.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesRetry#backoff
+   */
+  readonly backoff?: string;
+
+  /**
+   * Codes defines the HTTP response status codes for which a backend request
+   * should be retried.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesRetry#codes
+   */
+  readonly codes?: number[];
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteV1Beta1SpecRulesRetry' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteV1Beta1SpecRulesRetry(obj: HttpRouteV1Beta1SpecRulesRetry | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'attempts': obj.attempts,
+    'backoff': obj.backoff,
+    'codes': obj.codes?.map(y => y),
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
+ * SessionPersistence defines and configures session persistence
+ * for the route rule.
  *
- *
+ * Support: Extended
  *
  * @schema HttpRouteV1Beta1SpecRulesSessionPersistence
  */
@@ -14913,7 +12572,6 @@ export interface HttpRouteV1Beta1SpecRulesSessionPersistence {
    * AbsoluteTimeout defines the absolute timeout of the persistent
    * session. Once the AbsoluteTimeout duration has elapsed, the
    * session becomes invalid.
-   *
    *
    * Support: Extended
    *
@@ -14925,7 +12583,6 @@ export interface HttpRouteV1Beta1SpecRulesSessionPersistence {
    * CookieConfig provides configuration settings that are specific
    * to cookie-based session persistence.
    *
-   *
    * Support: Core
    *
    * @schema HttpRouteV1Beta1SpecRulesSessionPersistence#cookieConfig
@@ -14936,7 +12593,6 @@ export interface HttpRouteV1Beta1SpecRulesSessionPersistence {
    * IdleTimeout defines the idle timeout of the persistent session.
    * Once the session has been idle for more than the specified
    * IdleTimeout duration, the session becomes invalid.
-   *
    *
    * Support: Extended
    *
@@ -14950,7 +12606,6 @@ export interface HttpRouteV1Beta1SpecRulesSessionPersistence {
    * should avoid reusing session names to prevent unintended
    * consequences, such as rejection or unpredictable behavior.
    *
-   *
    * Support: Implementation-specific
    *
    * @schema HttpRouteV1Beta1SpecRulesSessionPersistence#sessionName
@@ -14962,9 +12617,7 @@ export interface HttpRouteV1Beta1SpecRulesSessionPersistence {
    * the use a header or cookie. Defaults to cookie based session
    * persistence.
    *
-   *
    * Support: Core for "Cookie" type
-   *
    *
    * Support: Extended for "Header" type
    *
@@ -14996,11 +12649,7 @@ export function toJson_HttpRouteV1Beta1SpecRulesSessionPersistence(obj: HttpRout
 /**
  * Timeouts defines the timeouts that can be configured for an HTTP request.
  *
- *
  * Support: Extended
- *
- *
- *
  *
  * @schema HttpRouteV1Beta1SpecRulesTimeouts
  */
@@ -15010,21 +12659,19 @@ export interface HttpRouteV1Beta1SpecRulesTimeouts {
    * to a backend. This covers the time from when the request first starts being
    * sent from the gateway to when the full response has been received from the backend.
    *
-   *
    * Setting a timeout to the zero duration (e.g. "0s") SHOULD disable the timeout
    * completely. Implementations that cannot completely disable the timeout MUST
    * instead interpret the zero duration as the longest possible value to which
    * the timeout can be set.
    *
-   *
    * An entire client HTTP transaction with a gateway, covered by the Request timeout,
    * may result in more than one call from the gateway to the destination backend,
    * for example, if automatic retries are supported.
    *
-   *
-   * Because the Request timeout encompasses the BackendRequest timeout, the value of
-   * BackendRequest must be <= the value of Request timeout.
-   *
+   * The value of BackendRequest must be a Gateway API Duration string as defined by
+   * GEP-2257.  When this field is unspecified, its behavior is implementation-specific;
+   * when specified, the value of BackendRequest must be no more than the value of the
+   * Request timeout (since the Request timeout encompasses the BackendRequest timeout).
    *
    * Support: Extended
    *
@@ -15037,26 +12684,22 @@ export interface HttpRouteV1Beta1SpecRulesTimeouts {
    * If the gateway has not been able to respond before this deadline is met, the gateway
    * MUST return a timeout error.
    *
-   *
    * For example, setting the `rules.timeouts.request` field to the value `10s` in an
    * `HTTPRoute` will cause a timeout if a client request is taking longer than 10 seconds
    * to complete.
-   *
    *
    * Setting a timeout to the zero duration (e.g. "0s") SHOULD disable the timeout
    * completely. Implementations that cannot completely disable the timeout MUST
    * instead interpret the zero duration as the longest possible value to which
    * the timeout can be set.
    *
-   *
    * This timeout is intended to cover as close to the whole request-response transaction
    * as possible although an implementation MAY choose to start the timeout after the entire
    * request stream has been received instead of immediately after the transaction is
    * initiated by the client.
    *
-   *
-   * When this field is unspecified, request timeout behavior is implementation-specific.
-   *
+   * The value of Request is a Gateway API Duration string as defined by GEP-2257. When this
+   * field is unspecified, request timeout behavior is implementation-specific.
    *
    * Support: Extended
    *
@@ -15093,14 +12736,22 @@ export function toJson_HttpRouteV1Beta1SpecRulesTimeouts(obj: HttpRouteV1Beta1Sp
  */
 export interface HttpRouteV1Beta1SpecRulesBackendRefsFilters {
   /**
+   * CORS defines a schema for a filter that responds to the
+   * cross-origin request based on HTTP response header.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFilters#cors
+   */
+  readonly cors?: HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors;
+
+  /**
    * ExtensionRef is an optional, implementation-specific extension to the
    * "filter" behavior.  For example, resource "myroutefilter" in group
    * "networking.example.net"). ExtensionRef MUST NOT be used for core and
    * extended filters.
    *
-   *
    * This filter can be used multiple times within the same rule.
-   *
    *
    * Support: Implementation-specific
    *
@@ -15111,7 +12762,6 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFilters {
   /**
    * RequestHeaderModifier defines a schema for a filter that modifies request
    * headers.
-   *
    *
    * Support: Core
    *
@@ -15124,11 +12774,9 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFilters {
    * Requests are sent to the specified destination, but responses from
    * that destination are ignored.
    *
-   *
    * This filter can be used multiple times within the same rule. Note that
    * not all implementations will be able to support mirroring to multiple
    * backends.
-   *
    *
    * Support: Extended
    *
@@ -15140,7 +12788,6 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFilters {
    * RequestRedirect defines a schema for a filter that responds to the
    * request with an HTTP redirection.
    *
-   *
    * Support: Core
    *
    * @schema HttpRouteV1Beta1SpecRulesBackendRefsFilters#requestRedirect
@@ -15150,7 +12797,6 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFilters {
   /**
    * ResponseHeaderModifier defines a schema for a filter that modifies response
    * headers.
-   *
    *
    * Support: Extended
    *
@@ -15162,16 +12808,13 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFilters {
    * Type identifies the type of filter to apply. As with other API fields,
    * types are classified into three conformance levels:
    *
-   *
    * - Core: Filter types and their corresponding configuration defined by
    * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
    * implementations must support core filters.
    *
-   *
    * - Extended: Filter types and their corresponding configuration defined by
    * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
    * are encouraged to support extended filters.
-   *
    *
    * - Implementation-specific: Filters that are defined and supported by
    * specific vendors.
@@ -15181,19 +12824,15 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFilters {
    * is specified using the ExtensionRef field. `Type` should be set to
    * "ExtensionRef" for custom filters.
    *
-   *
    * Implementers are encouraged to define custom implementation types to
    * extend the core API with implementation-specific behavior.
-   *
    *
    * If a reference to a custom filter type cannot be resolved, the filter
    * MUST NOT be skipped. Instead, requests that would have been processed by
    * that filter MUST receive a HTTP error response.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -15205,7 +12844,6 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFilters {
 
   /**
    * URLRewrite defines a schema for a filter that modifies a request during forwarding.
-   *
    *
    * Support: Extended
    *
@@ -15222,6 +12860,7 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFilters {
 export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFilters(obj: HttpRouteV1Beta1SpecRulesBackendRefsFilters | undefined): Record<string, any> | undefined {
   if (obj === undefined) { return undefined; }
   const result = {
+    'cors': toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors(obj.cors),
     'extensionRef': toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersExtensionRef(obj.extensionRef),
     'requestHeaderModifier': toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderModifier(obj.requestHeaderModifier),
     'requestMirror': toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirror(obj.requestMirror),
@@ -15236,14 +12875,258 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFilters(obj: HttpRout
 /* eslint-enable max-len, quote-props */
 
 /**
+ * CORS defines a schema for a filter that responds to the
+ * cross-origin request based on HTTP response header.
+ *
+ * Support: Extended
+ *
+ * @schema HttpRouteV1Beta1SpecRulesFiltersCors
+ */
+export interface HttpRouteV1Beta1SpecRulesFiltersCors {
+  /**
+   * AllowCredentials indicates whether the actual cross-origin request allows
+   * to include credentials.
+   *
+   * The only valid value for the `Access-Control-Allow-Credentials` response
+   * header is true (case-sensitive).
+   *
+   * If the credentials are not allowed in cross-origin requests, the gateway
+   * will omit the header `Access-Control-Allow-Credentials` entirely rather
+   * than setting its value to false.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesFiltersCors#allowCredentials
+   */
+  readonly allowCredentials?: boolean;
+
+  /**
+   * AllowHeaders indicates which HTTP request headers are supported for
+   * accessing the requested resource.
+   *
+   * Header names are not case sensitive.
+   *
+   * Multiple header names in the value of the `Access-Control-Allow-Headers`
+   * response header are separated by a comma (",").
+   *
+   * When the `AllowHeaders` field is configured with one or more headers, the
+   * gateway must return the `Access-Control-Allow-Headers` response header
+   * which value is present in the `AllowHeaders` field.
+   *
+   * If any header name in the `Access-Control-Request-Headers` request header
+   * is not included in the list of header names specified by the response
+   * header `Access-Control-Allow-Headers`, it will present an error on the
+   * client side.
+   *
+   * If any header name in the `Access-Control-Allow-Headers` response header
+   * does not recognize by the client, it will also occur an error on the
+   * client side.
+   *
+   * A wildcard indicates that the requests with all HTTP headers are allowed.
+   * The `Access-Control-Allow-Headers` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowHeaders` field
+   * specified with the `*` wildcard, the gateway must specify one or more
+   * HTTP headers in the value of the `Access-Control-Allow-Headers` response
+   * header. The value of the header `Access-Control-Allow-Headers` is same as
+   * the `Access-Control-Request-Headers` header provided by the client. If
+   * the header `Access-Control-Request-Headers` is not included in the
+   * request, the gateway will omit the `Access-Control-Allow-Headers`
+   * response header, instead of specifying the `*` wildcard. A Gateway
+   * implementation may choose to add implementation-specific default headers.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesFiltersCors#allowHeaders
+   */
+  readonly allowHeaders?: string[];
+
+  /**
+   * AllowMethods indicates which HTTP methods are supported for accessing the
+   * requested resource.
+   *
+   * Valid values are any method defined by RFC9110, along with the special
+   * value `*`, which represents all HTTP methods are allowed.
+   *
+   * Method names are case sensitive, so these values are also case-sensitive.
+   * (See https://www.rfc-editor.org/rfc/rfc2616#section-5.1.1)
+   *
+   * Multiple method names in the value of the `Access-Control-Allow-Methods`
+   * response header are separated by a comma (",").
+   *
+   * A CORS-safelisted method is a method that is `GET`, `HEAD`, or `POST`.
+   * (See https://fetch.spec.whatwg.org/#cors-safelisted-method) The
+   * CORS-safelisted methods are always allowed, regardless of whether they
+   * are specified in the `AllowMethods` field.
+   *
+   * When the `AllowMethods` field is configured with one or more methods, the
+   * gateway must return the `Access-Control-Allow-Methods` response header
+   * which value is present in the `AllowMethods` field.
+   *
+   * If the HTTP method of the `Access-Control-Request-Method` request header
+   * is not included in the list of methods specified by the response header
+   * `Access-Control-Allow-Methods`, it will present an error on the client
+   * side.
+   *
+   * The `Access-Control-Allow-Methods` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowMethods` field
+   * specified with the `*` wildcard, the gateway must specify one HTTP method
+   * in the value of the Access-Control-Allow-Methods response header. The
+   * value of the header `Access-Control-Allow-Methods` is same as the
+   * `Access-Control-Request-Method` header provided by the client. If the
+   * header `Access-Control-Request-Method` is not included in the request,
+   * the gateway will omit the `Access-Control-Allow-Methods` response header,
+   * instead of specifying the `*` wildcard. A Gateway implementation may
+   * choose to add implementation-specific default methods.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesFiltersCors#allowMethods
+   */
+  readonly allowMethods?: HttpRouteV1Beta1SpecRulesFiltersCorsAllowMethods[];
+
+  /**
+   * AllowOrigins indicates whether the response can be shared with requested
+   * resource from the given `Origin`.
+   *
+   * The `Origin` consists of a scheme and a host, with an optional port, and
+   * takes the form `<scheme>://<host>(:<port>)`.
+   *
+   * Valid values for scheme are: `http` and `https`.
+   *
+   * Valid values for port are any integer between 1 and 65535 (the list of
+   * available TCP/UDP ports). Note that, if not included, port `80` is
+   * assumed for `http` scheme origins, and port `443` is assumed for `https`
+   * origins. This may affect origin matching.
+   *
+   * The host part of the origin may contain the wildcard character `*`. These
+   * wildcard characters behave as follows:
+   *
+   * * `*` is a greedy match to the _left_, including any number of
+   * DNS labels to the left of its position. This also means that
+   * `*` will include any number of period `.` characters to the
+   * left of its position.
+   * * A wildcard by itself matches all hosts.
+   *
+   * An origin value that includes _only_ the `*` character indicates requests
+   * from all `Origin`s are allowed.
+   *
+   * When the `AllowOrigins` field is configured with multiple origins, it
+   * means the server supports clients from multiple origins. If the request
+   * `Origin` matches the configured allowed origins, the gateway must return
+   * the given `Origin` and sets value of the header
+   * `Access-Control-Allow-Origin` same as the `Origin` header provided by the
+   * client.
+   *
+   * The status code of a successful response to a "preflight" request is
+   * always an OK status (i.e., 204 or 200).
+   *
+   * If the request `Origin` does not match the configured allowed origins,
+   * the gateway returns 204/200 response but doesn't set the relevant
+   * cross-origin response headers. Alternatively, the gateway responds with
+   * 403 status to the "preflight" request is denied, coupled with omitting
+   * the CORS headers. The cross-origin request fails on the client side.
+   * Therefore, the client doesn't attempt the actual cross-origin request.
+   *
+   * The `Access-Control-Allow-Origin` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowOrigins` field
+   * specified with the `*` wildcard, the gateway must return a single origin
+   * in the value of the `Access-Control-Allow-Origin` response header,
+   * instead of specifying the `*` wildcard. The value of the header
+   * `Access-Control-Allow-Origin` is same as the `Origin` header provided by
+   * the client.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesFiltersCors#allowOrigins
+   */
+  readonly allowOrigins?: string[];
+
+  /**
+   * ExposeHeaders indicates which HTTP response headers can be exposed
+   * to client-side scripts in response to a cross-origin request.
+   *
+   * A CORS-safelisted response header is an HTTP header in a CORS response
+   * that it is considered safe to expose to the client scripts.
+   * The CORS-safelisted response headers include the following headers:
+   * `Cache-Control`
+   * `Content-Language`
+   * `Content-Length`
+   * `Content-Type`
+   * `Expires`
+   * `Last-Modified`
+   * `Pragma`
+   * (See https://fetch.spec.whatwg.org/#cors-safelisted-response-header-name)
+   * The CORS-safelisted response headers are exposed to client by default.
+   *
+   * When an HTTP header name is specified using the `ExposeHeaders` field,
+   * this additional header will be exposed as part of the response to the
+   * client.
+   *
+   * Header names are not case sensitive.
+   *
+   * Multiple header names in the value of the `Access-Control-Expose-Headers`
+   * response header are separated by a comma (",").
+   *
+   * A wildcard indicates that the responses with all HTTP headers are exposed
+   * to clients. The `Access-Control-Expose-Headers` response header can only
+   * use `*` wildcard as value when the `AllowCredentials` field is
+   * unspecified.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesFiltersCors#exposeHeaders
+   */
+  readonly exposeHeaders?: string[];
+
+  /**
+   * MaxAge indicates the duration (in seconds) for the client to cache the
+   * results of a "preflight" request.
+   *
+   * The information provided by the `Access-Control-Allow-Methods` and
+   * `Access-Control-Allow-Headers` response headers can be cached by the
+   * client until the time specified by `Access-Control-Max-Age` elapses.
+   *
+   * The default value of `Access-Control-Max-Age` response header is 5
+   * (seconds).
+   *
+   * @schema HttpRouteV1Beta1SpecRulesFiltersCors#maxAge
+   */
+  readonly maxAge?: number;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteV1Beta1SpecRulesFiltersCors' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteV1Beta1SpecRulesFiltersCors(obj: HttpRouteV1Beta1SpecRulesFiltersCors | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'allowCredentials': obj.allowCredentials,
+    'allowHeaders': obj.allowHeaders?.map(y => y),
+    'allowMethods': obj.allowMethods?.map(y => y),
+    'allowOrigins': obj.allowOrigins?.map(y => y),
+    'exposeHeaders': obj.exposeHeaders?.map(y => y),
+    'maxAge': obj.maxAge,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * ExtensionRef is an optional, implementation-specific extension to the
  * "filter" behavior.  For example, resource "myroutefilter" in group
  * "networking.example.net"). ExtensionRef MUST NOT be used for core and
  * extended filters.
  *
- *
  * This filter can be used multiple times within the same rule.
- *
  *
  * Support: Implementation-specific
  *
@@ -15294,7 +13177,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersExtensionRef(obj: HttpRou
  * RequestHeaderModifier defines a schema for a filter that modifies request
  * headers.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifier
@@ -15305,17 +13187,14 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -15331,17 +13210,14 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -15355,17 +13231,14 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -15398,11 +13271,9 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifier(obj
  * Requests are sent to the specified destination, but responses from
  * that destination are ignored.
  *
- *
  * This filter can be used multiple times within the same rule. Note that
  * not all implementations will be able to support mirroring to multiple
  * backends.
- *
  *
  * Support: Extended
  *
@@ -15412,17 +13283,14 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestMirror {
   /**
    * BackendRef references a resource where mirrored requests are sent.
    *
-   *
    * Mirrored requests must be sent only to a single destination endpoint
    * within this BackendRef, irrespective of how many endpoints are present
    * within this BackendRef.
-   *
    *
    * If the referent cannot be found, this BackendRef is invalid and must be
    * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
    * condition on the Route status is set to `status: False` and not configure
    * this backend in the underlying implementation.
-   *
    *
    * If there is a cross-namespace reference to an *existing* object
    * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -15430,19 +13298,39 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestMirror {
    * with the "RefNotPermitted" reason and not configure this backend in the
    * underlying implementation.
    *
-   *
    * In either error case, the Message of the `ResolvedRefs` Condition
    * should be used to provide more detail about the problem.
    *
-   *
    * Support: Extended for Kubernetes Service
-   *
    *
    * Support: Implementation-specific for any other resource
    *
    * @schema HttpRouteV1Beta1SpecRulesFiltersRequestMirror#backendRef
    */
   readonly backendRef: HttpRouteV1Beta1SpecRulesFiltersRequestMirrorBackendRef;
+
+  /**
+   * Fraction represents the fraction of requests that should be
+   * mirrored to BackendRef.
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema HttpRouteV1Beta1SpecRulesFiltersRequestMirror#fraction
+   */
+  readonly fraction?: HttpRouteV1Beta1SpecRulesFiltersRequestMirrorFraction;
+
+  /**
+   * Percent represents the percentage of requests that should be
+   * mirrored to BackendRef. Its minimum value is 0 (indicating 0% of
+   * requests) and its maximum value is 100 (indicating 100% of requests).
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema HttpRouteV1Beta1SpecRulesFiltersRequestMirror#percent
+   */
+  readonly percent?: number;
 
 }
 
@@ -15454,6 +13342,8 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestMirror(obj: HttpRo
   if (obj === undefined) { return undefined; }
   const result = {
     'backendRef': toJson_HttpRouteV1Beta1SpecRulesFiltersRequestMirrorBackendRef(obj.backendRef),
+    'fraction': toJson_HttpRouteV1Beta1SpecRulesFiltersRequestMirrorFraction(obj.fraction),
+    'percent': obj.percent,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -15464,7 +13354,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestMirror(obj: HttpRo
  * RequestRedirect defines a schema for a filter that responds to the
  * request with an HTTP redirection.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteV1Beta1SpecRulesFiltersRequestRedirect
@@ -15474,7 +13363,6 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestRedirect {
    * Hostname is the hostname to be used in the value of the `Location`
    * header in the response.
    * When empty, the hostname in the `Host` header of the request is used.
-   *
    *
    * Support: Core
    *
@@ -15487,7 +13375,6 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestRedirect {
    * The modified path is then used to construct the `Location` header. When
    * empty, the request path is used as-is.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteV1Beta1SpecRulesFiltersRequestRedirect#path
@@ -15498,10 +13385,8 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestRedirect {
    * Port is the port to be used in the value of the `Location`
    * header in the response.
    *
-   *
    * If no port is specified, the redirect port MUST be derived using the
    * following rules:
-   *
    *
    * * If redirect scheme is not-empty, the redirect port MUST be the well-known
    * port associated with the redirect scheme. Specifically "http" to port 80
@@ -15510,16 +13395,13 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestRedirect {
    * * If redirect scheme is empty, the redirect port MUST be the Gateway
    * Listener port.
    *
-   *
    * Implementations SHOULD NOT add the port number in the 'Location'
    * header in the following cases:
-   *
    *
    * * A Location header that will use HTTP (whether that is determined via
    * the Listener protocol or the Scheme field) _and_ use port 80.
    * * A Location header that will use HTTPS (whether that is determined via
    * the Listener protocol or the Scheme field) _and_ use port 443.
-   *
    *
    * Support: Extended
    *
@@ -15531,19 +13413,15 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestRedirect {
    * Scheme is the scheme to be used in the value of the `Location` header in
    * the response. When empty, the scheme of the request is used.
    *
-   *
    * Scheme redirects can affect the port of the redirect, for more information,
    * refer to the documentation for the port field of this filter.
-   *
    *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
    *
-   *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
    * Reason of `UnsupportedValue`.
-   *
    *
    * Support: Extended
    *
@@ -15554,15 +13432,12 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestRedirect {
   /**
    * StatusCode is the HTTP status code to be used in response.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
    * Reason of `UnsupportedValue`.
-   *
    *
    * Support: Core
    *
@@ -15594,7 +13469,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestRedirect(obj: Http
  * ResponseHeaderModifier defines a schema for a filter that modifies response
  * headers.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifier
@@ -15605,17 +13479,14 @@ export interface HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifier {
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -15631,17 +13502,14 @@ export interface HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifier {
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -15655,17 +13523,14 @@ export interface HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifier {
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -15697,16 +13562,13 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifier(ob
  * Type identifies the type of filter to apply. As with other API fields,
  * types are classified into three conformance levels:
  *
- *
  * - Core: Filter types and their corresponding configuration defined by
  * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
  * implementations must support core filters.
  *
- *
  * - Extended: Filter types and their corresponding configuration defined by
  * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
  * are encouraged to support extended filters.
- *
  *
  * - Implementation-specific: Filters that are defined and supported by
  * specific vendors.
@@ -15716,19 +13578,15 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifier(ob
  * is specified using the ExtensionRef field. `Type` should be set to
  * "ExtensionRef" for custom filters.
  *
- *
  * Implementers are encouraged to define custom implementation types to
  * extend the core API with implementation-specific behavior.
- *
  *
  * If a reference to a custom filter type cannot be resolved, the filter
  * MUST NOT be skipped. Instead, requests that would have been processed by
  * that filter MUST receive a HTTP error response.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -15749,11 +13607,12 @@ export enum HttpRouteV1Beta1SpecRulesFiltersType {
   URL_REWRITE = "URLRewrite",
   /** ExtensionRef */
   EXTENSION_REF = "ExtensionRef",
+  /** CORS */
+  CORS = "CORS",
 }
 
 /**
  * URLRewrite defines a schema for a filter that modifies a request during forwarding.
- *
  *
  * Support: Extended
  *
@@ -15764,7 +13623,6 @@ export interface HttpRouteV1Beta1SpecRulesFiltersUrlRewrite {
    * Hostname is the value to be used to replace the Host header value during
    * forwarding.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteV1Beta1SpecRulesFiltersUrlRewrite#hostname
@@ -15773,7 +13631,6 @@ export interface HttpRouteV1Beta1SpecRulesFiltersUrlRewrite {
 
   /**
    * Path defines a path rewrite.
-   *
    *
    * Support: Extended
    *
@@ -15807,15 +13664,13 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersUrlRewrite(obj: HttpRoute
 export interface HttpRouteV1Beta1SpecRulesMatchesHeaders {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, only the first
    * entry with an equivalent name MUST be considered for a match. Subsequent
    * entries with an equivalent header name MUST be ignored. Due to the
    * case-insensitivity of header names, "foo" and "Foo" are considered
    * equivalent.
-   *
    *
    * When a header is repeated in an HTTP request, it is
    * implementation-specific behavior as to how this is represented.
@@ -15830,12 +13685,9 @@ export interface HttpRouteV1Beta1SpecRulesMatchesHeaders {
   /**
    * Type specifies how to match against the value of the header.
    *
-   *
    * Support: Core (Exact)
    *
-   *
    * Support: Implementation-specific (RegularExpression)
-   *
    *
    * Since RegularExpression HeaderMatchType has implementation-specific
    * conformance, implementations can support POSIX, PCRE or any other dialects
@@ -15876,7 +13728,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesMatchesHeaders(obj: HttpRouteV1B
  * When specified, this route will be matched only if the request has the
  * specified method.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteV1Beta1SpecRulesMatchesMethod
@@ -15912,9 +13763,7 @@ export interface HttpRouteV1Beta1SpecRulesMatchesPath {
   /**
    * Type specifies how to match against the path Value.
    *
-   *
    * Support: Core (Exact, PathPrefix)
-   *
    *
    * Support: Implementation-specific (RegularExpression)
    *
@@ -15958,11 +13807,9 @@ export interface HttpRouteV1Beta1SpecRulesMatchesQueryParams {
    * exact string match. (See
    * https://tools.ietf.org/html/rfc7230#section-2.7.3).
    *
-   *
    * If multiple entries specify equivalent query param names, only the first
    * entry with an equivalent name MUST be considered for a match. Subsequent
    * entries with an equivalent query param name MUST be ignored.
-   *
    *
    * If a query param is repeated in an HTTP request, the behavior is
    * purposely left undefined, since different data planes have different
@@ -15970,7 +13817,6 @@ export interface HttpRouteV1Beta1SpecRulesMatchesQueryParams {
    * match against the first value of the param if the data plane supports it,
    * as this behavior is expected in other load balancing contexts outside of
    * the Gateway API.
-   *
    *
    * Users SHOULD NOT route traffic based on repeated query params to guard
    * themselves against potential differences in the implementations.
@@ -15982,12 +13828,9 @@ export interface HttpRouteV1Beta1SpecRulesMatchesQueryParams {
   /**
    * Type specifies how to match against the value of the query parameter.
    *
-   *
    * Support: Extended (Exact)
    *
-   *
    * Support: Implementation-specific (RegularExpression)
-   *
    *
    * Since RegularExpression QueryParamMatchType has Implementation-specific
    * conformance, implementations can support POSIX, PCRE or any other
@@ -16027,7 +13870,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesMatchesQueryParams(obj: HttpRout
  * CookieConfig provides configuration settings that are specific
  * to cookie-based session persistence.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig
@@ -16040,22 +13882,21 @@ export interface HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig {
    * attributes, while a session cookie is deleted when the current
    * session ends.
    *
-   *
    * When set to "Permanent", AbsoluteTimeout indicates the
    * cookie's lifetime via the Expires or Max-Age cookie attributes
    * and is required.
-   *
    *
    * When set to "Session", AbsoluteTimeout indicates the
    * absolute lifetime of the cookie tracked by the gateway and
    * is optional.
    *
+   * Defaults to "Session".
    *
    * Support: Core for "Session" type
    *
-   *
    * Support: Extended for "Permanent" type
    *
+   * @default Session".
    * @schema HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig#lifetimeType
    */
   readonly lifetimeType?: HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfigLifetimeType;
@@ -16081,9 +13922,7 @@ export function toJson_HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfig(o
  * the use a header or cookie. Defaults to cookie based session
  * persistence.
  *
- *
  * Support: Core for "Cookie" type
- *
  *
  * Support: Extended for "Header" type
  *
@@ -16098,14 +13937,258 @@ export enum HttpRouteV1Beta1SpecRulesSessionPersistenceType {
 }
 
 /**
+ * CORS defines a schema for a filter that responds to the
+ * cross-origin request based on HTTP response header.
+ *
+ * Support: Extended
+ *
+ * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors
+ */
+export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors {
+  /**
+   * AllowCredentials indicates whether the actual cross-origin request allows
+   * to include credentials.
+   *
+   * The only valid value for the `Access-Control-Allow-Credentials` response
+   * header is true (case-sensitive).
+   *
+   * If the credentials are not allowed in cross-origin requests, the gateway
+   * will omit the header `Access-Control-Allow-Credentials` entirely rather
+   * than setting its value to false.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors#allowCredentials
+   */
+  readonly allowCredentials?: boolean;
+
+  /**
+   * AllowHeaders indicates which HTTP request headers are supported for
+   * accessing the requested resource.
+   *
+   * Header names are not case sensitive.
+   *
+   * Multiple header names in the value of the `Access-Control-Allow-Headers`
+   * response header are separated by a comma (",").
+   *
+   * When the `AllowHeaders` field is configured with one or more headers, the
+   * gateway must return the `Access-Control-Allow-Headers` response header
+   * which value is present in the `AllowHeaders` field.
+   *
+   * If any header name in the `Access-Control-Request-Headers` request header
+   * is not included in the list of header names specified by the response
+   * header `Access-Control-Allow-Headers`, it will present an error on the
+   * client side.
+   *
+   * If any header name in the `Access-Control-Allow-Headers` response header
+   * does not recognize by the client, it will also occur an error on the
+   * client side.
+   *
+   * A wildcard indicates that the requests with all HTTP headers are allowed.
+   * The `Access-Control-Allow-Headers` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowHeaders` field
+   * specified with the `*` wildcard, the gateway must specify one or more
+   * HTTP headers in the value of the `Access-Control-Allow-Headers` response
+   * header. The value of the header `Access-Control-Allow-Headers` is same as
+   * the `Access-Control-Request-Headers` header provided by the client. If
+   * the header `Access-Control-Request-Headers` is not included in the
+   * request, the gateway will omit the `Access-Control-Allow-Headers`
+   * response header, instead of specifying the `*` wildcard. A Gateway
+   * implementation may choose to add implementation-specific default headers.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors#allowHeaders
+   */
+  readonly allowHeaders?: string[];
+
+  /**
+   * AllowMethods indicates which HTTP methods are supported for accessing the
+   * requested resource.
+   *
+   * Valid values are any method defined by RFC9110, along with the special
+   * value `*`, which represents all HTTP methods are allowed.
+   *
+   * Method names are case sensitive, so these values are also case-sensitive.
+   * (See https://www.rfc-editor.org/rfc/rfc2616#section-5.1.1)
+   *
+   * Multiple method names in the value of the `Access-Control-Allow-Methods`
+   * response header are separated by a comma (",").
+   *
+   * A CORS-safelisted method is a method that is `GET`, `HEAD`, or `POST`.
+   * (See https://fetch.spec.whatwg.org/#cors-safelisted-method) The
+   * CORS-safelisted methods are always allowed, regardless of whether they
+   * are specified in the `AllowMethods` field.
+   *
+   * When the `AllowMethods` field is configured with one or more methods, the
+   * gateway must return the `Access-Control-Allow-Methods` response header
+   * which value is present in the `AllowMethods` field.
+   *
+   * If the HTTP method of the `Access-Control-Request-Method` request header
+   * is not included in the list of methods specified by the response header
+   * `Access-Control-Allow-Methods`, it will present an error on the client
+   * side.
+   *
+   * The `Access-Control-Allow-Methods` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowMethods` field
+   * specified with the `*` wildcard, the gateway must specify one HTTP method
+   * in the value of the Access-Control-Allow-Methods response header. The
+   * value of the header `Access-Control-Allow-Methods` is same as the
+   * `Access-Control-Request-Method` header provided by the client. If the
+   * header `Access-Control-Request-Method` is not included in the request,
+   * the gateway will omit the `Access-Control-Allow-Methods` response header,
+   * instead of specifying the `*` wildcard. A Gateway implementation may
+   * choose to add implementation-specific default methods.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors#allowMethods
+   */
+  readonly allowMethods?: HttpRouteV1Beta1SpecRulesBackendRefsFiltersCorsAllowMethods[];
+
+  /**
+   * AllowOrigins indicates whether the response can be shared with requested
+   * resource from the given `Origin`.
+   *
+   * The `Origin` consists of a scheme and a host, with an optional port, and
+   * takes the form `<scheme>://<host>(:<port>)`.
+   *
+   * Valid values for scheme are: `http` and `https`.
+   *
+   * Valid values for port are any integer between 1 and 65535 (the list of
+   * available TCP/UDP ports). Note that, if not included, port `80` is
+   * assumed for `http` scheme origins, and port `443` is assumed for `https`
+   * origins. This may affect origin matching.
+   *
+   * The host part of the origin may contain the wildcard character `*`. These
+   * wildcard characters behave as follows:
+   *
+   * * `*` is a greedy match to the _left_, including any number of
+   * DNS labels to the left of its position. This also means that
+   * `*` will include any number of period `.` characters to the
+   * left of its position.
+   * * A wildcard by itself matches all hosts.
+   *
+   * An origin value that includes _only_ the `*` character indicates requests
+   * from all `Origin`s are allowed.
+   *
+   * When the `AllowOrigins` field is configured with multiple origins, it
+   * means the server supports clients from multiple origins. If the request
+   * `Origin` matches the configured allowed origins, the gateway must return
+   * the given `Origin` and sets value of the header
+   * `Access-Control-Allow-Origin` same as the `Origin` header provided by the
+   * client.
+   *
+   * The status code of a successful response to a "preflight" request is
+   * always an OK status (i.e., 204 or 200).
+   *
+   * If the request `Origin` does not match the configured allowed origins,
+   * the gateway returns 204/200 response but doesn't set the relevant
+   * cross-origin response headers. Alternatively, the gateway responds with
+   * 403 status to the "preflight" request is denied, coupled with omitting
+   * the CORS headers. The cross-origin request fails on the client side.
+   * Therefore, the client doesn't attempt the actual cross-origin request.
+   *
+   * The `Access-Control-Allow-Origin` response header can only use `*`
+   * wildcard as value when the `AllowCredentials` field is unspecified.
+   *
+   * When the `AllowCredentials` field is specified and `AllowOrigins` field
+   * specified with the `*` wildcard, the gateway must return a single origin
+   * in the value of the `Access-Control-Allow-Origin` response header,
+   * instead of specifying the `*` wildcard. The value of the header
+   * `Access-Control-Allow-Origin` is same as the `Origin` header provided by
+   * the client.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors#allowOrigins
+   */
+  readonly allowOrigins?: string[];
+
+  /**
+   * ExposeHeaders indicates which HTTP response headers can be exposed
+   * to client-side scripts in response to a cross-origin request.
+   *
+   * A CORS-safelisted response header is an HTTP header in a CORS response
+   * that it is considered safe to expose to the client scripts.
+   * The CORS-safelisted response headers include the following headers:
+   * `Cache-Control`
+   * `Content-Language`
+   * `Content-Length`
+   * `Content-Type`
+   * `Expires`
+   * `Last-Modified`
+   * `Pragma`
+   * (See https://fetch.spec.whatwg.org/#cors-safelisted-response-header-name)
+   * The CORS-safelisted response headers are exposed to client by default.
+   *
+   * When an HTTP header name is specified using the `ExposeHeaders` field,
+   * this additional header will be exposed as part of the response to the
+   * client.
+   *
+   * Header names are not case sensitive.
+   *
+   * Multiple header names in the value of the `Access-Control-Expose-Headers`
+   * response header are separated by a comma (",").
+   *
+   * A wildcard indicates that the responses with all HTTP headers are exposed
+   * to clients. The `Access-Control-Expose-Headers` response header can only
+   * use `*` wildcard as value when the `AllowCredentials` field is
+   * unspecified.
+   *
+   * Support: Extended
+   *
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors#exposeHeaders
+   */
+  readonly exposeHeaders?: string[];
+
+  /**
+   * MaxAge indicates the duration (in seconds) for the client to cache the
+   * results of a "preflight" request.
+   *
+   * The information provided by the `Access-Control-Allow-Methods` and
+   * `Access-Control-Allow-Headers` response headers can be cached by the
+   * client until the time specified by `Access-Control-Max-Age` elapses.
+   *
+   * The default value of `Access-Control-Max-Age` response header is 5
+   * (seconds).
+   *
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors#maxAge
+   */
+  readonly maxAge?: number;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors(obj: HttpRouteV1Beta1SpecRulesBackendRefsFiltersCors | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'allowCredentials': obj.allowCredentials,
+    'allowHeaders': obj.allowHeaders?.map(y => y),
+    'allowMethods': obj.allowMethods?.map(y => y),
+    'allowOrigins': obj.allowOrigins?.map(y => y),
+    'exposeHeaders': obj.exposeHeaders?.map(y => y),
+    'maxAge': obj.maxAge,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * ExtensionRef is an optional, implementation-specific extension to the
  * "filter" behavior.  For example, resource "myroutefilter" in group
  * "networking.example.net"). ExtensionRef MUST NOT be used for core and
  * extended filters.
  *
- *
  * This filter can be used multiple times within the same rule.
- *
  *
  * Support: Implementation-specific
  *
@@ -16156,7 +14239,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersExtensionRef(o
  * RequestHeaderModifier defines a schema for a filter that modifies request
  * headers.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderModifier
@@ -16167,17 +14249,14 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderModifie
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -16193,17 +14272,14 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderModifie
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -16217,17 +14293,14 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderModifie
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -16260,11 +14333,9 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderM
  * Requests are sent to the specified destination, but responses from
  * that destination are ignored.
  *
- *
  * This filter can be used multiple times within the same rule. Note that
  * not all implementations will be able to support mirroring to multiple
  * backends.
- *
  *
  * Support: Extended
  *
@@ -16274,17 +14345,14 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirror {
   /**
    * BackendRef references a resource where mirrored requests are sent.
    *
-   *
    * Mirrored requests must be sent only to a single destination endpoint
    * within this BackendRef, irrespective of how many endpoints are present
    * within this BackendRef.
-   *
    *
    * If the referent cannot be found, this BackendRef is invalid and must be
    * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
    * condition on the Route status is set to `status: False` and not configure
    * this backend in the underlying implementation.
-   *
    *
    * If there is a cross-namespace reference to an *existing* object
    * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -16292,19 +14360,39 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirror {
    * with the "RefNotPermitted" reason and not configure this backend in the
    * underlying implementation.
    *
-   *
    * In either error case, the Message of the `ResolvedRefs` Condition
    * should be used to provide more detail about the problem.
    *
-   *
    * Support: Extended for Kubernetes Service
-   *
    *
    * Support: Implementation-specific for any other resource
    *
    * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirror#backendRef
    */
   readonly backendRef: HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorBackendRef;
+
+  /**
+   * Fraction represents the fraction of requests that should be
+   * mirrored to BackendRef.
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirror#fraction
+   */
+  readonly fraction?: HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorFraction;
+
+  /**
+   * Percent represents the percentage of requests that should be
+   * mirrored to BackendRef. Its minimum value is 0 (indicating 0% of
+   * requests) and its maximum value is 100 (indicating 100% of requests).
+   *
+   * Only one of Fraction or Percent may be specified. If neither field
+   * is specified, 100% of requests will be mirrored.
+   *
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirror#percent
+   */
+  readonly percent?: number;
 
 }
 
@@ -16316,6 +14404,8 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirror(
   if (obj === undefined) { return undefined; }
   const result = {
     'backendRef': toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorBackendRef(obj.backendRef),
+    'fraction': toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorFraction(obj.fraction),
+    'percent': obj.percent,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -16326,7 +14416,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirror(
  * RequestRedirect defines a schema for a filter that responds to the
  * request with an HTTP redirection.
  *
- *
  * Support: Core
  *
  * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirect
@@ -16336,7 +14425,6 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirect {
    * Hostname is the hostname to be used in the value of the `Location`
    * header in the response.
    * When empty, the hostname in the `Host` header of the request is used.
-   *
    *
    * Support: Core
    *
@@ -16349,7 +14437,6 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirect {
    * The modified path is then used to construct the `Location` header. When
    * empty, the request path is used as-is.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirect#path
@@ -16360,10 +14447,8 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirect {
    * Port is the port to be used in the value of the `Location`
    * header in the response.
    *
-   *
    * If no port is specified, the redirect port MUST be derived using the
    * following rules:
-   *
    *
    * * If redirect scheme is not-empty, the redirect port MUST be the well-known
    * port associated with the redirect scheme. Specifically "http" to port 80
@@ -16372,16 +14457,13 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirect {
    * * If redirect scheme is empty, the redirect port MUST be the Gateway
    * Listener port.
    *
-   *
    * Implementations SHOULD NOT add the port number in the 'Location'
    * header in the following cases:
-   *
    *
    * * A Location header that will use HTTP (whether that is determined via
    * the Listener protocol or the Scheme field) _and_ use port 80.
    * * A Location header that will use HTTPS (whether that is determined via
    * the Listener protocol or the Scheme field) _and_ use port 443.
-   *
    *
    * Support: Extended
    *
@@ -16393,19 +14475,15 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirect {
    * Scheme is the scheme to be used in the value of the `Location` header in
    * the response. When empty, the scheme of the request is used.
    *
-   *
    * Scheme redirects can affect the port of the redirect, for more information,
    * refer to the documentation for the port field of this filter.
-   *
    *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
    *
-   *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
    * Reason of `UnsupportedValue`.
-   *
    *
    * Support: Extended
    *
@@ -16416,15 +14494,12 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirect {
   /**
    * StatusCode is the HTTP status code to be used in response.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
    * Reason of `UnsupportedValue`.
-   *
    *
    * Support: Core
    *
@@ -16456,7 +14531,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirec
  * ResponseHeaderModifier defines a schema for a filter that modifies response
  * headers.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeaderModifier
@@ -16467,17 +14541,14 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeaderModifi
    * before the action. It appends to any existing values associated
    * with the header name.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * add:
    * - name: "my-header"
    * value: "bar,baz"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -16493,17 +14564,14 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeaderModifi
    * names are case-insensitive (see
    * https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header1: foo
    * my-header2: bar
    * my-header3: baz
    *
-   *
    * Config:
    * remove: ["my-header1", "my-header3"]
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -16517,17 +14585,14 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeaderModifi
    * Set overwrites the request with the given header (name, value)
    * before the action.
    *
-   *
    * Input:
    * GET /foo HTTP/1.1
    * my-header: foo
-   *
    *
    * Config:
    * set:
    * - name: "my-header"
    * value: "bar"
-   *
    *
    * Output:
    * GET /foo HTTP/1.1
@@ -16559,16 +14624,13 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeader
  * Type identifies the type of filter to apply. As with other API fields,
  * types are classified into three conformance levels:
  *
- *
  * - Core: Filter types and their corresponding configuration defined by
  * "Support: Core" in this package, e.g. "RequestHeaderModifier". All
  * implementations must support core filters.
  *
- *
  * - Extended: Filter types and their corresponding configuration defined by
  * "Support: Extended" in this package, e.g. "RequestMirror". Implementers
  * are encouraged to support extended filters.
- *
  *
  * - Implementation-specific: Filters that are defined and supported by
  * specific vendors.
@@ -16578,19 +14640,15 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeader
  * is specified using the ExtensionRef field. `Type` should be set to
  * "ExtensionRef" for custom filters.
  *
- *
  * Implementers are encouraged to define custom implementation types to
  * extend the core API with implementation-specific behavior.
- *
  *
  * If a reference to a custom filter type cannot be resolved, the filter
  * MUST NOT be skipped. Instead, requests that would have been processed by
  * that filter MUST receive a HTTP error response.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -16611,11 +14669,12 @@ export enum HttpRouteV1Beta1SpecRulesBackendRefsFiltersType {
   URL_REWRITE = "URLRewrite",
   /** ExtensionRef */
   EXTENSION_REF = "ExtensionRef",
+  /** CORS */
+  CORS = "CORS",
 }
 
 /**
  * URLRewrite defines a schema for a filter that modifies a request during forwarding.
- *
  *
  * Support: Extended
  *
@@ -16626,7 +14685,6 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewrite {
    * Hostname is the value to be used to replace the Host header value during
    * forwarding.
    *
-   *
    * Support: Extended
    *
    * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewrite#hostname
@@ -16635,7 +14693,6 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewrite {
 
   /**
    * Path defines a path rewrite.
-   *
    *
    * Support: Extended
    *
@@ -16661,6 +14718,32 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewrite(obj
 /* eslint-enable max-len, quote-props */
 
 /**
+ * @schema HttpRouteV1Beta1SpecRulesFiltersCorsAllowMethods
+ */
+export enum HttpRouteV1Beta1SpecRulesFiltersCorsAllowMethods {
+  /** GET */
+  GET = "GET",
+  /** HEAD */
+  HEAD = "HEAD",
+  /** POST */
+  POST = "POST",
+  /** PUT */
+  PUT = "PUT",
+  /** DELETE */
+  DELETE = "DELETE",
+  /** CONNECT */
+  CONNECT = "CONNECT",
+  /** OPTIONS */
+  OPTIONS = "OPTIONS",
+  /** TRACE */
+  TRACE = "TRACE",
+  /** PATCH */
+  PATCH = "PATCH",
+  /** * */
+  VALUE_ASTERISK = "*",
+}
+
+/**
  * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
  *
  * @schema HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifierAdd
@@ -16668,8 +14751,7 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewrite(obj
 export interface HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -16713,8 +14795,7 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifierAdd(
 export interface HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -16753,17 +14834,14 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifierSet(
 /**
  * BackendRef references a resource where mirrored requests are sent.
  *
- *
  * Mirrored requests must be sent only to a single destination endpoint
  * within this BackendRef, irrespective of how many endpoints are present
  * within this BackendRef.
- *
  *
  * If the referent cannot be found, this BackendRef is invalid and must be
  * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
  * condition on the Route status is set to `status: False` and not configure
  * this backend in the underlying implementation.
- *
  *
  * If there is a cross-namespace reference to an *existing* object
  * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -16771,13 +14849,10 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestHeaderModifierSet(
  * with the "RefNotPermitted" reason and not configure this backend in the
  * underlying implementation.
  *
- *
  * In either error case, the Message of the `ResolvedRefs` Condition
  * should be used to provide more detail about the problem.
  *
- *
  * Support: Extended for Kubernetes Service
- *
  *
  * Support: Implementation-specific for any other resource
  *
@@ -16796,9 +14871,7 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestMirrorBackendRef {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -16806,9 +14879,7 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestMirrorBackendRef {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -16828,12 +14899,10 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestMirrorBackendRef {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -16873,10 +14942,46 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestMirrorBackendRef(o
 /* eslint-enable max-len, quote-props */
 
 /**
+ * Fraction represents the fraction of requests that should be
+ * mirrored to BackendRef.
+ *
+ * Only one of Fraction or Percent may be specified. If neither field
+ * is specified, 100% of requests will be mirrored.
+ *
+ * @schema HttpRouteV1Beta1SpecRulesFiltersRequestMirrorFraction
+ */
+export interface HttpRouteV1Beta1SpecRulesFiltersRequestMirrorFraction {
+  /**
+   * @schema HttpRouteV1Beta1SpecRulesFiltersRequestMirrorFraction#denominator
+   */
+  readonly denominator?: number;
+
+  /**
+   * @schema HttpRouteV1Beta1SpecRulesFiltersRequestMirrorFraction#numerator
+   */
+  readonly numerator: number;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteV1Beta1SpecRulesFiltersRequestMirrorFraction' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestMirrorFraction(obj: HttpRouteV1Beta1SpecRulesFiltersRequestMirrorFraction | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'denominator': obj.denominator,
+    'numerator': obj.numerator,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * Path defines parameters used to modify the path of the incoming request.
  * The modified path is then used to construct the `Location` header. When
  * empty, the request path is used as-is.
- *
  *
  * Support: Extended
  *
@@ -16897,32 +15002,17 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestRedirectPath {
    * to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch
    * of "/xyz" would be modified to "/xyz/bar".
    *
-   *
    * Note that this matches the behavior of the PathPrefix match type. This
    * matches full path elements. A path element refers to the list of labels
    * in the path split by the `/` separator. When specified, a trailing `/` is
    * ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all
    * match the prefix `/abc`, but the path `/abcd` would not.
    *
-   *
    * ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch.
    * Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in
    * the implementation setting the Accepted Condition for the Route to `status: False`.
    *
-   *
    * Request Path | Prefix Match | Replace Prefix | Modified Path
-   * -------------|--------------|----------------|----------
-   * /foo/bar     | /foo         | /xyz           | /xyz/bar
-   * /foo/bar     | /foo         | /xyz/          | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz           | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz/          | /xyz/bar
-   * /foo         | /foo         | /xyz           | /xyz
-   * /foo/        | /foo         | /xyz           | /xyz/
-   * /foo/bar     | /foo         | <empty string> | /bar
-   * /foo/        | /foo         | <empty string> | /
-   * /foo         | /foo         | <empty string> | /
-   * /foo/        | /foo         | /              | /
-   * /foo         | /foo         | /              | /
    *
    * @schema HttpRouteV1Beta1SpecRulesFiltersRequestRedirectPath#replacePrefixMatch
    */
@@ -16932,10 +15022,8 @@ export interface HttpRouteV1Beta1SpecRulesFiltersRequestRedirectPath {
    * Type defines the type of path modifier. Additional types may be
    * added in a future release of the API.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -16967,19 +15055,15 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersRequestRedirectPath(obj: 
  * Scheme is the scheme to be used in the value of the `Location` header in
  * the response. When empty, the scheme of the request is used.
  *
- *
  * Scheme redirects can affect the port of the redirect, for more information,
  * refer to the documentation for the port field of this filter.
- *
  *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
  *
- *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
  * Reason of `UnsupportedValue`.
- *
  *
  * Support: Extended
  *
@@ -16995,15 +15079,12 @@ export enum HttpRouteV1Beta1SpecRulesFiltersRequestRedirectScheme {
 /**
  * StatusCode is the HTTP status code to be used in response.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
  * Reason of `UnsupportedValue`.
- *
  *
  * Support: Core
  *
@@ -17024,8 +15105,7 @@ export enum HttpRouteV1Beta1SpecRulesFiltersRequestRedirectStatusCode {
 export interface HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -17069,8 +15149,7 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifierAdd
 export interface HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -17109,7 +15188,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersResponseHeaderModifierSet
 /**
  * Path defines a path rewrite.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteV1Beta1SpecRulesFiltersUrlRewritePath
@@ -17129,32 +15207,17 @@ export interface HttpRouteV1Beta1SpecRulesFiltersUrlRewritePath {
    * to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch
    * of "/xyz" would be modified to "/xyz/bar".
    *
-   *
    * Note that this matches the behavior of the PathPrefix match type. This
    * matches full path elements. A path element refers to the list of labels
    * in the path split by the `/` separator. When specified, a trailing `/` is
    * ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all
    * match the prefix `/abc`, but the path `/abcd` would not.
    *
-   *
    * ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch.
    * Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in
    * the implementation setting the Accepted Condition for the Route to `status: False`.
    *
-   *
    * Request Path | Prefix Match | Replace Prefix | Modified Path
-   * -------------|--------------|----------------|----------
-   * /foo/bar     | /foo         | /xyz           | /xyz/bar
-   * /foo/bar     | /foo         | /xyz/          | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz           | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz/          | /xyz/bar
-   * /foo         | /foo         | /xyz           | /xyz
-   * /foo/        | /foo         | /xyz           | /xyz/
-   * /foo/bar     | /foo         | <empty string> | /bar
-   * /foo/        | /foo         | <empty string> | /
-   * /foo         | /foo         | <empty string> | /
-   * /foo/        | /foo         | /              | /
-   * /foo         | /foo         | /              | /
    *
    * @schema HttpRouteV1Beta1SpecRulesFiltersUrlRewritePath#replacePrefixMatch
    */
@@ -17164,10 +15227,8 @@ export interface HttpRouteV1Beta1SpecRulesFiltersUrlRewritePath {
    * Type defines the type of path modifier. Additional types may be
    * added in a future release of the API.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -17198,12 +15259,9 @@ export function toJson_HttpRouteV1Beta1SpecRulesFiltersUrlRewritePath(obj: HttpR
 /**
  * Type specifies how to match against the value of the header.
  *
- *
  * Support: Core (Exact)
  *
- *
  * Support: Implementation-specific (RegularExpression)
- *
  *
  * Since RegularExpression HeaderMatchType has implementation-specific
  * conformance, implementations can support POSIX, PCRE or any other dialects
@@ -17222,9 +15280,7 @@ export enum HttpRouteV1Beta1SpecRulesMatchesHeadersType {
 /**
  * Type specifies how to match against the path Value.
  *
- *
  * Support: Core (Exact, PathPrefix)
- *
  *
  * Support: Implementation-specific (RegularExpression)
  *
@@ -17242,12 +15298,9 @@ export enum HttpRouteV1Beta1SpecRulesMatchesPathType {
 /**
  * Type specifies how to match against the value of the query parameter.
  *
- *
  * Support: Extended (Exact)
  *
- *
  * Support: Implementation-specific (RegularExpression)
- *
  *
  * Since RegularExpression QueryParamMatchType has Implementation-specific
  * conformance, implementations can support POSIX, PCRE or any other
@@ -17270,22 +15323,21 @@ export enum HttpRouteV1Beta1SpecRulesMatchesQueryParamsType {
  * attributes, while a session cookie is deleted when the current
  * session ends.
  *
- *
  * When set to "Permanent", AbsoluteTimeout indicates the
  * cookie's lifetime via the Expires or Max-Age cookie attributes
  * and is required.
- *
  *
  * When set to "Session", AbsoluteTimeout indicates the
  * absolute lifetime of the cookie tracked by the gateway and
  * is optional.
  *
+ * Defaults to "Session".
  *
  * Support: Core for "Session" type
  *
- *
  * Support: Extended for "Permanent" type
  *
+ * @default Session".
  * @schema HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfigLifetimeType
  */
 export enum HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfigLifetimeType {
@@ -17296,6 +15348,32 @@ export enum HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfigLifetimeType 
 }
 
 /**
+ * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersCorsAllowMethods
+ */
+export enum HttpRouteV1Beta1SpecRulesBackendRefsFiltersCorsAllowMethods {
+  /** GET */
+  GET = "GET",
+  /** HEAD */
+  HEAD = "HEAD",
+  /** POST */
+  POST = "POST",
+  /** PUT */
+  PUT = "PUT",
+  /** DELETE */
+  DELETE = "DELETE",
+  /** CONNECT */
+  CONNECT = "CONNECT",
+  /** OPTIONS */
+  OPTIONS = "OPTIONS",
+  /** TRACE */
+  TRACE = "TRACE",
+  /** PATCH */
+  PATCH = "PATCH",
+  /** * */
+  VALUE_ASTERISK = "*",
+}
+
+/**
  * HTTPHeader represents an HTTP Header name and value as defined by RFC 7230.
  *
  * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderModifierAdd
@@ -17303,8 +15381,7 @@ export enum HttpRouteV1Beta1SpecRulesSessionPersistenceCookieConfigLifetimeType 
 export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -17348,8 +15425,7 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderM
 export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -17388,17 +15464,14 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderM
 /**
  * BackendRef references a resource where mirrored requests are sent.
  *
- *
  * Mirrored requests must be sent only to a single destination endpoint
  * within this BackendRef, irrespective of how many endpoints are present
  * within this BackendRef.
- *
  *
  * If the referent cannot be found, this BackendRef is invalid and must be
  * dropped from the Gateway. The controller must ensure the "ResolvedRefs"
  * condition on the Route status is set to `status: False` and not configure
  * this backend in the underlying implementation.
- *
  *
  * If there is a cross-namespace reference to an *existing* object
  * that is not allowed by a ReferenceGrant, the controller must ensure the
@@ -17406,13 +15479,10 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestHeaderM
  * with the "RefNotPermitted" reason and not configure this backend in the
  * underlying implementation.
  *
- *
  * In either error case, the Message of the `ResolvedRefs` Condition
  * should be used to provide more detail about the problem.
  *
- *
  * Support: Extended for Kubernetes Service
- *
  *
  * Support: Implementation-specific for any other resource
  *
@@ -17431,9 +15501,7 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorBackend
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -17441,9 +15509,7 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorBackend
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -17463,12 +15529,10 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorBackend
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -17508,10 +15572,46 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorB
 /* eslint-enable max-len, quote-props */
 
 /**
+ * Fraction represents the fraction of requests that should be
+ * mirrored to BackendRef.
+ *
+ * Only one of Fraction or Percent may be specified. If neither field
+ * is specified, 100% of requests will be mirrored.
+ *
+ * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorFraction
+ */
+export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorFraction {
+  /**
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorFraction#denominator
+   */
+  readonly denominator?: number;
+
+  /**
+   * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorFraction#numerator
+   */
+  readonly numerator: number;
+
+}
+
+/**
+ * Converts an object of type 'HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorFraction' to JSON representation.
+ */
+/* eslint-disable max-len, quote-props */
+export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorFraction(obj: HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestMirrorFraction | undefined): Record<string, any> | undefined {
+  if (obj === undefined) { return undefined; }
+  const result = {
+    'denominator': obj.denominator,
+    'numerator': obj.numerator,
+  };
+  // filter undefined values
+  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
+}
+/* eslint-enable max-len, quote-props */
+
+/**
  * Path defines parameters used to modify the path of the incoming request.
  * The modified path is then used to construct the `Location` header. When
  * empty, the request path is used as-is.
- *
  *
  * Support: Extended
  *
@@ -17532,32 +15632,17 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirectPath 
    * to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch
    * of "/xyz" would be modified to "/xyz/bar".
    *
-   *
    * Note that this matches the behavior of the PathPrefix match type. This
    * matches full path elements. A path element refers to the list of labels
    * in the path split by the `/` separator. When specified, a trailing `/` is
    * ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all
    * match the prefix `/abc`, but the path `/abcd` would not.
    *
-   *
    * ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch.
    * Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in
    * the implementation setting the Accepted Condition for the Route to `status: False`.
    *
-   *
    * Request Path | Prefix Match | Replace Prefix | Modified Path
-   * -------------|--------------|----------------|----------
-   * /foo/bar     | /foo         | /xyz           | /xyz/bar
-   * /foo/bar     | /foo         | /xyz/          | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz           | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz/          | /xyz/bar
-   * /foo         | /foo         | /xyz           | /xyz
-   * /foo/        | /foo         | /xyz           | /xyz/
-   * /foo/bar     | /foo         | <empty string> | /bar
-   * /foo/        | /foo         | <empty string> | /
-   * /foo         | /foo         | <empty string> | /
-   * /foo/        | /foo         | /              | /
-   * /foo         | /foo         | /              | /
    *
    * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirectPath#replacePrefixMatch
    */
@@ -17567,10 +15652,8 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirectPath 
    * Type defines the type of path modifier. Additional types may be
    * added in a future release of the API.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -17602,19 +15685,15 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirec
  * Scheme is the scheme to be used in the value of the `Location` header in
  * the response. When empty, the scheme of the request is used.
  *
- *
  * Scheme redirects can affect the port of the redirect, for more information,
  * refer to the documentation for the port field of this filter.
- *
  *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
  *
- *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
  * Reason of `UnsupportedValue`.
- *
  *
  * Support: Extended
  *
@@ -17630,15 +15709,12 @@ export enum HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirectScheme {
 /**
  * StatusCode is the HTTP status code to be used in response.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
  * Reason of `UnsupportedValue`.
- *
  *
  * Support: Core
  *
@@ -17659,8 +15735,7 @@ export enum HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirectStatusCode
 export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeaderModifierAdd {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -17704,8 +15779,7 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeader
 export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeaderModifierSet {
   /**
    * Name is the name of the HTTP Header to be matched. Name matching MUST be
-   * case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
-   *
+   * case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
    *
    * If multiple entries specify equivalent header names, the first entry with
    * an equivalent name MUST be considered for a match. Subsequent entries
@@ -17744,7 +15818,6 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersResponseHeader
 /**
  * Path defines a path rewrite.
  *
- *
  * Support: Extended
  *
  * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewritePath
@@ -17764,32 +15837,17 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewritePath {
    * to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch
    * of "/xyz" would be modified to "/xyz/bar".
    *
-   *
    * Note that this matches the behavior of the PathPrefix match type. This
    * matches full path elements. A path element refers to the list of labels
    * in the path split by the `/` separator. When specified, a trailing `/` is
    * ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all
    * match the prefix `/abc`, but the path `/abcd` would not.
    *
-   *
    * ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch.
    * Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in
    * the implementation setting the Accepted Condition for the Route to `status: False`.
    *
-   *
    * Request Path | Prefix Match | Replace Prefix | Modified Path
-   * -------------|--------------|----------------|----------
-   * /foo/bar     | /foo         | /xyz           | /xyz/bar
-   * /foo/bar     | /foo         | /xyz/          | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz           | /xyz/bar
-   * /foo/bar     | /foo/        | /xyz/          | /xyz/bar
-   * /foo         | /foo         | /xyz           | /xyz
-   * /foo/        | /foo         | /xyz           | /xyz/
-   * /foo/bar     | /foo         | <empty string> | /bar
-   * /foo/        | /foo         | <empty string> | /
-   * /foo         | /foo         | <empty string> | /
-   * /foo/        | /foo         | /              | /
-   * /foo         | /foo         | /              | /
    *
    * @schema HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewritePath#replacePrefixMatch
    */
@@ -17799,10 +15857,8 @@ export interface HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewritePath {
    * Type defines the type of path modifier. Additional types may be
    * added in a future release of the API.
    *
-   *
    * Note that values may be added to this enum, implementations
    * must ensure that unknown values will not cause a crash.
-   *
    *
    * Unknown values here must result in the implementation setting the
    * Accepted Condition for the Route to `status: False`, with a
@@ -17834,10 +15890,8 @@ export function toJson_HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewritePath
  * Type defines the type of path modifier. Additional types may be
  * added in a future release of the API.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -17856,10 +15910,8 @@ export enum HttpRouteV1Beta1SpecRulesFiltersRequestRedirectPathType {
  * Type defines the type of path modifier. Additional types may be
  * added in a future release of the API.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -17878,10 +15930,8 @@ export enum HttpRouteV1Beta1SpecRulesFiltersUrlRewritePathType {
  * Type defines the type of path modifier. Additional types may be
  * added in a future release of the API.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -17900,10 +15950,8 @@ export enum HttpRouteV1Beta1SpecRulesBackendRefsFiltersRequestRedirectPathType {
  * Type defines the type of path modifier. Additional types may be
  * added in a future release of the API.
  *
- *
  * Note that values may be added to this enum, implementations
  * must ensure that unknown values will not cause a crash.
- *
  *
  * Unknown values here must result in the implementation setting the
  * Accepted Condition for the Route to `status: False`, with a
@@ -17924,19 +15972,12 @@ export enum HttpRouteV1Beta1SpecRulesBackendRefsFiltersUrlRewritePathType {
 trusted to reference the specified kinds of resources in the same namespace
 as the policy.
 
-
 Each ReferenceGrant can be used to represent a unique trust relationship.
 Additional Reference Grants can be used to add to the set of trusted
 sources of inbound references for the namespace they are defined within.
 
-
-A ReferenceGrant is required for all cross-namespace references in Gateway API
-(with the exception of cross-namespace Route-Gateway attachment, which is
-governed by the AllowedRoutes configuration on the Gateway, and cross-namespace
-Service ParentRefs on a "consumer" mesh Route, which defines routing rules
-applicable only to workloads in the Route namespace). ReferenceGrants allowing
-a reference from a Route to a Service are only applicable to BackendRefs.
-
+All cross-namespace references in Gateway API (with the exception of cross-namespace
+Gateway-route attachment) require a ReferenceGrant.
 
 ReferenceGrant is a form of runtime verification allowing users to assert
 which cross-namespace object references are permitted. Implementations that
@@ -17951,7 +15992,7 @@ export class ReferenceGrant extends ApiObject {
    * Returns the apiVersion and kind for "ReferenceGrant"
    */
   public static readonly GVK: GroupVersionKind = {
-    apiVersion: 'gateway.networking.k8s.io/v1alpha2',
+    apiVersion: 'gateway.networking.k8s.io/v1beta1',
     kind: 'ReferenceGrant',
   }
 
@@ -18000,19 +16041,12 @@ export class ReferenceGrant extends ApiObject {
  * trusted to reference the specified kinds of resources in the same namespace
  * as the policy.
  *
- *
  * Each ReferenceGrant can be used to represent a unique trust relationship.
  * Additional Reference Grants can be used to add to the set of trusted
  * sources of inbound references for the namespace they are defined within.
  *
- *
- * A ReferenceGrant is required for all cross-namespace references in Gateway API
- * (with the exception of cross-namespace Route-Gateway attachment, which is
- * governed by the AllowedRoutes configuration on the Gateway, and cross-namespace
- * Service ParentRefs on a "consumer" mesh Route, which defines routing rules
- * applicable only to workloads in the Route namespace). ReferenceGrants allowing
- * a reference from a Route to a Service are only applicable to BackendRefs.
- *
+ * All cross-namespace references in Gateway API (with the exception of cross-namespace
+ * Gateway-route attachment) require a ReferenceGrant.
  *
  * ReferenceGrant is a form of runtime verification allowing users to assert
  * which cross-namespace object references are permitted. Implementations that
@@ -18064,7 +16098,6 @@ export interface ReferenceGrantSpec {
    * to be an additional place that references can be valid from, or to put
    * this another way, entries MUST be combined using OR.
    *
-   *
    * Support: Core
    *
    * @schema ReferenceGrantSpec#from
@@ -18076,7 +16109,6 @@ export interface ReferenceGrantSpec {
    * described in "From". Each entry in this list MUST be considered to be an
    * additional place that references can be valid to, or to put this another
    * way, entries MUST be combined using OR.
-   *
    *
    * Support: Core
    *
@@ -18111,7 +16143,6 @@ export interface ReferenceGrantSpecFrom {
    * Group is the group of the referent.
    * When empty, the Kubernetes core API group is inferred.
    *
-   *
    * Support: Core
    *
    * @schema ReferenceGrantSpecFrom#group
@@ -18123,15 +16154,11 @@ export interface ReferenceGrantSpecFrom {
    * additional resources, the following types are part of the "Core"
    * support level for this field.
    *
-   *
    * When used to permit a SecretObjectReference:
-   *
    *
    * * Gateway
    *
-   *
    * When used to permit a BackendObjectReference:
-   *
    *
    * * GRPCRoute
    * * HTTPRoute
@@ -18145,7 +16172,6 @@ export interface ReferenceGrantSpecFrom {
 
   /**
    * Namespace is the namespace of the referent.
-   *
    *
    * Support: Core
    *
@@ -18182,7 +16208,6 @@ export interface ReferenceGrantSpecTo {
    * Group is the group of the referent.
    * When empty, the Kubernetes core API group is inferred.
    *
-   *
    * Support: Core
    *
    * @schema ReferenceGrantSpecTo#group
@@ -18193,7 +16218,6 @@ export interface ReferenceGrantSpecTo {
    * Kind is the kind of the referent. Although implementations may support
    * additional resources, the following types are part of the "Core"
    * support level for this field:
-   *
    *
    * * Secret when used to permit a SecretObjectReference
    * * Service when used to permit a BackendObjectReference
@@ -18218,309 +16242,6 @@ export interface ReferenceGrantSpecTo {
  */
 /* eslint-disable max-len, quote-props */
 export function toJson_ReferenceGrantSpecTo(obj: ReferenceGrantSpecTo | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'group': obj.group,
-    'kind': obj.kind,
-    'name': obj.name,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-
-/**
- * ReferenceGrant identifies kinds of resources in other namespaces that are
-trusted to reference the specified kinds of resources in the same namespace
-as the policy.
-
-
-Each ReferenceGrant can be used to represent a unique trust relationship.
-Additional Reference Grants can be used to add to the set of trusted
-sources of inbound references for the namespace they are defined within.
-
-
-All cross-namespace references in Gateway API (with the exception of cross-namespace
-Gateway-route attachment) require a ReferenceGrant.
-
-
-ReferenceGrant is a form of runtime verification allowing users to assert
-which cross-namespace object references are permitted. Implementations that
-support ReferenceGrant MUST NOT permit cross-namespace references which have
-no grant, and MUST respond to the removal of a grant by revoking the access
-that the grant allowed.
- *
- * @schema ReferenceGrantV1Beta1
- */
-export class ReferenceGrantV1Beta1 extends ApiObject {
-  /**
-   * Returns the apiVersion and kind for "ReferenceGrantV1Beta1"
-   */
-  public static readonly GVK: GroupVersionKind = {
-    apiVersion: 'gateway.networking.k8s.io/v1beta1',
-    kind: 'ReferenceGrant',
-  }
-
-  /**
-   * Renders a Kubernetes manifest for "ReferenceGrantV1Beta1".
-   *
-   * This can be used to inline resource manifests inside other objects (e.g. as templates).
-   *
-   * @param props initialization props
-   */
-  public static manifest(props: ReferenceGrantV1Beta1Props = {}): any {
-    return {
-      ...ReferenceGrantV1Beta1.GVK,
-      ...toJson_ReferenceGrantV1Beta1Props(props),
-    };
-  }
-
-  /**
-   * Defines a "ReferenceGrantV1Beta1" API object
-   * @param scope the scope in which to define this object
-   * @param id a scope-local name for the object
-   * @param props initialization props
-   */
-  public constructor(scope: Construct, id: string, props: ReferenceGrantV1Beta1Props = {}) {
-    super(scope, id, {
-      ...ReferenceGrantV1Beta1.GVK,
-      ...props,
-    });
-  }
-
-  /**
-   * Renders the object to Kubernetes JSON.
-   */
-  public toJson(): any {
-    const resolved = super.toJson();
-
-    return {
-      ...ReferenceGrantV1Beta1.GVK,
-      ...toJson_ReferenceGrantV1Beta1Props(resolved),
-    };
-  }
-}
-
-/**
- * ReferenceGrant identifies kinds of resources in other namespaces that are
- * trusted to reference the specified kinds of resources in the same namespace
- * as the policy.
- *
- *
- * Each ReferenceGrant can be used to represent a unique trust relationship.
- * Additional Reference Grants can be used to add to the set of trusted
- * sources of inbound references for the namespace they are defined within.
- *
- *
- * All cross-namespace references in Gateway API (with the exception of cross-namespace
- * Gateway-route attachment) require a ReferenceGrant.
- *
- *
- * ReferenceGrant is a form of runtime verification allowing users to assert
- * which cross-namespace object references are permitted. Implementations that
- * support ReferenceGrant MUST NOT permit cross-namespace references which have
- * no grant, and MUST respond to the removal of a grant by revoking the access
- * that the grant allowed.
- *
- * @schema ReferenceGrantV1Beta1
- */
-export interface ReferenceGrantV1Beta1Props {
-  /**
-   * @schema ReferenceGrantV1Beta1#metadata
-   */
-  readonly metadata?: ApiObjectMetadata;
-
-  /**
-   * Spec defines the desired state of ReferenceGrant.
-   *
-   * @schema ReferenceGrantV1Beta1#spec
-   */
-  readonly spec?: ReferenceGrantV1Beta1Spec;
-
-}
-
-/**
- * Converts an object of type 'ReferenceGrantV1Beta1Props' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_ReferenceGrantV1Beta1Props(obj: ReferenceGrantV1Beta1Props | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'metadata': obj.metadata,
-    'spec': toJson_ReferenceGrantV1Beta1Spec(obj.spec),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * Spec defines the desired state of ReferenceGrant.
- *
- * @schema ReferenceGrantV1Beta1Spec
- */
-export interface ReferenceGrantV1Beta1Spec {
-  /**
-   * From describes the trusted namespaces and kinds that can reference the
-   * resources described in "To". Each entry in this list MUST be considered
-   * to be an additional place that references can be valid from, or to put
-   * this another way, entries MUST be combined using OR.
-   *
-   *
-   * Support: Core
-   *
-   * @schema ReferenceGrantV1Beta1Spec#from
-   */
-  readonly from: ReferenceGrantV1Beta1SpecFrom[];
-
-  /**
-   * To describes the resources that may be referenced by the resources
-   * described in "From". Each entry in this list MUST be considered to be an
-   * additional place that references can be valid to, or to put this another
-   * way, entries MUST be combined using OR.
-   *
-   *
-   * Support: Core
-   *
-   * @schema ReferenceGrantV1Beta1Spec#to
-   */
-  readonly to: ReferenceGrantV1Beta1SpecTo[];
-
-}
-
-/**
- * Converts an object of type 'ReferenceGrantV1Beta1Spec' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_ReferenceGrantV1Beta1Spec(obj: ReferenceGrantV1Beta1Spec | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'from': obj.from?.map(y => toJson_ReferenceGrantV1Beta1SpecFrom(y)),
-    'to': obj.to?.map(y => toJson_ReferenceGrantV1Beta1SpecTo(y)),
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * ReferenceGrantFrom describes trusted namespaces and kinds.
- *
- * @schema ReferenceGrantV1Beta1SpecFrom
- */
-export interface ReferenceGrantV1Beta1SpecFrom {
-  /**
-   * Group is the group of the referent.
-   * When empty, the Kubernetes core API group is inferred.
-   *
-   *
-   * Support: Core
-   *
-   * @schema ReferenceGrantV1Beta1SpecFrom#group
-   */
-  readonly group: string;
-
-  /**
-   * Kind is the kind of the referent. Although implementations may support
-   * additional resources, the following types are part of the "Core"
-   * support level for this field.
-   *
-   *
-   * When used to permit a SecretObjectReference:
-   *
-   *
-   * * Gateway
-   *
-   *
-   * When used to permit a BackendObjectReference:
-   *
-   *
-   * * GRPCRoute
-   * * HTTPRoute
-   * * TCPRoute
-   * * TLSRoute
-   * * UDPRoute
-   *
-   * @schema ReferenceGrantV1Beta1SpecFrom#kind
-   */
-  readonly kind: string;
-
-  /**
-   * Namespace is the namespace of the referent.
-   *
-   *
-   * Support: Core
-   *
-   * @schema ReferenceGrantV1Beta1SpecFrom#namespace
-   */
-  readonly namespace: string;
-
-}
-
-/**
- * Converts an object of type 'ReferenceGrantV1Beta1SpecFrom' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_ReferenceGrantV1Beta1SpecFrom(obj: ReferenceGrantV1Beta1SpecFrom | undefined): Record<string, any> | undefined {
-  if (obj === undefined) { return undefined; }
-  const result = {
-    'group': obj.group,
-    'kind': obj.kind,
-    'namespace': obj.namespace,
-  };
-  // filter undefined values
-  return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
-}
-/* eslint-enable max-len, quote-props */
-
-/**
- * ReferenceGrantTo describes what Kinds are allowed as targets of the
- * references.
- *
- * @schema ReferenceGrantV1Beta1SpecTo
- */
-export interface ReferenceGrantV1Beta1SpecTo {
-  /**
-   * Group is the group of the referent.
-   * When empty, the Kubernetes core API group is inferred.
-   *
-   *
-   * Support: Core
-   *
-   * @schema ReferenceGrantV1Beta1SpecTo#group
-   */
-  readonly group: string;
-
-  /**
-   * Kind is the kind of the referent. Although implementations may support
-   * additional resources, the following types are part of the "Core"
-   * support level for this field:
-   *
-   *
-   * * Secret when used to permit a SecretObjectReference
-   * * Service when used to permit a BackendObjectReference
-   *
-   * @schema ReferenceGrantV1Beta1SpecTo#kind
-   */
-  readonly kind: string;
-
-  /**
-   * Name is the name of the referent. When unspecified, this policy
-   * refers to all resources of the specified Group and Kind in the local
-   * namespace.
-   *
-   * @schema ReferenceGrantV1Beta1SpecTo#name
-   */
-  readonly name?: string;
-
-}
-
-/**
- * Converts an object of type 'ReferenceGrantV1Beta1SpecTo' to JSON representation.
- */
-/* eslint-disable max-len, quote-props */
-export function toJson_ReferenceGrantV1Beta1SpecTo(obj: ReferenceGrantV1Beta1SpecTo | undefined): Record<string, any> | undefined {
   if (obj === undefined) { return undefined; }
   const result = {
     'group': obj.group,
@@ -18644,20 +16365,15 @@ export interface TcpRouteSpec {
    * create a "producer" route for a Service in a different namespace from the
    * Route.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
    *
-   *
    * This API may be extended in the future to support additional kinds of parent
    * resources.
    *
-   *
    * ParentRefs must be _distinct_. This means either that:
-   *
    *
    * * They select different objects.  If this is the case, then parentRef
    * entries are distinct. In terms of fields, this means that the
@@ -18668,9 +16384,7 @@ export interface TcpRouteSpec {
    * optional fields to different values. If one ParentRef sets a
    * combination of optional fields, all must set the same combination.
    *
-   *
    * Some examples:
-   *
    *
    * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
    * same object must also set `sectionName`.
@@ -18679,13 +16393,11 @@ export interface TcpRouteSpec {
    * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
    * referencing the same object must also set `sectionName` and `port`.
    *
-   *
    * It is possible to separately reference multiple distinct objects that may
    * be collapsed by an implementation. For example, some implementations may
    * choose to merge compatible Gateway Listeners together. If that is the
    * case, the list of routes attached to those resources should also be
    * merged.
-   *
    *
    * Note that for ParentRefs that cross namespace boundaries, there are specific
    * rules. Cross-namespace references are only valid if they are explicitly
@@ -18694,24 +16406,15 @@ export interface TcpRouteSpec {
    * generic way to enable other kinds of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
-   *
-   *
-   *
-   *
-   *
-   *
    *
    * @schema TcpRouteSpec#parentRefs
    */
@@ -18746,14 +16449,11 @@ export function toJson_TcpRouteSpec(obj: TcpRouteSpec | undefined): Record<strin
  * a parent of this resource (usually a route). There are two kinds of parent resources
  * with "Core" support:
  *
- *
  * * Gateway (Gateway conformance profile)
  * * Service (Mesh conformance profile, ClusterIP Services only)
  *
- *
  * This API may be extended in the future to support additional kinds of parent
  * resources.
- *
  *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
@@ -18767,7 +16467,6 @@ export interface TcpRouteSpecParentRefs {
    * To set the core API group (such as for a "Service" kind referent),
    * Group must be explicitly set to "" (empty string).
    *
-   *
    * Support: Core
    *
    * @schema TcpRouteSpecParentRefs#group
@@ -18777,13 +16476,10 @@ export interface TcpRouteSpecParentRefs {
   /**
    * Kind is kind of the referent.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
-   *
    *
    * Support for other resources is Implementation-Specific.
    *
@@ -18793,7 +16489,6 @@ export interface TcpRouteSpecParentRefs {
 
   /**
    * Name is the name of the referent.
-   *
    *
    * Support: Core
    *
@@ -18805,7 +16500,6 @@ export interface TcpRouteSpecParentRefs {
    * Namespace is the namespace of the referent. When unspecified, this refers
    * to the local namespace of the Route.
    *
-   *
    * Note that there are specific rules for ParentRefs which cross namespace
    * boundaries. Cross-namespace references are only valid if they are explicitly
    * allowed by something in the namespace they are referring to. For example:
@@ -18813,18 +16507,15 @@ export interface TcpRouteSpecParentRefs {
    * generic way to enable any other kind of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
    *
    *
    * Support: Core
@@ -18837,7 +16528,6 @@ export interface TcpRouteSpecParentRefs {
    * Port is the network port this Route targets. It can be interpreted
    * differently based on the type of parent resource.
    *
-   *
    * When the parent resource is a Gateway, this targets all listeners
    * listening on the specified port that also support this kind of Route(and
    * select this Route). It's not recommended to set `Port` unless the
@@ -18847,17 +16537,14 @@ export interface TcpRouteSpecParentRefs {
    * must match both specified values.
    *
    *
-   *
    * When the parent resource is a Service, this targets a specific port in the
    * Service spec. When both Port (experimental) and SectionName are specified,
    * the name and port of the selected port must match both specified values.
    *
    *
-   *
    * Implementations MAY choose to support other parent resources.
    * Implementations supporting other types of parent resources MUST clearly
    * document how/if Port is interpreted.
-   *
    *
    * For the purpose of status, an attachment is considered successful as
    * long as the parent resource accepts it partially. For example, Gateway
@@ -18866,7 +16553,6 @@ export interface TcpRouteSpecParentRefs {
    * from the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route,
    * the Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Extended
    *
@@ -18878,7 +16564,6 @@ export interface TcpRouteSpecParentRefs {
    * SectionName is the name of a section within the target resource. In the
    * following resources, SectionName is interpreted as the following:
    *
-   *
    * * Gateway: Listener name. When both Port (experimental) and SectionName
    * are specified, the name and port of the selected listener must match
    * both specified values.
@@ -18886,11 +16571,9 @@ export interface TcpRouteSpecParentRefs {
    * are specified, the name and port of the selected listener must match
    * both specified values.
    *
-   *
    * Implementations MAY choose to support attaching Routes to other resources.
    * If that is the case, they MUST clearly document how SectionName is
    * interpreted.
-   *
    *
    * When unspecified (empty string), this will reference the entire resource.
    * For the purpose of status, an attachment is considered successful if at
@@ -18900,7 +16583,6 @@ export interface TcpRouteSpecParentRefs {
    * the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route, the
    * Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Core
    *
@@ -18937,27 +16619,32 @@ export function toJson_TcpRouteSpecParentRefs(obj: TcpRouteSpecParentRefs | unde
 export interface TcpRouteSpecRules {
   /**
    * BackendRefs defines the backend(s) where matching requests should be
-   * sent. If unspecified or invalid (refers to a non-existent resource or a
+   * sent. If unspecified or invalid (refers to a nonexistent resource or a
    * Service with no endpoints), the underlying implementation MUST actively
    * reject connection attempts to this backend. Connection rejections must
    * respect weight; if an invalid backend is requested to have 80% of
    * connections, then 80% of connections must be rejected instead.
    *
-   *
    * Support: Core for Kubernetes Service
-   *
    *
    * Support: Extended for Kubernetes ServiceImport
    *
-   *
    * Support: Implementation-specific for any other resource
-   *
    *
    * Support for weight: Extended
    *
    * @schema TcpRouteSpecRules#backendRefs
    */
   readonly backendRefs?: TcpRouteSpecRulesBackendRefs[];
+
+  /**
+   * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
+   *
+   * Support: Extended
+   *
+   * @schema TcpRouteSpecRules#name
+   */
+  readonly name?: string;
 
 }
 
@@ -18969,6 +16656,7 @@ export function toJson_TcpRouteSpecRules(obj: TcpRouteSpecRules | undefined): Re
   if (obj === undefined) { return undefined; }
   const result = {
     'backendRefs': obj.backendRefs?.map(y => toJson_TcpRouteSpecRulesBackendRefs(y)),
+    'name': obj.name,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -18979,35 +16667,25 @@ export function toJson_TcpRouteSpecRules(obj: TcpRouteSpecRules | undefined): Re
  * BackendRef defines how a Route should forward a request to a Kubernetes
  * resource.
  *
- *
  * Note that when a namespace different than the local namespace is specified, a
  * ReferenceGrant object is required in the referent namespace to allow that
  * namespace's owner to accept the reference. See the ReferenceGrant
  * documentation for details.
  *
  *
- * <gateway:experimental:description>
- *
- *
  * When the BackendRef points to a Kubernetes Service, implementations SHOULD
  * honor the appProtocol field if it is set for the target Service Port.
  *
- *
  * Implementations supporting appProtocol SHOULD recognize the Kubernetes
  * Standard Application Protocols defined in KEP-3726.
- *
  *
  * If a Service appProtocol isn't specified, an implementation MAY infer the
  * backend protocol through its own means. Implementations MAY infer the
  * protocol from the Route type referring to the backend Service.
  *
- *
  * If a Route is not able to send traffic to the backend using the specified
  * protocol then the backend is considered invalid. Implementations MUST set the
  * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
- *
- *
- * </gateway:experimental:description>
  *
  *
  * Note that when the BackendTLSPolicy object is enabled by the implementation,
@@ -19029,9 +16707,7 @@ export interface TcpRouteSpecRulesBackendRefs {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -19039,9 +16715,7 @@ export interface TcpRouteSpecRulesBackendRefs {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -19061,12 +16735,10 @@ export interface TcpRouteSpecRulesBackendRefs {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -19093,12 +16765,10 @@ export interface TcpRouteSpecRulesBackendRefs {
    * implementation supports. Weight is not a percentage and the sum of
    * weights does not need to equal 100.
    *
-   *
    * If only one backend is specified and it has a weight greater than 0, 100%
    * of the traffic is forwarded to that backend. If weight is set to 0, no
    * traffic should be forwarded for this entry. If unspecified, weight
    * defaults to 1.
-   *
    *
    * Support for this field varies based on the context where used.
    *
@@ -19132,7 +16802,6 @@ export function toJson_TcpRouteSpecRulesBackendRefs(obj: TcpRouteSpecRulesBacken
  * The TLSRoute resource is similar to TCPRoute, but can be configured
 to match against TLS-specific metadata. This allows more flexibility
 in matching streams for a given TLS listener.
-
 
 If you need to forward traffic to a single target for a TLS listener, you
 could choose to use a TCPRoute with a TLS listener.
@@ -19193,7 +16862,6 @@ export class TlsRoute extends ApiObject {
  * to match against TLS-specific metadata. This allows more flexibility
  * in matching streams for a given TLS listener.
  *
- *
  * If you need to forward traffic to a single target for a TLS listener, you
  * could choose to use a TCPRoute with a TLS listener.
  *
@@ -19240,16 +16908,13 @@ export interface TlsRouteSpec {
    * SNI attribute of TLS ClientHello message in TLS handshake. This matches
    * the RFC 1123 definition of a hostname with 2 notable exceptions:
    *
-   *
    * 1. IPs are not allowed in SNI names per RFC 6066.
    * 2. A hostname may be prefixed with a wildcard label (`*.`). The wildcard
    * label must appear by itself as the first label.
    *
-   *
    * If a hostname is specified by both the Listener and TLSRoute, there
    * must be at least one intersecting hostname for the TLSRoute to be
    * attached to the Listener. For example:
-   *
    *
    * * A Listener with `test.example.com` as the hostname matches TLSRoutes
    * that have either not specified any hostnames, or have specified at
@@ -19260,19 +16925,16 @@ export interface TlsRouteSpec {
    * `test.example.com` and `*.example.com` would both match. On the other
    * hand, `example.com` and `test.example.net` would not match.
    *
-   *
    * If both the Listener and TLSRoute have specified hostnames, any
    * TLSRoute hostnames that do not match the Listener hostname MUST be
    * ignored. For example, if a Listener specified `*.example.com`, and the
    * TLSRoute specified `test.example.com` and `test.example.net`,
    * `test.example.net` must not be considered for a match.
    *
-   *
    * If both the Listener and TLSRoute have specified hostnames, and none
    * match with the criteria above, then the TLSRoute is not accepted. The
    * implementation must raise an 'Accepted' Condition with a status of
    * `False` in the corresponding RouteParentStatus.
-   *
    *
    * Support: Core
    *
@@ -19292,20 +16954,15 @@ export interface TlsRouteSpec {
    * create a "producer" route for a Service in a different namespace from the
    * Route.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
    *
-   *
    * This API may be extended in the future to support additional kinds of parent
    * resources.
    *
-   *
    * ParentRefs must be _distinct_. This means either that:
-   *
    *
    * * They select different objects.  If this is the case, then parentRef
    * entries are distinct. In terms of fields, this means that the
@@ -19316,9 +16973,7 @@ export interface TlsRouteSpec {
    * optional fields to different values. If one ParentRef sets a
    * combination of optional fields, all must set the same combination.
    *
-   *
    * Some examples:
-   *
    *
    * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
    * same object must also set `sectionName`.
@@ -19327,13 +16982,11 @@ export interface TlsRouteSpec {
    * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
    * referencing the same object must also set `sectionName` and `port`.
    *
-   *
    * It is possible to separately reference multiple distinct objects that may
    * be collapsed by an implementation. For example, some implementations may
    * choose to merge compatible Gateway Listeners together. If that is the
    * case, the list of routes attached to those resources should also be
    * merged.
-   *
    *
    * Note that for ParentRefs that cross namespace boundaries, there are specific
    * rules. Cross-namespace references are only valid if they are explicitly
@@ -19342,24 +16995,15 @@ export interface TlsRouteSpec {
    * generic way to enable other kinds of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
-   *
-   *
-   *
-   *
-   *
-   *
    *
    * @schema TlsRouteSpec#parentRefs
    */
@@ -19395,14 +17039,11 @@ export function toJson_TlsRouteSpec(obj: TlsRouteSpec | undefined): Record<strin
  * a parent of this resource (usually a route). There are two kinds of parent resources
  * with "Core" support:
  *
- *
  * * Gateway (Gateway conformance profile)
  * * Service (Mesh conformance profile, ClusterIP Services only)
  *
- *
  * This API may be extended in the future to support additional kinds of parent
  * resources.
- *
  *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
@@ -19416,7 +17057,6 @@ export interface TlsRouteSpecParentRefs {
    * To set the core API group (such as for a "Service" kind referent),
    * Group must be explicitly set to "" (empty string).
    *
-   *
    * Support: Core
    *
    * @schema TlsRouteSpecParentRefs#group
@@ -19426,13 +17066,10 @@ export interface TlsRouteSpecParentRefs {
   /**
    * Kind is kind of the referent.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
-   *
    *
    * Support for other resources is Implementation-Specific.
    *
@@ -19442,7 +17079,6 @@ export interface TlsRouteSpecParentRefs {
 
   /**
    * Name is the name of the referent.
-   *
    *
    * Support: Core
    *
@@ -19454,7 +17090,6 @@ export interface TlsRouteSpecParentRefs {
    * Namespace is the namespace of the referent. When unspecified, this refers
    * to the local namespace of the Route.
    *
-   *
    * Note that there are specific rules for ParentRefs which cross namespace
    * boundaries. Cross-namespace references are only valid if they are explicitly
    * allowed by something in the namespace they are referring to. For example:
@@ -19462,18 +17097,15 @@ export interface TlsRouteSpecParentRefs {
    * generic way to enable any other kind of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
    *
    *
    * Support: Core
@@ -19486,7 +17118,6 @@ export interface TlsRouteSpecParentRefs {
    * Port is the network port this Route targets. It can be interpreted
    * differently based on the type of parent resource.
    *
-   *
    * When the parent resource is a Gateway, this targets all listeners
    * listening on the specified port that also support this kind of Route(and
    * select this Route). It's not recommended to set `Port` unless the
@@ -19496,17 +17127,14 @@ export interface TlsRouteSpecParentRefs {
    * must match both specified values.
    *
    *
-   *
    * When the parent resource is a Service, this targets a specific port in the
    * Service spec. When both Port (experimental) and SectionName are specified,
    * the name and port of the selected port must match both specified values.
    *
    *
-   *
    * Implementations MAY choose to support other parent resources.
    * Implementations supporting other types of parent resources MUST clearly
    * document how/if Port is interpreted.
-   *
    *
    * For the purpose of status, an attachment is considered successful as
    * long as the parent resource accepts it partially. For example, Gateway
@@ -19515,7 +17143,6 @@ export interface TlsRouteSpecParentRefs {
    * from the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route,
    * the Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Extended
    *
@@ -19527,7 +17154,6 @@ export interface TlsRouteSpecParentRefs {
    * SectionName is the name of a section within the target resource. In the
    * following resources, SectionName is interpreted as the following:
    *
-   *
    * * Gateway: Listener name. When both Port (experimental) and SectionName
    * are specified, the name and port of the selected listener must match
    * both specified values.
@@ -19535,11 +17161,9 @@ export interface TlsRouteSpecParentRefs {
    * are specified, the name and port of the selected listener must match
    * both specified values.
    *
-   *
    * Implementations MAY choose to support attaching Routes to other resources.
    * If that is the case, they MUST clearly document how SectionName is
    * interpreted.
-   *
    *
    * When unspecified (empty string), this will reference the entire resource.
    * For the purpose of status, an attachment is considered successful if at
@@ -19549,7 +17173,6 @@ export interface TlsRouteSpecParentRefs {
    * the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route, the
    * Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Core
    *
@@ -19586,7 +17209,7 @@ export function toJson_TlsRouteSpecParentRefs(obj: TlsRouteSpecParentRefs | unde
 export interface TlsRouteSpecRules {
   /**
    * BackendRefs defines the backend(s) where matching requests should be
-   * sent. If unspecified or invalid (refers to a non-existent resource or
+   * sent. If unspecified or invalid (refers to a nonexistent resource or
    * a Service with no endpoints), the rule performs no forwarding; if no
    * filters are specified that would result in a response being sent, the
    * underlying implementation must actively reject request attempts to this
@@ -19595,21 +17218,26 @@ export interface TlsRouteSpecRules {
    * requested to have 80% of requests, then 80% of requests must be rejected
    * instead.
    *
-   *
    * Support: Core for Kubernetes Service
-   *
    *
    * Support: Extended for Kubernetes ServiceImport
    *
-   *
    * Support: Implementation-specific for any other resource
-   *
    *
    * Support for weight: Extended
    *
    * @schema TlsRouteSpecRules#backendRefs
    */
   readonly backendRefs?: TlsRouteSpecRulesBackendRefs[];
+
+  /**
+   * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
+   *
+   * Support: Extended
+   *
+   * @schema TlsRouteSpecRules#name
+   */
+  readonly name?: string;
 
 }
 
@@ -19621,6 +17249,7 @@ export function toJson_TlsRouteSpecRules(obj: TlsRouteSpecRules | undefined): Re
   if (obj === undefined) { return undefined; }
   const result = {
     'backendRefs': obj.backendRefs?.map(y => toJson_TlsRouteSpecRulesBackendRefs(y)),
+    'name': obj.name,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -19631,35 +17260,25 @@ export function toJson_TlsRouteSpecRules(obj: TlsRouteSpecRules | undefined): Re
  * BackendRef defines how a Route should forward a request to a Kubernetes
  * resource.
  *
- *
  * Note that when a namespace different than the local namespace is specified, a
  * ReferenceGrant object is required in the referent namespace to allow that
  * namespace's owner to accept the reference. See the ReferenceGrant
  * documentation for details.
  *
  *
- * <gateway:experimental:description>
- *
- *
  * When the BackendRef points to a Kubernetes Service, implementations SHOULD
  * honor the appProtocol field if it is set for the target Service Port.
  *
- *
  * Implementations supporting appProtocol SHOULD recognize the Kubernetes
  * Standard Application Protocols defined in KEP-3726.
- *
  *
  * If a Service appProtocol isn't specified, an implementation MAY infer the
  * backend protocol through its own means. Implementations MAY infer the
  * protocol from the Route type referring to the backend Service.
  *
- *
  * If a Route is not able to send traffic to the backend using the specified
  * protocol then the backend is considered invalid. Implementations MUST set the
  * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
- *
- *
- * </gateway:experimental:description>
  *
  *
  * Note that when the BackendTLSPolicy object is enabled by the implementation,
@@ -19681,9 +17300,7 @@ export interface TlsRouteSpecRulesBackendRefs {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -19691,9 +17308,7 @@ export interface TlsRouteSpecRulesBackendRefs {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -19713,12 +17328,10 @@ export interface TlsRouteSpecRulesBackendRefs {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -19745,12 +17358,10 @@ export interface TlsRouteSpecRulesBackendRefs {
    * implementation supports. Weight is not a percentage and the sum of
    * weights does not need to equal 100.
    *
-   *
    * If only one backend is specified and it has a weight greater than 0, 100%
    * of the traffic is forwarded to that backend. If weight is set to 0, no
    * traffic should be forwarded for this entry. If unspecified, weight
    * defaults to 1.
-   *
    *
    * Support for this field varies based on the context where used.
    *
@@ -19891,20 +17502,15 @@ export interface UdpRouteSpec {
    * create a "producer" route for a Service in a different namespace from the
    * Route.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
    *
-   *
    * This API may be extended in the future to support additional kinds of parent
    * resources.
    *
-   *
    * ParentRefs must be _distinct_. This means either that:
-   *
    *
    * * They select different objects.  If this is the case, then parentRef
    * entries are distinct. In terms of fields, this means that the
@@ -19915,9 +17521,7 @@ export interface UdpRouteSpec {
    * optional fields to different values. If one ParentRef sets a
    * combination of optional fields, all must set the same combination.
    *
-   *
    * Some examples:
-   *
    *
    * * If one ParentRef sets `sectionName`, all ParentRefs referencing the
    * same object must also set `sectionName`.
@@ -19926,13 +17530,11 @@ export interface UdpRouteSpec {
    * * If one ParentRef sets `sectionName` and `port`, all ParentRefs
    * referencing the same object must also set `sectionName` and `port`.
    *
-   *
    * It is possible to separately reference multiple distinct objects that may
    * be collapsed by an implementation. For example, some implementations may
    * choose to merge compatible Gateway Listeners together. If that is the
    * case, the list of routes attached to those resources should also be
    * merged.
-   *
    *
    * Note that for ParentRefs that cross namespace boundaries, there are specific
    * rules. Cross-namespace references are only valid if they are explicitly
@@ -19941,24 +17543,15 @@ export interface UdpRouteSpec {
    * generic way to enable other kinds of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
-   *
-   *
-   *
-   *
-   *
-   *
    *
    * @schema UdpRouteSpec#parentRefs
    */
@@ -19993,14 +17586,11 @@ export function toJson_UdpRouteSpec(obj: UdpRouteSpec | undefined): Record<strin
  * a parent of this resource (usually a route). There are two kinds of parent resources
  * with "Core" support:
  *
- *
  * * Gateway (Gateway conformance profile)
  * * Service (Mesh conformance profile, ClusterIP Services only)
  *
- *
  * This API may be extended in the future to support additional kinds of parent
  * resources.
- *
  *
  * The API object must be valid in the cluster; the Group and Kind must
  * be registered in the cluster for this reference to be valid.
@@ -20014,7 +17604,6 @@ export interface UdpRouteSpecParentRefs {
    * To set the core API group (such as for a "Service" kind referent),
    * Group must be explicitly set to "" (empty string).
    *
-   *
    * Support: Core
    *
    * @schema UdpRouteSpecParentRefs#group
@@ -20024,13 +17613,10 @@ export interface UdpRouteSpecParentRefs {
   /**
    * Kind is kind of the referent.
    *
-   *
    * There are two kinds of parent resources with "Core" support:
-   *
    *
    * * Gateway (Gateway conformance profile)
    * * Service (Mesh conformance profile, ClusterIP Services only)
-   *
    *
    * Support for other resources is Implementation-Specific.
    *
@@ -20040,7 +17626,6 @@ export interface UdpRouteSpecParentRefs {
 
   /**
    * Name is the name of the referent.
-   *
    *
    * Support: Core
    *
@@ -20052,7 +17637,6 @@ export interface UdpRouteSpecParentRefs {
    * Namespace is the namespace of the referent. When unspecified, this refers
    * to the local namespace of the Route.
    *
-   *
    * Note that there are specific rules for ParentRefs which cross namespace
    * boundaries. Cross-namespace references are only valid if they are explicitly
    * allowed by something in the namespace they are referring to. For example:
@@ -20060,18 +17644,15 @@ export interface UdpRouteSpecParentRefs {
    * generic way to enable any other kind of cross-namespace reference.
    *
    *
-   *
    * ParentRefs from a Route to a Service in the same namespace are "producer"
    * routes, which apply default routing rules to inbound connections from
    * any namespace to the Service.
-   *
    *
    * ParentRefs from a Route to a Service in a different namespace are
    * "consumer" routes, and these routing rules are only applied to outbound
    * connections originating from the same namespace as the Route, for which
    * the intended destination of the connections are a Service targeted as a
    * ParentRef of the Route.
-   *
    *
    *
    * Support: Core
@@ -20084,7 +17665,6 @@ export interface UdpRouteSpecParentRefs {
    * Port is the network port this Route targets. It can be interpreted
    * differently based on the type of parent resource.
    *
-   *
    * When the parent resource is a Gateway, this targets all listeners
    * listening on the specified port that also support this kind of Route(and
    * select this Route). It's not recommended to set `Port` unless the
@@ -20094,17 +17674,14 @@ export interface UdpRouteSpecParentRefs {
    * must match both specified values.
    *
    *
-   *
    * When the parent resource is a Service, this targets a specific port in the
    * Service spec. When both Port (experimental) and SectionName are specified,
    * the name and port of the selected port must match both specified values.
    *
    *
-   *
    * Implementations MAY choose to support other parent resources.
    * Implementations supporting other types of parent resources MUST clearly
    * document how/if Port is interpreted.
-   *
    *
    * For the purpose of status, an attachment is considered successful as
    * long as the parent resource accepts it partially. For example, Gateway
@@ -20113,7 +17690,6 @@ export interface UdpRouteSpecParentRefs {
    * from the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route,
    * the Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Extended
    *
@@ -20125,7 +17701,6 @@ export interface UdpRouteSpecParentRefs {
    * SectionName is the name of a section within the target resource. In the
    * following resources, SectionName is interpreted as the following:
    *
-   *
    * * Gateway: Listener name. When both Port (experimental) and SectionName
    * are specified, the name and port of the selected listener must match
    * both specified values.
@@ -20133,11 +17708,9 @@ export interface UdpRouteSpecParentRefs {
    * are specified, the name and port of the selected listener must match
    * both specified values.
    *
-   *
    * Implementations MAY choose to support attaching Routes to other resources.
    * If that is the case, they MUST clearly document how SectionName is
    * interpreted.
-   *
    *
    * When unspecified (empty string), this will reference the entire resource.
    * For the purpose of status, an attachment is considered successful if at
@@ -20147,7 +17720,6 @@ export interface UdpRouteSpecParentRefs {
    * the referencing Route, the Route MUST be considered successfully
    * attached. If no Gateway listeners accept attachment from this Route, the
    * Route MUST be considered detached from the Gateway.
-   *
    *
    * Support: Core
    *
@@ -20184,27 +17756,32 @@ export function toJson_UdpRouteSpecParentRefs(obj: UdpRouteSpecParentRefs | unde
 export interface UdpRouteSpecRules {
   /**
    * BackendRefs defines the backend(s) where matching requests should be
-   * sent. If unspecified or invalid (refers to a non-existent resource or a
+   * sent. If unspecified or invalid (refers to a nonexistent resource or a
    * Service with no endpoints), the underlying implementation MUST actively
    * reject connection attempts to this backend. Packet drops must
    * respect weight; if an invalid backend is requested to have 80% of
    * the packets, then 80% of packets must be dropped instead.
    *
-   *
    * Support: Core for Kubernetes Service
-   *
    *
    * Support: Extended for Kubernetes ServiceImport
    *
-   *
    * Support: Implementation-specific for any other resource
-   *
    *
    * Support for weight: Extended
    *
    * @schema UdpRouteSpecRules#backendRefs
    */
   readonly backendRefs?: UdpRouteSpecRulesBackendRefs[];
+
+  /**
+   * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
+   *
+   * Support: Extended
+   *
+   * @schema UdpRouteSpecRules#name
+   */
+  readonly name?: string;
 
 }
 
@@ -20216,6 +17793,7 @@ export function toJson_UdpRouteSpecRules(obj: UdpRouteSpecRules | undefined): Re
   if (obj === undefined) { return undefined; }
   const result = {
     'backendRefs': obj.backendRefs?.map(y => toJson_UdpRouteSpecRulesBackendRefs(y)),
+    'name': obj.name,
   };
   // filter undefined values
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
@@ -20226,35 +17804,25 @@ export function toJson_UdpRouteSpecRules(obj: UdpRouteSpecRules | undefined): Re
  * BackendRef defines how a Route should forward a request to a Kubernetes
  * resource.
  *
- *
  * Note that when a namespace different than the local namespace is specified, a
  * ReferenceGrant object is required in the referent namespace to allow that
  * namespace's owner to accept the reference. See the ReferenceGrant
  * documentation for details.
  *
  *
- * <gateway:experimental:description>
- *
- *
  * When the BackendRef points to a Kubernetes Service, implementations SHOULD
  * honor the appProtocol field if it is set for the target Service Port.
  *
- *
  * Implementations supporting appProtocol SHOULD recognize the Kubernetes
  * Standard Application Protocols defined in KEP-3726.
- *
  *
  * If a Service appProtocol isn't specified, an implementation MAY infer the
  * backend protocol through its own means. Implementations MAY infer the
  * protocol from the Route type referring to the backend Service.
  *
- *
  * If a Route is not able to send traffic to the backend using the specified
  * protocol then the backend is considered invalid. Implementations MUST set the
  * "ResolvedRefs" condition to "False" with the "UnsupportedProtocol" reason.
- *
- *
- * </gateway:experimental:description>
  *
  *
  * Note that when the BackendTLSPolicy object is enabled by the implementation,
@@ -20276,9 +17844,7 @@ export interface UdpRouteSpecRulesBackendRefs {
    * Kind is the Kubernetes resource kind of the referent. For example
    * "Service".
    *
-   *
    * Defaults to "Service" when not specified.
-   *
    *
    * ExternalName services can refer to CNAME DNS records that may live
    * outside of the cluster and as such are difficult to reason about in
@@ -20286,9 +17852,7 @@ export interface UdpRouteSpecRulesBackendRefs {
    * CVE-2021-25740 for more information). Implementations SHOULD NOT
    * support ExternalName Services.
    *
-   *
    * Support: Core (Services with a type other than ExternalName)
-   *
    *
    * Support: Implementation-specific (Services with type ExternalName)
    *
@@ -20308,12 +17872,10 @@ export interface UdpRouteSpecRulesBackendRefs {
    * Namespace is the namespace of the backend. When unspecified, the local
    * namespace is inferred.
    *
-   *
    * Note that when a namespace different than the local namespace is specified,
    * a ReferenceGrant object is required in the referent namespace to allow that
    * namespace's owner to accept the reference. See the ReferenceGrant
    * documentation for details.
-   *
    *
    * Support: Core
    *
@@ -20340,12 +17902,10 @@ export interface UdpRouteSpecRulesBackendRefs {
    * implementation supports. Weight is not a percentage and the sum of
    * weights does not need to equal 100.
    *
-   *
    * If only one backend is specified and it has a weight greater than 0, 100%
    * of the traffic is forwarded to that backend. If weight is set to 0, no
    * traffic should be forwarded for this entry. If unspecified, weight
    * defaults to 1.
-   *
    *
    * Support for this field varies based on the context where used.
    *
@@ -20373,3 +17933,4 @@ export function toJson_UdpRouteSpecRulesBackendRefs(obj: UdpRouteSpecRulesBacken
   return Object.entries(result).reduce((r, i) => (i[1] === undefined) ? r : ({ ...r, [i[0]]: i[1] }), {});
 }
 /* eslint-enable max-len, quote-props */
+
