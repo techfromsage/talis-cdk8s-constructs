@@ -11,9 +11,9 @@ set_detik_client() {
 
 # Run kubectl with given options.
 run_kubectl() {
-  client_with_options=$(build_k8s_client_with_options)
+  client_options=$(build_k8s_client_options)
   # shellcheck disable=SC2086,SC2294
-  eval $client_with_options "$@"
+  eval "$DETIK_CLIENT_NAME" "$client_options" "$@"
 }
 
 # Run cdk8s synth.
@@ -51,7 +51,6 @@ get_property() {
   : "${delay:=1}"
 
   query=$(build_k8s_request "$property")
-  client_with_options=$(build_k8s_client_with_options)
 
   for ((i = 1; i <= attempts; i++)); do
     # shellcheck disable=SC2086
