@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2024",
-    "module": "CommonJS",
+    "module": "nodenext",
     "declaration": true,
     "esModuleInterop": true,
     "exactOptionalPropertyTypes": false,
@@ -9,7 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -18,7 +18,7 @@
     "skipLibCheck": true,
     "strict": true,
     "stripInternal": true,
-    "types": ["vitest/globals"]
+    "types": ["node", "vitest/globals"]
   },
   "exclude": ["vitest.config.mts"]
 }
