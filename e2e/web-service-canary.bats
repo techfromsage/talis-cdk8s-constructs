@@ -42,6 +42,9 @@ teardown_file() {
 
   assert_not_equal "$alb_hostname" "$alb_canary_hostname"
 
+  ensure_resolves "$alb_hostname"
+  ensure_resolves "$alb_canary_hostname"
+
   run http_get "http://${alb_hostname}/version"
   assert_contains "$output" "6.1.2"
 

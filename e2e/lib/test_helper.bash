@@ -30,6 +30,20 @@ cdk8s_synth() {
   export DETIK_CLIENT_NAMESPACE
 }
 
+# Wait until a hostname resolves in DNS (records are created asynchronously
+# by external-dns and Route53 changes can take a while to propagate).
+# @param {string} Hostname to resolve
+ensure_resolves() {
+  local host="$1"
+  # ponytail: 90 x 10s = 15 min ceiling
+  for ((i = 1; i <= 90; i++)); do
+    getent hosts "$host" >/dev/null && return
+    sleep 10
+  done
+  echo >&2 "DNS did not resolve within 15 minutes: $host"
+  return 1
+}
+
 # Perform a HTTP GET request with a retry.
 # @param {string} URL to get
 http_get() {

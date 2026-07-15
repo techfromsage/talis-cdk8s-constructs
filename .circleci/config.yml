@@ -117,6 +117,7 @@ workflows:
             - cluster_setup
             - run:
                 name: Run e2e tests
+                no_output_timeout: 20m
                 environment:
                   DEBUG_DETIK: "true"
                 command: |
