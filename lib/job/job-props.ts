@@ -1,10 +1,8 @@
 import { ContainerProps, PodProps, SafeToEvictPodProps } from "../common";
 
 export interface JobProps
-  extends Omit<
-      ContainerProps,
-      "startupProbe" | "readinessProbe" | "livenessProbe"
-    >,
+  extends
+    Omit<ContainerProps, "startupProbe" | "readinessProbe" | "livenessProbe">,
     PodProps,
     SafeToEvictPodProps {
   /**

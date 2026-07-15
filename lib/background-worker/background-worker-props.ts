@@ -49,8 +49,7 @@ export interface BackgroundWorkerAutoscalingProps {
 }
 
 export interface BackgroundWorkerProps
-  extends Omit<ContainerProps, "readinessProbe">,
-    DeploymentProps {
+  extends Omit<ContainerProps, "readinessProbe">, DeploymentProps {
   /**
    * If specified, it will set up a preStop hook to terminate the container with given signal.
    * When passing a string, don't include the "SIG" prefix, just the name of the signal.

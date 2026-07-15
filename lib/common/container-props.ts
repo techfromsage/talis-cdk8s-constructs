@@ -1,22 +1,21 @@
 import { Container } from "../../imports/k8s";
 
-export interface MainContainerProps
-  extends Pick<
-    Container,
-    | "imagePullPolicy"
-    | "workingDir"
-    | "command"
-    | "args"
-    | "resources"
-    | "securityContext"
-    | "env"
-    | "envFrom"
-    | "lifecycle"
-    | "startupProbe"
-    | "livenessProbe"
-    | "readinessProbe"
-    | "volumeMounts"
-  > {
+export interface MainContainerProps extends Pick<
+  Container,
+  | "imagePullPolicy"
+  | "workingDir"
+  | "command"
+  | "args"
+  | "resources"
+  | "securityContext"
+  | "env"
+  | "envFrom"
+  | "lifecycle"
+  | "startupProbe"
+  | "livenessProbe"
+  | "readinessProbe"
+  | "volumeMounts"
+> {
   /**
    * What name to give the main application container
    * @default set from the "app" label

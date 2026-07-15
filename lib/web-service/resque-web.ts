@@ -3,8 +3,9 @@ import { WebService, WebServiceProps } from ".";
 import { IntOrString, Quantity } from "../../imports/k8s";
 import { supportsTls } from "./tls-util";
 
-export interface ResqueWebProps
-  extends Partial<Omit<WebServiceProps, "horizontalPodAutoscaler">> {
+export interface ResqueWebProps extends Partial<
+  Omit<WebServiceProps, "horizontalPodAutoscaler">
+> {
   readonly externalUrl: string;
 }
 

@@ -18,26 +18,25 @@ export function defaultAffinity(matchLabels: {
   };
 }
 
-export interface PodProps
-  extends Pick<
-    PodSpec,
-    | "automountServiceAccountToken"
-    | "dnsConfig"
-    | "dnsPolicy"
-    | "enableServiceLinks"
-    | "hostAliases"
-    | "imagePullSecrets"
-    | "preemptionPolicy"
-    | "priorityClassName"
-    | "restartPolicy"
-    | "serviceAccountName"
-    | "setHostnameAsFqdn"
-    | "shareProcessNamespace"
-    | "subdomain"
-    | "terminationGracePeriodSeconds"
-    | "tolerations"
-    | "volumes"
-  > {
+export interface PodProps extends Pick<
+  PodSpec,
+  | "automountServiceAccountToken"
+  | "dnsConfig"
+  | "dnsPolicy"
+  | "enableServiceLinks"
+  | "hostAliases"
+  | "imagePullSecrets"
+  | "preemptionPolicy"
+  | "priorityClassName"
+  | "restartPolicy"
+  | "serviceAccountName"
+  | "setHostnameAsFqdn"
+  | "shareProcessNamespace"
+  | "subdomain"
+  | "terminationGracePeriodSeconds"
+  | "tolerations"
+  | "volumes"
+> {
   /**
    * Pod's scheduling constraints. Defaults to a soft anti-affinity for the same service in the same AWS zone.
    * Will not include affinity if explicitly set to `undefined`.
