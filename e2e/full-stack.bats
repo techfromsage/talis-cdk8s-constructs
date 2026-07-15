@@ -57,16 +57,19 @@ teardown_file() {
   attempts=20 delay=10 run get_property ".status.loadBalancer.ingress[0].hostname" "ingress" "web-svc-ingress"
   alb_hostname="$output"
   assert_contains "$alb_hostname" ".elb.amazonaws.com"
+  ensure_resolves "$alb_hostname"
 
   run http_get "http://${alb_hostname}/env"
   assert_contains "$output" "WATERMARK=${CIRCLE_BUILD_NUM}"
 }
 
 @test "full-stack: verify WebService external DNS" {
+  ensure_resolves "cdk8s-e2e-${CIRCLE_BUILD_NUM}-web-service.talis.io"
   run http_get "https://cdk8s-e2e-${CIRCLE_BUILD_NUM}-web-service.talis.io/env"
   assert_contains "$output" "WATERMARK=${CIRCLE_BUILD_NUM}"
 
   # Additional external DNS
+  ensure_resolves "cdk8s-e2e-${CIRCLE_BUILD_NUM}-extra.talis.io"
   run http_get "https://cdk8s-e2e-${CIRCLE_BUILD_NUM}-extra.talis.io/env"
   assert_contains "$output" "WATERMARK=${CIRCLE_BUILD_NUM}"
 }
