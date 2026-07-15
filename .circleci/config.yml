@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  aws-cli: circleci/aws-cli@5.2.0
-  node: circleci/node@7.1.0
+  aws-cli: circleci/aws-cli@5.4.2
+  node: circleci/node@7.2.1
 
 parameters:
   cluster_name:
@@ -16,7 +16,7 @@ commands:
       - run:
           name: Install kubectl
           command: |
-            KUBECTL_VERSION=1.33.3
+            KUBECTL_VERSION=1.35.6
             curl --fail -sLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
             curl --fail -sLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl.sha256"
             echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check --status -
