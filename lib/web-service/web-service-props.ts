@@ -88,9 +88,7 @@ interface ServiceAnnotations {
 }
 
 export interface WebServiceProps
-  extends ServiceAnnotations,
-    ContainerProps,
-    DeploymentProps {
+  extends ServiceAnnotations, ContainerProps, DeploymentProps {
   /**
    * Static number of replicas. Cannot be specified with `horizontalPodAutoscaler`.
    */

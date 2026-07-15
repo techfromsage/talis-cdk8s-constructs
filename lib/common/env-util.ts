@@ -26,8 +26,7 @@ export function getWatermark({
 }
 
 export function getTtlTimestamp({ envVarName = "TTL" } = {}):
-  | number
-  | undefined {
+  number | undefined {
   const ttl = process.env[envVarName];
 
   if (!ttl) {
