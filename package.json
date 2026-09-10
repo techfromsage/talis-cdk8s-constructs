@@ -46,7 +46,7 @@
     "@types/node": "^26.1.1",
     "@typescript-eslint/eslint-plugin": "^8.63.0",
     "@typescript-eslint/parser": "^8.63.0",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/coverage-v8": "^5.0.0",
     "bats": "^1.13.0",
     "cdk8s": "^2.70.83",
     "cdk8s-cli": "^2.207.39",
@@ -61,7 +61,7 @@
     "prettier": "^3.9.4",
     "semantic-release": "^25.0.5",
     "ts-node": "^10.9.2",
-    "typescript": "~6.0.3",
+    "typescript": "~7.0.0",
     "vitest": "^4.1.10"
   }
 }
